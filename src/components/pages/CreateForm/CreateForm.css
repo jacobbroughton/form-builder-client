@@ -1,0 +1,55 @@
+main.create-form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+main.create-form > form {
+
+}
+
+main.create-form > form > .form-item-types {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+main.create-form > form > .form-item-types > button {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor:  pointer;
+}
+
+main.create-form > form > .form-item-types > button.selected {
+  border-color: lightgreen;
+}
+
+main.create-form > form > .form-item-types > button > .name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+main.create-form > form > .form-item-types > button > .description {
+  font-size: 0.875rem;
+}
+
+main.create-form > form > .form-item-types > button,
+main.create-form > form > button.add-new-form-item {
+  width: 100%;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #555;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+main.create-form > form > .form-item-types > button:hover,
+main.create-form > form > button.add-new-form-item:hover {
+  background-color: #55555525;
+}
