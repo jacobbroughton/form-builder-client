@@ -31,8 +31,6 @@ const CreateForm = () => {
       const data = await response.json();
 
       setFormItemTypes(data);
-
-      console.log("types", data);
     } catch (error) {
       if (typeof error === "string") {
         console.log(error.toUpperCase());
@@ -52,8 +50,6 @@ const CreateForm = () => {
       const data = await response.json();
 
       setFormItemTypeProperties(data);
-
-      console.log("properties", data);
     } catch (error) {
       if (typeof error === "string") {
         console.log(error.toUpperCase());
@@ -77,8 +73,6 @@ const CreateForm = () => {
       const data = await response.json();
 
       setFormItemTypePropertyOptions(data);
-
-      console.log("options", data);
     } catch (error) {
       if (typeof error === "string") {
         console.log(error.toUpperCase());
@@ -89,14 +83,26 @@ const CreateForm = () => {
   }
 
   function handleOptionClick(propertyId: number, option: FormItemTypePropertyOptionType) {
-    console.log({ propertyId, option });
     setFormItemTypePropertyOptions({
       ...formItemTypePropertyOptions,
-      [propertyId]: formItemTypePropertyOptions[propertyId].map(op => ({
+      [propertyId]: formItemTypePropertyOptions[propertyId].map((op) => ({
         ...op,
-        checked: op.id === option.id
-      }))
-    })
+        checked: op.id === option.id,
+      })),
+    });
+  }
+
+  function handleInputChange(value: string, property: FormItemTypePropertyType) {
+    console.log(value, formItemTypeProperties, property.input_type_id, property.id);
+    setFormItemTypeProperties({
+      ...formItemTypeProperties,
+      [property.input_type_id]: formItemTypeProperties[property.input_type_id].map((prop) => ({
+        ...prop,
+        ...(prop.id === property.id && {
+          value,
+        }),
+      })),
+    });
   }
 
   useEffect(() => {
@@ -180,6 +186,10 @@ const CreateForm = () => {
                             <input
                               placeholder={itemTypeProperty.property_name}
                               type={itemTypeProperty.property_type || "text"}
+                              value={itemTypeProperty.value || ""}
+                              onChange={(e) =>
+                                handleInputChange(e.target.value, itemTypeProperty)
+                              }
                             />
                           )}
                         </div>
