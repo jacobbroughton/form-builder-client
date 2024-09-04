@@ -88,6 +88,17 @@ const CreateForm = () => {
     }
   }
 
+  function handleOptionClick(propertyId: number, option: FormItemTypePropertyOptionType) {
+    console.log({ propertyId, option });
+    setFormItemTypePropertyOptions({
+      ...formItemTypePropertyOptions,
+      [propertyId]: formItemTypePropertyOptions[propertyId].map(op => ({
+        ...op,
+        checked: op.id === option.id
+      }))
+    })
+  }
+
   useEffect(() => {
     getFormItemTypes();
     getFormItemTypeProperties();
@@ -138,17 +149,30 @@ const CreateForm = () => {
                   {formItemTypeProperties[formItemType.id].length &&
                   stagedNewFormItemType?.id === formItemType.id ? (
                     <div className="properties">
-                      <label>Properties</label>
+                      {/* <label>Properties</label> */}
                       {formItemTypeProperties[formItemType.id].map((itemTypeProperty) => (
                         <div
                           className={`property-container ${itemTypeProperty.property_type}`}
                         >
-                          <label>{itemTypeProperty.property_name}</label>
+                          <label className="property-name">
+                            {itemTypeProperty.property_name}
+                          </label>
+                          <p className="property-description">
+                            {itemTypeProperty.property_description}
+                          </p>
                           {formItemTypePropertyOptions[itemTypeProperty.id] ? (
                             <div className="radio-options">
                               {formItemTypePropertyOptions[itemTypeProperty.id]?.map(
                                 (option) => (
-                                  <button>{option.option_name}</button>
+                                  <button
+                                    type="button"
+                                    className={`${option.checked ? "checked" : ""}`}
+                                    onClick={() => {
+                                      handleOptionClick(itemTypeProperty.id, option);
+                                    }}
+                                  >
+                                    {option.option_name}
+                                  </button>
                                 )
                               )}
                             </div>
