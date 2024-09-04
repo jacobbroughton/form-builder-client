@@ -7,8 +7,17 @@ main.create-form {
   margin: 0 auto;
 }
 
-main.create-form > form {
+main.create-form > .no-items-yet {
+  border: 1px solid #555;
+  display: flex;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  align-items: center;
+  justify-content: center;
+}
 
+main.create-form > form {
 }
 
 main.create-form > form > .form-item-types {
@@ -22,7 +31,7 @@ main.create-form > form > .form-item-types > button {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  cursor:  pointer;
+  cursor: pointer;
 }
 
 main.create-form > form > .form-item-types > button.selected {
@@ -52,4 +61,87 @@ main.create-form > form > button.add-new-form-item {
 main.create-form > form > .form-item-types > button:hover,
 main.create-form > form > button.add-new-form-item:hover {
   background-color: #55555525;
+}
+
+main.create-form > form > .form-item-types > div.properties {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  border: 1px solid #555;
+  background-color: #222;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+main.create-form > form > .form-item-types > div.properties > label {
+  font-size: 0.875rem;
+}
+
+main.create-form > form > .form-item-types > .properties > .property-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+main.create-form > form > .form-item-types > .properties > .property-container > label {
+  font-size: 0.875rem;
+}
+
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container
+  > input {
+  width: 100%;
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+}
+
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container.radio
+  > .radio-options {
+  display: flex;
+  gap: 5px;
+}
+
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container.radio
+  > .radio-options
+  > button {
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+main.create-form > form > .navigation-button {
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+main.create-form > form > .navigation-button > svg {
+  width: 12px;
+  fill: white;
+
 }
