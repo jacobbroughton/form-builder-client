@@ -24,3 +24,11 @@ export type FormItemTypePropertyOptionType = {
 export type HashmapType = {
   [key: string]: object[];
 };
+
+export type FormItemTypePropertyValueType = {
+  property_id: number;
+  input_type_id: number;
+  form_id: number;
+  value: string;
+  created_by_id: number;
+};

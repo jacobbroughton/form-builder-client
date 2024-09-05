@@ -4,12 +4,19 @@ import {
   FormItemTypeType,
   FormItemTypePropertyType,
   FormItemTypePropertyOptionType,
+  FormItemTypePropertyValueType,
 } from "../../../lib/types";
 import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import XIcon from "../../ui/icons/XIcon";
+import CheckIcon from "../../ui/icons/CheckIcon";
 
 const CreateForm = () => {
-  const [formItems, setFormItems] = useState([]);
+  const [formTitle, setFormTitle] = useState<string>("Untitled");
+  const [formDescription, setFormDescription] = useState<string>("");
+  const [stagedInputName, setStagedInputName] = useState<string>("Untitled");
+  const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
+  const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
+  const [formItems, setFormItems] = useState<object[]>([]);
   const [formItemTypes, setFormItemTypes] = useState<FormItemTypeType[]>([]);
   const [formItemTypesSelectorOpen, setFormItemTypesSelectorOpen] =
     useState<boolean>(false);
@@ -21,6 +28,53 @@ const CreateForm = () => {
   const [formItemTypePropertyOptions, setFormItemTypePropertyOptions] = useState<{
     [key: string]: FormItemTypePropertyOptionType[];
   }>({});
+
+  async function handleAddNewFormItem(): Promise<void> {
+    try {
+      const inputTypeId =
+        formItemTypeProperties[stagedNewFormItemType!.id][0].input_type_id;
+      const optionKeys = Object.keys(formItemTypePropertyOptions).filter((key) =>
+        key.includes(`${inputTypeId}-`)
+      );
+
+      const properties = formItemTypeProperties[stagedNewFormItemType!.id];
+      const options = optionKeys.map((key) => formItemTypePropertyOptions[key]);
+
+      setFormItems([
+        ...formItems,
+        {
+          inputType: stagedNewFormItemType,
+          metadata: {
+            name: stagedInputName,
+            description: stagedInputDescription,
+          },
+          properties,
+        },
+      ]);
+
+      handleInputReset()
+
+      setFormItemTypesSelectorOpen(false)
+
+      // setFormItems([
+      //   ...formItems,
+      //   {
+      //     property_id: null,
+      //     input_type_id: null,
+      //     form_id: null,
+      //     value: null,
+      //     created_by_id: null,
+      //   },
+      // ]);
+      // setStagedNewFormItemType(null);
+    } catch (error) {
+      if (typeof error === "string") {
+        console.log(error.toUpperCase());
+      } else if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  }
 
   async function getFormItemTypes(): Promise<void> {
     try {
@@ -82,27 +136,52 @@ const CreateForm = () => {
     }
   }
 
-  function handleOptionClick(propertyId: number, option: FormItemTypePropertyOptionType) {
+  function handleOptionClick(
+    property: FormItemTypePropertyType,
+    option: FormItemTypePropertyOptionType
+  ) {
     setFormItemTypePropertyOptions({
       ...formItemTypePropertyOptions,
-      [propertyId]: formItemTypePropertyOptions[propertyId].map((op) => ({
+      [`${property.input_type_id}-${property.id}`]: formItemTypePropertyOptions[
+        `${property.input_type_id}-${property.id}`
+      ].map((op) => ({
         ...op,
         checked: op.id === option.id,
       })),
     });
+
+    setFormItemTypeProperties({
+      ...formItemTypeProperties,
+      [property.input_type_id]: formItemTypeProperties[property.input_type_id].map(
+        (prop) => ({
+          ...prop,
+          ...(prop.id === property.id && {
+            value: option.option_value,
+          }),
+        })
+      ),
+    });
   }
 
   function handleInputChange(value: string, property: FormItemTypePropertyType) {
-    console.log(value, formItemTypeProperties, property.input_type_id, property.id);
     setFormItemTypeProperties({
       ...formItemTypeProperties,
-      [property.input_type_id]: formItemTypeProperties[property.input_type_id].map((prop) => ({
-        ...prop,
-        ...(prop.id === property.id && {
-          value,
-        }),
-      })),
+      [property.input_type_id]: formItemTypeProperties[property.input_type_id].map(
+        (prop) => ({
+          ...prop,
+          ...(prop.id === property.id && {
+            value,
+          }),
+        })
+      ),
     });
+  }
+
+  function handleInputReset(): void {
+    setStagedInputName("Untitled");
+    setStagedInputDescription("");
+    setDescriptionToggled(false);
+    setStagedNewFormItemType(null);
   }
 
   useEffect(() => {
@@ -113,7 +192,21 @@ const CreateForm = () => {
 
   return (
     <main className="create-form">
-      <h1>Create Form</h1>
+      {!formItemTypesSelectorOpen && (
+        <div className="title-and-description">
+          <input
+            value={formTitle}
+            onChange={(e) => setFormTitle(e.target.value)}
+            placeholder="Title"
+          />
+          <textarea
+            value={formDescription}
+            onChange={(e) => setFormDescription(e.target.value)}
+            placeholder="Description"
+          />
+        </div>
+      )}
+
       {formItemTypesSelectorOpen ? (
         false
       ) : formItems.length === 0 ? (
@@ -122,7 +215,9 @@ const CreateForm = () => {
         </div>
       ) : (
         <div>
-          <i>Render items here</i>
+          {formItems.map((formItem) => (
+            <div onClick={() => console.log(formItem)}><p>{formItem.inputType.name}</p></div>
+          ))}
         </div>
       )}
       <form>
@@ -143,58 +238,88 @@ const CreateForm = () => {
                       stagedNewFormItemType?.id === formItemType.id ? "selected" : ""
                     }`}
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
+                      handleInputReset();
                       setStagedNewFormItemType(
                         stagedNewFormItemType ? null : formItemType
-                      )
-                    }
+                      );
+                    }}
                   >
                     <p className="name">{formItemType.name}</p>
                     <p className="description">{formItemType.description}</p>
                   </button>
+
                   {formItemTypeProperties[formItemType.id].length &&
                   stagedNewFormItemType?.id === formItemType.id ? (
-                    <div className="properties">
-                      {/* <label>Properties</label> */}
-                      {formItemTypeProperties[formItemType.id].map((itemTypeProperty) => (
-                        <div
-                          className={`property-container ${itemTypeProperty.property_type}`}
+                    <>
+                      <div className="metadata">
+                        <input
+                          value={stagedInputName}
+                          onChange={(e) => setStagedInputName(e.target.value)}
+                        />
+                        {descriptionToggled ? (
+                          <textarea
+                            value={stagedInputDescription}
+                            placeholder="Description"
+                            onChange={(e) => setStagedInputDescription(e.target.value)}
+                          />
+                        ) : (
+                          false
+                        )}
+                        <button
+                          onClick={() => setDescriptionToggled(!descriptionToggled)}
+                          type="button"
                         >
-                          <label className="property-name">
-                            {itemTypeProperty.property_name}
-                          </label>
-                          <p className="property-description">
-                            {itemTypeProperty.property_description}
-                          </p>
-                          {formItemTypePropertyOptions[itemTypeProperty.id] ? (
-                            <div className="radio-options">
-                              {formItemTypePropertyOptions[itemTypeProperty.id]?.map(
-                                (option) => (
-                                  <button
-                                    type="button"
-                                    className={`${option.checked ? "checked" : ""}`}
-                                    onClick={() => {
-                                      handleOptionClick(itemTypeProperty.id, option);
-                                    }}
-                                  >
-                                    {option.option_name}
-                                  </button>
-                                )
+                          {descriptionToggled ? "Remove Description" : "Add Description"}
+                        </button>
+                      </div>
+                      <div className="properties">
+                        {/* <label>Properties</label> */}
+                        {formItemTypeProperties[formItemType.id].map(
+                          (itemTypeProperty) => (
+                            <div
+                              className={`property-container ${itemTypeProperty.property_type}`}
+                            >
+                              <label className="property-name">
+                                {itemTypeProperty.property_name}
+                              </label>
+                              <p className="property-description">
+                                {itemTypeProperty.property_description}
+                              </p>
+                              {formItemTypePropertyOptions[
+                                `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
+                              ] ? (
+                                <div className="radio-options">
+                                  {formItemTypePropertyOptions[
+                                    `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
+                                  ]?.map((option) => (
+                                    <button
+                                      type="button"
+                                      className={`${option.checked ? "checked" : ""}`}
+                                      onClick={() => {
+                                        handleOptionClick(itemTypeProperty, option);
+                                      }}
+                                    >
+                                      {option.option_name}
+                                    </button>
+                                  ))}
+                                </div>
+                              ) : (
+                                <input
+                                  placeholder={itemTypeProperty.property_name}
+                                  className={itemTypeProperty.property_type}
+                                  type={itemTypeProperty.property_type || "text"}
+                                  value={itemTypeProperty.value || ""}
+                                  onChange={(e) =>
+                                    handleInputChange(e.target.value, itemTypeProperty)
+                                  }
+                                />
                               )}
                             </div>
-                          ) : (
-                            <input
-                              placeholder={itemTypeProperty.property_name}
-                              type={itemTypeProperty.property_type || "text"}
-                              value={itemTypeProperty.value || ""}
-                              onChange={(e) =>
-                                handleInputChange(e.target.value, itemTypeProperty)
-                              }
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                          )
+                        )}
+                      </div>
+                    </>
                   ) : (
                     false
                   )}
@@ -211,21 +336,32 @@ const CreateForm = () => {
           </button>
         )}
         {stagedNewFormItemType ? (
-          <button
-            className="navigation-button"
-            type="button"
-            onClick={() => setStagedNewFormItemType(null)}
-          >
-            <ArrowLeftIcon /> Back
-          </button>
+          <div className="navigation-buttons">
+            <button
+              className="navigation-button back"
+              type="button"
+              onClick={() => handleInputReset()}
+            >
+              <ArrowLeftIcon /> Back
+            </button>
+            <button
+              className="navigation-button done"
+              type="button"
+              onClick={handleAddNewFormItem}
+            >
+              <CheckIcon /> Done, add to form
+            </button>
+          </div>
         ) : formItemTypesSelectorOpen ? (
-          <button
-            className="navigation-button"
-            type="button"
-            onClick={() => setFormItemTypesSelectorOpen(false)}
-          >
-            <XIcon /> Cancel
-          </button>
+          <div className="navigation-buttons">
+            <button
+              className="navigation-button cancel"
+              type="button"
+              onClick={() => setFormItemTypesSelectorOpen(false)}
+            >
+              <XIcon /> Cancel
+            </button>
+          </div>
         ) : (
           false
         )}

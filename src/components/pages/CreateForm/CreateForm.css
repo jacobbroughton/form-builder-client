@@ -7,11 +7,36 @@ main.create-form {
   margin: 0 auto;
 }
 
+main.create-form > .title-and-description {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+main.create-form > .title-and-description > input {
+  font-size: 1.15rem;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+
+main.create-form > .title-and-description > textarea {
+  background-color: transparent;
+  font-family: inherit;
+  padding: 5px 10px;
+  border: 1px solid #555;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
 main.create-form > .no-items-yet {
   border: 1px solid #555;
   display: flex;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border-radius: 3px;
   align-items: center;
   justify-content: center;
@@ -24,7 +49,7 @@ main.create-form > form > .form-item-types {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
+  gap: 10px;
 }
 
 main.create-form > form > .form-item-types > button {
@@ -65,7 +90,39 @@ main.create-form > form > button.add-new-form-item:hover {
   background-color: #55555525;
 }
 
-main.create-form > form > .form-item-types > div.properties {
+main.create-form > form > .form-item-types > .metadata {}
+
+main.create-form > form > .form-item-types > .metadata > input,
+main.create-form > form > .form-item-types > .metadata > textarea {
+  width: 100%;
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  transition: border-color 0.1s ease-out;
+  font-family: inherit;
+}
+
+main.create-form > form > .form-item-types > .metadata > input {
+  font-weight: 500;
+}
+
+
+main.create-form > form > .form-item-types > .metadata > button {
+  background-color: transparent;
+  border: 0;
+  align-self: flex-start;
+  cursor: pointer;
+} 
+
+main.create-form > form > .form-item-types > .metadata > button:hover {
+  text-decoration: underline;
+}
+
+main.create-form > form > .form-item-types > div.properties,
+main.create-form > form > .form-item-types > .metadata {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -74,6 +131,35 @@ main.create-form > form > .form-item-types > div.properties {
   background-color: #222;
   padding: 5px;
   border-radius: 3px;
+  border-top-left-radius: 0;
+  margin-top: 20px;
+}
+
+main.create-form > form > .form-item-types > div.properties::before {
+  content: 'Properties'
+}
+main.create-form > form > .form-item-types > .metadata::before {
+  content: 'Metadata';
+}
+
+main.create-form > form > .form-item-types > div.properties::before,
+main.create-form > form > .form-item-types > .metadata::before {
+  position: absolute;
+  bottom: calc(100% + 0px);
+  left: -1px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: #555;
+  padding: 2px 5px;
+  line-height: 0.875rem;
+  border-left: lightgreen 2px solid;
+  border-top-left-radius: 2px;;
+  border-top-right-radius: 2px;;
+  background-color: transparent;
+  border: 1px solid #555;;
+  border-bottom: 0;
+  z-index: 2;
+  background-color: #222;
 }
 
 main.create-form > form > .form-item-types > div.properties > label {
@@ -87,14 +173,36 @@ main.create-form > form > .form-item-types > .properties > .property-container {
   gap: 2px;
 }
 
-main.create-form > form > .form-item-types > .properties > .property-container > label.property-name {
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container
+  > label.property-name {
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-main.create-form > form > .form-item-types > .properties > .property-container > p.property-description {
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container
+  > p.property-description {
   font-size: 0.8rem;
 }
+
+main.create-form > form > .form-item-types > .properties > .property-container > input {
+  width: 100%;
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  transition: border-color 0.1s ease-out;
+  font-family: inherit;
+}
+
 
 
 main.create-form
@@ -102,13 +210,17 @@ main.create-form
   > .form-item-types
   > .properties
   > .property-container
-  > input {
-  width: 100%;
-  padding: 3px 5px;
-  font-size: 1rem;
-  background-color: #333;
-  border-radius: 3px;
-  border: 1px solid #555;
+  > input:not(.string):not(.number):not(.url):not(.email) {
+  cursor: pointer;
+}
+
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container
+  > input:hover {
+  border-color: #666;
 }
 
 main.create-form
@@ -142,11 +254,26 @@ main.create-form
   > .properties
   > .property-container.radio
   > .radio-options
-  > button.checked {
-    border: 1px solid lightgreen;
-  }
+  > button:not(:disabled):not(.checked):hover {
+  border-color: #666;
+}
 
-main.create-form > form > .navigation-button {
+main.create-form
+  > form
+  > .form-item-types
+  > .properties
+  > .property-container.radio
+  > .radio-options
+  > button.checked {
+  border: 1px solid lightgreen;
+}
+
+main.create-form > form > .navigation-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+main.create-form > form > .navigation-buttons > .navigation-button {
   padding: 3px 5px;
   font-size: 1rem;
   background-color: transparent;
@@ -157,10 +284,25 @@ main.create-form > form > .navigation-button {
   align-items: center;
   gap: 10px;
   margin-top: 5px;
+  width: 100%;
+  white-space: nowrap;
 }
 
-main.create-form > form > .navigation-button > svg {
-  width: 12px;
-  fill: white;
+main.create-form > form > .navigation-buttons > .navigation-button:not(:disabled):hover {
+  border-color: #666;
+  background-color: #55555525;
+}
 
+main.create-form > form > .navigation-buttons > .navigation-button > svg {
+  width: 12px;
+  min-width: 12px;
+  fill: white;
+}
+
+main.create-form
+  > form
+  > .navigation-buttons
+  > .navigation-button.done:not(:disabled)
+  svg {
+  fill: lightgreen;
 }
