@@ -9,6 +9,8 @@ import {
 import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import XIcon from "../../ui/icons/XIcon";
 import CheckIcon from "../../ui/icons/CheckIcon";
+import PlusIcon from "../../ui/icons/PlusIcon";
+import ThreeDotsIcon from "../../ui/icons/ThreeDotsIcon";
 
 const CreateForm = () => {
   const [formTitle, setFormTitle] = useState<string>("Untitled");
@@ -52,21 +54,9 @@ const CreateForm = () => {
         },
       ]);
 
-      handleInputReset()
+      handleInputReset();
 
-      setFormItemTypesSelectorOpen(false)
-
-      // setFormItems([
-      //   ...formItems,
-      //   {
-      //     property_id: null,
-      //     input_type_id: null,
-      //     form_id: null,
-      //     value: null,
-      //     created_by_id: null,
-      //   },
-      // ]);
-      // setStagedNewFormItemType(null);
+      setFormItemTypesSelectorOpen(false);
     } catch (error) {
       if (typeof error === "string") {
         console.log(error.toUpperCase());
@@ -190,169 +180,135 @@ const CreateForm = () => {
     getFormItemTypePropertyOptions();
   }, []);
 
+  const metadataInputsShowing = !formItemTypesSelectorOpen && !stagedNewFormItemType;
+  const formItemTypeSelectorShowing = formItemTypesSelectorOpen && formItemTypes.length;
+  const stagedItemFormShowing =
+    stagedNewFormItemType && formItemTypeProperties[stagedNewFormItemType.id].length;
+
   return (
     <main className="create-form">
-      {!formItemTypesSelectorOpen && (
-        <div className="title-and-description">
-          <input
-            value={formTitle}
-            onChange={(e) => setFormTitle(e.target.value)}
-            placeholder="Title"
-          />
-          <textarea
-            value={formDescription}
-            onChange={(e) => setFormDescription(e.target.value)}
-            placeholder="Description"
-          />
-        </div>
-      )}
-
-      {formItemTypesSelectorOpen ? (
-        false
-      ) : formItems.length === 0 ? (
-        <div className="no-items-yet">
-          <p>You haven't added any items yet</p>
-        </div>
-      ) : (
-        <div>
-          {formItems.map((formItem) => (
-            <div onClick={() => console.log(formItem)}><p>{formItem.inputType.name}</p></div>
-          ))}
-        </div>
-      )}
-      <form>
-        {formItemTypesSelectorOpen && formItemTypes.length ? (
-          <div className="form-item-types">
-            {formItemTypes
-              .filter((itemTypeProperty) => {
-                if (stagedNewFormItemType) {
-                  if (itemTypeProperty.id === stagedNewFormItemType.id) return true;
-                  return false;
-                }
-                return true;
-              })
-              .map((formItemType) => (
-                <>
-                  <button
-                    className={`${
-                      stagedNewFormItemType?.id === formItemType.id ? "selected" : ""
-                    }`}
-                    type="button"
-                    onClick={() => {
-                      handleInputReset();
-                      setStagedNewFormItemType(
-                        stagedNewFormItemType ? null : formItemType
-                      );
-                    }}
-                  >
-                    <p className="name">{formItemType.name}</p>
-                    <p className="description">{formItemType.description}</p>
+      {metadataInputsShowing && (
+        <>
+          <form className="title-and-description">
+            <input
+              value={formTitle}
+              onChange={(e) => setFormTitle(e.target.value)}
+              placeholder="Title"
+            />
+            <textarea
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              placeholder="Description"
+            />
+          </form>
+          {formItems.length === 0 ? (
+            <div className="no-items-yet">
+              <p>You haven't added any items yet</p>
+            </div>
+          ) : (
+            <div className="added-form-items">
+              {formItems.map((formItem) => (
+                <div className="added-form-item" onClick={() => console.log(formItem)}>
+                  <p className="name">{formItem.metadata.name}</p>
+                  <div className="tags">
+                    <p>{formItem.inputType.name}</p>
+                    <p>
+                      {
+                        formItem.properties.filter((property) => property.value !== "")
+                          .length
+                      }{" "}
+                      custom properties
+                    </p>
+                  </div>
+                  <button className='edit-button'>
+                    <ThreeDotsIcon />
                   </button>
-
-                  {formItemTypeProperties[formItemType.id].length &&
-                  stagedNewFormItemType?.id === formItemType.id ? (
-                    <>
-                      <div className="metadata">
-                        <input
-                          value={stagedInputName}
-                          onChange={(e) => setStagedInputName(e.target.value)}
-                        />
-                        {descriptionToggled ? (
-                          <textarea
-                            value={stagedInputDescription}
-                            placeholder="Description"
-                            onChange={(e) => setStagedInputDescription(e.target.value)}
-                          />
-                        ) : (
-                          false
-                        )}
-                        <button
-                          onClick={() => setDescriptionToggled(!descriptionToggled)}
-                          type="button"
-                        >
-                          {descriptionToggled ? "Remove Description" : "Add Description"}
-                        </button>
-                      </div>
-                      <div className="properties">
-                        {/* <label>Properties</label> */}
-                        {formItemTypeProperties[formItemType.id].map(
-                          (itemTypeProperty) => (
-                            <div
-                              className={`property-container ${itemTypeProperty.property_type}`}
-                            >
-                              <label className="property-name">
-                                {itemTypeProperty.property_name}
-                              </label>
-                              <p className="property-description">
-                                {itemTypeProperty.property_description}
-                              </p>
-                              {formItemTypePropertyOptions[
-                                `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-                              ] ? (
-                                <div className="radio-options">
-                                  {formItemTypePropertyOptions[
-                                    `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-                                  ]?.map((option) => (
-                                    <button
-                                      type="button"
-                                      className={`${option.checked ? "checked" : ""}`}
-                                      onClick={() => {
-                                        handleOptionClick(itemTypeProperty, option);
-                                      }}
-                                    >
-                                      {option.option_name}
-                                    </button>
-                                  ))}
-                                </div>
-                              ) : (
-                                <input
-                                  placeholder={itemTypeProperty.property_name}
-                                  className={itemTypeProperty.property_type}
-                                  type={itemTypeProperty.property_type || "text"}
-                                  value={itemTypeProperty.value || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(e.target.value, itemTypeProperty)
-                                  }
-                                />
-                              )}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    false
-                  )}
-                </>
+                </div>
               ))}
-          </div>
-        ) : (
+            </div>
+          )}
           <button
             className="add-new-form-item"
             type="button"
             onClick={() => setFormItemTypesSelectorOpen(true)}
           >
-            Add new form item
+            <PlusIcon /> Add new form item
           </button>
-        )}
-        {stagedNewFormItemType ? (
-          <div className="navigation-buttons">
+        </>
+      )}
+
+      {stagedItemFormShowing ? (
+        <form className="staged-form-item-form">
+          <div className="staged-form-item-type-info">
+            <p className="name">{stagedNewFormItemType.name}</p>
+            <p className="description">{stagedNewFormItemType.description}</p>
+          </div>
+          <div className="metadata">
+            <input
+              value={stagedInputName}
+              onChange={(e) => setStagedInputName(e.target.value)}
+            />
+            {descriptionToggled ? (
+              <textarea
+                value={stagedInputDescription}
+                placeholder="Description"
+                onChange={(e) => setStagedInputDescription(e.target.value)}
+              />
+            ) : (
+              false
+            )}
             <button
-              className="navigation-button back"
+              onClick={() => setDescriptionToggled(!descriptionToggled)}
               type="button"
-              onClick={() => handleInputReset()}
             >
-              <ArrowLeftIcon /> Back
-            </button>
-            <button
-              className="navigation-button done"
-              type="button"
-              onClick={handleAddNewFormItem}
-            >
-              <CheckIcon /> Done, add to form
+              {descriptionToggled ? "Remove Description" : "Add Description"}
             </button>
           </div>
-        ) : formItemTypesSelectorOpen ? (
+          <div className="properties">
+            {/* <label>Properties</label> */}
+            {formItemTypeProperties[stagedNewFormItemType.id].map((itemTypeProperty) => (
+              <div className={`property-container ${itemTypeProperty.property_type}`}>
+                <label className="property-name">{itemTypeProperty.property_name}</label>
+                <p className="property-description">
+                  {itemTypeProperty.property_description}
+                </p>
+                {formItemTypePropertyOptions[
+                  `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
+                ] ? (
+                  <div className="radio-options">
+                    {formItemTypePropertyOptions[
+                      `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
+                    ]?.map((option) => (
+                      <button
+                        type="button"
+                        className={`${option.checked ? "checked" : ""}`}
+                        onClick={() => {
+                          handleOptionClick(itemTypeProperty, option);
+                        }}
+                      >
+                        {option.option_name}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <input
+                    placeholder={itemTypeProperty.property_name}
+                    className={itemTypeProperty.property_type}
+                    type={itemTypeProperty.property_type || "text"}
+                    value={itemTypeProperty.value || ""}
+                    onChange={(e) => handleInputChange(e.target.value, itemTypeProperty)}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </form>
+      ) : (
+        false
+      )}
+
+      {formItemTypeSelectorShowing ? (
+        <>
           <div className="navigation-buttons">
             <button
               className="navigation-button cancel"
@@ -362,10 +318,50 @@ const CreateForm = () => {
               <XIcon /> Cancel
             </button>
           </div>
-        ) : (
-          false
-        )}
-      </form>
+          <div className="form-item-types-selector">
+            {formItemTypes.map((formItemType) => (
+              <>
+                <button
+                  className={`${
+                    stagedNewFormItemType?.id === formItemType.id ? "selected" : ""
+                  }`}
+                  type="button"
+                  onClick={() => {
+                    handleInputReset();
+                    setStagedNewFormItemType(stagedNewFormItemType ? null : formItemType);
+                    setFormItemTypesSelectorOpen(false);
+                  }}
+                >
+                  <p className="name">{formItemType.name}</p>
+                  <p className="description">{formItemType.description}</p>
+                </button>
+              </>
+            ))}
+          </div>
+        </>
+      ) : (
+        false
+      )}
+      {stagedNewFormItemType ? (
+        <div className="navigation-buttons">
+          <button
+            className="navigation-button back"
+            type="button"
+            onClick={() => handleInputReset()}
+          >
+            <ArrowLeftIcon /> Back
+          </button>
+          <button
+            className="navigation-button done"
+            type="button"
+            onClick={handleAddNewFormItem}
+          >
+            <CheckIcon /> Done, add to form
+          </button>
+        </div>
+      ) : (
+        false
+      )}
     </main>
   );
 };
