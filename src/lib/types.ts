@@ -32,3 +32,12 @@ export type FormItemTypePropertyValueType = {
   value: string;
   created_by_id: number;
 };
+
+export type AddedFormItemType = {
+  inputType: FormItemTypeType | null;
+  metadata: {
+    name: string;
+    description: string;
+  };
+  properties: FormItemTypePropertyType[];
+};

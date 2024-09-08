@@ -4,7 +4,7 @@ import {
   FormItemTypeType,
   FormItemTypePropertyType,
   FormItemTypePropertyOptionType,
-  FormItemTypePropertyValueType,
+  AddedFormItemType,
 } from "../../../lib/types";
 import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
 import XIcon from "../../ui/icons/XIcon";
@@ -17,8 +17,11 @@ const CreateForm = () => {
   const [formDescription, setFormDescription] = useState<string>("");
   const [stagedInputName, setStagedInputName] = useState<string>("Untitled");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
+  const [saved, setSaved] = useState(false);
+  const [autoSaveCountdown, setAutoSaveCountdown] = useState(5);
+  const [needsAutoSave, setNeedsAutoSave] = useState(true);
   const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
-  const [formItems, setFormItems] = useState<object[]>([]);
+  const [addedFormItems, setAddedFormItems] = useState<AddedFormItemType[]>([]);
   const [formItemTypes, setFormItemTypes] = useState<FormItemTypeType[]>([]);
   const [formItemTypesSelectorOpen, setFormItemTypesSelectorOpen] =
     useState<boolean>(false);
@@ -30,20 +33,18 @@ const CreateForm = () => {
   const [formItemTypePropertyOptions, setFormItemTypePropertyOptions] = useState<{
     [key: string]: FormItemTypePropertyOptionType[];
   }>({});
+  const [prevSavedForm, setPrevSavedForm] = useState({
+    title: formTitle,
+    description: formDescription,
+    formItems: addedFormItems,
+  });
 
   async function handleAddNewFormItem(): Promise<void> {
     try {
-      const inputTypeId =
-        formItemTypeProperties[stagedNewFormItemType!.id][0].input_type_id;
-      const optionKeys = Object.keys(formItemTypePropertyOptions).filter((key) =>
-        key.includes(`${inputTypeId}-`)
-      );
-
       const properties = formItemTypeProperties[stagedNewFormItemType!.id];
-      const options = optionKeys.map((key) => formItemTypePropertyOptions[key]);
 
-      setFormItems([
-        ...formItems,
+      setAddedFormItems([
+        ...addedFormItems,
         {
           inputType: stagedNewFormItemType,
           metadata: {
@@ -57,6 +58,9 @@ const CreateForm = () => {
       handleInputReset();
 
       setFormItemTypesSelectorOpen(false);
+
+      setSaved(false);
+      setNeedsAutoSave(true);
     } catch (error) {
       if (typeof error === "string") {
         console.log(error.toUpperCase());
@@ -126,6 +130,55 @@ const CreateForm = () => {
     }
   }
 
+  let isStoring = false;
+
+  async function storeDraftForm(): Promise<void> {
+    try {
+      if (isStoring) return;
+      isStoring = true;
+      const response1 = await fetch(
+        "http://localhost:3001/form/check-for-existing-draft?userId=1"
+      );
+
+      if (!response1.ok)
+        throw new Error("An error occured while checking for existing draft");
+
+      const data = await response1.json();
+
+      console.log(data);
+
+      if (data.length == 0) {
+        const response = await fetch("http://localhost:3001/form/store-initial-draft", {
+          method: "post",
+          body: JSON.stringify({
+            userId: 1,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok)
+          throw new Error("An error occured while storing initial form draft");
+
+        const data = await response.json();
+
+        console.log("Added draft to database", data);
+      } else {
+        // TODO: Do something with existing draft
+        // console.log("Found existing draft", data);
+      }
+      setSaved(true);
+      setNeedsAutoSave(false);
+    } catch (error) {
+      if (typeof error === "string") {
+        console.log(error.toUpperCase());
+      } else if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  }
+
   function handleOptionClick(
     property: FormItemTypePropertyType,
     option: FormItemTypePropertyOptionType
@@ -178,7 +231,76 @@ const CreateForm = () => {
     getFormItemTypes();
     getFormItemTypeProperties();
     getFormItemTypePropertyOptions();
+    storeDraftForm();
   }, []);
+
+  useEffect(() => {
+    async function autoSaveDraft(): Promise<void> {
+      try {
+        console.log("Saved", {
+          metadata: { title: formTitle, description: formDescription },
+          formItems: addedFormItems,
+        });
+        setPrevSavedForm({
+          title: formTitle,
+          description: formDescription,
+          formItems: addedFormItems,
+        });
+
+        setSaved(true);
+        setNeedsAutoSave(false);
+        setAutoSaveCountdown(5);
+      } catch (error) {
+        if (typeof error === "string") {
+          console.log(error.toUpperCase());
+        } else if (error instanceof Error) {
+          console.log(error.message);
+        }
+      }
+    }
+
+    const interval1 = setInterval(() => {
+      if (needsAutoSave) {
+        autoSaveDraft();
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(interval1);
+    };
+  }, [needsAutoSave, addedFormItems, formDescription, formTitle]);
+
+  useEffect(() => {
+    const interval2 = setInterval(() => {
+      if (!saved) {
+        setAutoSaveCountdown((prev) => (prev -= 1));
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval2);
+    };
+  }, [saved]);
+
+  useEffect(() => {
+    if (
+      formTitle !== prevSavedForm?.title ||
+      formDescription !== prevSavedForm?.description ||
+      addedFormItems !== prevSavedForm?.formItems
+    ) {
+      console.log("Yes");
+      setSaved(false);
+      setNeedsAutoSave(true);
+    } else {
+      console.log("no");
+    }
+  }, [
+    addedFormItems,
+    formDescription,
+    formTitle,
+    prevSavedForm?.description,
+    prevSavedForm?.formItems,
+    prevSavedForm?.title,
+  ]);
 
   const metadataInputsShowing = !formItemTypesSelectorOpen && !stagedNewFormItemType;
   const formItemTypeSelectorShowing = formItemTypesSelectorOpen && formItemTypes.length;
@@ -187,6 +309,11 @@ const CreateForm = () => {
 
   return (
     <main className="create-form">
+      <p className="saved-status">
+        <span className={`${saved ? "saved" : ""}`}></span>
+        {saved ? "Saved Draft" : "Unsaved"}{" "}
+        {!saved ? `(Autosaving in ${autoSaveCountdown}s)` : false}
+      </p>
       {metadataInputsShowing && (
         <>
           <form className="title-and-description">
@@ -201,17 +328,17 @@ const CreateForm = () => {
               placeholder="Description"
             />
           </form>
-          {formItems.length === 0 ? (
+          {addedFormItems.length === 0 ? (
             <div className="no-items-yet">
               <p>You haven't added any items yet</p>
             </div>
           ) : (
             <div className="added-form-items">
-              {formItems.map((formItem) => (
+              {addedFormItems.map((formItem) => (
                 <div className="added-form-item" onClick={() => console.log(formItem)}>
                   <p className="name">{formItem.metadata.name}</p>
                   <div className="tags">
-                    <p>{formItem.inputType.name}</p>
+                    <p>{formItem.inputType?.name || "Unnamed"}</p>
                     <p>
                       {
                         formItem.properties.filter((property) => property.value !== "")
@@ -220,7 +347,7 @@ const CreateForm = () => {
                       custom properties
                     </p>
                   </div>
-                  <button className='edit-button'>
+                  <button className="edit-button">
                     <ThreeDotsIcon />
                   </button>
                 </div>
