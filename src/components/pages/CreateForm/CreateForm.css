@@ -8,7 +8,7 @@ main.create-form {
   gap: 10px;
 }
 
-main.create-form > .saved-status { 
+main.create-form > .saved-status {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -422,7 +422,6 @@ main.create-form > .navigation-buttons > .navigation-button {
 main.create-form > .navigation-buttons > .navigation-button.cancel {
   margin-top: 0;
   width: auto;
-  border-left: 2px solid crimson;
 }
 
 main.create-form > .navigation-buttons > .navigation-button:not(:disabled):hover {
@@ -432,7 +431,6 @@ main.create-form > .navigation-buttons > .navigation-button:not(:disabled):hover
 
 main.create-form > .navigation-buttons > .navigation-button.cancel:not(:disabled):hover {
   border-color: #666;
-  border-left-color: crimson;
 }
 
 main.create-form > .navigation-buttons > .navigation-button > svg {

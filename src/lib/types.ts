@@ -36,6 +36,7 @@ export type FormItemTypePropertyValueType = {
 export type AddedFormItemType = {
   inputType: FormItemTypeType | null;
   metadata: {
+    id: number,
     name: string;
     description: string;
   };
