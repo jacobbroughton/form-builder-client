@@ -30,7 +30,7 @@ const InputPopupMenu = ({
       <button type="button">
         <EditIcon /> Edit
       </button>
-      {input.eff_status ? (
+      {input.is_active ? (
         <button onClick={() => handleChangeDraftInputEnabledStatus()} type="button">
           <TrashIcon /> Delete
         </button>

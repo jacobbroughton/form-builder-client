@@ -1,0 +1,11 @@
+nav {
+  background-color: #555;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 10px;
+}
+
+nav > ul {
+  display: flex;
+  gap: 10px;
+}

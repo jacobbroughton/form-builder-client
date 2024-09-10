@@ -1,17 +1,11 @@
 import { Link, Outlet } from "react-router-dom";
 import "./App.css";
+import Navbar from "./components/ui/Navbar/Navbar";
 
 function App() {
   return (
     <>
-      <nav>
-        <p>Form Builder</p>
-        <ul>
-          <li>
-            <Link to={`/create-form`}>Create Form</Link>
-          </li>
-        </ul>
-      </nav>
+      <Navbar />
       <div id="detail">
         <Outlet />
       </div>

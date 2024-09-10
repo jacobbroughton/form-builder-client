@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 import CreateForm from "./components/pages/CreateForm/CreateForm.tsx";
 import ErrorPage from "./ErrorPage.tsx";
+import Forms from "./components/pages/Forms/Forms.tsx";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/",
+        element: <Forms />,
+      },
       {
         path: "/create-form",
         element: <CreateForm />,

@@ -49,6 +49,7 @@ export type AddedInputType = {
   draft_form_id: number;
   metadata_name: string;
   metadata_description: string;
+  is_active: number;
   eff_status: number;
   created_at: string;
   created_by_id: number;

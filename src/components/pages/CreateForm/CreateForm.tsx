@@ -197,7 +197,6 @@ const CreateForm = () => {
           description: data.form.description,
           inputs: data.inputs,
         });
-        console.log(data.inputs);
         setAddedInputs(data.inputs);
         setFormTitle(data.form.name);
         setFormDescription(data.form.description);
@@ -268,7 +267,7 @@ const CreateForm = () => {
 
   async function handleChangeDraftInputEnabledStatus(clickedInput): Promise<void> {
     try {
-      const newEffStatus = clickedInput.eff_status ? 0 : 1;
+      const newActiveStatus = clickedInput.is_active ? 0 : 1;
 
       const response = await fetch(
         `http://localhost:3001/form/change-draft-input-enabled-status/${clickedInput.id}`,
@@ -278,7 +277,7 @@ const CreateForm = () => {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            newEffStatus,
+            newActiveStatus,
           }),
         }
       );
@@ -291,7 +290,7 @@ const CreateForm = () => {
       setAddedInputs(
         addedInputs.map((input) => ({
           ...input,
-          ...(input.id === clickedInput.id && { eff_status: newEffStatus }),
+          ...(input.id === clickedInput.id && { is_active: newActiveStatus }),
         }))
       );
 
@@ -432,7 +431,7 @@ const CreateForm = () => {
           ) : (
             <div className="added-inputs">
               {addedInputs.map((input) => (
-                <div className={`added-input ${input.eff_status ? "" : "deleted"}`}>
+                <div className={`added-input ${input.is_active ? "" : "deleted"}`}>
                   <p className="name">{input.metadata_name}</p>
                   <div className="tags">
                     <p>{input.input_type_name || "Unnamed"}</p>
