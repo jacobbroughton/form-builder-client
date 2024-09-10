@@ -49,7 +49,7 @@ main.create-form > .title-and-description > textarea {
   font-size: 1rem;
 }
 
-main.create-form > .added-form-items {
+main.create-form > .added-inputs {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -61,7 +61,7 @@ main.create-form > .added-form-items {
   margin-top: 20px;
 }
 
-main.create-form > .added-form-items::before {
+main.create-form > .added-inputs::before {
   content: "Your custom inputs";
   position: absolute;
   bottom: 100%;
@@ -81,7 +81,7 @@ main.create-form > .added-form-items::before {
   background-color: #222;
 }
 
-main.create-form > .added-form-items > .added-form-item {
+main.create-form > .added-inputs > .added-input {
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -89,11 +89,38 @@ main.create-form > .added-form-items > .added-form-item {
   position: relative;
 }
 
-main.create-form > .added-form-items > .added-form-item:not(:last-child) {
+main.create-form > .added-inputs > .added-input.deleted {
+  border-left: 1px solid crimson;
+  /* padding-left: 35px; */
+}
+
+main.create-form > .added-inputs > .added-input.deleted p:not(.deleted) {
+  opacity: 0.5;
+}
+
+main.create-form > .added-inputs > .added-input.deleted .deleted-icon-container {
+  background-color: transparent;
+  border-left: 1px solid #666;
+  width: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.create-form > .added-inputs > .added-input.deleted .deleted-icon-container svg {
+  fill: crimson;
+  width: 15px;
+}
+
+main.create-form > .added-inputs > .added-input:not(:last-child) {
   border-bottom: 1px solid #555;
 }
 
-main.create-form > .added-form-items > .added-form-item > .edit-button {
+main.create-form > .added-inputs > .added-input > .popup-menu-button {
   position: absolute;
   top: 3px;
   right: 3px;
@@ -109,21 +136,21 @@ main.create-form > .added-form-items > .added-form-item > .edit-button {
   transition: background-color 0.1s linear;
 }
 
-main.create-form > .added-form-items > .added-form-item > .edit-button:hover {
+main.create-form > .added-inputs > .added-input > .popup-menu-button:hover {
   background-color: #333;
 }
 
-main.create-form > .added-form-items > .added-form-item > .edit-button > svg {
+main.create-form > .added-inputs > .added-input > .popup-menu-button > svg {
   fill: white;
   width: 20px;
 }
 
-main.create-form > .added-form-items > .added-form-item .tags {
+main.create-form > .added-inputs > .added-input .tags {
   display: flex;
   gap: 10px;
 }
 
-main.create-form > .added-form-items > .added-form-item .tags p {
+main.create-form > .added-inputs > .added-input .tags p {
   border-radius: 15px;
   background-color: #333;
   padding: 0px 10px;
@@ -142,37 +169,37 @@ main.create-form > .no-items-yet {
 main.create-form {
 }
 
-main.create-form > .form-item-types-selector {
+main.create-form > .input-types-selector {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
 }
 
-main.create-form > .form-item-types-selector > button {
+main.create-form > .input-types-selector > button {
   display: flex;
   flex-direction: column;
   gap: 3px;
   cursor: pointer;
 }
 
-main.create-form > .form-item-types-selector > button.selected {
+main.create-form > .input-types-selector > button.selected {
   border-left: 5px solid lightgreen;
   padding-left: 10px;
 }
 
-main.create-form > .form-item-types-selector > button > .name {
+main.create-form > .input-types-selector > button > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-main.create-form > .form-item-types-selector > button > .description {
+main.create-form > .input-types-selector > button > .description {
   font-size: 0.875rem;
   text-align: start;
 }
 
-main.create-form > .form-item-types-selector > button,
-main.create-form > button.add-new-form-item {
+main.create-form > .input-types-selector > button,
+main.create-form > button.add-new-input {
   /* width: 100%; */
   background-color: transparent;
   border-radius: 3px;
@@ -182,7 +209,7 @@ main.create-form > button.add-new-form-item {
   font-size: 0.875rem;
 }
 
-main.create-form > button.add-new-form-item {
+main.create-form > button.add-new-input {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -191,26 +218,26 @@ main.create-form > button.add-new-form-item {
   font-size: 1rem;
 }
 
-main.create-form > button.add-new-form-item svg {
+main.create-form > button.add-new-input svg {
   width: 12px;
   fill: white;
 }
 
-main.create-form > .form-item-types-selector > button:hover,
-main.create-form > button.add-new-form-item:hover {
+main.create-form > .input-types-selector > button:hover,
+main.create-form > button.add-new-input:hover {
   background-color: #55555525;
 }
 
-main.create-form > .staged-form-item-form {
+main.create-form > .staged-input-form {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
 
-main.create-form > .staged-form-item-form > .staged-form-item-type-info {
+main.create-form > .staged-input-form > .staged-input-type-info {
 }
 
-main.create-form > .staged-form-item-form > .staged-form-item-type-info {
+main.create-form > .staged-input-form > .staged-input-type-info {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -222,21 +249,21 @@ main.create-form > .staged-form-item-form > .staged-form-item-type-info {
   border-radius: 3px;
 }
 
-main.create-form > .staged-form-item-form > .staged-form-item-type-info > .name {
+main.create-form > .staged-input-form > .staged-input-type-info > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-main.create-form > .staged-form-item-form > .staged-form-item-type-info > .description {
+main.create-form > .staged-input-form > .staged-input-type-info > .description {
   font-size: 0.875rem;
   text-align: start;
 }
 
-main.create-form > .staged-form-item-form > .metadata {
+main.create-form > .staged-input-form > .metadata {
 }
 
-main.create-form > .staged-form-item-form > .metadata > input,
-main.create-form > .staged-form-item-form > .metadata > textarea {
+main.create-form > .staged-input-form > .metadata > input,
+main.create-form > .staged-input-form > .metadata > textarea {
   width: 100%;
   padding: 3px 5px;
   font-size: 1rem;
@@ -247,23 +274,23 @@ main.create-form > .staged-form-item-form > .metadata > textarea {
   font-family: inherit;
 }
 
-main.create-form > .staged-form-item-form > .metadata > input {
+main.create-form > .staged-input-form > .metadata > input {
   font-weight: 500;
 }
 
-main.create-form > .staged-form-item-form > .metadata > button {
+main.create-form > .staged-input-form > .metadata > button {
   background-color: transparent;
   border: 0;
   align-self: flex-start;
   cursor: pointer;
 }
 
-main.create-form > .staged-form-item-form > .metadata > button:hover {
+main.create-form > .staged-input-form > .metadata > button:hover {
   text-decoration: underline;
 }
 
-main.create-form > .staged-form-item-form > div.properties,
-main.create-form > .staged-form-item-form > .metadata {
+main.create-form > .staged-input-form > div.properties,
+main.create-form > .staged-input-form > .metadata {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -277,15 +304,15 @@ main.create-form > .staged-form-item-form > .metadata {
   margin-top: 20px;
 }
 
-main.create-form > .staged-form-item-form > div.properties::before {
+main.create-form > .staged-input-form > div.properties::before {
   content: "Properties";
 }
-main.create-form > .staged-form-item-form > .metadata::before {
+main.create-form > .staged-input-form > .metadata::before {
   content: "Metadata";
 }
 
-main.create-form > .staged-form-item-form > div.properties::before,
-main.create-form > .staged-form-item-form > .metadata::before {
+main.create-form > .staged-input-form > div.properties::before,
+main.create-form > .staged-input-form > .metadata::before {
   position: absolute;
   bottom: calc(100% + 0px);
   left: -1px;
@@ -304,11 +331,11 @@ main.create-form > .staged-form-item-form > .metadata::before {
   background-color: #222;
 }
 
-main.create-form > .staged-form-item-form > div.properties > label {
+main.create-form > .staged-input-form > div.properties > label {
   font-size: 0.875rem;
 }
 
-main.create-form > .staged-form-item-form > .properties > .property-container {
+main.create-form > .staged-input-form > .properties > .property-container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -316,7 +343,7 @@ main.create-form > .staged-form-item-form > .properties > .property-container {
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container
   > label.property-name {
@@ -325,14 +352,14 @@ main.create-form
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container
   > p.property-description {
   font-size: 0.8rem;
 }
 
-main.create-form > .staged-form-item-form > .properties > .property-container > input {
+main.create-form > .staged-input-form > .properties > .property-container > input {
   width: 100%;
   padding: 3px 5px;
   font-size: 1rem;
@@ -344,23 +371,19 @@ main.create-form > .staged-form-item-form > .properties > .property-container > 
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container
   > input:not(.string):not(.number):not(.url):not(.email) {
   cursor: pointer;
 }
 
-main.create-form
-  > .staged-form-item-form
-  > .properties
-  > .property-container
-  > input:hover {
+main.create-form > .staged-input-form > .properties > .property-container > input:hover {
   border-color: #666;
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container.radio
   > .radio-options {
@@ -369,7 +392,7 @@ main.create-form
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container.radio
   > .radio-options
@@ -383,7 +406,7 @@ main.create-form
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container.radio
   > .radio-options
@@ -392,7 +415,7 @@ main.create-form
 }
 
 main.create-form
-  > .staged-form-item-form
+  > .staged-input-form
   > .properties
   > .property-container.radio
   > .radio-options

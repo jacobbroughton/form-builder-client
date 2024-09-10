@@ -1,10 +1,10 @@
-export type FormItemTypeType = {
+export type InputTypeType = {
   id: number;
   name: string;
   description: string;
 };
 
-export type FormItemTypePropertyType = {
+export type InputTypePropertyType = {
   id: number;
   input_type_id: number;
   property_name: string;
@@ -13,7 +13,7 @@ export type FormItemTypePropertyType = {
   value: string;
 };
 
-export type FormItemTypePropertyOptionType = {
+export type InputTypePropertyOptionType = {
   id: number;
   property_id: number;
   option_name: number;
@@ -25,7 +25,7 @@ export type HashmapType = {
   [key: string]: object[];
 };
 
-export type FormItemTypePropertyValueType = {
+export type InputTypePropertyValueType = {
   property_id: number;
   input_type_id: number;
   form_id: number;
@@ -33,12 +33,28 @@ export type FormItemTypePropertyValueType = {
   created_by_id: number;
 };
 
-export type AddedFormItemType = {
-  inputType: FormItemTypeType | null;
-  metadata: {
-    id: number,
-    name: string;
-    description: string;
-  };
-  properties: FormItemTypePropertyType[];
+// export type AddedInputType = {
+//   inputType: InputTypeType | null;
+//   metadata: {
+//     id: number;
+//     name: string;
+//     description: string;
+//   };
+//   properties: InputTypePropertyType[];
+// };
+
+export type AddedInputType = {
+  id: number;
+  input_type_id: number;
+  draft_form_id: number;
+  metadata_name: string;
+  metadata_description: string;
+  eff_status: number;
+  created_at: string;
+  created_by_id: number;
+  modified_by_id: number;
+  modified_at: string;
+  input_type_name: string;
+  input_type_description: string;
+  num_custom_properties: number;
 };

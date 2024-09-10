@@ -2,13 +2,18 @@ import { useEffect, useRef } from "react";
 import "./InputPopupMenu.css";
 import EditIcon from "../icons/EditIcon";
 import TrashIcon from "../icons/TrashIcon";
+import CheckIcon from "../icons/CheckIcon";
 
-const InputPopupMenu = ({ setIdForInputPopup, setInputPopupToggled }): JSX.Element => {
+const InputPopupMenu = ({
+  input,
+  setIdForInputPopup,
+  setInputPopupToggled,
+  handleChangeDraftInputEnabledStatus,
+}): JSX.Element => {
   const ref = useRef(null);
 
   useEffect(() => {
     function handler(e) {
-      console.log(e.target);
       if (ref.current && !ref.current.contains(e.target)) {
         setIdForInputPopup(null);
         setInputPopupToggled(false);
@@ -22,12 +27,18 @@ const InputPopupMenu = ({ setIdForInputPopup, setInputPopupToggled }): JSX.Eleme
 
   return (
     <div ref={ref} className="input-popup-menu">
-      <button>
+      <button type="button">
         <EditIcon /> Edit
       </button>
-      <button>
-        <TrashIcon /> Delete
-      </button>
+      {input.eff_status ? (
+        <button onClick={() => handleChangeDraftInputEnabledStatus()} type="button">
+          <TrashIcon /> Delete
+        </button>
+      ) : (
+        <button onClick={() => handleChangeDraftInputEnabledStatus()} type="button">
+          <CheckIcon /> Enable
+        </button>
+      )}
     </div>
   );
 };
