@@ -12,10 +12,16 @@ import CheckIcon from "../../ui/icons/CheckIcon";
 import PlusIcon from "../../ui/icons/PlusIcon";
 import ThreeDotsIcon from "../../ui/icons/ThreeDotsIcon";
 import InputPopupMenu from "../../ui/InputPopupMenu/InputPopupMenu";
-import TrashIcon from "../../ui/icons/TrashIcon";
+import ShareIcon from "../../ui/icons/ShareIcon";
+import { useNavigate } from "react-router-dom";
 
 const CreateForm = () => {
-  const [draft, setDraft] = useState(null);
+  const navigate = useNavigate();
+
+  const [draft, setDraft] = useState<{ form: object | null; inputs: [] }>({
+    form: null,
+    inputs: [],
+  });
   const [formTitle, setFormTitle] = useState<string>("Untitled");
   const [formDescription, setFormDescription] = useState<string>("");
   const [stagedInputName, setStagedInputName] = useState<string>("Untitled");
@@ -27,7 +33,7 @@ const CreateForm = () => {
   const [saved, setSaved] = useState(true);
   const [idForInputPopup, setIdForInputPopup] = useState<number | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
-  const [autoSaveCountdown, setAutoSaveCountdown] = useState(5);
+  const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
   const [needsAutoSave, setNeedsAutoSave] = useState(true);
   const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
   const [addedInputs, setAddedInputs] = useState<AddedInputType[]>([]);
@@ -67,7 +73,7 @@ const CreateForm = () => {
           form: {
             id: draft.form.id,
           },
-          userId: 1,
+          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
       });
 
@@ -165,20 +171,21 @@ const CreateForm = () => {
       setCheckForExistingDraftLoading(true);
       if (isStoring) return;
       isStoring = true;
+
       const response1 = await fetch(
-        "http://localhost:3001/form/check-for-existing-draft?userId=1"
+        "http://localhost:3001/form/check-for-existing-draft?userId=75c75c02-b39b-4f33-b940-49aa20b9eda4"
       );
 
       if (!response1.ok)
         throw new Error("An error occured while checking for existing draft");
 
-      const data = await response1.json();
+      const foundDraft = await response1.json();
 
-      if (!data.form) {
+      if (!foundDraft.form) {
         const response = await fetch("http://localhost:3001/form/store-initial-draft", {
           method: "post",
           body: JSON.stringify({
-            userId: 1,
+            userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
           }),
           headers: {
             "Content-Type": "application/json",
@@ -191,18 +198,21 @@ const CreateForm = () => {
         const data = await response.json();
 
         console.log("Added draft to database", data);
+
+        foundDraft.form = data;
       } else {
         setPrevSavedForm({
-          title: data.form.name,
-          description: data.form.description,
-          inputs: data.inputs,
+          title: foundDraft.form.name,
+          description: foundDraft.form.description,
+          inputs: foundDraft.inputs,
         });
-        setAddedInputs(data.inputs);
-        setFormTitle(data.form.name);
-        setFormDescription(data.form.description);
+        setAddedInputs(foundDraft.inputs);
+        setFormTitle(foundDraft.form.name);
+        setFormDescription(foundDraft.form.description);
       }
 
-      setDraft(data);
+      console.log("Data after checking for initial", foundDraft);
+      setDraft(foundDraft);
 
       setCheckForExistingDraftLoading(false);
       setCheckForExistingDraftComplete(true);
@@ -267,7 +277,7 @@ const CreateForm = () => {
 
   async function handleChangeDraftInputEnabledStatus(clickedInput): Promise<void> {
     try {
-      const newActiveStatus = clickedInput.is_active ? 0 : 1;
+      const newActiveStatus = clickedInput.is_active ? false : true;
 
       const response = await fetch(
         `http://localhost:3001/form/change-draft-input-enabled-status/${clickedInput.id}`,
@@ -304,6 +314,36 @@ const CreateForm = () => {
     }
   }
 
+  async function handlePublishForm() {
+    try {
+      console.log(draft);
+      const response = await fetch("http://localhost:3001/form/publish", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          draftFormId: draft!.form.id,
+          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        }),
+      });
+
+      if (!response.ok) throw new Error("Something went wrong when publishing this form");
+
+      const data = await response.json();
+
+      console.log(data);
+
+      navigate(`/form/${data[0].id}`);
+    } catch (error) {
+      if (typeof error === "string") {
+        console.log(error.toUpperCase());
+      } else if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  }
+
   useEffect(() => {
     getInputTypes();
     getInputTypeProperties();
@@ -314,10 +354,6 @@ const CreateForm = () => {
   useEffect(() => {
     async function autoSaveDraft(): Promise<void> {
       try {
-        console.log("Saved", {
-          metadata: { title: formTitle, description: formDescription },
-          inputs: addedInputs,
-        });
         setPrevSavedForm({
           title: formTitle,
           description: formDescription,
@@ -330,9 +366,10 @@ const CreateForm = () => {
             "content-type": "application/json",
           },
           body: JSON.stringify({
+            draftFormId: draft!.form?.id,
             title: formTitle,
             description: formDescription,
-            userId: 1,
+            userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
             // inputs: addedInputs,
           }),
         });
@@ -342,9 +379,16 @@ const CreateForm = () => {
 
         const data = await response.json();
 
+        console.log(data);
+
+        setDraft({
+          inputs: draft?.inputs,
+          form: data,
+        });
+
         setSaved(true);
         setNeedsAutoSave(false);
-        setAutoSaveCountdown(5);
+        setAutoSaveCountdown(2);
       } catch (error) {
         if (typeof error === "string") {
           console.log(error.toUpperCase());
@@ -476,6 +520,10 @@ const CreateForm = () => {
             onClick={() => setInputTypesSelectorOpen(true)}
           >
             <PlusIcon /> Add new form item
+          </button>
+
+          <button className="publish-button" onClick={() => handlePublishForm()}>
+            <ShareIcon /> Publish Form
           </button>
         </>
       )}

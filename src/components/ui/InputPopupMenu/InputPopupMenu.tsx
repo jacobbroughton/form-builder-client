@@ -31,11 +31,25 @@ const InputPopupMenu = ({
         <EditIcon /> Edit
       </button>
       {input.is_active ? (
-        <button onClick={() => handleChangeDraftInputEnabledStatus()} type="button">
+        <button
+          onClick={() => {
+            setInputPopupToggled(null);
+            setIdForInputPopup(null);
+            handleChangeDraftInputEnabledStatus();
+          }}
+          type="button"
+        >
           <TrashIcon /> Delete
         </button>
       ) : (
-        <button onClick={() => handleChangeDraftInputEnabledStatus()} type="button">
+        <button
+          onClick={() => {
+            setInputPopupToggled(null);
+            setIdForInputPopup(null);
+            handleChangeDraftInputEnabledStatus();
+          }}
+          type="button"
+        >
           <CheckIcon /> Enable
         </button>
       )}
