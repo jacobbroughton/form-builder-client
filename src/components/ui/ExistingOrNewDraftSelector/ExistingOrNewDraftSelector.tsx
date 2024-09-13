@@ -3,7 +3,6 @@ import { timeAgo } from "../../../utils/usefulFunctions";
 const ExistingOrNewDraftSelector = ({
   draftForms,
   setPrevSavedForm,
-  draft,
   setDraft,
   setCurrentView,
   createNewDraft,
@@ -18,7 +17,6 @@ const ExistingOrNewDraftSelector = ({
             {draftForms.map((formOption) => (
               <button
                 onClick={() => {
-                  console.log(formOption);
                   setPrevSavedForm({
                     form: formOption,
                     inputs: [],

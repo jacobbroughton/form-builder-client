@@ -24,11 +24,8 @@ const CreateForm = () => {
     inputs: [],
   });
 
+  const [initiallyLoading, setInitiallyLoading] = useState(false);
   const [currentView, setCurrentView] = useState("existing-or-new-draft");
-  const [checkForExistingDraftComplete, setCheckForExistingDraftComplete] =
-    useState<boolean>(false);
-  const [checkForExistingDraftLoading, setCheckForExistingDraftLoading] =
-    useState<boolean>(true);
   const [saved, setSaved] = useState(true);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
   const [needsAutoSave, setNeedsAutoSave] = useState(false);
@@ -39,37 +36,12 @@ const CreateForm = () => {
 
   const [draftForms, setDraftForms] = useState([]);
 
-  async function checkForExistingDraft() {
-    try {
-      setCheckForExistingDraftLoading(true);
-      const response1 = await fetch(
-        "http://localhost:3001/form/check-for-existing-draft?userId=75c75c02-b39b-4f33-b940-49aa20b9eda4"
-      );
-
-      if (!response1.ok)
-        throw new Error("An error occured while checking for existing draft");
-
-      const foundDraft = await response1.json();
-
-      if (foundDraft) {
-        getDraftForms();
-        setCurrentView("existing-or-new-draft");
-      } else {
-        alert("Nope");
-      }
-    } catch (error) {
-      handleCatchError(error);
-    }
-  }
-
   let isStoring = false;
 
   async function createNewDraft(): Promise<void> {
     try {
       if (isStoring) return;
       isStoring = true;
-
-      console.log("Creating a new draft");
 
       const response = await fetch("http://localhost:3001/form/store-initial-draft", {
         method: "post",
@@ -103,9 +75,9 @@ const CreateForm = () => {
   }
 
   useEffect(() => {
-    if (currentView == "existing-or-new-draft") {
-      getDraftForms();
-    }
+    // if (currentView == "existing-or-new-draft") {
+    getDraftForms();
+    // }
   }, []);
 
   async function saveDraft() {
@@ -139,6 +111,7 @@ const CreateForm = () => {
 
   async function getDraftForms() {
     try {
+      setInitiallyLoading(true);
       const response = await fetch(
         `http://localhost:3001/form/get-draft-forms/75c75c02-b39b-4f33-b940-49aa20b9eda4`
       );
@@ -147,7 +120,17 @@ const CreateForm = () => {
 
       const data = await response.json();
 
+      console.log("Got draft forms");
+
       setDraftForms(data);
+
+      if (!data.length) {
+        console.log("swag");
+        createNewDraft();
+        setCurrentView("metadata-inputs");
+      }
+
+      setInitiallyLoading(false);
     } catch (error) {
       handleCatchError(error);
     }
@@ -219,7 +202,6 @@ const CreateForm = () => {
           <ExistingOrNewDraftSelector
             draftForms={draftForms}
             setPrevSavedForm={setPrevSavedForm}
-            draft={draft}
             setDraft={setDraft}
             setCurrentView={setCurrentView}
             createNewDraft={createNewDraft}
@@ -234,7 +216,6 @@ const CreateForm = () => {
             draft={draft}
             setDraft={setDraft}
             setCurrentView={setCurrentView}
-            saveDraft={saveDraft}
           />
         );
       }
@@ -254,7 +235,6 @@ const CreateForm = () => {
             setCurrentView={setCurrentView}
             stagedNewInputType={stagedNewInputType}
             setStagedNewInputType={setStagedNewInputType}
-            setSaved={setSaved}
           />
         );
       }
@@ -266,6 +246,10 @@ const CreateForm = () => {
     }
   }
 
-  return <main className="create-form">{renderView()}</main>;
+  return (
+    <main className="create-form">
+      {initiallyLoading ? <p>Loading...</p> : renderView()}
+    </main>
+  );
 };
 export default CreateForm;
