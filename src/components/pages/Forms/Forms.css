@@ -1,0 +1,46 @@
+main.forms {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 10px 50px 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+main.forms > section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+main.forms > section > .section-heading {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+main.forms > section > .form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+main.forms > section > .form-grid > .form-grid-item {
+  border: 1px solid #555;
+  padding: 5px;
+  transition: 0.1s ease border-color;
+  border-radius: 3px;
+}
+
+main.forms > section > .form-grid > .form-grid-item:hover {
+  text-decoration: none;
+  border-color: #6f6f6f;
+}
+
+main.forms > section > .form-grid > .form-grid-item > p.name {
+  font-weight: 500;
+}
+
+main.forms > section > .form-grid > .form-grid-item > p.created-date {
+  font-size: 0.875rem;
+}

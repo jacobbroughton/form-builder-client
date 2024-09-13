@@ -1,177 +1,47 @@
 import { useEffect, useState } from "react";
+import { InputTypeType, AddedInputType } from "../../../lib/types";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import ExistingOrNewDraftSelector from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+import MetadataInputs from "../../ui/MetadataInputs/MetadataInputs";
+import StagedItemForm from "../../ui/StagedItemForm/StagedItemForm";
+import InputTypeSelector from "../../ui/InputTypeSelector/InputTypeSelector";
 import "./CreateForm.css";
-import {
-  InputTypeType,
-  InputTypePropertyType,
-  InputTypePropertyOptionType,
-  AddedInputType,
-} from "../../../lib/types";
-import ArrowLeftIcon from "../../ui/icons/ArrowLeftIcon";
-import XIcon from "../../ui/icons/XIcon";
-import CheckIcon from "../../ui/icons/CheckIcon";
-import PlusIcon from "../../ui/icons/PlusIcon";
-import ThreeDotsIcon from "../../ui/icons/ThreeDotsIcon";
-import InputPopupMenu from "../../ui/InputPopupMenu/InputPopupMenu";
-import ShareIcon from "../../ui/icons/ShareIcon";
-import { useNavigate } from "react-router-dom";
 
 const CreateForm = () => {
-  const navigate = useNavigate();
-
-  const [draft, setDraft] = useState<{ form: object | null; inputs: [] }>({
-    form: null,
+  const [draft, setDraft] = useState<{
+    form: { title: string; description: string };
+    inputs: [];
+  }>({
+    form: {
+      title: "Untitled",
+      description: "",
+    },
     inputs: [],
   });
-  const [formTitle, setFormTitle] = useState<string>("Untitled");
-  const [formDescription, setFormDescription] = useState<string>("");
-  const [stagedInputName, setStagedInputName] = useState<string>("Untitled");
-  const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
+
+  const [prevSavedForm, setPrevSavedForm] = useState({
+    form: { title: "Untitled", description: "" },
+    inputs: [],
+  });
+
+  const [currentView, setCurrentView] = useState("existing-or-new-draft");
   const [checkForExistingDraftComplete, setCheckForExistingDraftComplete] =
     useState<boolean>(false);
   const [checkForExistingDraftLoading, setCheckForExistingDraftLoading] =
     useState<boolean>(true);
   const [saved, setSaved] = useState(true);
-  const [idForInputPopup, setIdForInputPopup] = useState<number | null>(null);
-  const [inputPopupToggled, setInputPopupToggled] = useState(false);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
-  const [needsAutoSave, setNeedsAutoSave] = useState(true);
-  const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
-  const [addedInputs, setAddedInputs] = useState<AddedInputType[]>([]);
-  const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
-  const [inputTypesSelectorOpen, setInputTypesSelectorOpen] = useState<boolean>(false);
+  const [needsAutoSave, setNeedsAutoSave] = useState(false);
+
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [inputTypeProperties, setInputTypeProperties] = useState<{
-    [key: string]: InputTypePropertyType[];
-  }>({});
-  const [inputTypePropertyOptions, setInputTypePropertyOptions] = useState<{
-    [key: string]: InputTypePropertyOptionType[];
-  }>({});
-  const [prevSavedForm, setPrevSavedForm] = useState({
-    title: formTitle,
-    description: formDescription,
-    inputs: addedInputs,
-  });
 
-  async function handleAddNewInput(): Promise<void> {
-    try {
-      const properties = inputTypeProperties[stagedNewInputType!.id];
+  const [draftForms, setDraftForms] = useState([]);
 
-      const response = await fetch("http://localhost:3001/form/add-new-input-to-draft", {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          input: {
-            input_type_id: stagedNewInputType?.id,
-            metadata_name: stagedInputName,
-            metadata_description: stagedInputDescription,
-            properties,
-          },
-          form: {
-            id: draft.form.id,
-          },
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        }),
-      });
-
-      if (!response.ok)
-        throw new Error(
-          "Something happened when trying to add a new form item to the draft"
-        );
-
-      const data = await response.json();
-
-      console.log("Added form item", data);
-
-      console.log({ properties });
-
-      setAddedInputs([...addedInputs, data]);
-
-      handleInputReset();
-
-      setInputTypesSelectorOpen(false);
-      setSaved(false);
-      setNeedsAutoSave(true);
-    } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
-    }
-  }
-
-  async function getInputTypes(): Promise<void> {
-    try {
-      const response = await fetch("http://localhost:3001/form/item-types");
-
-      if (!response.ok) throw new Error("An error occured while fetching form types");
-
-      const data = await response.json();
-
-      setInputTypes(data);
-    } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
-    }
-  }
-
-  async function getInputTypeProperties(): Promise<void> {
-    try {
-      const response = await fetch("http://localhost:3001/form/item-type-properties");
-
-      if (!response.ok)
-        throw new Error("An error occured while fetching form item type properties");
-
-      const data = await response.json();
-
-      setInputTypeProperties(data);
-    } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
-    }
-  }
-
-  async function getInputTypePropertyOptions(): Promise<void> {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/form/item-type-property-options"
-      );
-
-      if (!response.ok)
-        throw new Error(
-          "An error occured while fetching form item type property options"
-        );
-
-      const data = await response.json();
-
-      setInputTypePropertyOptions(data);
-    } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
-    }
-  }
-
-  let isStoring = false;
-
-  async function storeDraftForm(): Promise<void> {
+  async function checkForExistingDraft() {
     try {
       setCheckForExistingDraftLoading(true);
-      if (isStoring) return;
-      isStoring = true;
-
       const response1 = await fetch(
         "http://localhost:3001/form/check-for-existing-draft?userId=75c75c02-b39b-4f33-b940-49aa20b9eda4"
       );
@@ -181,210 +51,117 @@ const CreateForm = () => {
 
       const foundDraft = await response1.json();
 
-      if (!foundDraft.form) {
-        const response = await fetch("http://localhost:3001/form/store-initial-draft", {
-          method: "post",
-          body: JSON.stringify({
-            userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok)
-          throw new Error("An error occured while storing initial form draft");
-
-        const data = await response.json();
-
-        console.log("Added draft to database", data);
-
-        foundDraft.form = data;
+      if (foundDraft) {
+        getDraftForms();
+        setCurrentView("existing-or-new-draft");
       } else {
-        setPrevSavedForm({
-          title: foundDraft.form.name,
-          description: foundDraft.form.description,
-          inputs: foundDraft.inputs,
-        });
-        setAddedInputs(foundDraft.inputs);
-        setFormTitle(foundDraft.form.name);
-        setFormDescription(foundDraft.form.description);
+        alert("Nope");
       }
-
-      console.log("Data after checking for initial", foundDraft);
-      setDraft(foundDraft);
-
-      setCheckForExistingDraftLoading(false);
-      setCheckForExistingDraftComplete(true);
-      setSaved(true);
-      setNeedsAutoSave(false);
     } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
+      handleCatchError(error);
     }
   }
 
-  function handleOptionClick(
-    property: InputTypePropertyType,
-    option: InputTypePropertyOptionType
-  ) {
-    setInputTypePropertyOptions({
-      ...inputTypePropertyOptions,
-      [`${property.input_type_id}-${property.id}`]: inputTypePropertyOptions[
-        `${property.input_type_id}-${property.id}`
-      ].map((op) => ({
-        ...op,
-        checked: op.id === option.id,
-      })),
-    });
+  let isStoring = false;
 
-    setInputTypeProperties({
-      ...inputTypeProperties,
-      [property.input_type_id]: inputTypeProperties[property.input_type_id].map(
-        (prop) => ({
-          ...prop,
-          ...(prop.id === property.id && {
-            value: option.option_value,
-          }),
-        })
-      ),
-    });
-  }
-
-  function handleInputChange(value: string, property: InputTypePropertyType) {
-    setInputTypeProperties({
-      ...inputTypeProperties,
-      [property.input_type_id]: inputTypeProperties[property.input_type_id].map(
-        (prop) => ({
-          ...prop,
-          ...(prop.id === property.id && {
-            value,
-          }),
-        })
-      ),
-    });
-  }
-
-  function handleInputReset(): void {
-    setStagedInputName("Untitled");
-    setStagedInputDescription("");
-    setDescriptionToggled(false);
-    setStagedNewInputType(null);
-  }
-
-  async function handleChangeDraftInputEnabledStatus(clickedInput): Promise<void> {
+  async function createNewDraft(): Promise<void> {
     try {
-      const newActiveStatus = clickedInput.is_active ? false : true;
+      if (isStoring) return;
+      isStoring = true;
 
-      const response = await fetch(
-        `http://localhost:3001/form/change-draft-input-enabled-status/${clickedInput.id}`,
-        {
-          method: "put",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            newActiveStatus,
-          }),
-        }
-      );
+      console.log("Creating a new draft");
 
-      if (!response.ok)
-        throw new Error("There was an error deleting this input from the draft form");
-
-      const data = await response.json();
-
-      setAddedInputs(
-        addedInputs.map((input) => ({
-          ...input,
-          ...(input.id === clickedInput.id && { is_active: newActiveStatus }),
-        }))
-      );
-
-      console.log("deleted input", data);
-    } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
-    }
-  }
-
-  async function handlePublishForm() {
-    try {
-      console.log(draft);
-      const response = await fetch("http://localhost:3001/form/publish", {
+      const response = await fetch("http://localhost:3001/form/store-initial-draft", {
         method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
         body: JSON.stringify({
-          draftFormId: draft!.form.id,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      if (!response.ok) throw new Error("Something went wrong when publishing this form");
+      if (!response.ok)
+        throw new Error("An error occured while storing initial form draft");
 
       const data = await response.json();
 
-      console.log(data);
+      console.log("Stored initial draft", data);
 
-      navigate(`/form/${data[0].id}`);
+      setPrevSavedForm({
+        form: data,
+        inputs: [],
+      });
+
+      setDraft({
+        form: data,
+        inputs: [],
+      });
     } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
+      handleCatchError(error);
     }
   }
 
   useEffect(() => {
-    getInputTypes();
-    getInputTypeProperties();
-    getInputTypePropertyOptions();
-    storeDraftForm();
+    if (currentView == "existing-or-new-draft") {
+      getDraftForms();
+    }
   }, []);
+
+  async function saveDraft() {
+    try {
+      console.log("saveDraft", { draft });
+      const response = await fetch("http://localhost:3001/form/update-draft", {
+        method: "put",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          draftFormId: draft!.form?.id,
+          title: draft.form.title,
+          description: draft.form.description,
+          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        }),
+      });
+
+      if (!response.ok) throw new Error("An error occured while updating the form draft");
+
+      const data = await response.json();
+
+      setDraft({
+        inputs: draft?.inputs,
+        form: data,
+      });
+    } catch (error) {
+      handleCatchError(error);
+    }
+  }
+
+  async function getDraftForms() {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/form/get-draft-forms/75c75c02-b39b-4f33-b940-49aa20b9eda4`
+      );
+
+      if (!response.ok) throw new Error("There was a problem fetching forms");
+
+      const data = await response.json();
+
+      setDraftForms(data);
+    } catch (error) {
+      handleCatchError(error);
+    }
+  }
 
   useEffect(() => {
     async function autoSaveDraft(): Promise<void> {
       try {
         setPrevSavedForm({
-          title: formTitle,
-          description: formDescription,
-          inputs: addedInputs,
+          form: draft.form,
+          inputs: draft.inputs,
         });
 
-        const response = await fetch("http://localhost:3001/form/update-draft", {
-          method: "put",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            draftFormId: draft!.form?.id,
-            title: formTitle,
-            description: formDescription,
-            userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-            // inputs: addedInputs,
-          }),
-        });
-
-        if (!response.ok)
-          throw new Error("An error occured while updating the form draft");
-
-        const data = await response.json();
-
-        console.log(data);
-
-        setDraft({
-          inputs: draft?.inputs,
-          form: data,
-        });
+        saveDraft();
 
         setSaved(true);
         setNeedsAutoSave(false);
@@ -402,12 +179,12 @@ const CreateForm = () => {
       if (needsAutoSave) {
         autoSaveDraft();
       }
-    }, autoSaveCountdown * 1000);
+    }, 2000);
 
     return () => {
       clearInterval(interval1);
     };
-  }, [needsAutoSave, addedInputs, formDescription, formTitle]);
+  }, [needsAutoSave, draft.form.description, draft.form.title]);
 
   useEffect(() => {
     const interval2 = setInterval(() => {
@@ -422,238 +199,73 @@ const CreateForm = () => {
 
   useEffect(() => {
     if (
-      checkForExistingDraftLoading
-        ? false
-        : checkForExistingDraftComplete &&
-          (formTitle !== prevSavedForm?.title ||
-            formDescription !== prevSavedForm?.description ||
-            addedInputs !== prevSavedForm?.inputs)
+      draft.form.title !== prevSavedForm.form.title ||
+      draft.form.description !== prevSavedForm.form.description
     ) {
       setSaved(false);
       setNeedsAutoSave(true);
     }
   }, [
-    addedInputs,
-    formDescription,
-    formTitle,
-    prevSavedForm?.description,
-    prevSavedForm?.inputs,
-    prevSavedForm?.title,
-    checkForExistingDraftComplete,
+    draft.form.description,
+    draft.form.title,
+    prevSavedForm.form.description,
+    prevSavedForm.form.title,
   ]);
 
-  const metadataInputsShowing = !inputTypesSelectorOpen && !stagedNewInputType;
-  const inputTypeSelectorShowing = inputTypesSelectorOpen && inputTypes.length;
-  const stagedItemFormShowing =
-    stagedNewInputType && inputTypeProperties[stagedNewInputType.id].length;
+  function renderView() {
+    switch (currentView) {
+      case "existing-or-new-draft": {
+        return (
+          <ExistingOrNewDraftSelector
+            draftForms={draftForms}
+            setPrevSavedForm={setPrevSavedForm}
+            draft={draft}
+            setDraft={setDraft}
+            setCurrentView={setCurrentView}
+            createNewDraft={createNewDraft}
+          />
+        );
+      }
+      case "metadata-inputs": {
+        return (
+          <MetadataInputs
+            saved={saved}
+            autoSaveCountdown={autoSaveCountdown}
+            draft={draft}
+            setDraft={setDraft}
+            setCurrentView={setCurrentView}
+            saveDraft={saveDraft}
+          />
+        );
+      }
+      case "input-types-selector": {
+        return (
+          <InputTypeSelector
+            setCurrentView={setCurrentView}
+            setStagedNewInputType={setStagedNewInputType}
+          />
+        );
+      }
+      case "staged-item-form": {
+        return (
+          <StagedItemForm
+            draft={draft}
+            setDraft={setDraft}
+            setCurrentView={setCurrentView}
+            stagedNewInputType={stagedNewInputType}
+            setStagedNewInputType={setStagedNewInputType}
+            setSaved={setSaved}
+          />
+        );
+      }
+      default: {
+        return (
+          <p>Hmm...not sure where you were trying to go, but it probably isn't here</p>
+        );
+      }
+    }
+  }
 
-  return (
-    <main className="create-form">
-      {metadataInputsShowing && (
-        <>
-          <p className="saved-status">
-            <span className={`${saved ? "saved" : ""}`}></span>
-            {saved ? "Saved Draft" : "Unsaved"}{" "}
-            {!saved ? `(Autosaving in ${autoSaveCountdown}s)` : false}
-          </p>
-          <form className="title-and-description">
-            <input
-              value={formTitle}
-              onChange={(e) => setFormTitle(e.target.value)}
-              placeholder="Title"
-            />
-            <textarea
-              value={formDescription}
-              onChange={(e) => setFormDescription(e.target.value)}
-              placeholder="Description"
-            />
-          </form>
-          {addedInputs.length === 0 ? (
-            <div className="no-items-yet">
-              <p>You haven't added any items yet</p>
-            </div>
-          ) : (
-            <div className="added-inputs">
-              {addedInputs.map((input) => (
-                <div className={`added-input ${input.is_active ? "" : "deleted"}`}>
-                  <p className="name">{input.metadata_name}</p>
-                  <div className="tags">
-                    <p>{input.input_type_name || "Unnamed"}</p>
-                    {input.num_custom_properties ? (
-                      <p>{input.num_custom_properties} custom properties</p>
-                    ) : (
-                      false
-                    )}
-                  </div>
-                  <button
-                    className="popup-menu-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log(input);
-                      setIdForInputPopup(input.id);
-                      setInputPopupToggled(
-                        idForInputPopup == input.id ? !inputPopupToggled : true
-                      );
-                    }}
-                  >
-                    <ThreeDotsIcon />
-                  </button>
-                  {idForInputPopup == input.id && inputPopupToggled ? (
-                    <InputPopupMenu
-                      input={input}
-                      setIdForInputPopup={setIdForInputPopup}
-                      setInputPopupToggled={setInputPopupToggled}
-                      handleChangeDraftInputEnabledStatus={() =>
-                        handleChangeDraftInputEnabledStatus(input)
-                      }
-                    />
-                  ) : (
-                    false
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-          <button
-            className="add-new-input"
-            type="button"
-            onClick={() => setInputTypesSelectorOpen(true)}
-          >
-            <PlusIcon /> Add new form item
-          </button>
-
-          <button className="publish-button" onClick={() => handlePublishForm()}>
-            <ShareIcon /> Publish Form
-          </button>
-        </>
-      )}
-
-      {stagedItemFormShowing ? (
-        <form className="staged-input-form">
-          <div className="staged-input-type-info">
-            <p className="name">{stagedNewInputType.name}</p>
-            <p className="description">{stagedNewInputType.description}</p>
-          </div>
-          <div className="metadata">
-            <input
-              value={stagedInputName}
-              onChange={(e) => setStagedInputName(e.target.value)}
-            />
-            {descriptionToggled ? (
-              <textarea
-                value={stagedInputDescription}
-                placeholder="Description"
-                onChange={(e) => setStagedInputDescription(e.target.value)}
-              />
-            ) : (
-              false
-            )}
-            <button
-              onClick={() => setDescriptionToggled(!descriptionToggled)}
-              type="button"
-            >
-              {descriptionToggled ? "Remove Description" : "Add Description"}
-            </button>
-          </div>
-          <div className="properties">
-            {/* <label>Properties</label> */}
-            {inputTypeProperties[stagedNewInputType.id].map((itemTypeProperty) => (
-              <div className={`property-container ${itemTypeProperty.property_type}`}>
-                <label className="property-name">{itemTypeProperty.property_name}</label>
-                <p className="property-description">
-                  {itemTypeProperty.property_description}
-                </p>
-                {inputTypePropertyOptions[
-                  `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-                ] ? (
-                  <div className="radio-options">
-                    {inputTypePropertyOptions[
-                      `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-                    ]?.map((option) => (
-                      <button
-                        type="button"
-                        className={`${option.checked ? "checked" : ""}`}
-                        onClick={() => {
-                          handleOptionClick(itemTypeProperty, option);
-                        }}
-                      >
-                        {option.option_name}
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <input
-                    placeholder={itemTypeProperty.property_name}
-                    className={itemTypeProperty.property_type}
-                    type={itemTypeProperty.property_type || "text"}
-                    value={itemTypeProperty.value || ""}
-                    onChange={(e) => handleInputChange(e.target.value, itemTypeProperty)}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        </form>
-      ) : (
-        false
-      )}
-
-      {inputTypeSelectorShowing ? (
-        <>
-          <div className="navigation-buttons">
-            <button
-              className="navigation-button cancel"
-              type="button"
-              onClick={() => setInputTypesSelectorOpen(false)}
-            >
-              <XIcon /> Cancel
-            </button>
-          </div>
-          <div className="input-types-selector">
-            {inputTypes.map((inputType) => (
-              <>
-                <button
-                  className={`${
-                    stagedNewInputType?.id === inputType.id ? "selected" : ""
-                  }`}
-                  type="button"
-                  onClick={() => {
-                    handleInputReset();
-                    setStagedNewInputType(stagedNewInputType ? null : inputType);
-                    setInputTypesSelectorOpen(false);
-                  }}
-                >
-                  <p className="name">{inputType.name}</p>
-                  <p className="description">{inputType.description}</p>
-                </button>
-              </>
-            ))}
-          </div>
-        </>
-      ) : (
-        false
-      )}
-      {stagedNewInputType ? (
-        <div className="navigation-buttons">
-          <button
-            className="navigation-button back"
-            type="button"
-            onClick={() => handleInputReset()}
-          >
-            <ArrowLeftIcon /> Back
-          </button>
-          <button
-            className="navigation-button done"
-            type="button"
-            onClick={handleAddNewInput}
-          >
-            <CheckIcon /> Done, add to form
-          </button>
-        </div>
-      ) : (
-        false
-      )}
-    </main>
-  );
+  return <main className="create-form">{renderView()}</main>;
 };
 export default CreateForm;

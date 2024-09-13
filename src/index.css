@@ -36,3 +36,7 @@ textarea {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.small-text {
+  font-size: 0.875rem
+}

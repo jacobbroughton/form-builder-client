@@ -33,16 +33,6 @@ export type InputTypePropertyValueType = {
   created_by_id: number;
 };
 
-// export type AddedInputType = {
-//   inputType: InputTypeType | null;
-//   metadata: {
-//     id: number;
-//     name: string;
-//     description: string;
-//   };
-//   properties: InputTypePropertyType[];
-// };
-
 export type AddedInputType = {
   id: number;
   input_type_id: number;
