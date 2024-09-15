@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { InputTypePropertyOptionType, InputTypePropertyType } from "../../../lib/types";
+import {
+  InputTypePropertyOptionType,
+  InputTypePropertyType,
+  DraftFormType,
+  InputTypeType,
+  AddedInputType,
+} from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import CheckIcon from "../icons/CheckIcon";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
+import "./StagedItemForm.css";
 
 const StagedItemForm = ({
   draft,
@@ -10,8 +17,19 @@ const StagedItemForm = ({
   setCurrentView,
   stagedNewInputType,
   setStagedNewInputType,
+}: {
+  draft: { form: DraftFormType | null; inputs: AddedInputType[] };
+  setDraft: React.Dispatch<
+    React.SetStateAction<{
+      form: DraftFormType | null;
+      inputs: AddedInputType[];
+    }>
+  >;
+  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+  stagedNewInputType: InputTypeType | null;
+  setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
 }) => {
-  const [stagedInputName, setStagedInputName] = useState<string>("Untitled");
+  const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
 
   const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
@@ -71,12 +89,12 @@ const StagedItemForm = ({
         body: JSON.stringify({
           input: {
             input_type_id: stagedNewInputType?.id,
-            metadata_name: stagedInputName,
+            metadata_question: stagedInputTitle,
             metadata_description: stagedInputDescription,
             properties,
           },
           form: {
-            id: draft.form.id,
+            id: draft.form!.id,
           },
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
@@ -107,7 +125,7 @@ const StagedItemForm = ({
   }
 
   function handleInputReset(): void {
-    setStagedInputName("Untitled");
+    setStagedInputTitle("Untitled Question");
     setStagedInputDescription("");
     setDescriptionToggled(false);
     setStagedNewInputType(null);
@@ -159,6 +177,10 @@ const StagedItemForm = ({
     getInputTypePropertyOptions();
   }, []);
 
+  if (!draft.form) return <p>Form not found</p>;
+
+  if (!stagedNewInputType) return <p>No staged new input type</p>
+
   return (
     <>
       <form className="staged-input-form">
@@ -168,8 +190,9 @@ const StagedItemForm = ({
         </div>
         <div className="metadata">
           <input
-            value={stagedInputName}
-            onChange={(e) => setStagedInputName(e.target.value)}
+            value={stagedInputTitle}
+            onChange={(e) => setStagedInputTitle(e.target.value)}
+            placeholder={"Question"}
           />
           {descriptionToggled ? (
             <textarea
@@ -188,7 +211,6 @@ const StagedItemForm = ({
           </button>
         </div>
         <div className="properties">
-          {/* <label>Properties</label> */}
           {inputTypeProperties[stagedNewInputType.id]?.map((itemTypeProperty) => (
             <div className={`property-container ${itemTypeProperty.property_type}`}>
               <label className="property-name">{itemTypeProperty.property_name}</label>

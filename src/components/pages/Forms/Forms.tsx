@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import "./Forms.css";
 import { Link } from "react-router-dom";
 import { timeAgo } from "../../../utils/usefulFunctions";
+import { PublishedFormType, DraftFormType } from "../../../lib/types";
+import "./Forms.css";
 
 const Forms = () => {
-  const [loading, setLoading] = useState(true);
-  const [forms, setForms] = useState({
+  const [loading, setLoading] = useState<boolean>(true);
+  const [forms, setForms] = useState<{
+    drafts: DraftFormType[];
+    published: PublishedFormType[];
+  }>({
     drafts: [],
     published: [],
   });

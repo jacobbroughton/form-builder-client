@@ -3,26 +3,32 @@ import "./InputPopupMenu.css";
 import EditIcon from "../icons/EditIcon";
 import TrashIcon from "../icons/TrashIcon";
 import CheckIcon from "../icons/CheckIcon";
+import { AddedInputType } from "../../../lib/types";
 
 const InputPopupMenu = ({
   input,
   setIdForInputPopup,
   setInputPopupToggled,
   handleChangeDraftInputEnabledStatus,
+}: {
+  input: AddedInputType;
+  setIdForInputPopup: React.Dispatch<React.SetStateAction<string | null>>;
+  setInputPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  handleChangeDraftInputEnabledStatus: () => void;
 }): JSX.Element => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handler(e) {
-      if (ref.current && !ref.current.contains(e.target)) {
+    function handler(e: React.MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as HTMLDivElement)) {
         setIdForInputPopup(null);
         setInputPopupToggled(false);
       }
     }
 
-    document.addEventListener("click", handler);
+    document.addEventListener("click", () => handler);
 
-    return () => document.removeEventListener("click", handler);
+    return () => document.removeEventListener("click", () => handler);
   });
 
   return (
@@ -33,7 +39,7 @@ const InputPopupMenu = ({
       {input.is_active ? (
         <button
           onClick={() => {
-            setInputPopupToggled(null);
+            setInputPopupToggled(false);
             setIdForInputPopup(null);
             handleChangeDraftInputEnabledStatus();
           }}
@@ -44,7 +50,7 @@ const InputPopupMenu = ({
       ) : (
         <button
           onClick={() => {
-            setInputPopupToggled(null);
+            setInputPopupToggled(false);
             setIdForInputPopup(null);
             handleChangeDraftInputEnabledStatus();
           }}

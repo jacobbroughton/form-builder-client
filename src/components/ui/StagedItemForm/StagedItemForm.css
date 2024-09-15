@@ -1,0 +1,194 @@
+main.create-form > .staged-input-form {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+main.create-form > .staged-input-form > .staged-input-type-info {
+}
+
+main.create-form > .staged-input-form > .staged-input-type-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid #555;
+  border-left: 5px solid lightgreen;
+  padding: 3px 5px;
+  padding-left: 10px;
+  background-color: transparent;
+  border-radius: 3px;
+}
+
+main.create-form > .staged-input-form > .staged-input-type-info > .name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+main.create-form > .staged-input-form > .staged-input-type-info > .description {
+  font-size: 0.875rem;
+  text-align: start;
+}
+
+main.create-form > .staged-input-form > .metadata {
+}
+
+main.create-form > .staged-input-form > .metadata > input,
+main.create-form > .staged-input-form > .metadata > textarea {
+  width: 100%;
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  transition: border-color 0.1s ease-out;
+  font-family: inherit;
+}
+
+main.create-form > .staged-input-form > .metadata > input {
+  font-weight: 500;
+}
+
+main.create-form > .staged-input-form > .metadata > button {
+  background-color: transparent;
+  border: 0;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+main.create-form > .staged-input-form > .metadata > button:hover {
+  text-decoration: underline;
+}
+
+main.create-form > .staged-input-form > div.properties,
+main.create-form > .staged-input-form > .metadata {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid #555;
+  background-color: #222;
+  padding: 5px;
+  border-radius: 3px;
+  border-top-left-radius: 0;
+  margin-top: 20px;
+}
+
+main.create-form > .staged-input-form > div.properties::before {
+  content: "Properties (Optional)";
+}
+main.create-form > .staged-input-form > .metadata::before {
+  content: "Question/Prompt";
+}
+
+main.create-form > .staged-input-form > div.properties::before,
+main.create-form > .staged-input-form > .metadata::before {
+  position: absolute;
+  bottom: calc(100% + 0px);
+  left: -1px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: #555;
+  padding: 2px 5px;
+  line-height: 0.875rem;
+  border-left: lightgreen 2px solid;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: transparent;
+  border: 1px solid #555;
+  border-bottom: 0;
+  z-index: 2;
+  background-color: #222;
+}
+
+main.create-form > .staged-input-form > div.properties > label {
+  font-size: 0.875rem;
+}
+
+main.create-form > .staged-input-form > .properties > .property-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2px;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container
+  > label.property-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container
+  > p.property-description {
+  font-size: 0.8rem;
+}
+
+main.create-form > .staged-input-form > .properties > .property-container > input {
+  width: 100%;
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  transition: border-color 0.1s ease-out;
+  font-family: inherit;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container
+  > input:not(.string):not(.number):not(.url):not(.email) {
+  cursor: pointer;
+}
+
+main.create-form > .staged-input-form > .properties > .property-container > input:hover {
+  border-color: #6f6f6f;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container.radio
+  > .radio-options {
+  display: flex;
+  gap: 5px;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container.radio
+  > .radio-options
+  > button {
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container.radio
+  > .radio-options
+  > button:not(:disabled):not(.checked):hover {
+  border-color: #6f6f6f;
+}
+
+main.create-form
+  > .staged-input-form
+  > .properties
+  > .property-container.radio
+  > .radio-options
+  > button.checked {
+  border: 1px solid lightgreen;
+}

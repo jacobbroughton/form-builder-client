@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import XIcon from "../icons/XIcon";
 import { InputTypeType } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import "./InputTypeSelector.css";
 
-const InputTypeSelector = ({ setCurrentView, setStagedNewInputType }) => {
+const InputTypeSelector = ({
+  setCurrentView,
+  setStagedNewInputType,
+}: {
+  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+  setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
+}) => {
   const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
 
   async function getInputTypes(): Promise<void> {

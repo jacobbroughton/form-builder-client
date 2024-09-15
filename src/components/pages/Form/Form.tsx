@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "./Form.css";
 import { useParams } from "react-router-dom";
+import FormInput from "../../ui/FormInput/FormInput";
+import ThreeDotsIcon from "../../ui/icons/ThreeDotsIcon";
+import { PublishedFormType, AddedInputType } from "../../../lib/types";
 
 const Form = () => {
   const { formId } = useParams();
   const [formLoading, setFormLoading] = useState(true);
-  const [form, setForm] = useState(null);
-  const [inputs, setInputs] = useState(null);
+  const [form, setForm] = useState<PublishedFormType | null>(null);
+  const [inputs, setInputs] = useState<AddedInputType[]>([]);
 
   useEffect(() => {
     async function getForm() {
@@ -21,8 +24,6 @@ const Form = () => {
           throw new Error("There was a problem fetching the form as user");
 
         const data = await response.json();
-
-        console.log(data);
 
         setForm(data.form);
         setInputs(data.inputs);
@@ -43,13 +44,23 @@ const Form = () => {
     <main className="form">
       {formLoading ? (
         <p>Form loading...</p>
+      ) : !form ? (
+        <p>No form found</p>
       ) : (
-        <div>
-          <h1>{form.title}</h1>
-          <div className='inputs'>
-            {inputs?.map(input => <input type={input.input_type_name.toLowerCase()}/>)}
+        <>
+          <div className="form-controls">
+            <button className="menu-toggle-button">
+              <ThreeDotsIcon />
+            </button>
           </div>
-        </div>
+          <h1>{form.title}</h1>
+          <p>{form.description}</p>
+          <div className="inputs">
+            {inputs?.map((input) => (
+              <FormInput input={input} />
+            ))}
+          </div>
+        </>
       )}
     </main>
   );

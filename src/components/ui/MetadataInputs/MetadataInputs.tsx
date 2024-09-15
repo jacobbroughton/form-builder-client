@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import ShareIcon from "../icons/ShareIcon";
 import ThreeDotsIcon from "../icons/ThreeDotsIcon";
 import InputPopupMenu from "../InputPopupMenu/InputPopupMenu";
 import { useNavigate } from "react-router-dom";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import { DraftFormType, AddedInputType } from "../../../lib/types";
 
 const MetadataInputs = ({
   saved,
@@ -12,12 +13,37 @@ const MetadataInputs = ({
   draft,
   setDraft,
   setCurrentView,
+  setPrevSavedForm,
+  draftIdToFetch,
+}: {
+  saved: boolean;
+  autoSaveCountdown: number;
+  draft: {
+    form: DraftFormType | null;
+    inputs: AddedInputType[];
+  };
+  setDraft: React.Dispatch<
+    React.SetStateAction<{
+      form: DraftFormType | null;
+      inputs: AddedInputType[];
+    }>
+  >;
+  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+  setPrevSavedForm: React.Dispatch<
+    React.SetStateAction<{
+      form: DraftFormType | null;
+      inputs: AddedInputType[];
+    }>
+  >;
+  draftIdToFetch: string | null;
 }) => {
-  const [idForInputPopup, setIdForInputPopup] = useState<number | null>(null);
+  const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
   const navigate = useNavigate();
 
-  async function handleChangeDraftInputEnabledStatus(clickedInput): Promise<void> {
+  async function handleChangeDraftInputEnabledStatus(
+    clickedInput: AddedInputType
+  ): Promise<void> {
     try {
       const newActiveStatus = clickedInput.is_active ? false : true;
 
@@ -37,7 +63,7 @@ const MetadataInputs = ({
       if (!response.ok)
         throw new Error("There was an error deleting this input from the draft form");
 
-      const data = await response.json();
+      await response.json();
 
       setDraft({
         ...draft,
@@ -60,7 +86,7 @@ const MetadataInputs = ({
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          draftFormId: draft!.form.id,
+          draftFormId: draft.form!.id,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
       });
@@ -77,6 +103,52 @@ const MetadataInputs = ({
     }
   }
 
+  useEffect(() => {
+    if (draftIdToFetch) {
+      async function fetchFormToModify() {
+        const response = await fetch(
+          `http://localhost:3001/form/get-draft-form/${draftIdToFetch}`
+        );
+
+        if (!response.ok) throw new Error("There was a problem fetching the form");
+
+        const data = await response.json();
+
+        setPrevSavedForm({
+          form: data.form,
+          inputs: data.inputs,
+        });
+
+        setDraft({
+          form: data.form,
+          inputs: data.inputs,
+        });
+      }
+
+      fetchFormToModify();
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("Yes here")
+  //     setDraft({
+  //       form: {
+  //         title: "Untitled",
+  //         description: "",
+  //       },
+  //       inputs: [],
+  //     });
+
+  //     setPrevSavedForm({
+  //       form: { title: "Untitled", description: "" },
+  //       inputs: [],
+  //     });
+  //   };
+  // }, []);
+
+  if (!draft.form) return <p>No form found</p>;
+
   return (
     <>
       <p className="saved-status">
@@ -91,7 +163,7 @@ const MetadataInputs = ({
             setDraft({
               ...draft,
               form: {
-                ...draft.form,
+                ...draft.form!,
                 title: e.target.value,
               },
             })
@@ -100,15 +172,15 @@ const MetadataInputs = ({
         />
         <textarea
           value={draft.form.description}
-          onChange={(e) =>
+          onChange={(e) => {
             setDraft({
               ...draft,
               form: {
-                ...draft.form,
+                ...draft.form!,
                 description: e.target.value,
               },
-            })
-          }
+            });
+          }}
           placeholder="Description"
         />
       </form>
@@ -120,7 +192,7 @@ const MetadataInputs = ({
         <div className="added-inputs">
           {draft.inputs.map((input) => (
             <div className={`added-input ${input.is_active ? "" : "deleted"}`}>
-              <p className="name">{input.metadata_name}</p>
+              <p className="name">{input.metadata_question}</p>
               <div className="tags">
                 <p>{input.input_type_name || "Unnamed"}</p>
                 {input.num_custom_properties ? (

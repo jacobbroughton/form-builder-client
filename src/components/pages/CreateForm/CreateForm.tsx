@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { InputTypeType, AddedInputType } from "../../../lib/types";
+import { InputTypeType, DraftFormType, AddedInputType } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import ExistingOrNewDraftSelector from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import MetadataInputs from "../../ui/MetadataInputs/MetadataInputs";
@@ -9,20 +9,22 @@ import "./CreateForm.css";
 
 const CreateForm = () => {
   const [draft, setDraft] = useState<{
-    form: { title: string; description: string };
-    inputs: [];
+    form: DraftFormType | null;
+    inputs: AddedInputType[];
   }>({
-    form: {
-      title: "Untitled",
-      description: "",
-    },
+    form: null,
     inputs: [],
   });
 
-  const [prevSavedForm, setPrevSavedForm] = useState({
-    form: { title: "Untitled", description: "" },
+  const [prevSavedForm, setPrevSavedForm] = useState<{
+    form: DraftFormType | null;
+    inputs: AddedInputType[];
+  }>({
+    form: null,
     inputs: [],
   });
+
+  const [draftIdToFetch, setDraftIdToFetch] = useState<string | null>(null);
 
   const [initiallyLoading, setInitiallyLoading] = useState(false);
   const [currentView, setCurrentView] = useState("existing-or-new-draft");
@@ -74,12 +76,6 @@ const CreateForm = () => {
     }
   }
 
-  useEffect(() => {
-    // if (currentView == "existing-or-new-draft") {
-    getDraftForms();
-    // }
-  }, []);
-
   async function saveDraft() {
     try {
       console.log("saveDraft", { draft });
@@ -89,9 +85,9 @@ const CreateForm = () => {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          draftFormId: draft!.form?.id,
-          title: draft.form.title,
-          description: draft.form.description,
+          draftFormId: draft.form!.id,
+          title: draft.form!.title,
+          description: draft.form!.description,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
       });
@@ -109,6 +105,10 @@ const CreateForm = () => {
     }
   }
 
+  useEffect(() => {
+    console.log("form changed", draft);
+  }, [draft.form?.id]);
+
   async function getDraftForms() {
     try {
       setInitiallyLoading(true);
@@ -120,12 +120,9 @@ const CreateForm = () => {
 
       const data = await response.json();
 
-      console.log("Got draft forms");
-
       setDraftForms(data);
 
       if (!data.length) {
-        console.log("swag");
         createNewDraft();
         setCurrentView("metadata-inputs");
       }
@@ -136,73 +133,15 @@ const CreateForm = () => {
     }
   }
 
-  useEffect(() => {
-    async function autoSaveDraft(): Promise<void> {
-      try {
-        setPrevSavedForm({
-          form: draft.form,
-          inputs: draft.inputs,
-        });
-
-        saveDraft();
-
-        setSaved(true);
-        setNeedsAutoSave(false);
-        setAutoSaveCountdown(2);
-      } catch (error) {
-        if (typeof error === "string") {
-          console.log(error.toUpperCase());
-        } else if (error instanceof Error) {
-          console.log(error.message);
-        }
-      }
-    }
-
-    const interval1 = setInterval(() => {
-      if (needsAutoSave) {
-        autoSaveDraft();
-      }
-    }, 2000);
-
-    return () => {
-      clearInterval(interval1);
-    };
-  }, [needsAutoSave, draft.form.description, draft.form.title]);
-
-  useEffect(() => {
-    const interval2 = setInterval(() => {
-      if (!saved) {
-        setAutoSaveCountdown((prev) => (prev -= 1));
-      }
-    }, 1000);
-    return () => {
-      clearInterval(interval2);
-    };
-  }, [saved]);
-
-  useEffect(() => {
-    if (
-      draft.form.title !== prevSavedForm.form.title ||
-      draft.form.description !== prevSavedForm.form.description
-    ) {
-      setSaved(false);
-      setNeedsAutoSave(true);
-    }
-  }, [
-    draft.form.description,
-    draft.form.title,
-    prevSavedForm.form.description,
-    prevSavedForm.form.title,
-  ]);
-
   function renderView() {
     switch (currentView) {
       case "existing-or-new-draft": {
         return (
           <ExistingOrNewDraftSelector
             draftForms={draftForms}
-            setPrevSavedForm={setPrevSavedForm}
-            setDraft={setDraft}
+            // setPrevSavedForm={setPrevSavedForm}
+            // setDraft={setDraft}
+            setDraftIdToFetch={setDraftIdToFetch}
             setCurrentView={setCurrentView}
             createNewDraft={createNewDraft}
           />
@@ -216,6 +155,8 @@ const CreateForm = () => {
             draft={draft}
             setDraft={setDraft}
             setCurrentView={setCurrentView}
+            setPrevSavedForm={setPrevSavedForm}
+            draftIdToFetch={draftIdToFetch}
           />
         );
       }
@@ -246,9 +187,88 @@ const CreateForm = () => {
     }
   }
 
+  useEffect(() => {
+    getDraftForms();
+  }, []);
+
+  useEffect(() => {
+    async function autoSaveDraft(): Promise<void> {
+      try {
+        setPrevSavedForm({
+          form: draft.form,
+          inputs: draft.inputs,
+        });
+
+        saveDraft();
+
+        setSaved(true);
+        setNeedsAutoSave(false);
+        setAutoSaveCountdown(2);
+      } catch (error) {
+        if (typeof error === "string") {
+          console.log(error.toUpperCase());
+        } else if (error instanceof Error) {
+          console.log(error.message);
+        }
+      }
+    }
+
+    const interval1 = setInterval(() => {
+      if (needsAutoSave && draft.form) {
+        autoSaveDraft();
+      }
+    }, autoSaveCountdown * 1000);
+
+    return () => {
+      clearInterval(interval1);
+    };
+  }, [
+    needsAutoSave,
+    draft.form?.description,
+    draft.form?.title,
+    draft.form,
+    draft.inputs,
+    saveDraft,
+  ]);
+
+  useEffect(() => {
+    const interval2 = setInterval(() => {
+      if (!saved) {
+        console.log("Not saved");
+        setAutoSaveCountdown((prev) => (prev -= 1));
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval2);
+    };
+  }, [saved]);
+
+  useEffect(() => {
+    if (
+      draft.form &&
+      prevSavedForm.form &&
+      (draft.form.title !== prevSavedForm.form.title ||
+        draft.form.description !== prevSavedForm.form.description)
+    ) {
+      setSaved(false);
+      setNeedsAutoSave(true);
+    }
+  }, [
+    draft.form?.description,
+    draft.form?.title,
+    prevSavedForm.form?.description,
+    prevSavedForm.form?.title,
+  ]);
+
   return (
     <main className="create-form">
-      {initiallyLoading ? <p>Loading...</p> : renderView()}
+      {initiallyLoading ? (
+        <p>Loading...</p>
+      ) : !draft.form ? (
+        <p>Draft not found</p>
+      ) : (
+        renderView()
+      )}
     </main>
   );
 };

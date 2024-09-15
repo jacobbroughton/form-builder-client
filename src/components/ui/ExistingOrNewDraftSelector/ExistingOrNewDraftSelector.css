@@ -1,0 +1,75 @@
+
+main.create-form > .existing-or-new-draft-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+main.create-form > .existing-or-new-draft-view > p {
+  border-bottom: 1px solid #555;
+  padding-bottom: 5px;
+  font-weight: 600;
+}
+
+main.create-form > .existing-or-new-draft-view > .options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+main.create-form > .existing-or-new-draft-view > .options > .modify-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+main.create-form > .existing-or-new-draft-view > .options > .modify-container > p {
+  font-weight: 500;
+}
+
+main.create-form
+  > .existing-or-new-draft-view
+  > .options
+  > .modify-container
+  > .draft-options {
+  display: grid;
+ grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+main.create-form
+  > .existing-or-new-draft-view
+  > .options
+  > .modify-container
+  > .draft-options
+  > button {
+  border: 1px solid #555;
+  background-color: transparent;
+  border-radius: 3px;
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  cursor: pointer;
+}
+
+main.create-form
+  > .existing-or-new-draft-view
+  > .options
+  > .modify-container
+  > .draft-options
+  > button
+  > p.name {
+    font-size: 1rem;
+}
+
+main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft {
+  border: 1px solid #555;
+  background-color: transparent;
+  border-radius: 3px;
+  padding: 5px;
+  width: 100%;
+}
