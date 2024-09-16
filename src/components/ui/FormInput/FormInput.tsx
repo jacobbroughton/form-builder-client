@@ -3,7 +3,8 @@ import { AddedInputType } from "../../../lib/types";
 import "./FormInput.css";
 
 export const FormInput = ({ input }: { input: AddedInputType }) => {
-  const [value, setValue] = useState(input.properties[`default-value`]?.value || "");
+  console.log({input})
+  const [value, setValue] = useState(input.properties?.[`default-value`]?.value || "");
 
   function renderInput() {
     switch (input.input_type_name) {
@@ -11,20 +12,20 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type={"Text"}
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            minLength={parseInt(input.properties[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties[`max`]?.value || "0")}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            minLength={parseInt(input.properties?.[`min`]?.value || "0")}
+            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
           />
         );
       }
       case "Textarea": {
         return (
           <textarea
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            minLength={parseInt(input.properties[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties[`max`]?.value || "0")}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            minLength={parseInt(input.properties?.[`min`]?.value || "0")}
+            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
           />
         );
       }
@@ -34,11 +35,11 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
             value={value}
             onChange={(e) => setValue(parseInt(e.target.value))}
             type="number"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            min={input.properties[`min`]?.value}
-            max={input.properties[`max`]?.value}
-            step={input.properties[`step`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            min={input.properties?.[`min`]?.value}
+            max={input.properties?.[`max`]?.value}
+            step={input.properties?.[`step`]?.value}
           />
         );
       }
@@ -46,8 +47,8 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="email"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
           />
         );
       }
@@ -55,8 +56,8 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="url"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
           />
         );
       }
@@ -64,8 +65,8 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="tel"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
           />
         );
       }
@@ -73,10 +74,10 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="date"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            min={input.properties[`min`]?.value}
-            max={input.properties[`max`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            min={input.properties?.[`min`]?.value}
+            max={input.properties?.[`max`]?.value}
           />
         );
       }
@@ -84,10 +85,10 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="time"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            min={input.properties[`min`]?.value}
-            max={input.properties[`max`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            min={input.properties?.[`min`]?.value}
+            max={input.properties?.[`max`]?.value}
           />
         );
       }
@@ -95,10 +96,10 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type="datetime"
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            min={input.properties[`min`]?.value}
-            max={input.properties[`max`]?.value}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            min={input.properties?.[`min`]?.value}
+            max={input.properties?.[`max`]?.value}
           />
         );
       }
@@ -106,7 +107,7 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <div className="input-wrapper">
             <p>sadf</p>
-            <input type="color" defaultValue={input.properties[`default-value`]?.value} />
+            <input type="color" defaultValue={input.properties?.[`default-value`]?.value} />
           </div>
         );
       }
@@ -114,10 +115,10 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <input
             type={"text"}
-            placeholder={input.properties[`placeholder`]?.value || "..."}
-            defaultValue={input.properties[`default-value`]?.value}
-            minLength={parseInt(input.properties[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties[`max`]?.value || "0")}
+            placeholder={input.properties?.[`placeholder`]?.value || "..."}
+            defaultValue={input.properties?.[`default-value`]?.value}
+            minLength={parseInt(input.properties?.[`min`]?.value || "0")}
+            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
           />
         );
       }

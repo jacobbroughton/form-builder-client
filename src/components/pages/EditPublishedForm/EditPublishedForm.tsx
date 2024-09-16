@@ -88,6 +88,7 @@ export const EditPublishedForm = () => {
             setCurrentView={setCurrentView}
             stagedNewInputType={stagedNewInputType}
             setStagedNewInputType={setStagedNewInputType}
+            isForDraft={false}
           />
         );
       }

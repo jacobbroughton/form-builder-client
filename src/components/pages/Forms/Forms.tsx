@@ -3,16 +3,21 @@ import { Link } from "react-router-dom";
 import { DraftFormType, PublishedFormType } from "../../../lib/types";
 import { handleCatchError, timeAgo } from "../../../utils/usefulFunctions";
 import "./Forms.css";
+import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
+import { DraftIcon } from "../../ui/icons/DraftIcon";
+import { PlanetIcon } from "../../ui/icons/PlanetIcon";
+import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
+
+interface AllFormsType extends DraftFormType {
+  is_draft: boolean;
+  relevant_dt: string;
+}
 
 export const Forms = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [forms, setForms] = useState<{
-    drafts: DraftFormType[];
-    published: PublishedFormType[];
-  }>({
-    drafts: [],
-    published: [],
-  });
+  const [forms, setForms] = useState<AllFormsType[]>([]);
+  const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
+  const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
 
   async function getForms() {
     try {
@@ -45,13 +50,56 @@ export const Forms = () => {
       ) : (
         <>
           <section className="forms-container">
-            <p className="section-heading">Published</p>
+            {/* <p className="section-heading">Published</p> */}
             <div className="form-grid">
-              {forms.published.length ? (
-                forms.published.map((form) => (
-                  <Link to={`/form/${form.id}`} className="form-grid-item">
-                    <p className="name">{form.title}</p>
-                    <p className="created-date">Created {timeAgo(form.published_at)}</p>
+              {forms.length ? (
+                forms.map((form) => (
+                  <Link
+                    to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
+                    className="form-grid-item"
+                  >
+                    <div className="content">
+                      <p className="name">{form.title}</p>
+                    </div>
+                    <div className="controls">
+                      <div className="left-side">
+                        {form.is_draft ? (
+                          <div
+                            className="icon-container draft"
+                            title="This form is still a draft"
+                          >
+                            <DraftIcon />
+                          </div>
+                        ) : (
+                          <div
+                            className="icon-container public"
+                            title="This form is public"
+                          >
+                            <PlanetIcon />
+                          </div>
+                        )}
+                        <p className="created-date">
+                          {new Date(form.relevant_dt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      </div>
+                      <div className="menu-button-container">
+                        <button
+                          className="menu-button"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            console.log("swag");
+                          }}
+                        >
+                          <ThreeDotsIcon />
+                        </button>
+                      </div>
+                    </div>
                   </Link>
                 ))
               ) : (
@@ -59,24 +107,67 @@ export const Forms = () => {
               )}
             </div>
           </section>
-          <section>
+          {/* <section>
             <p className="section-heading">Drafts</p>
             <div className="form-grid">
               {forms.drafts.length ? (
                 forms.drafts.map((form) => (
                   <Link to={`/draft/${form.id}`} className="form-grid-item">
-                    <p className="name">{form.title}</p>
-                    <p className="created-date">Created {timeAgo(form.created_at)}</p>
+                    <div className="content">
+                      <p className="name">{form.title}</p>
+                    </div>
+                    <div className="controls">
+                      <div className="left-side">
+                        <div
+                          className="icon-container draft"
+                          title="This form is still a draft"
+                        >
+                          <DraftIcon />
+                        </div>
+                        <p className="created-date">
+                          {new Date(form.created_at).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      </div>
+                      <div className="menu-button-container">
+                        <button
+                          className="menu-button"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setIdForPopupMenu(form.id);
+                            setPopupMenuToggled(
+                              idForPopupMenu === form.id ? !popupMenuToggled : true
+                            );
+                          }}
+                        >
+                          <ThreeDotsIcon />
+                        </button>
+                        {idForPopupMenu == form.id && popupMenuToggled ? (
+                          <FormPopupMenu
+                            formId={form.id}
+                            isDraft={true}
+                            setFormPopupToggled={setPopupMenuToggled}
+                            handleFormDelete={() => console.log("delete form", form.id)}
+                          />
+                        ) : (
+                          false
+                        )}
+                      </div>
+                    </div>
                   </Link>
                 ))
               ) : (
                 <p className="small-text">No drafts currently</p>
               )}
             </div>
-          </section>
+          </section> */}
         </>
       )}
     </main>
   );
 };
-

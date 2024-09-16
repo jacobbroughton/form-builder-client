@@ -18,6 +18,7 @@ export const StagedItemForm = ({
   setCurrentView,
   stagedNewInputType,
   setStagedNewInputType,
+  isForDraft
 }: {
   form: { form: DraftFormType | PublishedFormType | null; inputs: AddedInputType[] };
   setForm: React.Dispatch<
@@ -29,6 +30,7 @@ export const StagedItemForm = ({
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   stagedNewInputType: InputTypeType | null;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
+  isForDraft: boolean;
 }) => {
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
@@ -82,7 +84,7 @@ export const StagedItemForm = ({
 
       console.log(form);
 
-      const response = await fetch("http://localhost:3001/form/add-new-input-to-draft", {
+      const response = await fetch("http://localhost:3001/form/add-new-input-to-form", {
         method: "post",
         headers: {
           "content-type": "application/json",
@@ -98,6 +100,7 @@ export const StagedItemForm = ({
             id: form.form!.id,
           },
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+          isForDraft
         }),
       });
 

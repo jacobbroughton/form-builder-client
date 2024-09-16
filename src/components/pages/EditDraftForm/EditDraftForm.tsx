@@ -82,6 +82,7 @@ export const EditDraftForm = () => {
             setCurrentView={setCurrentView}
             stagedNewInputType={stagedNewInputType}
             setStagedNewInputType={setStagedNewInputType}
+            isForDraft={true}
           />
         );
       }

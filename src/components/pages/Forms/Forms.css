@@ -3,7 +3,7 @@ main.forms {
   flex-direction: column;
   padding: 40px 10px 50px 10px;
   width: 100%;
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
   gap: 20px;
 }
@@ -27,9 +27,17 @@ main.forms > section > .form-grid {
 
 main.forms > section > .form-grid > .form-grid-item {
   border: 1px solid #555;
-  padding: 5px;
+  /* padding: 5px; */
   transition: 0.1s ease border-color;
   border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 235px;
+}
+
+main.forms > section > .form-grid > .form-grid-item > .content {
+  padding: 5px;
 }
 
 main.forms > section > .form-grid > .form-grid-item:hover {
@@ -37,11 +45,130 @@ main.forms > section > .form-grid > .form-grid-item:hover {
   border-color: #6f6f6f;
 }
 
-main.forms > section > .form-grid > .form-grid-item > p.name {
-  font-weight: 600;
-  font-size: 0.875rem;
+main.forms > section > .form-grid > .form-grid-item > .controls {
+  border-top: 1px solid #555;
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-main.forms > section > .form-grid > .form-grid-item > p.created-date {
+main.forms > section > .form-grid > .form-grid-item > .controls > .menu-button-container {
+  /* padding: 5px; */
+  padding-right: 5px;
+  position: relative;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > .controls
+  > .menu-button-container
+  > .menu-button {
+  background-color: transparent;
+  border: 0;
+  /* width: 20px; */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > .controls
+  > .menu-button-container
+  > .menu-button:hover {
+  background-color: #444;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > .controls
+  > .menu-button-container
+  > .menu-button
+  > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+main.forms > section > .form-grid > .form-grid-item > div.content > p.name {
+  font-weight: 600;
   font-size: 0.875rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+main.forms > section > .form-grid > .form-grid-item > div.controls > .left-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > p.created-date {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container
+  > svg {
+  fill: lightskyblue;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container.draft
+  > svg {
+  width: 15px;
+}
+
+main.forms
+  > section
+  > .form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container.public
+  > svg {
+  width: 15px;
 }

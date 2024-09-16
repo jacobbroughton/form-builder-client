@@ -89,7 +89,7 @@ export const CreateForm = () => {
           title: draft.form!.title,
           description: draft.form!.description,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-          isforDraft: true,
+          isForDraft: true,
         }),
       });
 
@@ -184,6 +184,7 @@ export const CreateForm = () => {
             setCurrentView={setCurrentView}
             stagedNewInputType={stagedNewInputType}
             setStagedNewInputType={setStagedNewInputType}
+            isForDraft={true}
           />
         );
       }
