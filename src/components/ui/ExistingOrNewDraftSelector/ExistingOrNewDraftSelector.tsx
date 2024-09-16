@@ -1,8 +1,8 @@
-import { timeAgo } from "../../../utils/usefulFunctions";
 import { DraftFormType } from "../../../lib/types";
+import { timeAgo } from "../../../utils/usefulFunctions";
 import "./ExistingOrNewDraftSelector.css";
 
-const ExistingOrNewDraftSelector = ({
+export const ExistingOrNewDraftSelector = ({
   draftForms,
   setDraftIdToFetch,
   setCurrentView,
@@ -13,7 +13,6 @@ const ExistingOrNewDraftSelector = ({
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   createNewDraft: () => void;
 }) => {
-  console.log(draftForms);
   return (
     <div className="existing-or-new-draft-view">
       <p>Would you like to create a new draft or modify an existing one?</p>
@@ -49,4 +48,4 @@ const ExistingOrNewDraftSelector = ({
     </div>
   );
 };
-export default ExistingOrNewDraftSelector;
+

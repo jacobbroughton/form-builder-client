@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { timeAgo } from "../../../utils/usefulFunctions";
-import { PublishedFormType, DraftFormType } from "../../../lib/types";
+import { DraftFormType, PublishedFormType } from "../../../lib/types";
+import { handleCatchError, timeAgo } from "../../../utils/usefulFunctions";
 import "./Forms.css";
 
-const Forms = () => {
+export const Forms = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [forms, setForms] = useState<{
     drafts: DraftFormType[];
@@ -30,11 +30,7 @@ const Forms = () => {
 
       setLoading(false);
     } catch (error) {
-      if (typeof error === "string") {
-        console.log(error.toUpperCase());
-      } else if (error instanceof Error) {
-        console.log(error.message);
-      }
+      handleCatchError(error);
     }
   }
 
@@ -83,4 +79,4 @@ const Forms = () => {
     </main>
   );
 };
-export default Forms;
+

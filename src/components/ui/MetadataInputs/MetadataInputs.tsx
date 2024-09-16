@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
-import PlusIcon from "../icons/PlusIcon";
-import ShareIcon from "../icons/ShareIcon";
-import ThreeDotsIcon from "../icons/ThreeDotsIcon";
-import InputPopupMenu from "../InputPopupMenu/InputPopupMenu";
 import { useNavigate } from "react-router-dom";
+import { AddedInputType, DraftFormType, PublishedFormType } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import { DraftFormType, AddedInputType } from "../../../lib/types";
+import { PlusIcon } from "../icons/PlusIcon";
+import { ShareIcon } from "../icons/ShareIcon";
+import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
+import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
+import "./MetadataInputs.css";
+import { SaveIcon } from "../icons/SaveIcon";
 
-const MetadataInputs = ({
-  saved,
-  autoSaveCountdown,
-  draft,
-  setDraft,
+export const MetadataInputs = ({
+  form,
+  setForm,
   setCurrentView,
   setPrevSavedForm,
+  isForDraft,
   draftIdToFetch,
+  saveForm,
 }: {
-  saved: boolean;
-  autoSaveCountdown: number;
-  draft: {
-    form: DraftFormType | null;
+  form: {
+    form: DraftFormType | PublishedFormType | null;
     inputs: AddedInputType[];
   };
-  setDraft: React.Dispatch<
+  setForm: React.Dispatch<
     React.SetStateAction<{
-      form: DraftFormType | null;
+      form: DraftFormType | PublishedFormType | null;
       inputs: AddedInputType[];
     }>
   >;
@@ -34,8 +34,10 @@ const MetadataInputs = ({
       form: DraftFormType | null;
       inputs: AddedInputType[];
     }>
-  >;
+  > | null;
+  isForDraft: boolean;
   draftIdToFetch: string | null;
+  saveForm: () => void | null;
 }) => {
   const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
@@ -48,7 +50,7 @@ const MetadataInputs = ({
       const newActiveStatus = clickedInput.is_active ? false : true;
 
       const response = await fetch(
-        `http://localhost:3001/form/change-draft-input-enabled-status/${clickedInput.id}`,
+        `http://localhost:3001/form/change-input-enabled-status/${clickedInput.id}`,
         {
           method: "put",
           headers: {
@@ -56,6 +58,7 @@ const MetadataInputs = ({
           },
           body: JSON.stringify({
             newActiveStatus,
+            isDraft: isForDraft ? true : false,
           }),
         }
       );
@@ -65,9 +68,9 @@ const MetadataInputs = ({
 
       await response.json();
 
-      setDraft({
-        ...draft,
-        inputs: draft.inputs.map((input) => ({
+      setForm({
+        ...form,
+        inputs: form.inputs.map((input) => ({
           ...input,
           ...(input.id === clickedInput.id && { is_active: newActiveStatus }),
         })),
@@ -79,14 +82,15 @@ const MetadataInputs = ({
 
   async function handlePublishForm() {
     try {
-      console.log("Draft before publish", draft);
+      if (!isForDraft) return;
+
       const response = await fetch("http://localhost:3001/form/publish", {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          draftFormId: draft.form!.id,
+          draftFormId: form.form!.id,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
       });
@@ -114,12 +118,14 @@ const MetadataInputs = ({
 
         const data = await response.json();
 
-        setPrevSavedForm({
-          form: data.form,
-          inputs: data.inputs,
-        });
+        if (setPrevSavedForm) {
+          setPrevSavedForm({
+            form: data.form,
+            inputs: data.inputs,
+          });
+        }
 
-        setDraft({
+        setForm({
           form: data.form,
           inputs: data.inputs,
         });
@@ -129,41 +135,18 @@ const MetadataInputs = ({
     }
   }, []);
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("Yes here")
-  //     setDraft({
-  //       form: {
-  //         title: "Untitled",
-  //         description: "",
-  //       },
-  //       inputs: [],
-  //     });
-
-  //     setPrevSavedForm({
-  //       form: { title: "Untitled", description: "" },
-  //       inputs: [],
-  //     });
-  //   };
-  // }, []);
-
-  if (!draft.form) return <p>No form found</p>;
+  if (!form.form) return <p>No form found</p>;
 
   return (
-    <>
-      <p className="saved-status">
-        <span className={`${saved ? "saved" : ""}`}></span>
-        {saved ? "Saved Draft" : "Unsaved"}{" "}
-        {!saved ? `(Autosaving in ${autoSaveCountdown}s)` : false}
-      </p>
+    <div className="metadata-inputs">
       <form className="title-and-description">
         <input
-          value={draft.form.title}
+          value={form.form.title}
           onChange={(e) =>
-            setDraft({
-              ...draft,
+            setForm({
+              ...form,
               form: {
-                ...draft.form!,
+                ...form.form!,
                 title: e.target.value,
               },
             })
@@ -171,12 +154,12 @@ const MetadataInputs = ({
           placeholder="Title"
         />
         <textarea
-          value={draft.form.description}
+          value={form.form.description || ""}
           onChange={(e) => {
-            setDraft({
-              ...draft,
+            setForm({
+              ...form,
               form: {
-                ...draft.form!,
+                ...form.form!,
                 description: e.target.value,
               },
             });
@@ -184,13 +167,13 @@ const MetadataInputs = ({
           placeholder="Description"
         />
       </form>
-      {draft.inputs.length === 0 ? (
+      {form.inputs.length === 0 ? (
         <div className="no-items-yet">
           <p>You haven't added any items yet</p>
         </div>
       ) : (
         <div className="added-inputs">
-          {draft.inputs.map((input) => (
+          {form.inputs.map((input) => (
             <div className={`added-input ${input.is_active ? "" : "deleted"}`}>
               <p className="name">{input.metadata_question}</p>
               <div className="tags">
@@ -238,10 +221,15 @@ const MetadataInputs = ({
         <PlusIcon /> Add new form item
       </button>
 
-      <button className="publish-button" onClick={() => handlePublishForm()}>
-        <ShareIcon /> Publish Form
-      </button>
-    </>
+      {isForDraft ? (
+        <button className="publish-button" onClick={() => handlePublishForm()}>
+          <ShareIcon /> Publish Form
+        </button>
+      ) : (
+        <button className="save-button" onClick={() => saveForm()}>
+          <SaveIcon /> Save Form
+        </button>
+      )}
+    </div>
   );
 };
-export default MetadataInputs;

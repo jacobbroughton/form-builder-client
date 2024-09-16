@@ -58,7 +58,7 @@ export interface AddedInputType {
   metadata_question: string;
   metadata_description: string;
   is_active: boolean;
-  eff_status: number;
+  is_deleted: boolean;
   created_at: string;
   created_by_id: string;
   modified_by_id: string;
@@ -75,7 +75,7 @@ export type DraftFormType = {
   description: string;
   passkey: string | null;
   is_published: boolean;
-  eff_status: number;
+  is_deleted: boolean;
   created_at: string;
   created_by_id: string;
   modified_at: string | null;
@@ -88,7 +88,7 @@ export type PublishedFormType = {
   title: string;
   description: string | null;
   passkey: string | null;
-  eff_status: number | null;
+  is_deleted: boolean | null;
   published_by_id: string;
   published_at: string;
   created_by_id: string;

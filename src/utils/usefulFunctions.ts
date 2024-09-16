@@ -1,6 +1,6 @@
 export function timeAgo(date: string) {
-  const nowMs = new Date().getMilliseconds();
-  const passedDateMs = new Date(date).getMilliseconds();
+  const nowMs = new Date().getTime();
+  const passedDateMs = new Date(date).getTime();
   const diff = nowMs - passedDateMs; // Difference in milliseconds
 
   const seconds = Math.floor(diff / 1000);

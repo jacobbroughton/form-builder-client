@@ -1,13 +1,20 @@
-main.create-form > .staged-input-form {
+
+.staged-item-form  {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
 
-main.create-form > .staged-input-form > .staged-input-type-info {
+.staged-item-form > .staged-input-form {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 
-main.create-form > .staged-input-form > .staged-input-type-info {
+.staged-item-form > .staged-input-form > .staged-input-type-info {
+}
+
+.staged-item-form > .staged-input-form > .staged-input-type-info {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -19,21 +26,21 @@ main.create-form > .staged-input-form > .staged-input-type-info {
   border-radius: 3px;
 }
 
-main.create-form > .staged-input-form > .staged-input-type-info > .name {
+.staged-item-form > .staged-input-form > .staged-input-type-info > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-main.create-form > .staged-input-form > .staged-input-type-info > .description {
+.staged-item-form > .staged-input-form > .staged-input-type-info > .description {
   font-size: 0.875rem;
   text-align: start;
 }
 
-main.create-form > .staged-input-form > .metadata {
+.staged-item-form > .staged-input-form > .metadata {
 }
 
-main.create-form > .staged-input-form > .metadata > input,
-main.create-form > .staged-input-form > .metadata > textarea {
+.staged-item-form > .staged-input-form > .metadata > input,
+.staged-item-form > .staged-input-form > .metadata > textarea {
   width: 100%;
   padding: 3px 5px;
   font-size: 1rem;
@@ -44,23 +51,23 @@ main.create-form > .staged-input-form > .metadata > textarea {
   font-family: inherit;
 }
 
-main.create-form > .staged-input-form > .metadata > input {
+.staged-item-form > .staged-input-form > .metadata > input {
   font-weight: 500;
 }
 
-main.create-form > .staged-input-form > .metadata > button {
+.staged-item-form > .staged-input-form > .metadata > button {
   background-color: transparent;
   border: 0;
   align-self: flex-start;
   cursor: pointer;
 }
 
-main.create-form > .staged-input-form > .metadata > button:hover {
+.staged-item-form > .staged-input-form > .metadata > button:hover {
   text-decoration: underline;
 }
 
-main.create-form > .staged-input-form > div.properties,
-main.create-form > .staged-input-form > .metadata {
+.staged-item-form > .staged-input-form > div.properties,
+.staged-item-form > .staged-input-form > .metadata {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -74,15 +81,15 @@ main.create-form > .staged-input-form > .metadata {
   margin-top: 20px;
 }
 
-main.create-form > .staged-input-form > div.properties::before {
+.staged-item-form > .staged-input-form > div.properties::before {
   content: "Properties (Optional)";
 }
-main.create-form > .staged-input-form > .metadata::before {
+.staged-item-form > .staged-input-form > .metadata::before {
   content: "Question/Prompt";
 }
 
-main.create-form > .staged-input-form > div.properties::before,
-main.create-form > .staged-input-form > .metadata::before {
+.staged-item-form > .staged-input-form > div.properties::before,
+.staged-item-form > .staged-input-form > .metadata::before {
   position: absolute;
   bottom: calc(100% + 0px);
   left: -1px;
@@ -101,18 +108,18 @@ main.create-form > .staged-input-form > .metadata::before {
   background-color: #222;
 }
 
-main.create-form > .staged-input-form > div.properties > label {
+.staged-item-form > .staged-input-form > div.properties > label {
   font-size: 0.875rem;
 }
 
-main.create-form > .staged-input-form > .properties > .property-container {
+.staged-item-form > .staged-input-form > .properties > .property-container {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 2px;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -121,7 +128,7 @@ main.create-form
   font-weight: 500;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -129,7 +136,7 @@ main.create-form
   font-size: 0.8rem;
 }
 
-main.create-form > .staged-input-form > .properties > .property-container > input {
+.staged-item-form > .staged-input-form > .properties > .property-container > input {
   width: 100%;
   padding: 3px 5px;
   font-size: 1rem;
@@ -140,7 +147,7 @@ main.create-form > .staged-input-form > .properties > .property-container > inpu
   font-family: inherit;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -148,11 +155,11 @@ main.create-form
   cursor: pointer;
 }
 
-main.create-form > .staged-input-form > .properties > .property-container > input:hover {
+.staged-item-form > .staged-input-form > .properties > .property-container > input:hover {
   border-color: #6f6f6f;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -161,7 +168,7 @@ main.create-form
   gap: 5px;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -175,7 +182,7 @@ main.create-form
   cursor: pointer;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -184,11 +191,25 @@ main.create-form
   border-color: #6f6f6f;
 }
 
-main.create-form
+.staged-item-form
   > .staged-input-form
   > .properties
   > .property-container.radio
   > .radio-options
   > button.checked {
   border: 1px solid lightgreen;
+}
+
+.staged-item-form > .navigation-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.staged-item-form > .navigation-buttons .navigation-button:hover {
+  border: 1px solid #666;
+} 
+
+.staged-item-form > .navigation-buttons .navigation-button.done svg {
+  fill: lightgreen;;
 }

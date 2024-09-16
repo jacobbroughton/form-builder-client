@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { InputTypeType, DraftFormType, AddedInputType } from "../../../lib/types";
+import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import ExistingOrNewDraftSelector from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
-import MetadataInputs from "../../ui/MetadataInputs/MetadataInputs";
-import StagedItemForm from "../../ui/StagedItemForm/StagedItemForm";
-import InputTypeSelector from "../../ui/InputTypeSelector/InputTypeSelector";
+import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
+import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
+import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
 import "./CreateForm.css";
 
-const CreateForm = () => {
+export const CreateForm = () => {
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
     inputs: AddedInputType[];
@@ -79,7 +79,7 @@ const CreateForm = () => {
   async function saveDraft() {
     try {
       console.log("saveDraft", { draft });
-      const response = await fetch("http://localhost:3001/form/update-draft", {
+      const response = await fetch("http://localhost:3001/form/update-form", {
         method: "put",
         headers: {
           "content-type": "application/json",
@@ -89,6 +89,7 @@ const CreateForm = () => {
           title: draft.form!.title,
           description: draft.form!.description,
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+          isforDraft: true,
         }),
       });
 
@@ -123,6 +124,7 @@ const CreateForm = () => {
       setDraftForms(data);
 
       if (!data.length) {
+        console.log("Yes hello");
         createNewDraft();
         setCurrentView("metadata-inputs");
       }
@@ -149,15 +151,21 @@ const CreateForm = () => {
       }
       case "metadata-inputs": {
         return (
-          <MetadataInputs
-            saved={saved}
-            autoSaveCountdown={autoSaveCountdown}
-            draft={draft}
-            setDraft={setDraft}
-            setCurrentView={setCurrentView}
-            setPrevSavedForm={setPrevSavedForm}
-            draftIdToFetch={draftIdToFetch}
-          />
+          <>
+            <p className="saved-status">
+              <span className={`${saved ? "saved" : ""}`}></span>
+              {saved ? "Saved Draft" : "Unsaved"}{" "}
+              {!saved ? `(Autosaving in ${autoSaveCountdown}s)` : false}
+            </p>
+            <MetadataInputs
+              form={draft}
+              setForm={setDraft}
+              setCurrentView={setCurrentView}
+              setPrevSavedForm={setPrevSavedForm}
+              isForDraft={true}
+              draftIdToFetch={draftIdToFetch}
+            />
+          </>
         );
       }
       case "input-types-selector": {
@@ -171,8 +179,8 @@ const CreateForm = () => {
       case "staged-item-form": {
         return (
           <StagedItemForm
-            draft={draft}
-            setDraft={setDraft}
+            form={draft}
+            setForm={setDraft}
             setCurrentView={setCurrentView}
             stagedNewInputType={stagedNewInputType}
             setStagedNewInputType={setStagedNewInputType}
@@ -205,11 +213,7 @@ const CreateForm = () => {
         setNeedsAutoSave(false);
         setAutoSaveCountdown(2);
       } catch (error) {
-        if (typeof error === "string") {
-          console.log(error.toUpperCase());
-        } else if (error instanceof Error) {
-          console.log(error.message);
-        }
+        handleCatchError(error);
       }
     }
 
@@ -262,14 +266,7 @@ const CreateForm = () => {
 
   return (
     <main className="create-form">
-      {initiallyLoading ? (
-        <p>Loading...</p>
-      ) : !draft.form ? (
-        <p>Draft not found</p>
-      ) : (
-        renderView()
-      )}
+      {initiallyLoading ? <p>Loading...</p> : renderView()}
     </main>
   );
 };
-export default CreateForm;

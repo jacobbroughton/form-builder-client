@@ -1,0 +1,9 @@
+main.edit-form {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 10px 50px 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 10px;
+}

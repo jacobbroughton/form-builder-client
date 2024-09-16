@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import "./InputPopupMenu.css";
-import EditIcon from "../icons/EditIcon";
-import TrashIcon from "../icons/TrashIcon";
-import CheckIcon from "../icons/CheckIcon";
 import { AddedInputType } from "../../../lib/types";
+import { CheckIcon } from "../icons/CheckIcon";
+import { EditIcon } from "../icons/EditIcon";
+import { TrashIcon } from "../icons/TrashIcon";
+import "./InputPopupMenu.css";
 
-const InputPopupMenu = ({
+export const InputPopupMenu = ({
   input,
   setIdForInputPopup,
   setInputPopupToggled,
@@ -19,16 +19,16 @@ const InputPopupMenu = ({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handler(e: React.MouseEvent) {
+    function handler(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as HTMLDivElement)) {
         setIdForInputPopup(null);
         setInputPopupToggled(false);
       }
     }
 
-    document.addEventListener("click", () => handler);
+    document.addEventListener("click", handler);
 
-    return () => document.removeEventListener("click", () => handler);
+    return () => document.removeEventListener("click", handler);
   });
 
   return (
@@ -62,4 +62,4 @@ const InputPopupMenu = ({
     </div>
   );
 };
-export default InputPopupMenu;
+

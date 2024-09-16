@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import XIcon from "../icons/XIcon";
 import { InputTypeType } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
 
-const InputTypeSelector = ({
+export const InputTypeSelector = ({
   setCurrentView,
   setStagedNewInputType,
 }: {
@@ -32,7 +32,7 @@ const InputTypeSelector = ({
   }, []);
 
   return (
-    <>
+    <div className='input-type-selector'>
       <div className="navigation-buttons">
         <button
           className="navigation-button cancel"
@@ -58,7 +58,7 @@ const InputTypeSelector = ({
           </>
         ))}
       </div>
-    </>
+    </div>
   );
 };
-export default InputTypeSelector;
+

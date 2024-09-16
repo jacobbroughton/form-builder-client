@@ -1,0 +1,39 @@
+.form-popup-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 5px);
+  z-index: 2;
+  padding: 0;
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-popup-menu button {
+  background-color: transparent;
+  padding: 5px 10px;
+  border: 0;
+  font-size: 1rem;
+  text-align: start;
+  min-width: 75px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-popup-menu button svg {
+  width: 12px;
+  height: 12px;
+  fill: whitesmoke;
+}
+
+.form-popup-menu button:not(:last-child) {
+  border-bottom: #444 1px solid;
+}
+
+.form-popup-menu button:not(:disabled):hover {
+  background-color: #3a3a3a;
+}

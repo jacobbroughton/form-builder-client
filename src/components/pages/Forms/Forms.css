@@ -38,7 +38,8 @@ main.forms > section > .form-grid > .form-grid-item:hover {
 }
 
 main.forms > section > .form-grid > .form-grid-item > p.name {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.875rem;
 }
 
 main.forms > section > .form-grid > .form-grid-item > p.created-date {

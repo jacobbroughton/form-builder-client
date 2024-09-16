@@ -5,23 +5,24 @@ import {
   DraftFormType,
   InputTypeType,
   AddedInputType,
+  PublishedFormType,
 } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import CheckIcon from "../icons/CheckIcon";
-import ArrowLeftIcon from "../icons/ArrowLeftIcon";
+import { CheckIcon } from "../icons/CheckIcon";
+import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import "./StagedItemForm.css";
 
-const StagedItemForm = ({
-  draft,
-  setDraft,
+export const StagedItemForm = ({
+  form,
+  setForm,
   setCurrentView,
   stagedNewInputType,
   setStagedNewInputType,
 }: {
-  draft: { form: DraftFormType | null; inputs: AddedInputType[] };
-  setDraft: React.Dispatch<
+  form: { form: DraftFormType | PublishedFormType | null; inputs: AddedInputType[] };
+  setForm: React.Dispatch<
     React.SetStateAction<{
-      form: DraftFormType | null;
+      form: DraftFormType | PublishedFormType | null;
       inputs: AddedInputType[];
     }>
   >;
@@ -79,7 +80,7 @@ const StagedItemForm = ({
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
 
-      console.log(draft);
+      console.log(form);
 
       const response = await fetch("http://localhost:3001/form/add-new-input-to-draft", {
         method: "post",
@@ -94,7 +95,7 @@ const StagedItemForm = ({
             properties,
           },
           form: {
-            id: draft.form!.id,
+            id: form.form!.id,
           },
           userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         }),
@@ -111,9 +112,9 @@ const StagedItemForm = ({
 
       console.log({ properties });
 
-      setDraft({
-        ...draft,
-        inputs: [...draft.inputs, data],
+      setForm({
+        ...form,
+        inputs: [...form.inputs, data],
       });
 
       handleInputReset();
@@ -177,12 +178,12 @@ const StagedItemForm = ({
     getInputTypePropertyOptions();
   }, []);
 
-  if (!draft.form) return <p>Form not found</p>;
+  if (!form.form) return <p>Form not found</p>;
 
-  if (!stagedNewInputType) return <p>No staged new input type</p>
+  if (!stagedNewInputType) return <p>No staged new input type</p>;
 
   return (
-    <>
+    <div className="staged-item-form">
       <form className="staged-input-form">
         <div className="staged-input-type-info">
           <p className="name">{stagedNewInputType.name}</p>
@@ -266,7 +267,6 @@ const StagedItemForm = ({
           <CheckIcon /> Done, add to form
         </button>
       </div>
-    </>
+    </div>
   );
 };
-export default StagedItemForm;

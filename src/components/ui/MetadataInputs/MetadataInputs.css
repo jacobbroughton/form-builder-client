@@ -1,0 +1,193 @@
+.metadata-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metadata-inputs > .title-and-description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metadata-inputs > .title-and-description > input {
+  font-size: 1.15rem;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid #555;
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+
+.metadata-inputs > .title-and-description > textarea {
+  background-color: transparent;
+  font-family: inherit;
+  padding: 5px 10px;
+  border: 1px solid #555;
+  border-radius: 3px;
+  font-size: 1rem;
+  min-height: 100px
+}
+
+.metadata-inputs > .added-inputs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #555;
+  background-color: #222;
+  border-radius: 3px;
+  border-top-left-radius: 0;
+  margin-top: 20px;
+}
+
+.metadata-inputs > .added-inputs::before {
+  content: "Your custom inputs";
+  position: absolute;
+  bottom: 100%;
+  left: -1px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: #555;
+  padding: 2px 5px;
+  line-height: 0.875rem;
+  border-left: lightgreen 2px solid;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: transparent;
+  border: 1px solid #555;
+  border-bottom: 0;
+  z-index: 2;
+  background-color: #222;
+}
+
+.metadata-inputs > .added-inputs > .added-input {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.metadata-inputs > .added-inputs > .added-input.deleted {
+  border-left: 1px solid crimson;
+  /* padding-left: 35px; */
+}
+
+.metadata-inputs > .added-inputs > .added-input.deleted p:not(.deleted) {
+  opacity: 0.5;
+}
+
+.metadata-inputs > .added-inputs > .added-input.deleted .deleted-icon-container {
+  background-color: transparent;
+  border-left: 1px solid #666;
+  width: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metadata-inputs > .added-inputs > .added-input.deleted .deleted-icon-container svg {
+  fill: crimson;
+  width: 15px;
+}
+
+.metadata-inputs > .added-inputs > .added-input:not(:last-child) {
+  border-bottom: 1px solid #555;
+}
+
+.metadata-inputs > .added-inputs > .added-input > .popup-menu-button {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background-color: transparent;
+  border: 0;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.1s linear;
+}
+
+.metadata-inputs > .added-inputs > .added-input > .popup-menu-button:hover {
+  background-color: #333;
+}
+
+.metadata-inputs > .added-inputs > .added-input > .popup-menu-button > svg {
+  fill: white;
+  width: 20px;
+}
+
+.metadata-inputs > .added-inputs > .added-input .tags {
+  display: flex;
+  gap: 10px;
+}
+
+.metadata-inputs > .added-inputs > .added-input .tags p {
+  border-radius: 15px;
+  background-color: #333;
+  padding: 0px 10px;
+  font-size: 0.875rem;
+}
+
+.metadata-inputs > button.add-new-input {
+  /* width: 100%; */
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #555;
+  padding: 3px 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.metadata-inputs > button.add-new-input {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  align-self: flex-start;
+  font-size: 1rem;
+}
+
+.metadata-inputs > button.add-new-input svg {
+  width: 12px;
+  fill: white;
+}
+
+.metadata-inputs > .input-types-selector > button:hover,
+.metadata-inputs > button.add-new-input:hover {
+  background-color: #55555525;
+}
+
+
+.metadata-inputs > .publish-button,
+.metadata-inputs > .save-button {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  align-self: flex-start;
+  font-size: 1rem;
+  /* width: 100%; */
+  background-color: lightgreen;
+  white-space: nowrap;
+  border-radius: 3px;
+  border: 1px solid #555;
+  padding: 3px 5px;
+  cursor: pointer;
+  color: #333;
+  font-weight: 600;
+}
+
+.metadata-inputs > .publish-button > svg,
+.metadata-inputs > .save-button > svg {
+  width: 13px;
+  fill: #333;
+}

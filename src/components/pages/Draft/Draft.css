@@ -7,3 +7,49 @@ main.draft-form {
   margin: 0 auto;
   gap: 10px;
 }
+
+main.draft-form > .form-controls {
+  display: flex;
+  justify-content: flex-end;
+}
+
+main.draft-form > .form-controls > .menu-toggle-button-container {
+  position: relative;
+}
+
+main.draft-form > .form-controls > .menu-toggle-button-container > button.menu-toggle-button {
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+}
+
+main.draft-form > .form-controls > .menu-toggle-button-container > button.menu-toggle-button:hover {
+  background-color: #3b3b3b;
+  border-color: #5b5b5b
+}
+
+main.draft-form > .form-controls > .menu-toggle-button-container > button.menu-toggle-button > svg {
+  width: 20px;
+  fill: white;
+}
+
+main.draft-form > .heading {
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 3px;
+}
+
+main.draft-form > .heading > h1.title {
+  font-size: 1rem;
+}
+
+main.draft-form > .heading > p.description {
+  font-size: 0.875rem;
+}
