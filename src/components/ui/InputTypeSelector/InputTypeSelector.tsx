@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { InputTypeType } from "../../../lib/types";
+import { getInputTypes } from "../../../utils/fetchRequests";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
@@ -13,13 +14,11 @@ export const InputTypeSelector = ({
 }) => {
   const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
 
-  async function getInputTypes(): Promise<void> {
+  async function getInputTypesLocal(): Promise<void> {
     try {
-      const response = await fetch("http://localhost:3001/form/item-types");
+      const data = await getInputTypes();
 
-      if (!response.ok) throw new Error("An error occured while fetching form types");
-
-      const data = await response.json();
+      console.log(data)
 
       setInputTypes(data);
     } catch (error) {
@@ -28,11 +27,11 @@ export const InputTypeSelector = ({
   }
 
   useEffect(() => {
-    getInputTypes();
+    getInputTypesLocal();
   }, []);
 
   return (
-    <div className='input-type-selector'>
+    <div className="input-type-selector">
       <div className="navigation-buttons">
         <button
           className="navigation-button cancel"
@@ -43,7 +42,7 @@ export const InputTypeSelector = ({
         </button>
       </div>
       <div className="input-types-selector">
-        {inputTypes.map((inputType) => (
+        {inputTypes.length === 0 ? <p>No input types</p> : inputTypes.map((inputType) => (
           <>
             <button
               type="button"
@@ -61,4 +60,3 @@ export const InputTypeSelector = ({
     </div>
   );
 };
-

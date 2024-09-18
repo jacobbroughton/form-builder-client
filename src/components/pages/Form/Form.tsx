@@ -7,6 +7,8 @@ import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
+import { deletePublishedForm, getPublishedForm } from "../../../utils/fetchRequests";
+import { PlanetIcon } from "../../ui/icons/PlanetIcon";
 
 export const Form = () => {
   const { formId } = useParams();
@@ -14,21 +16,13 @@ export const Form = () => {
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
+  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
   async function handleFormDelete(): Promise<void> {
     try {
-      console.log("SWag");
-      const response = await fetch(
-        `http://localhost:3001/form/delete-published-form/${formId}`,
-        {
-          method: "put",
-        }
-      );
+      const data = await deletePublishedForm({ formId });
 
-      if (!response.ok)
-        throw new Error("Something happened while trying to delete this form");
-
-      const data = await response.json();
+      setDeletedViewShowing(true);
 
       console.log("Deleted form", data);
     } catch (error) {
@@ -41,14 +35,7 @@ export const Form = () => {
       try {
         setFormLoading(true);
 
-        const response = await fetch(
-          `http://localhost:3001/form/get-published-form/${formId}`
-        );
-
-        if (!response.ok)
-          throw new Error("There was a problem fetching the form as user");
-
-        const data = await response.json();
+        const data = await getPublishedForm({ formId });
 
         setForm(data.form);
         setInputs(data.inputs);
@@ -67,9 +54,14 @@ export const Form = () => {
         <p>Form loading...</p>
       ) : !form ? (
         <p>No form found</p>
+      ) : deletedViewShowing ? (
+        <p>This form has been deleted.</p>
       ) : (
         <>
           <div className="form-controls">
+            <div className="published-status">
+              <PlanetIcon /> Published
+            </div>
             <div className="menu-toggle-button-container">
               <button
                 className="menu-toggle-button"
@@ -93,14 +85,14 @@ export const Form = () => {
             </div>
           </div>
           <div className="heading">
-            <h1>{form.title}</h1>
-            <p>{form.description}</p>
+            <h1 className="title">{form.title}</h1>
+            <p className="description">{form.description}</p>
           </div>
           <div className="inputs">
             {inputs.length ? (
               inputs.map((input) => <FormInput input={input} />)
             ) : (
-              <NoPromptsMessage/>
+              <NoPromptsMessage formId={form.id} isDraft={false} />
             )}
           </div>
         </>

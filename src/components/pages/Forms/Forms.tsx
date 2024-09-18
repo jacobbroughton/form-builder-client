@@ -7,6 +7,18 @@ import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import { DraftIcon } from "../../ui/icons/DraftIcon";
 import { PlanetIcon } from "../../ui/icons/PlanetIcon";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
+import {
+  deleteDraftForm,
+  deletePublishedForm,
+  getAllForms,
+} from "../../../utils/fetchRequests";
+import NoFormsMessage from "../../ui/NoFormsMessage/NoFormsMessage";
+import GridIcon from "../../ui/icons/GridIcon";
+import SortIcon from "../../ui/icons/SortIcon";
+import ListIcon from "../../ui/icons/ListIcon";
+import SortFormsMenu from "../../ui/SortFormsMenu/SortFormsMenu";
+import FormsGrid from "../../ui/FormsGrid/FormsGrid";
+import FormsList from "../../ui/FormsList/FormsList";
 
 interface AllFormsType extends DraftFormType {
   is_draft: boolean;
@@ -16,21 +28,15 @@ interface AllFormsType extends DraftFormType {
 export const Forms = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [forms, setForms] = useState<AllFormsType[]>([]);
-  const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
-  const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
+  const [sortMenuToggled, setSortMenuToggled] = useState<boolean>(false);
+  const [toggledView, setToggledView] = useState<string>(localStorage.getItem('formBuilderToggledView') || "grid");
+  const [selectedSort, setSelectedSort] = useState<string>("Created ");
 
   async function getForms() {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        `http://localhost:3001/form/get-forms/75c75c02-b39b-4f33-b940-49aa20b9eda4`
-      );
-
-      if (!response.ok) throw new Error("There was a problem fetching forms");
-
-      const data = await response.json();
-
+      const data = await getAllForms({ userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4" });
       setForms(data);
 
       setLoading(false);
@@ -49,123 +55,49 @@ export const Forms = () => {
         <p>Loading...</p>
       ) : (
         <>
-          <section className="forms-container">
+          <div className="forms-container">
             {/* <p className="section-heading">Published</p> */}
-            <div className="form-grid">
-              {forms.length ? (
-                forms.map((form) => (
-                  <Link
-                    to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
-                    className="form-grid-item"
+            <section className="header">
+              <p className="small-text">Recent Forms</p>
+              <div className="controls">
+                <div className="button-container">
+                  <button
+                    className="view-toggle-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      localStorage.setItem('formBuilderToggledView', toggledView === "grid" ? "list" : "grid")
+                      setToggledView(toggledView === "grid" ? "list" : "grid");
+                    }}
                   >
-                    <div className="content">
-                      <p className="name">{form.title}</p>
-                    </div>
-                    <div className="controls">
-                      <div className="left-side">
-                        {form.is_draft ? (
-                          <div
-                            className="icon-container draft"
-                            title="This form is still a draft"
-                          >
-                            <DraftIcon />
-                          </div>
-                        ) : (
-                          <div
-                            className="icon-container public"
-                            title="This form is public"
-                          >
-                            <PlanetIcon />
-                          </div>
-                        )}
-                        <p className="created-date">
-                          {new Date(form.relevant_dt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
-                      </div>
-                      <div className="menu-button-container">
-                        <button
-                          className="menu-button"
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            console.log("swag");
-                          }}
-                        >
-                          <ThreeDotsIcon />
-                        </button>
-                      </div>
-                    </div>
-                  </Link>
-                ))
+                    {toggledView === "grid" ? <GridIcon /> : <ListIcon />}
+                  </button>
+                </div>
+                <div className="button-container">
+                  <button
+                    className="sort-toggle-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSortMenuToggled(!sortMenuToggled);
+                    }}
+                  >
+                    <SortIcon />
+                  </button>
+                  {sortMenuToggled && (
+                    <SortFormsMenu setSortMenuToggled={setSortMenuToggled} />
+                  )}
+                </div>
+              </div>
+            </section>
+            {forms.length ? (
+              toggledView === "grid" ? (
+                <FormsGrid setForms={setForms} forms={forms} />
               ) : (
-                <p className="small-text">No published forms currently</p>
-              )}
-            </div>
-          </section>
-          {/* <section>
-            <p className="section-heading">Drafts</p>
-            <div className="form-grid">
-              {forms.drafts.length ? (
-                forms.drafts.map((form) => (
-                  <Link to={`/draft/${form.id}`} className="form-grid-item">
-                    <div className="content">
-                      <p className="name">{form.title}</p>
-                    </div>
-                    <div className="controls">
-                      <div className="left-side">
-                        <div
-                          className="icon-container draft"
-                          title="This form is still a draft"
-                        >
-                          <DraftIcon />
-                        </div>
-                        <p className="created-date">
-                          {new Date(form.created_at).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
-                      </div>
-                      <div className="menu-button-container">
-                        <button
-                          className="menu-button"
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            setIdForPopupMenu(form.id);
-                            setPopupMenuToggled(
-                              idForPopupMenu === form.id ? !popupMenuToggled : true
-                            );
-                          }}
-                        >
-                          <ThreeDotsIcon />
-                        </button>
-                        {idForPopupMenu == form.id && popupMenuToggled ? (
-                          <FormPopupMenu
-                            formId={form.id}
-                            isDraft={true}
-                            setFormPopupToggled={setPopupMenuToggled}
-                            handleFormDelete={() => console.log("delete form", form.id)}
-                          />
-                        ) : (
-                          false
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p className="small-text">No drafts currently</p>
-              )}
-            </div>
-          </section> */}
+                <FormsList setForms={setForms} forms={forms} />
+              )
+            ) : (
+              <NoFormsMessage />
+            )}
+          </div>
         </>
       )}
     </main>

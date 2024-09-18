@@ -1,0 +1,108 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.form-grid > .form-grid-item {
+  border: 1px solid #555;
+  /* padding: 5px; */
+  transition: 0.1s ease border-color;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* width: 235px; */
+}
+
+.form-grid > .form-grid-item > .content {
+  padding: 5px;
+}
+
+.form-grid > .form-grid-item:hover {
+  text-decoration: none;
+  border-color: #6f6f6f;
+}
+
+.form-grid > .form-grid-item > .controls {
+  border-top: 1px solid #555;
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-grid > .form-grid-item > .controls > .menu-button-container {
+  /* padding: 5px; */
+  padding-right: 5px;
+  position: relative;
+}
+
+.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button {
+  background-color: transparent;
+  border: 0;
+  /* width: 20px; */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button:hover {
+  background-color: #444;
+}
+
+.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.form-grid > .form-grid-item > div.content > p.name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.form-grid > .form-grid-item > div.controls > .left-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+}
+
+.form-grid > .form-grid-item > div.controls > .left-side > p.created-date {
+  cursor: help;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.form-grid > .form-grid-item > div.controls > .left-side > .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.form-grid > .form-grid-item > div.controls > .left-side > .icon-container > svg {
+  fill: lightskyblue;
+}
+
+.form-grid > .form-grid-item > div.controls > .left-side > .icon-container.draft > svg {
+  width: 15px;
+  fill: #c37f00;
+}
+
+.form-grid
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container.public
+  > svg {
+  width: 15px;
+}

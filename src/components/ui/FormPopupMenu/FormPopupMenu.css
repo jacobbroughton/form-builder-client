@@ -11,7 +11,8 @@
   flex-direction: column;
 }
 
-.form-popup-menu button {
+.form-popup-menu button,
+.form-popup-menu .edit-link {
   background-color: transparent;
   padding: 5px 10px;
   border: 0;
@@ -24,16 +25,23 @@
   gap: 10px;
 }
 
+.form-popup-menu .edit-link svg,
 .form-popup-menu button svg {
   width: 12px;
   height: 12px;
   fill: whitesmoke;
 }
 
+.form-popup-menu .edit-link:not(:last-child),
 .form-popup-menu button:not(:last-child) {
   border-bottom: #444 1px solid;
 }
 
+.form-popup-menu .edit-link:hover {
+text-decoration: none;
+}
+
+.form-popup-menu .edit-link:not(:last-child):hover,
 .form-popup-menu button:not(:disabled):hover {
   background-color: #3a3a3a;
 }

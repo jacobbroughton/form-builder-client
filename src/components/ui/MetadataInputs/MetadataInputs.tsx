@@ -8,6 +8,11 @@ import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
 import "./MetadataInputs.css";
 import { SaveIcon } from "../icons/SaveIcon";
+import {
+  changeInputEnabledStatus,
+  getDraftForm,
+  publish,
+} from "../../../utils/fetchRequests";
 
 export const MetadataInputs = ({
   form,
@@ -49,24 +54,15 @@ export const MetadataInputs = ({
     try {
       const newActiveStatus = clickedInput.is_active ? false : true;
 
-      const response = await fetch(
-        `http://localhost:3001/form/change-input-enabled-status/${clickedInput.id}`,
+      await changeInputEnabledStatus(
         {
-          method: "put",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            newActiveStatus,
-            isDraft: isForDraft ? true : false,
-          }),
+          inputId: clickedInput.id,
+        },
+        {
+          newActiveStatus,
+          isDraft: isForDraft ? true : false,
         }
       );
-
-      if (!response.ok)
-        throw new Error("There was an error deleting this input from the draft form");
-
-      await response.json();
 
       setForm({
         ...form,
@@ -84,20 +80,10 @@ export const MetadataInputs = ({
     try {
       if (!isForDraft) return;
 
-      const response = await fetch("http://localhost:3001/form/publish", {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          draftFormId: form.form!.id,
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        }),
+      const data = await publish({
+        draftFormId: form.form!.id,
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
       });
-
-      if (!response.ok) throw new Error("Something went wrong when publishing this form");
-
-      const data = await response.json();
 
       console.log(data);
 
@@ -110,13 +96,7 @@ export const MetadataInputs = ({
   useEffect(() => {
     if (draftIdToFetch) {
       async function fetchFormToModify() {
-        const response = await fetch(
-          `http://localhost:3001/form/get-draft-form/${draftIdToFetch}`
-        );
-
-        if (!response.ok) throw new Error("There was a problem fetching the form");
-
-        const data = await response.json();
+        const data = await getDraftForm({ formId: draftIdToFetch! });
 
         if (setPrevSavedForm) {
           setPrevSavedForm({

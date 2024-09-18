@@ -6,6 +6,7 @@ import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector"
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
 import "./EditDraftForm.css";
+import { getDraftForm, updateForm } from "../../../utils/fetchRequests";
 
 export const EditDraftForm = () => {
   const { formId } = useParams();
@@ -25,23 +26,13 @@ export const EditDraftForm = () => {
 
   async function saveDraft() {
     try {
-      console.log("saveDraft", { draft });
-      const response = await fetch("http://localhost:3001/form/update-form", {
-        method: "put",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          draftFormId: draft.form!.id,
-          title: draft.form!.title,
-          description: draft.form!.description,
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        }),
+      const data = await updateForm({
+        draftFormId: draft.form!.id,
+        title: draft.form!.title,
+        description: draft.form!.description,
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        isForDraft: true,
       });
-
-      if (!response.ok) throw new Error("An error occured while updating the form draft");
-
-      const data = await response.json();
 
       setDraft({
         inputs: draft?.inputs,
@@ -97,13 +88,7 @@ export const EditDraftForm = () => {
   useEffect(() => {
     async function fetchFormForEdit() {
       try {
-        const response = await fetch(
-          `http://localhost:3001/form/get-draft-form/${formId}`
-        );
-
-        if (!response.ok) throw new Error("There was an error fetching draft form");
-
-        const data = await response.json();
+        const data = await getDraftForm({ formId });
 
         setDraft({
           form: data.form,
@@ -119,9 +104,5 @@ export const EditDraftForm = () => {
     fetchFormForEdit();
   }, []);
 
-  return (
-    <main className="edit-form">
-      {renderView()}
-    </main>
-  );
+  return <main className="edit-form">{renderView()}</main>;
 };

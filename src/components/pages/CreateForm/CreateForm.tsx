@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
+import {
+  getDraftForms,
+  storeInitialDraft,
+  updateForm,
+} from "../../../utils/fetchRequests";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
@@ -36,7 +41,7 @@ export const CreateForm = () => {
     null
   );
 
-  const [draftForms, setDraftForms] = useState([]);
+  const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
 
   let isStoring = false;
 
@@ -45,20 +50,9 @@ export const CreateForm = () => {
       if (isStoring) return;
       isStoring = true;
 
-      const response = await fetch("http://localhost:3001/form/store-initial-draft", {
-        method: "post",
-        body: JSON.stringify({
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const data = await storeInitialDraft({
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
       });
-
-      if (!response.ok)
-        throw new Error("An error occured while storing initial form draft");
-
-      const data = await response.json();
 
       console.log("Stored initial draft", data);
 
@@ -78,24 +72,14 @@ export const CreateForm = () => {
 
   async function saveDraft() {
     try {
-      console.log("saveDraft", { draft });
-      const response = await fetch("http://localhost:3001/form/update-form", {
-        method: "put",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          draftFormId: draft.form!.id,
-          title: draft.form!.title,
-          description: draft.form!.description,
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-          isForDraft: true,
-        }),
+      console.log('Trying to update form', draft)
+      const data = await updateForm({
+        formId: draft.form!.id,
+        title: draft.form!.title,
+        description: draft.form!.description,
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        isForDraft: true,
       });
-
-      if (!response.ok) throw new Error("An error occured while updating the form draft");
-
-      const data = await response.json();
 
       setDraft({
         inputs: draft?.inputs,
@@ -110,21 +94,19 @@ export const CreateForm = () => {
     console.log("form changed", draft);
   }, [draft.form?.id]);
 
-  async function getDraftForms() {
+  async function getDraftFormsLocal() {
     try {
       setInitiallyLoading(true);
-      const response = await fetch(
-        `http://localhost:3001/form/get-draft-forms/75c75c02-b39b-4f33-b940-49aa20b9eda4`
-      );
 
-      if (!response.ok) throw new Error("There was a problem fetching forms");
+      const data = await getDraftForms({
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+      });
 
-      const data = await response.json();
+      console.log("Get draft forms");
 
       setDraftForms(data);
 
       if (!data.length) {
-        console.log("Yes hello");
         createNewDraft();
         setCurrentView("metadata-inputs");
       }
@@ -197,7 +179,7 @@ export const CreateForm = () => {
   }
 
   useEffect(() => {
-    getDraftForms();
+    getDraftFormsLocal();
   }, []);
 
   useEffect(() => {

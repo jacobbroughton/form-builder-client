@@ -6,6 +6,7 @@ import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector"
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
 import "./EditPublishedForm.css";
+import { getPublishedForm, updateForm } from "../../../utils/fetchRequests";
 
 export const EditPublishedForm = () => {
   const { formId } = useParams();
@@ -28,23 +29,13 @@ export const EditPublishedForm = () => {
     try {
       if (!form.form) return;
 
-      const response = await fetch("http://localhost:3001/form/update-form", {
-        method: "put",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          formId: form.form.id,
-          title: form.form.title,
-          description: form.form!.description,
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-          isForDraft: false,
-        }),
+      const data = await updateForm({
+        formId: form.form.id,
+        title: form.form.title,
+        description: form.form!.description,
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        isForDraft: false,
       });
-
-      if (!response.ok) throw new Error("An error occured while updating the form form");
-
-      const data = await response.json();
 
       setForm({
         inputs: form?.inputs,
@@ -103,13 +94,7 @@ export const EditPublishedForm = () => {
   useEffect(() => {
     async function fetchFormForEdit() {
       try {
-        const response = await fetch(
-          `http://localhost:3001/form/get-published-form/${formId}`
-        );
-
-        if (!response.ok) throw new Error("There was an error fetching form form");
-
-        const data = await response.json();
+        const data = await getPublishedForm({ formId });
 
         setForm({
           form: data.form,

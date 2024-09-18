@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { EditIcon } from "../icons/EditIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import "./FormPopupMenu.css";
+import { Link } from "react-router-dom";
 
 export const FormPopupMenu = ({
   formId,
@@ -32,18 +33,17 @@ export const FormPopupMenu = ({
 
   return (
     <div ref={ref} className="form-popup-menu">
-      <button
-        type="button"
-        onClick={() =>
-          navigate(
-            isDraft ? `/edit-draft-form/${formId}` : `/edit-published-form/${formId}`
-          )
-        }
+      <Link
+        className="edit-link"
+        to={isDraft ? `/edit-draft-form/${formId}` : `/edit-published-form/${formId}`}
       >
         <EditIcon /> Edit
-      </button>
+      </Link>
+
       <button
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
           setFormPopupToggled(false);
           handleFormDelete();
         }}
@@ -54,4 +54,3 @@ export const FormPopupMenu = ({
     </div>
   );
 };
-

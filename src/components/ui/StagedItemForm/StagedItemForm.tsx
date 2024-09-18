@@ -11,6 +11,7 @@ import { handleCatchError } from "../../../utils/usefulFunctions";
 import { CheckIcon } from "../icons/CheckIcon";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import "./StagedItemForm.css";
+import { addNewInputToForm, getInputTypeProperties, getInputTypePropertyOptions } from "../../../utils/fetchRequests";
 
 export const StagedItemForm = ({
   form,
@@ -18,7 +19,7 @@ export const StagedItemForm = ({
   setCurrentView,
   stagedNewInputType,
   setStagedNewInputType,
-  isForDraft
+  isForDraft,
 }: {
   form: { form: DraftFormType | PublishedFormType | null; inputs: AddedInputType[] };
   setForm: React.Dispatch<
@@ -44,14 +45,9 @@ export const StagedItemForm = ({
     [key: string]: InputTypePropertyType[];
   }>({});
 
-  async function getInputTypeProperties(): Promise<void> {
+  async function getInputTypePropertiesLocal(): Promise<void> {
     try {
-      const response = await fetch("http://localhost:3001/form/item-type-properties");
-
-      if (!response.ok)
-        throw new Error("An error occured while fetching form item type properties");
-
-      const data = await response.json();
+      const data = await getInputTypeProperties();
 
       setInputTypeProperties(data);
     } catch (error) {
@@ -59,18 +55,9 @@ export const StagedItemForm = ({
     }
   }
 
-  async function getInputTypePropertyOptions(): Promise<void> {
+  async function getInputTypePropertyOptionsLocal(): Promise<void> {
     try {
-      const response = await fetch(
-        "http://localhost:3001/form/item-type-property-options"
-      );
-
-      if (!response.ok)
-        throw new Error(
-          "An error occured while fetching form item type property options"
-        );
-
-      const data = await response.json();
+      const data = await getInputTypePropertyOptions();
 
       setInputTypePropertyOptions(data);
     } catch (error) {
@@ -82,38 +69,17 @@ export const StagedItemForm = ({
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
 
-      console.log(form);
-
-      const response = await fetch("http://localhost:3001/form/add-new-input-to-form", {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          input: {
-            input_type_id: stagedNewInputType?.id,
-            metadata_question: stagedInputTitle,
-            metadata_description: stagedInputDescription,
-            properties,
-          },
-          form: {
-            id: form.form!.id,
-          },
-          userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-          isForDraft
-        }),
+      const data = await addNewInputToForm({
+        inputTypeId: stagedNewInputType?.id,
+        inputMetadataQuestion: stagedInputTitle,
+        inputMetadataDescription: stagedInputDescription,
+        properties,
+        formId: form.form!.id,
+        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        isForDraft,
       });
 
-      if (!response.ok)
-        throw new Error(
-          "Something happened when trying to add a new form item to the draft"
-        );
-
-      const data = await response.json();
-
       console.log("Added form item", data);
-
-      console.log({ properties });
 
       setForm({
         ...form,
@@ -177,8 +143,8 @@ export const StagedItemForm = ({
   }
 
   useEffect(() => {
-    getInputTypeProperties();
-    getInputTypePropertyOptions();
+    getInputTypePropertiesLocal();
+    getInputTypePropertyOptionsLocal();
   }, []);
 
   if (!form.form) return <p>Form not found</p>;

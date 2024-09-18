@@ -1,0 +1,92 @@
+.form-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-list > .form-list-item {
+  border: 1px solid #555;
+  /* padding: 5px; */
+  transition: 0.1s ease border-color;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* gap: 10px; */
+  height: 33px
+}
+
+.form-list > .form-list-item:hover {
+  text-decoration: none;
+  border-color: #6f6f6f;
+}
+
+.form-list > .form-list-item > .menu-button-container {
+  /* padding: 5px; */
+  padding-right: 5px;
+  position: relative;
+}
+
+.form-list > .form-list-item > .menu-button-container > .menu-button {
+  background-color: transparent;
+  border: 0;
+  /* width: 20px; */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.form-list > .form-list-item > .menu-button-container > .menu-button:hover {
+  background-color: #444;
+}
+
+.form-list > .form-list-item > .menu-button-container > .menu-button > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.form-list > .form-list-item > p.name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.form-list > .form-list-item > p.created-date {
+  cursor: help;
+  font-size: 0.75rem;
+  opacity: 0.5;
+  white-space: nowrap;
+  padding: 5px 10px;
+  height: 100%;
+  align-items: center;
+  display: flex;
+}
+
+.form-list > .form-list-item > .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  border-right: 1px solid #555;
+  padding: 5px 10px;
+  height: 100%;
+}
+
+.form-list > .form-list-item > .icon-container > svg {
+  fill: lightskyblue;
+}
+.form-list > .form-list-item > .icon-container.draft > svg {
+  width: 15px;
+  fill: #c37f00;
+}
+.form-list > .form-list-item > .icon-container.public > svg {
+  width: 15px;
+}

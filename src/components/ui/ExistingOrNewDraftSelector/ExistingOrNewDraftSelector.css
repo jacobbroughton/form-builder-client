@@ -83,6 +83,13 @@ main.create-form > .existing-or-new-draft-view > .options > button.create-new-dr
   padding: 5px;
   width: 100%;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  justify-content: space-between;
 }
 
 main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft:hover,
@@ -93,4 +100,19 @@ main.create-form
   > .draft-options
   > button:hover {
   border-color: #666;
+}
+
+main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft > .plus-container {
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  font-weight: 600;
+}
+
+main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft > .plus-container > svg {
+  fill: whitesmoke;
+  width: 15px;
 }
