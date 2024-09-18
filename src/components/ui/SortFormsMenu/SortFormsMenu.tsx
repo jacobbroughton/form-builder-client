@@ -1,10 +1,19 @@
 import { useEffect, useRef } from "react";
+import { SortOptionType } from "../../../lib/types";
 import "./SortFormsMenu.css";
 
 const SortFormsMenu = ({
   setSortMenuToggled,
+  setSelectedSort,
+  selectedSort,
 }: {
   setSortMenuToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedSort: React.Dispatch<React.SetStateAction<SortOptionType>>;
+  selectedSort: {
+    id: number;
+    name: string;
+    value: string;
+  };
 }): JSX.Element => {
   const ref = useRef<HTMLUListElement>(null);
 
@@ -12,22 +21,22 @@ const SortFormsMenu = ({
     {
       id: 1,
       name: "Alphabetical: A-Z",
-      value: "",
+      value: "alphabetical-a-z",
     },
     {
       id: 2,
       name: "Alphabetical: Z-A",
-      value: "",
+      value: "alphabetical-z-a",
     },
     {
       id: 3,
-      name: "Created Date: New-Old",
-      value: "",
+      name: "Date: New-Old",
+      value: "date-new-old",
     },
     {
       id: 4,
-      name: "Created Date: Old-New",
-      value: "",
+      name: "Date: Old-New",
+      value: "date-old-new",
     },
   ];
 
@@ -47,7 +56,13 @@ const SortFormsMenu = ({
     <ul className="sort-menu" ref={ref}>
       {sortOptions.map((sortOption) => (
         <li>
-          <button onClick={() => console.log("Sort: ", sortOption)}>
+          <button
+            className={`${selectedSort.id === sortOption.id ? "selected" : ""}`}
+            onClick={() => {
+              setSortMenuToggled(false);
+              setSelectedSort(sortOption);
+            }}
+          >
             {sortOption.name}
           </button>
         </li>

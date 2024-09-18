@@ -91,13 +91,15 @@ export const Draft = () => {
             <h1 className="title">{form.title}</h1>
             <p className="description">{form.description}</p>
           </div>
-          <div className="inputs">
-            {inputs.length ? (
-              inputs.map((input) => <FormInput input={input} />)
-            ) : (
-              <NoPromptsMessage formId={form.id} isDraft={true} />
-            )}
-          </div>
+          {inputs.length ? (
+            <div className="inputs">
+              {inputs.map((input) => (
+                <FormInput input={input} />
+              ))}
+            </div>
+          ) : (
+            <NoPromptsMessage formId={form.id} isDraft={true} />
+          )}
         </>
       )}
     </main>

@@ -9,6 +9,7 @@ import "./Form.css";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import { deletePublishedForm, getPublishedForm } from "../../../utils/fetchRequests";
 import { PlanetIcon } from "../../ui/icons/PlanetIcon";
+import { CheckIcon } from "../../ui/icons/CheckIcon";
 
 export const Form = () => {
   const { formId } = useParams();
@@ -29,6 +30,8 @@ export const Form = () => {
       handleCatchError(error);
     }
   }
+
+  async function handleFormSubmit() {}
 
   useEffect(() => {
     async function getForm(): Promise<void> {
@@ -95,6 +98,13 @@ export const Form = () => {
               <NoPromptsMessage formId={form.id} isDraft={false} />
             )}
           </div>
+          <button
+            className="submit-button"
+            type="button"
+            onClick={() => handleFormSubmit()}
+          >
+            <CheckIcon /> Submit
+          </button>
         </>
       )}
     </main>

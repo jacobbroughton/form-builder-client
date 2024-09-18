@@ -4,7 +4,7 @@ import { AddedInputType, InputTypeType, PublishedFormType } from "../../../lib/t
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
+import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 import { getPublishedForm, updateForm } from "../../../utils/fetchRequests";
 
@@ -19,8 +19,7 @@ export const EditPublishedForm = () => {
     form: null,
     inputs: [],
   });
-  const [initiallyLoading, setInitiallyLoading] = useState(false);
-  const [currentView, setCurrentView] = useState("metadata-inputs");
+   const [currentView, setCurrentView] = useState("metadata-inputs");
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
@@ -73,7 +72,7 @@ export const EditPublishedForm = () => {
       }
       case "staged-item-form": {
         return (
-          <StagedItemForm
+          <StagedInputForm
             form={form}
             setForm={setForm}
             setCurrentView={setCurrentView}

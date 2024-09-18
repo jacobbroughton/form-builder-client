@@ -25,6 +25,11 @@ ul.sort-menu > li > button {
   text-align: end;
 }
 
+ul.sort-menu > li > button.selected {
+  border-left: 3px solid lightgreen;
+  background-color: #3b3b3b;
+}
+
 ul.sort-menu > li > button:hover {
   background-color: #444;
 }

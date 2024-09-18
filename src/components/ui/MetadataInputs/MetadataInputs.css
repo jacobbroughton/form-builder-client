@@ -26,7 +26,7 @@
   border: 1px solid #555;
   border-radius: 3px;
   font-size: 1rem;
-  min-height: 100px
+  min-height: 100px;
 }
 
 .metadata-inputs > .added-inputs {
@@ -166,8 +166,8 @@
   background-color: #55555525;
 }
 
-
 .metadata-inputs > .publish-button,
+.metadata-inputs > .delete-button,
 .metadata-inputs > .save-button {
   display: flex;
   align-items: center;
@@ -176,14 +176,27 @@
   align-self: flex-start;
   font-size: 1rem;
   /* width: 100%; */
-  background-color: lightgreen;
   white-space: nowrap;
   border-radius: 3px;
-  border: 1px solid #555;
   padding: 3px 5px;
   cursor: pointer;
-  color: #333;
+  border: 1px solid #555;
+}
+
+.metadata-inputs > .delete-button {
+  background-color: transparent;
+}
+
+.metadata-inputs > .publish-button,
+.metadata-inputs > .save-button {
   font-weight: 600;
+  background-color: lightgreen;
+  color: #333;
+}
+
+.metadata-inputs > .delete-button > svg {
+  width: 13px;
+  fill: rgb(218, 86, 112);
 }
 
 .metadata-inputs > .publish-button > svg,

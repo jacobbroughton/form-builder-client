@@ -67,7 +67,7 @@ export interface AddedInputType {
   input_type_description: string;
   num_custom_properties: number;
   properties: { [key: string]: CreatedPropertyType };
-};
+}
 
 export type DraftFormType = {
   id: string;
@@ -96,3 +96,14 @@ export type PublishedFormType = {
   modified_by_id: null;
   modified_at: null;
 };
+
+export type SortOptionType = {
+  id: number;
+  name: string;
+  value: string;
+};
+
+export interface AllFormsType extends DraftFormType {
+  is_draft: boolean;
+  relevant_dt: string;
+}

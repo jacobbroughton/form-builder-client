@@ -1,0 +1,25 @@
+.floating-create-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #333;
+  box-shadow: #111 2px 2px 5px;
+  padding: 15px;
+  border-radius: 100%;
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.floating-create-button:hover {
+  background-color: #3b3b3b;
+}
+
+.floating-create-button svg {
+  width: 30px;
+  height: 30px;
+  fill: whitesmoke;
+}
+

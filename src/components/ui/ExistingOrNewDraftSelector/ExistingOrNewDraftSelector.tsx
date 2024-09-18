@@ -41,7 +41,6 @@ export const ExistingOrNewDraftSelector = ({
                   setCurrentView("metadata-inputs");
                 }}
               >
-                <p className="title">{formOption.id}</p>
                 <p className="title">{formOption.title}</p>
                 <p className="created-date">Created {timeAgo(formOption.created_at)}</p>
               </button>

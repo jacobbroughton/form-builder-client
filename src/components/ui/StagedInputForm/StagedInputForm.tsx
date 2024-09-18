@@ -2,18 +2,17 @@ import { useEffect, useState } from "react";
 import {
   InputTypePropertyOptionType,
   InputTypePropertyType,
-  DraftFormType,
   InputTypeType,
   AddedInputType,
-  PublishedFormType,
+  AllFormsType,
 } from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { CheckIcon } from "../icons/CheckIcon";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import "./StagedItemForm.css";
+import "./StagedInputForm.css";
 import { addNewInputToForm, getInputTypeProperties, getInputTypePropertyOptions } from "../../../utils/fetchRequests";
 
-export const StagedItemForm = ({
+export const StagedInputForm = ({
   form,
   setForm,
   setCurrentView,
@@ -21,10 +20,10 @@ export const StagedItemForm = ({
   setStagedNewInputType,
   isForDraft,
 }: {
-  form: { form: DraftFormType | PublishedFormType | null; inputs: AddedInputType[] };
+  form: { form: AllFormsType | null; inputs: AddedInputType[] };
   setForm: React.Dispatch<
     React.SetStateAction<{
-      form: DraftFormType | PublishedFormType | null;
+      form: AllFormsType | null;
       inputs: AddedInputType[];
     }>
   >;

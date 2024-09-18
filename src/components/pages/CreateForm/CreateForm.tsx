@@ -9,7 +9,7 @@ import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
+import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
 
 export const CreateForm = () => {
@@ -160,7 +160,7 @@ export const CreateForm = () => {
       }
       case "staged-item-form": {
         return (
-          <StagedItemForm
+          <StagedInputForm
             form={draft}
             setForm={setDraft}
             setCurrentView={setCurrentView}

@@ -4,7 +4,7 @@ import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import { StagedItemForm } from "../../ui/StagedItemForm/StagedItemForm";
+import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditDraftForm.css";
 import { getDraftForm, updateForm } from "../../../utils/fetchRequests";
 
@@ -67,7 +67,7 @@ export const EditDraftForm = () => {
       }
       case "staged-item-form": {
         return (
-          <StagedItemForm
+          <StagedInputForm
             form={draft}
             setForm={setDraft}
             setCurrentView={setCurrentView}

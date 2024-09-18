@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AddedInputType, DraftFormType, PublishedFormType } from "../../../lib/types";
+import {
+  AddedInputType,
+  AllFormsType,
+  DraftFormType,
+  PublishedFormType,
+} from "../../../lib/types";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
@@ -10,9 +15,11 @@ import "./MetadataInputs.css";
 import { SaveIcon } from "../icons/SaveIcon";
 import {
   changeInputEnabledStatus,
+  deleteDraftForm,
   getDraftForm,
   publish,
 } from "../../../utils/fetchRequests";
+import { TrashIcon } from "../icons/TrashIcon";
 
 export const MetadataInputs = ({
   form,
@@ -24,12 +31,12 @@ export const MetadataInputs = ({
   saveForm,
 }: {
   form: {
-    form: DraftFormType | PublishedFormType | null;
+    form: AllFormsType | null;
     inputs: AddedInputType[];
   };
   setForm: React.Dispatch<
     React.SetStateAction<{
-      form: DraftFormType | PublishedFormType | null;
+      form: AllFormsType | null;
       inputs: AddedInputType[];
     }>
   >;
@@ -46,6 +53,7 @@ export const MetadataInputs = ({
 }) => {
   const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
+  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
   const navigate = useNavigate();
 
   async function handleChangeDraftInputEnabledStatus(
@@ -93,6 +101,22 @@ export const MetadataInputs = ({
     }
   }
 
+  async function handleFormDelete() {
+    try {
+      if (!form.form!.id) throw new Error("No form id provided");
+
+      const data = await deleteDraftForm({ formId: form.form!.id });
+
+      console.log("Deleted form", data);
+
+      setDeletedViewShowing(true);
+
+      navigate("/");
+    } catch (error) {
+      handleCatchError(error);
+    }
+  }
+
   useEffect(() => {
     if (draftIdToFetch) {
       async function fetchFormToModify() {
@@ -116,6 +140,8 @@ export const MetadataInputs = ({
   }, []);
 
   if (!form.form) return <p>No form found</p>;
+
+  if (deletedViewShowing) return <p>This form has been deleted</p>;
 
   return (
     <div className="metadata-inputs">
@@ -149,7 +175,7 @@ export const MetadataInputs = ({
       </form>
       {form.inputs.length === 0 ? (
         <div className="no-items-yet">
-          <p>You haven't added any items yet</p>
+          <p>You haven't added any prompts yet</p>
         </div>
       ) : (
         <div className="added-inputs">
@@ -202,9 +228,15 @@ export const MetadataInputs = ({
       </button>
 
       {isForDraft ? (
-        <button className="publish-button" onClick={() => handlePublishForm()}>
-          <ShareIcon /> Publish Form
-        </button>
+        <>
+          <button className="delete-button" onClick={() => handleFormDelete()}>
+            <TrashIcon /> Delete Draft
+          </button>
+
+          <button className="publish-button" onClick={() => handlePublishForm()}>
+            <ShareIcon /> Publish Form
+          </button>
+        </>
       ) : (
         <button className="save-button" onClick={() => saveForm()}>
           <SaveIcon /> Save Form

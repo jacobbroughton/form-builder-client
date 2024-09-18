@@ -13,6 +13,8 @@
   flex-direction: column;
   justify-content: space-between;
   /* width: 235px; */
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .form-grid > .form-grid-item > .content {
@@ -64,8 +66,8 @@
 .form-grid > .form-grid-item > div.content > p.name {
   font-weight: 600;
   font-size: 0.875rem;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .form-grid > .form-grid-item > div.controls > .left-side {

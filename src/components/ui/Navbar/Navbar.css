@@ -1,16 +1,75 @@
 nav {
-  background-color: #555;
+  /* background-color: #555; */
+  border-bottom: 1px solid #555;
+  background-color: transparent;
   display: flex;
   justify-content: space-between;
-  padding: 3px 10px;
+  align-items: center;
   position: fixed;
+  height: 55px;
+  padding: 0 25px;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
 }
 
+nav > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 10px;
+}
+
+nav > a > svg {
+  width: 25px;
+  height: 25px;
+  fill: whitesmoke;
+}
+
 nav > ul {
   display: flex;
   gap: 10px;
+}
+
+nav > ul > li > .user-menu-toggle-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+nav > ul > li > .user-menu-toggle-container > .user-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+}
+
+nav > ul > li > .user-menu-toggle-container > .user-menu-toggle:hover {
+  background-color: #3b3b3b;;
+}
+
+nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > svg {
+  width: 30px;
+  height: 30px;
+}
+
+nav > ul > li > .user-menu-toggle-container > .user-menu {
+  position: absolute;
+  right: 5px;
+  top: calc(100% + 5px);
+  background-color: #333;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #555;
+}
+
+
+nav > ul > li > .user-menu-toggle-container > .user-menu > ul > li {
+  padding: 5px 10px;
 }

@@ -4,6 +4,8 @@ import {
   InputTypeType,
   InputTypePropertyType,
   AddedInputType,
+  InputTypePropertyOptionType,
+  AllFormsType,
 } from "../lib/types";
 
 export const storeInitialDraft = async (body: { userId: string }): Promise<object> => {
@@ -124,9 +126,10 @@ export const deleteDraftForm = async (params: {
 
 export const getAllForms = async (params: {
   userId: string | undefined;
-}): Promise<DraftFormType | PublishedFormType> => {
+  sort: string;
+}): Promise<AllFormsType[]> => {
   const response = await fetch(
-    `http://localhost:3001/form/get-all-forms/${params.userId}`
+    `http://localhost:3001/form/get-all-forms/${params.userId}/${params.sort}`
   );
 
   if (!response.ok) throw new Error("There was a problem fetching forms");
@@ -169,7 +172,7 @@ export const changeInputEnabledStatus = async (
 export const publish = async (body: {
   draftFormId: string;
   userId: string;
-}): Promise<void> => {
+}): Promise<PublishedFormType[]> => {
   const response = await fetch("http://localhost:3001/form/publish", {
     method: "post",
     headers: {
@@ -197,7 +200,9 @@ export const getInputTypeProperties = async (): Promise<{
   return await response.json();
 };
 
-export const getInputTypePropertyOptions = async (): Promise<void> => {
+export const getInputTypePropertyOptions = async (): Promise<{
+  [key: string]: InputTypePropertyOptionType[];
+}> => {
   const response = await fetch("http://localhost:3001/form/item-type-property-options");
 
   if (!response.ok)

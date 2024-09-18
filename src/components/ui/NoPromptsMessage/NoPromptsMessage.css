@@ -31,14 +31,15 @@ div.no-prompts-message > a {
   align-self: flex-start;
   padding: 3px 10px;
   border-radius: 3px;
-  background-color: #333;
+  /* background-color: #333; */
   border: 1px solid #444;
   transition: padding 0.1s ease;
 }
 
 div.no-prompts-message > a:hover {
-  background-color: #3b3b3b;
+  /* background-color: #3b3b3b; */
   text-decoration: none;
+  border-color: #4f4f4f;
   padding-right: 15px;
 }
 

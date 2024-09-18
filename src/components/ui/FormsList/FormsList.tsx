@@ -1,13 +1,20 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { deleteDraftForm, deletePublishedForm } from "../../../utils/fetchRequests";
+import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
 import { DraftIcon } from "../icons/DraftIcon";
 import { PlanetIcon } from "../icons/PlanetIcon";
-import { useState } from "react";
-import { deleteDraftForm, deletePublishedForm } from "../../../utils/fetchRequests";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
-import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
+import { AllFormsType } from "../../../lib/types";
 import "./FormsList.css";
 
-const FormsList = ({ forms, setForms }) => {
+const FormsList = ({
+  forms,
+  setForms,
+}: {
+  forms: AllFormsType[];
+  setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
+}) => {
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
   const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
 
