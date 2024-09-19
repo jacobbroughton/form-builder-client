@@ -9,9 +9,9 @@ import ListIcon from "../../ui/icons/ListIcon";
 import SortIcon from "../../ui/icons/SortIcon";
 import NoFormsMessage from "../../ui/NoFormsMessage/NoFormsMessage";
 import SortFormsMenu from "../../ui/SortFormsMenu/SortFormsMenu";
-import "./Forms.css";
+import "./Dashboard.css";
 
-export const Forms = () => {
+export const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [forms, setForms] = useState<AllFormsType[]>([]);
   const [sortMenuToggled, setSortMenuToggled] = useState<boolean>(false);

@@ -1,15 +1,19 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, Route, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
 import { Draft } from "./components/pages/Draft/Draft.tsx";
 import { EditDraftForm } from "./components/pages/EditDraftForm/EditDraftForm.tsx";
 import { EditPublishedForm } from "./components/pages/EditPublishedForm/EditPublishedForm.tsx";
 import { Form } from "./components/pages/Form/Form.tsx";
-import { Forms } from "./components/pages/Forms/Forms.tsx";
+import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
 import { ErrorPage } from "./ErrorPage.tsx";
 import "./index.css";
+import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
+import Login from "./components/pages/Login/Login.tsx";
+import Home from "./components/pages/Home/Home.tsx";
+import Landing from "./components/pages/Landing/Landing.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +23,28 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Forms />,
+        element: <Landing/>,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/form/:formId",
+        element: <Form />,
+      },
+      {
+        path: "/draft/:formId",
+        element: <Draft />,
+      },
+    ],
+  },
+  {
+    element: <AuthenticatedRoutes />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/create-form",
@@ -32,14 +57,6 @@ const router = createBrowserRouter([
       {
         path: "/edit-published-form/:formId",
         element: <EditPublishedForm />,
-      },
-      {
-        path: "/form/:formId",
-        element: <Form />,
-      },
-      {
-        path: "/draft/:formId",
-        element: <Draft />,
       },
     ],
   },

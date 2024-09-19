@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
 import {
   getDraftForms,
@@ -11,6 +11,7 @@ import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector"
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
+import { UserContext } from "../../../UserContextProvider";
 
 export const CreateForm = () => {
   const [draft, setDraft] = useState<{
@@ -41,6 +42,8 @@ export const CreateForm = () => {
     null
   );
 
+  const userContext = useContext(UserContext)
+
   const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
 
   let isStoring = false;
@@ -51,7 +54,7 @@ export const CreateForm = () => {
       isStoring = true;
 
       const data = await storeInitialDraft({
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
+        userId: userContext.user!.id,
       });
 
       console.log("Stored initial draft", data);

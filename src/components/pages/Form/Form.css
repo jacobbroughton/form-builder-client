@@ -36,7 +36,6 @@ main.published-form > .form-controls > .published-status > svg {
   fill: lightskyblue;
 }
 
-
 main.published-form > .form-controls > .published-status > svg {
   width: 15px;
   fill: lightblue;
@@ -80,17 +79,18 @@ main.published-form
 }
 
 main.published-form > .heading {
-   /* padding: 10px; */
-   padding-left: 10px;
-   border-left: 5px solid #444; 
-   /* border-radius: 3px;  */
+  /* padding: 10px; */
+  padding-left: 10px;
+  border-left: 5px solid #444;
+  /* border-radius: 3px;  */
   margin-bottom: 10px;
-}
-
-main.published-form > .heading {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+main.published-form > .heading.no-margin-bottom {
+  margin-bottom: 0;
 }
 
 main.published-form > .heading > h1.title {

@@ -107,3 +107,8 @@ export interface AllFormsType extends DraftFormType {
   is_draft: boolean;
   relevant_dt: string;
 }
+
+export type UserType = {
+  id: string;
+  isAdmin: boolean;
+} | null

@@ -87,24 +87,28 @@ export const Form = () => {
               )}
             </div>
           </div>
-          <div className="heading">
+          <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
             <h1 className="title">{form.title}</h1>
             <p className="description">{form.description}</p>
           </div>
-          <div className="inputs">
-            {inputs.length ? (
-              inputs.map((input) => <FormInput input={input} />)
-            ) : (
-              <NoPromptsMessage formId={form.id} isDraft={false} />
-            )}
-          </div>
-          <button
-            className="submit-button"
-            type="button"
-            onClick={() => handleFormSubmit()}
-          >
-            <CheckIcon /> Submit
-          </button>
+          {inputs.length ? (
+            <>
+              <div className="inputs">
+                {inputs.map((input) => (
+                  <FormInput input={input} />
+                ))}
+              </div>
+              <button
+                className="submit-button"
+                type="button"
+                onClick={() => handleFormSubmit()}
+              >
+                <CheckIcon /> Submit
+              </button>
+            </>
+          ) : (
+            <NoPromptsMessage formId={form.id} isDraft={false} />
+          )}
         </>
       )}
     </main>

@@ -1,0 +1,41 @@
+main.landing {
+  display: flex;
+  flex-direction: column;
+  padding: 69px 10px 50px 10px;
+  width: 100%;
+  /* max-width: 500px; */
+  margin: 0 auto;
+  gap: 10px;
+}
+
+main.landing > .hero-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+main.landing > .hero-banner > h1 {
+  /* width: 100%; */
+  font-size: calc((100vw / 7));
+  line-height: calc((100vw / 7));
+}
+
+main.landing > .hero-banner > p {
+  font-style: italic;
+}
+
+main.landing > .hero-banner > a {
+  background-color: blueviolet;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: transform 0.05s ease, padding 0.05s ease, border-color 0.05s ease;
+  border: 1px solid transparent;
+}
+
+main.landing > .hero-banner > a:hover {
+  transform: skew(-5deg, -5deg);
+  padding: 5px 15px;
+  text-decoration: none;
+  border-color: teal;
+}

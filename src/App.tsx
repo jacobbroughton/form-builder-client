@@ -1,12 +1,10 @@
-import { Outlet } from "react-router-dom";
-import { Navbar } from "./components/ui/Navbar/Navbar";
+import { Outlet, useLocation } from "react-router-dom";
 import "./App.css";
 import FloatingCreateButton from "./components/ui/FloatingCreateButton/FloatingCreateButton";
-import { useLocation } from "react-router-dom";
+import { Navbar } from "./components/ui/Navbar/Navbar";
 
 function App() {
-
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <>
@@ -14,7 +12,7 @@ function App() {
       <div id="detail">
         <Outlet />
       </div>
-      {location.pathname !== '/create-form' ? <FloatingCreateButton /> : false}
+      {location.pathname !== "/create-form" ? <FloatingCreateButton /> : false}
     </>
   );
 }
