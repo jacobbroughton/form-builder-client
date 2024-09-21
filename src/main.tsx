@@ -14,6 +14,7 @@ import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
 import Login from "./components/pages/Login/Login.tsx";
 import Home from "./components/pages/Home/Home.tsx";
 import Landing from "./components/pages/Landing/Landing.tsx";
+import UserContextProvider, { UserContext } from "./UserContextProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Landing/>,
+        element: <Landing />,
       },
       {
         path: "/login",
@@ -64,6 +65,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <UserContextProvider>
+      <RouterProvider router={router} />
+    </UserContextProvider>
   </StrictMode>
 );
