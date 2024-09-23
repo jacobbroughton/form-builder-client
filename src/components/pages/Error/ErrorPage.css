@@ -1,0 +1,15 @@
+main.error-page {
+  display: flex;
+  flex-direction: column;
+  padding: 69px 10px 50px 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+main.error-page > p.error-message {
+  padding: 10px;
+  border-radius: 3px;
+  background-color: rgba(220, 20, 60, 0.25);
+}

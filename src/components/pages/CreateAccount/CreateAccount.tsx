@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
 import GoogleIcon from "../../ui/icons/GoogleIcon";
-import "./Login.css";
+import "./CreateAccount.css";
 import { getGoogleOAuthUrl } from "../../../utils/getGoogleOAuthUrl";
 
-const Login = () => {
+const CreateAccount = () => {
   return (
-    <main className="login">
-      <h1>Welcome back</h1>
+    <main className="create-account">
+      <h1>Create an account</h1>
       <div className="providers-list">
         <Link to={getGoogleOAuthUrl()} className="provider-link">
           <GoogleIcon /> Continue with Google
         </Link>
       </div>
       <p>
-        Don't have an account? <Link to={"/create-account"}>Sign Up</Link>
+        Already have an account? <Link to={"/login"}>Login</Link>
       </p>
     </main>
   );
 };
-export default Login;
+export default CreateAccount;

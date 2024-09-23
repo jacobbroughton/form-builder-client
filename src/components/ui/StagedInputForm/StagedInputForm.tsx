@@ -10,7 +10,11 @@ import { handleCatchError } from "../../../utils/usefulFunctions";
 import { CheckIcon } from "../icons/CheckIcon";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import "./StagedInputForm.css";
-import { addNewInputToForm, getInputTypeProperties, getInputTypePropertyOptions } from "../../../utils/fetchRequests";
+import {
+  addNewInputToForm,
+  getInputTypeProperties,
+  getInputTypePropertyOptions,
+} from "../../../utils/fetchRequests";
 
 export const StagedInputForm = ({
   form,
@@ -77,8 +81,6 @@ export const StagedInputForm = ({
         userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         isForDraft,
       });
-
-      console.log("Added form item", data);
 
       setForm({
         ...form,

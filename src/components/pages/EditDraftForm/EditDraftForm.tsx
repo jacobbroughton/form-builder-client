@@ -94,8 +94,6 @@ export const EditDraftForm = () => {
           form: data.form,
           inputs: data.inputs,
         });
-
-        console.log("fetched draft form to edit", data);
       } catch (error) {
         handleCatchError(error);
       }

@@ -1,4 +1,4 @@
-main.login {
+main.create-account {
   display: flex;
   flex-direction: column;
   padding: 109px 10px 50px 10px;
@@ -11,32 +11,32 @@ main.login {
   height: 100%;
 }
 
-main.login > h1 {
+main.create-account > h1 {
   font-weight: 600;
 }
 
-main.login > .providers-list {
+main.create-account > .providers-list {
   display: flex;
 }
 
-main.login > .providers-list > a.provider-link {
+main.create-account > .providers-list > a.provider-link {
   padding: 10px;
   display: flex;
   gap: 15px;
   align-items: center;
   font-size: 1rem;
   background-color: transparent;
-  border: 1px solid grey;
+  border: 1px solid grey;;
   border-radius: 5px;
   transition: 0.1s ease background-color;
   cursor: pointer;
+}
+
+main.create-account > .providers-list > a.provider-link:hover {
+  background-color: #333;;
   text-decoration: none;
 }
 
-main.login > .providers-list > a.provider-link:hover {
-  background-color: #333;
-}
-
-main.login > .providers-list > a.provider-link > svg {
-  width: 20px;
+main.create-account > .providers-list > a.provider-link > svg {
+width: 20px
 }

@@ -23,8 +23,6 @@ export const Draft = () => {
     try {
       const data = await deleteDraftForm({ formId });
 
-      console.log("Deleted form", data);
-
       setDeletedViewShowing(true);
 
       navigate("/");

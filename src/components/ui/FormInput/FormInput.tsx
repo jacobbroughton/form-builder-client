@@ -3,7 +3,6 @@ import { AddedInputType } from "../../../lib/types";
 import "./FormInput.css";
 
 export const FormInput = ({ input }: { input: AddedInputType }) => {
-  console.log({input})
   const [value, setValue] = useState(input.properties?.[`default-value`]?.value || "");
 
   function renderInput() {
@@ -107,7 +106,10 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         return (
           <div className="input-wrapper">
             <p>sadf</p>
-            <input type="color" defaultValue={input.properties?.[`default-value`]?.value} />
+            <input
+              type="color"
+              defaultValue={input.properties?.[`default-value`]?.value}
+            />
           </div>
         );
       }
@@ -135,4 +137,3 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
     </div>
   );
 };
-

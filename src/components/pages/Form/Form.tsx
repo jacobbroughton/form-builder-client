@@ -24,8 +24,6 @@ export const Form = () => {
       const data = await deletePublishedForm({ formId });
 
       setDeletedViewShowing(true);
-
-      console.log("Deleted form", data);
     } catch (error) {
       handleCatchError(error);
     }

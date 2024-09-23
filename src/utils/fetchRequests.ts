@@ -17,6 +17,7 @@ export const storeInitialDraft = async (body: { userId: string }): Promise<objec
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   if (!response.ok) throw new Error("An error occured while storing initial form draft");
@@ -43,6 +44,7 @@ export const updateForm = async (body: {
       userId: body.userId,
       isForDraft: body.isForDraft,
     }),
+    credentials: "include",
   });
 
   if (!response.ok) throw new Error("An error occured while updating the form draft");
@@ -66,7 +68,8 @@ export const getDraftForm = async (params: { formId: string | undefined }) => {
   if (!params.formId) throw new Error("No form ID provided for fetching draft form");
 
   const response = await fetch(
-    `http://localhost:3001/form/get-draft-form/${params.formId}`
+    `http://localhost:3001/form/get-draft-form/${params.formId}`,
+    { credentials: "include" }
   );
 
   if (!response.ok)
@@ -81,7 +84,10 @@ export const getDraftForms = async (params: {
   if (!params.userId) throw new Error("No user ID provided for fetching draft forms");
 
   const response = await fetch(
-    `http://localhost:3001/form/get-draft-forms/${params.userId}`
+    `http://localhost:3001/form/get-draft-forms/${params.userId}`,
+    {
+      credentials: "include",
+    }
   );
 
   if (!response.ok) throw new Error("There was a problem fetching forms");
@@ -96,6 +102,7 @@ export const deletePublishedForm = async (params: {
     `http://localhost:3001/form/delete-published-form/${params.formId}`,
     {
       method: "put",
+      credentials: "include",
     }
   );
 
@@ -115,6 +122,7 @@ export const deleteDraftForm = async (params: {
     `http://localhost:3001/form/delete-draft-form/${params.formId}`,
     {
       method: "put",
+      credentials: "include",
     }
   );
 
@@ -129,7 +137,10 @@ export const getAllForms = async (params: {
   sort: string;
 }): Promise<AllFormsType[]> => {
   const response = await fetch(
-    `http://localhost:3001/form/get-all-forms/${params.userId}/${params.sort}`
+    `http://localhost:3001/form/get-all-forms/${params.userId}/${params.sort}`,
+    {
+      credentials: "include",
+    }
   );
 
   if (!response.ok) throw new Error("There was a problem fetching forms");
@@ -138,7 +149,9 @@ export const getAllForms = async (params: {
 };
 
 export const getInputTypes = async (): Promise<InputTypeType[]> => {
-  const response = await fetch("http://localhost:3001/form/item-types");
+  const response = await fetch("http://localhost:3001/form/get-default-input-types", {
+    credentials: "include",
+  });
 
   if (!response.ok) throw new Error("An error occured while fetching form types");
 
@@ -160,6 +173,7 @@ export const changeInputEnabledStatus = async (
         newActiveStatus: body.newActiveStatus,
         isDraft: body.isDraft,
       }),
+      credentials: "include",
     }
   );
 
@@ -182,6 +196,7 @@ export const publish = async (body: {
       draftFormId: body.draftFormId,
       userId: body.userId,
     }),
+    credentials: "include",
   });
 
   if (!response.ok) throw new Error("Something went wrong when publishing this form");
@@ -192,7 +207,10 @@ export const publish = async (body: {
 export const getInputTypeProperties = async (): Promise<{
   [key: string]: InputTypePropertyType[];
 }> => {
-  const response = await fetch("http://localhost:3001/form/item-type-properties");
+  const response = await fetch(
+    "http://localhost:3001/form/get-default-input-properties",
+    { credentials: "include" }
+  );
 
   if (!response.ok)
     throw new Error("An error occured while fetching form item type properties");
@@ -203,7 +221,10 @@ export const getInputTypeProperties = async (): Promise<{
 export const getInputTypePropertyOptions = async (): Promise<{
   [key: string]: InputTypePropertyOptionType[];
 }> => {
-  const response = await fetch("http://localhost:3001/form/item-type-property-options");
+  const response = await fetch(
+    "http://localhost:3001/form/get-default-input-property-options",
+    { credentials: "include" }
+  );
 
   if (!response.ok)
     throw new Error("An error occured while fetching form item type property options");
@@ -236,6 +257,7 @@ export const addNewInputToForm = async (body: {
       userId: body.userId,
       isForDraft: body.isForDraft,
     }),
+    credentials: "include",
   });
 
   if (!response.ok)

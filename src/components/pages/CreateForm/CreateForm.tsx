@@ -42,7 +42,7 @@ export const CreateForm = () => {
     null
   );
 
-  const userContext = useContext(UserContext)
+  const userContext = useContext(UserContext);
 
   const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
 
@@ -56,8 +56,6 @@ export const CreateForm = () => {
       const data = await storeInitialDraft({
         userId: userContext.user!.id,
       });
-
-      console.log("Stored initial draft", data);
 
       setPrevSavedForm({
         form: data,
@@ -75,7 +73,6 @@ export const CreateForm = () => {
 
   async function saveDraft() {
     try {
-      console.log('Trying to update form', draft)
       const data = await updateForm({
         formId: draft.form!.id,
         title: draft.form!.title,
@@ -93,10 +90,6 @@ export const CreateForm = () => {
     }
   }
 
-  useEffect(() => {
-    console.log("form changed", draft);
-  }, [draft.form?.id]);
-
   async function getDraftFormsLocal() {
     try {
       setInitiallyLoading(true);
@@ -104,8 +97,6 @@ export const CreateForm = () => {
       const data = await getDraftForms({
         userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
       });
-
-      console.log("Get draft forms");
 
       setDraftForms(data);
 
@@ -224,7 +215,6 @@ export const CreateForm = () => {
   useEffect(() => {
     const interval2 = setInterval(() => {
       if (!saved) {
-        console.log("Not saved");
         setAutoSaveCountdown((prev) => (prev -= 1));
       }
     }, 1000);

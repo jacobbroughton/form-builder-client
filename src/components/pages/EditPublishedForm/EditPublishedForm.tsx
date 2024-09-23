@@ -19,7 +19,7 @@ export const EditPublishedForm = () => {
     form: null,
     inputs: [],
   });
-   const [currentView, setCurrentView] = useState("metadata-inputs");
+  const [currentView, setCurrentView] = useState("metadata-inputs");
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
@@ -99,8 +99,6 @@ export const EditPublishedForm = () => {
           form: data.form,
           inputs: data.inputs,
         });
-
-        console.log("fetched published form to edit", data);
       } catch (error) {
         handleCatchError(error);
       }

@@ -18,8 +18,6 @@ export const InputTypeSelector = ({
     try {
       const data = await getInputTypes();
 
-      console.log(data)
-
       setInputTypes(data);
     } catch (error) {
       handleCatchError(error);
@@ -42,20 +40,24 @@ export const InputTypeSelector = ({
         </button>
       </div>
       <div className="input-types-selector">
-        {inputTypes.length === 0 ? <p>No input types</p> : inputTypes.map((inputType) => (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                setStagedNewInputType(inputType);
-                setCurrentView("staged-item-form");
-              }}
-            >
-              <p className="name">{inputType.name}</p>
-              <p className="description">{inputType.description}</p>
-            </button>
-          </>
-        ))}
+        {inputTypes.length === 0 ? (
+          <p>No input types</p>
+        ) : (
+          inputTypes.map((inputType) => (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setStagedNewInputType(inputType);
+                  setCurrentView("staged-item-form");
+                }}
+              >
+                <p className="name">{inputType.name}</p>
+                <p className="description">{inputType.description}</p>
+              </button>
+            </>
+          ))
+        )}
       </div>
     </div>
   );

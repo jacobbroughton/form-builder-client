@@ -13,11 +13,7 @@ export function getGoogleOAuthUrl() {
     ].join(" "),
   };
 
-  console.log(options)
-
   const queryStrings = new URLSearchParams(options);
-
-  console.log(options)
 
   return `${rootUrl}?${queryStrings.toString()}`;
 }

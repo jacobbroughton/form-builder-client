@@ -12,7 +12,7 @@ main.landing > .hero-banner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 main.landing > .hero-banner > h1 {
@@ -25,17 +25,35 @@ main.landing > .hero-banner > p {
   font-style: italic;
 }
 
-main.landing > .hero-banner > a {
+main.landing > .hero-banner > .cta-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+main.landing > .hero-banner > .cta-links > a:first-child {
   background-color: blueviolet;
+}
+
+main.landing > .hero-banner > .cta-links > a:first-child:hover {
+  background-color: hsl(271 76% 60% / 1);
+}
+
+main.landing > .hero-banner > .cta-links > a:not(:first-child) {
+  background-color: transparent;
+}
+
+main.landing > .hero-banner > .cta-links > a:not(:first-child):hover {
+  background-color: #333;
+}
+
+main.landing > .hero-banner > .cta-links > a {
   padding: 5px 10px;
   border-radius: 3px;
   transition: transform 0.05s ease, padding 0.05s ease, border-color 0.05s ease;
-  border: 1px solid transparent;
+  border: 1px solid #555;
 }
 
-main.landing > .hero-banner > a:hover {
-  transform: skew(-5deg, -5deg);
-  padding: 5px 15px;
+main.landing > .hero-banner > .cta-links > a:hover {
   text-decoration: none;
-  border-color: teal;
 }

@@ -93,8 +93,6 @@ export const MetadataInputs = ({
         userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
       });
 
-      console.log(data);
-
       navigate(`/form/${data[0].id}`);
     } catch (error) {
       handleCatchError(error);
@@ -106,8 +104,6 @@ export const MetadataInputs = ({
       if (!form.form!.id) throw new Error("No form id provided");
 
       const data = await deleteDraftForm({ formId: form.form!.id });
-
-      console.log("Deleted form", data);
 
       setDeletedViewShowing(true);
 
@@ -194,7 +190,6 @@ export const MetadataInputs = ({
                 className="popup-menu-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  console.log(input);
                   setIdForInputPopup(input.id);
                   setInputPopupToggled(
                     idForInputPopup == input.id ? !inputPopupToggled : true

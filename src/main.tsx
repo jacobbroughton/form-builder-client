@@ -1,35 +1,27 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, Navigate, Route, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
+import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
 import { Draft } from "./components/pages/Draft/Draft.tsx";
 import { EditDraftForm } from "./components/pages/EditDraftForm/EditDraftForm.tsx";
 import { EditPublishedForm } from "./components/pages/EditPublishedForm/EditPublishedForm.tsx";
 import { Form } from "./components/pages/Form/Form.tsx";
-import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
-import { ErrorPage } from "./ErrorPage.tsx";
-import "./index.css";
-import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
-import Login from "./components/pages/Login/Login.tsx";
-import Home from "./components/pages/Home/Home.tsx";
 import Landing from "./components/pages/Landing/Landing.tsx";
-import UserContextProvider, { UserContext } from "./UserContextProvider.tsx";
+import Login from "./components/pages/Login/Login.tsx";
+import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
+import "./index.css";
+import UserContextProvider from "./UserContextProvider.tsx";
+import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
+import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
+import { ErrorPage } from "./components/pages/Error/ErrorPage.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        element: <Landing />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
       {
         path: "/form/:formId",
         element: <Form />,
@@ -41,7 +33,27 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/",
+    element: <UnauthenticatedRoutes />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <Landing />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/create-account",
+        element: <CreateAccount />,
+      },
+    ],
+  },
+  {
     element: <AuthenticatedRoutes />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/dashboard",
