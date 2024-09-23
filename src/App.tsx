@@ -1,9 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
-import "./App.css";
 import FloatingCreateButton from "./components/ui/FloatingCreateButton/FloatingCreateButton";
 import { Navbar } from "./components/ui/Navbar/Navbar";
 import { useContext } from "react";
-import { UserContext } from "./UserContextProvider";
+import { UserContext } from "./providers/UserContextProvider";
 
 function App() {
   const location = useLocation();

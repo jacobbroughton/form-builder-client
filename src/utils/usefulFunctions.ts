@@ -25,7 +25,7 @@ export function timeAgo(date: string) {
   }
 }
 
-export function handleCatchError(error: Error | string | unknown) {
+export function printError(error: Error | string | unknown) {
   if (typeof error === "string") {
     console.log(error.toUpperCase());
   } else if (error instanceof Error) {

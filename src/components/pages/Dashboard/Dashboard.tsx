@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AllFormsType, DraftFormType, SortOptionType } from "../../../lib/types";
 import { getAllForms } from "../../../utils/fetchRequests";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import FormsGrid from "../../ui/FormsGrid/FormsGrid";
 import FormsList from "../../ui/FormsList/FormsList";
 import GridIcon from "../../ui/icons/GridIcon";
@@ -10,6 +10,8 @@ import SortIcon from "../../ui/icons/SortIcon";
 import NoFormsMessage from "../../ui/NoFormsMessage/NoFormsMessage";
 import SortFormsMenu from "../../ui/SortFormsMenu/SortFormsMenu";
 import "./Dashboard.css";
+import { UserContext } from "../../../providers/UserContextProvider";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,6 +25,7 @@ export const Dashboard = () => {
     name: "Date: New-Old",
     value: "date-new-old",
   });
+  const { setError } = useContext(ErrorContext);
 
   async function getForms() {
     try {
@@ -32,11 +35,20 @@ export const Dashboard = () => {
         userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         sort: selectedSort.value,
       });
+
       setForms(data);
 
       setLoading(false);
     } catch (error) {
-      handleCatchError(error);
+      setLoading(false);
+
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 

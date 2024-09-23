@@ -1,25 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  AddedInputType,
-  AllFormsType,
-  DraftFormType,
-  PublishedFormType,
-} from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
-import { PlusIcon } from "../icons/PlusIcon";
-import { ShareIcon } from "../icons/ShareIcon";
-import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
-import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
-import "./MetadataInputs.css";
-import { SaveIcon } from "../icons/SaveIcon";
+import { AddedInputType, AllFormsType, DraftFormType } from "../../../lib/types";
 import {
   changeInputEnabledStatus,
   deleteDraftForm,
   getDraftForm,
   publish,
 } from "../../../utils/fetchRequests";
+import { printError } from "../../../utils/usefulFunctions";
+import { PlusIcon } from "../icons/PlusIcon";
+import { SaveIcon } from "../icons/SaveIcon";
+import { ShareIcon } from "../icons/ShareIcon";
+import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { TrashIcon } from "../icons/TrashIcon";
+import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
+import "./MetadataInputs.css";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const MetadataInputs = ({
   form,
@@ -56,6 +52,8 @@ export const MetadataInputs = ({
   const [deletedViewShowing, setDeletedViewShowing] = useState(false);
   const navigate = useNavigate();
 
+  const { setError } = useContext(ErrorContext);
+
   async function handleChangeDraftInputEnabledStatus(
     clickedInput: AddedInputType
   ): Promise<void> {
@@ -80,7 +78,13 @@ export const MetadataInputs = ({
         })),
       });
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -95,7 +99,13 @@ export const MetadataInputs = ({
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -103,13 +113,19 @@ export const MetadataInputs = ({
     try {
       if (!form.form!.id) throw new Error("No form id provided");
 
-      const data = await deleteDraftForm({ formId: form.form!.id });
+      await deleteDraftForm({ formId: form.form!.id });
 
       setDeletedViewShowing(true);
 
       navigate("/");
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 

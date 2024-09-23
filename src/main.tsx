@@ -2,20 +2,21 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
+import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
 import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
 import { Draft } from "./components/pages/Draft/Draft.tsx";
 import { EditDraftForm } from "./components/pages/EditDraftForm/EditDraftForm.tsx";
 import { EditPublishedForm } from "./components/pages/EditPublishedForm/EditPublishedForm.tsx";
+import { ErrorPage } from "./components/pages/Error/ErrorPage.tsx";
 import { Form } from "./components/pages/Form/Form.tsx";
 import Landing from "./components/pages/Landing/Landing.tsx";
 import Login from "./components/pages/Login/Login.tsx";
 import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
-import "./index.css";
-import UserContextProvider from "./UserContextProvider.tsx";
 import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
-import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
-import { ErrorPage } from "./components/pages/Error/ErrorPage.tsx";
+import "./index.css";
+import UserContextProvider from "./providers/UserContextProvider.tsx";
+import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -77,8 +78,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <UserContextProvider>
-      <RouterProvider router={router} />
-    </UserContextProvider>
+    <ErrorContextProvider>
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
+    </ErrorContextProvider>
   </StrictMode>
 );

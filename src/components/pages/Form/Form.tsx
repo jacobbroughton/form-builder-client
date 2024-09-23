@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
@@ -10,6 +10,7 @@ import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import { deletePublishedForm, getPublishedForm } from "../../../utils/fetchRequests";
 import { PlanetIcon } from "../../ui/icons/PlanetIcon";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const Form = () => {
   const { formId } = useParams();
@@ -19,13 +20,21 @@ export const Form = () => {
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
+  const {setError} = useContext(ErrorContext)
+
   async function handleFormDelete(): Promise<void> {
     try {
       const data = await deletePublishedForm({ formId });
 
       setDeletedViewShowing(true);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -42,7 +51,13 @@ export const Form = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        handleCatchError(error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
+        
+        printError(error);
       }
     }
 

@@ -102,7 +102,11 @@ main.create-form
   border-color: #666;
 }
 
-main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft > .plus-container {
+main.create-form
+  > .existing-or-new-draft-view
+  > .options
+  > button.create-new-draft
+  > .plus-container {
   font-size: 1.15rem;
   display: flex;
   align-items: center;
@@ -112,7 +116,12 @@ main.create-form > .existing-or-new-draft-view > .options > button.create-new-dr
   font-weight: 600;
 }
 
-main.create-form > .existing-or-new-draft-view > .options > button.create-new-draft > .plus-container > svg {
+main.create-form
+  > .existing-or-new-draft-view
+  > .options
+  > button.create-new-draft
+  > .plus-container
+  > svg {
   fill: whitesmoke;
   width: 15px;
 }

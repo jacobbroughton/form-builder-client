@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
 import { DraftIcon } from "../icons/DraftIcon";
 import { PlanetIcon } from "../icons/PlanetIcon";
-import { useState } from "react";
+import React, { useState } from "react";
 import { deleteDraftForm, deletePublishedForm } from "../../../utils/fetchRequests";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
-import "./FormsGrid.css"
+import "./FormsGrid.css";
+import { AllFormsType } from "../../../lib/types";
 
-const FormsGrid = ({ forms, setForms }) => {
+const FormsGrid = ({
+  forms,
+  setForms,
+}: {
+  forms: AllFormsType[];
+  setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
+}) => {
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
   const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
 
@@ -15,6 +22,7 @@ const FormsGrid = ({ forms, setForms }) => {
     <section className="form-grid">
       {forms.map((form) => (
         <Link
+          key={form.id}
           to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
           className="form-grid-item"
         >

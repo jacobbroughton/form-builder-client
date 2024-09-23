@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { AllFormsType } from "../../../lib/types";
 import { deleteDraftForm, deletePublishedForm } from "../../../utils/fetchRequests";
 import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
 import { DraftIcon } from "../icons/DraftIcon";
 import { PlanetIcon } from "../icons/PlanetIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
-import { AllFormsType } from "../../../lib/types";
 import "./FormsList.css";
 
 const FormsList = ({
@@ -21,28 +21,34 @@ const FormsList = ({
   return (
     <section className="form-list">
       {forms.map((form) => (
-        <Link
-          to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
-          className="form-list-item"
-        >
-          {form.is_draft ? (
-            <div className="icon-container draft" title="This form is still a draft">
-              <DraftIcon />
-            </div>
-          ) : (
-            <div className="icon-container public" title="This form is public">
-              <PlanetIcon />
-            </div>
-          )}
-          <p className="name">{form.title}</p>
+        <div className="form-list-item" key={form.id}>
+          <Link
+            to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
+            className="form-list-item-link"
+          >
+            {form.is_draft ? (
+              <div className="icon-container draft" title="This form is still a draft">
+                <DraftIcon />
+              </div>
+            ) : (
+              <div className="icon-container public" title="This form is public">
+                <PlanetIcon />
+              </div>
+            )}
+            <p className="name">{form.title}</p>
 
-          <p className="created-date" title={new Date(form.relevant_dt).toLocaleString()}>
-            {new Date(form.relevant_dt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
+            <p
+              className="created-date"
+              title={new Date(form.relevant_dt).toLocaleString()}
+            >
+              {new Date(form.relevant_dt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+          </Link>
+
           <div className="menu-button-container">
             <button
               className="menu-button"
@@ -78,7 +84,7 @@ const FormsList = ({
               false
             )}
           </div>
-        </Link>
+        </div>
       ))}
     </section>
   );

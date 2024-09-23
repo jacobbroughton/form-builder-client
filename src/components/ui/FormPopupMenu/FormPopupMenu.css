@@ -1,14 +1,16 @@
 .form-popup-menu {
   position: absolute;
   right: 0;
-  top: calc(100% + 5px);
+  top: calc(100% + 10px);
   z-index: 2;
   padding: 0;
-  background-color: #333;
-  border: 1px solid #444;
+  background-color: #222;
+  border: 1px solid #555;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .form-popup-menu button,
@@ -38,7 +40,7 @@
 }
 
 .form-popup-menu .edit-link:hover {
-text-decoration: none;
+  text-decoration: none;
 }
 
 .form-popup-menu .edit-link:not(:last-child):hover,

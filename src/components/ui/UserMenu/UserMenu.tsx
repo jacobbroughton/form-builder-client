@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
-import { UserContext } from "../../../UserContextProvider";
+import { UserContext } from "../../../providers/UserContextProvider";
+import "./UserMenu.css";
 
 const UserMenu = ({
   setUserMenuToggled,
@@ -15,7 +16,10 @@ const UserMenu = ({
         credentials: "include",
       });
 
-      if (!response.ok) throw new Error("There was an error logging out");
+      if (!response.ok) {
+        const body = await response.json();
+        throw new Error(`Error: ${body.message || "There was an error logging out"}`);
+      }
 
       const data = await response.json();
 

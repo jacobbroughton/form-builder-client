@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddedInputType, InputTypeType, PublishedFormType } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 import { getPublishedForm, updateForm } from "../../../utils/fetchRequests";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const EditPublishedForm = () => {
   const { formId } = useParams();
@@ -23,6 +24,8 @@ export const EditPublishedForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
+
+  const { setError } = useContext(ErrorContexts);
 
   async function saveForm() {
     try {
@@ -43,7 +46,13 @@ export const EditPublishedForm = () => {
 
       navigate(`/form/${form.form.id}`);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -100,7 +109,13 @@ export const EditPublishedForm = () => {
           inputs: data.inputs,
         });
       } catch (error) {
-        handleCatchError(error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
+
+        printError(error);
       }
     }
 

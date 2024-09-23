@@ -49,6 +49,6 @@ div.no-prompts-message > a > svg {
   fill: whitesmoke;
 }
 
-div.no-prompts-message > a:hover > svg  {
+div.no-prompts-message > a:hover > svg {
   transform: translateX(5px);
 }

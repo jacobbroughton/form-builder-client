@@ -1,14 +1,16 @@
 import {
-  DraftFormType,
-  PublishedFormType,
-  InputTypeType,
-  InputTypePropertyType,
   AddedInputType,
-  InputTypePropertyOptionType,
   AllFormsType,
+  DraftFormType,
+  InputTypePropertyOptionType,
+  InputTypePropertyType,
+  InputTypeType,
+  PublishedFormType,
 } from "../lib/types";
 
-export const storeInitialDraft = async (body: { userId: string }): Promise<object> => {
+export const storeInitialDraft = async (body: {
+  userId: string;
+}): Promise<DraftFormType> => {
   const response = await fetch("http://localhost:3001/form/store-initial-draft", {
     method: "post",
     body: JSON.stringify({
@@ -20,7 +22,12 @@ export const storeInitialDraft = async (body: { userId: string }): Promise<objec
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("An error occured while storing initial form draft");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "An error occured while storing initial form draft"}`
+    );
+  }
 
   return await response.json();
 };
@@ -47,7 +54,12 @@ export const updateForm = async (body: {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("An error occured while updating the form draft");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "An error occured while updating the form draft"}`
+    );
+  }
 
   return await response.json();
 };
@@ -59,7 +71,10 @@ export const getPublishedForm = async (params: { formId: string | undefined }) =
     `http://localhost:3001/form/get-published-form/${params.formId}`
   );
 
-  if (!response.ok) throw new Error("There was an error fetching form form");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(`Error: ${body.message || "There was an error fetching form"}`);
+  }
 
   return await response.json();
 };
@@ -72,8 +87,12 @@ export const getDraftForm = async (params: { formId: string | undefined }) => {
     { credentials: "include" }
   );
 
-  if (!response.ok)
-    throw new Error("There was a problem fetching the draft form as user");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "There was a problem fetching the draft form as user"}`
+    );
+  }
 
   return await response.json();
 };
@@ -90,7 +109,10 @@ export const getDraftForms = async (params: {
     }
   );
 
-  if (!response.ok) throw new Error("There was a problem fetching forms");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(`Error: ${body.message || "There was a problem fetching forms"}`);
+  }
 
   return await response.json();
 };
@@ -106,8 +128,12 @@ export const deletePublishedForm = async (params: {
     }
   );
 
-  if (!response.ok)
-    throw new Error("Something happened while trying to delete this form");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "Something happened while trying to delete this form"}`
+    );
+  }
 
   return await response.json();
 };
@@ -126,8 +152,12 @@ export const deleteDraftForm = async (params: {
     }
   );
 
-  if (!response.ok)
-    throw new Error("Something happened while trying to delete this form");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "Something happened while trying to delete this form"}`
+    );
+  }
 
   return await response.json();
 };
@@ -143,7 +173,12 @@ export const getAllForms = async (params: {
     }
   );
 
-  if (!response.ok) throw new Error("There was a problem fetching forms");
+  console.log(response);
+
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(`Error: ${body.message || "There was a problem fetching forms"}`);
+  }
 
   return await response.json();
 };
@@ -153,7 +188,12 @@ export const getInputTypes = async (): Promise<InputTypeType[]> => {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("An error occured while fetching form types");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "An error occured while fetching form types"}`
+    );
+  }
 
   return await response.json();
 };
@@ -177,8 +217,14 @@ export const changeInputEnabledStatus = async (
     }
   );
 
-  if (!response.ok)
-    throw new Error("There was an error deleting this input from the draft form");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${
+        body.message || "There was an error deleting this input from the draft form"
+      }`
+    );
+  }
 
   await response.json();
 };
@@ -199,7 +245,12 @@ export const publish = async (body: {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("Something went wrong when publishing this form");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${body.message || "Something went wrong when publishing this form"}`
+    );
+  }
 
   return await response.json();
 };
@@ -212,8 +263,14 @@ export const getInputTypeProperties = async (): Promise<{
     { credentials: "include" }
   );
 
-  if (!response.ok)
-    throw new Error("An error occured while fetching form item type properties");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${
+        body.message || "An error occured while fetching form item type properties"
+      }`
+    );
+  }
 
   return await response.json();
 };
@@ -226,8 +283,14 @@ export const getInputTypePropertyOptions = async (): Promise<{
     { credentials: "include" }
   );
 
-  if (!response.ok)
-    throw new Error("An error occured while fetching form item type property options");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${
+        body.message || "An error occured while fetching form item type property options"
+      }`
+    );
+  }
 
   return await response.json();
 };
@@ -260,8 +323,15 @@ export const addNewInputToForm = async (body: {
     credentials: "include",
   });
 
-  if (!response.ok)
-    throw new Error("Something happened when trying to add a new form item to the draft");
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(
+      `Error: ${
+        body.message ||
+        "Something happened when trying to add a new form item to the draft"
+      }`
+    );
+  }
 
   return await response.json();
 };

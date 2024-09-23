@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditDraftForm.css";
 import { getDraftForm, updateForm } from "../../../utils/fetchRequests";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const EditDraftForm = () => {
   const { formId } = useParams();
@@ -24,6 +25,8 @@ export const EditDraftForm = () => {
     null
   );
 
+  const { setError } = useContext(ErrorContext);
+
   async function saveDraft() {
     try {
       const data = await updateForm({
@@ -39,7 +42,13 @@ export const EditDraftForm = () => {
         form: data,
       });
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -95,7 +104,13 @@ export const EditDraftForm = () => {
           inputs: data.inputs,
         });
       } catch (error) {
-        handleCatchError(error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
+        
+        printError(error);
       }
     }
 

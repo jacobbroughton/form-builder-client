@@ -1,5 +1,4 @@
-
-.staged-item-form  {
+.staged-item-form {
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -208,8 +207,8 @@
 
 .staged-item-form > .navigation-buttons .navigation-button:hover {
   border: 1px solid #666;
-} 
+}
 
 .staged-item-form > .navigation-buttons .navigation-button.done svg {
-  fill: lightgreen;;
+  fill: lightgreen;
 }

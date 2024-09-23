@@ -111,4 +111,4 @@ export interface AllFormsType extends DraftFormType {
 export type UserType = {
   id: string;
   isAdmin: boolean;
-} | null
+} | null;

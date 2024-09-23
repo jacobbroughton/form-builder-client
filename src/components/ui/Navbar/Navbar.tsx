@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import "./Navbar.css";
 import HomeIcon from "../icons/HomeIcon";
 import UserIcon from "../icons/UserIcon";
-
-import UserMenu from "../UserMenu/UserMenu";
+import "./Navbar.css";
 import { useState } from "react";
+import UserMenu from "../UserMenu/UserMenu";
 
 export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
   const [userMenuToggled, setUserMenuToggled] = useState(false);

@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
+  AddedInputType,
+  AllFormsType,
   InputTypePropertyOptionType,
   InputTypePropertyType,
   InputTypeType,
-  AddedInputType,
-  AllFormsType,
 } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
-import { CheckIcon } from "../icons/CheckIcon";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import "./StagedInputForm.css";
 import {
   addNewInputToForm,
   getInputTypeProperties,
   getInputTypePropertyOptions,
 } from "../../../utils/fetchRequests";
+import { printError } from "../../../utils/usefulFunctions";
+import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { CheckIcon } from "../icons/CheckIcon";
+import "./StagedInputForm.css";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const StagedInputForm = ({
   form,
@@ -48,13 +49,21 @@ export const StagedInputForm = ({
     [key: string]: InputTypePropertyType[];
   }>({});
 
+  const { setError } = useContext(ErrorContext);
+
   async function getInputTypePropertiesLocal(): Promise<void> {
     try {
       const data = await getInputTypeProperties();
 
       setInputTypeProperties(data);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -64,7 +73,13 @@ export const StagedInputForm = ({
 
       setInputTypePropertyOptions(data);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -91,7 +106,13 @@ export const StagedInputForm = ({
 
       setCurrentView("metadata-inputs");
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 

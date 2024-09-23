@@ -1,0 +1,32 @@
+.user-menu {
+  position: absolute;
+  right: 5px;
+  top: calc(100% + 5px);
+  background-color: #222;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #555;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.user-menu > ul > li {
+  padding: 0;
+}
+
+.user-menu > ul > li > button {
+  background-color: transparent;
+  border: 0;
+  padding: 5px 10px;
+  cursor: pointer;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.user-menu > ul > li > button:hover {
+  background-color: #333;
+}
+
+.user-menu > ul > li > button:not(:last-child) {
+  border-bottom: 1px solid #555;
+}

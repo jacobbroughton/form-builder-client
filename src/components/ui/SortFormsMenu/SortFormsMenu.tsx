@@ -55,7 +55,7 @@ const SortFormsMenu = ({
   return (
     <ul className="sort-menu" ref={ref}>
       {sortOptions.map((sortOption) => (
-        <li>
+        <li key={sortOption.id}>
           <button
             className={`${selectedSort.id === sortOption.id ? "selected" : ""}`}
             onClick={() => {

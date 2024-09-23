@@ -51,25 +51,10 @@ nav > ul > li > .user-menu-toggle-container > .user-menu-toggle {
 }
 
 nav > ul > li > .user-menu-toggle-container > .user-menu-toggle:hover {
-  background-color: #3b3b3b;;
+  background-color: #3b3b3b;
 }
 
 nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > svg {
   width: 30px;
   height: 30px;
-}
-
-nav > ul > li > .user-menu-toggle-container > .user-menu {
-  position: absolute;
-  right: 5px;
-  top: calc(100% + 5px);
-  background-color: #333;
-  border-radius: 3px;
-  overflow: hidden;
-  border: 1px solid #555;
-}
-
-
-nav > ul > li > .user-menu-toggle-container > .user-menu > ul > li {
-  padding: 5px 10px;
 }

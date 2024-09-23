@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { EditIcon } from "../icons/EditIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import "./FormPopupMenu.css";
-import { Link } from "react-router-dom";
 
 export const FormPopupMenu = ({
   formId,
@@ -16,7 +15,6 @@ export const FormPopupMenu = ({
   setFormPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
   handleFormDelete: () => void;
 }): JSX.Element => {
-  const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,8 +40,8 @@ export const FormPopupMenu = ({
 
       <button
         onClick={(e) => {
-          e.stopPropagation()
-          e.preventDefault()
+          e.stopPropagation();
+          e.preventDefault();
           setFormPopupToggled(false);
           handleFormDelete();
         }}

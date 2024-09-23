@@ -1,7 +1,6 @@
 import React, { createContext, ReactElement, useEffect, useState } from "react";
-import { UserType } from "./lib/types";
-import { handleCatchError } from "./utils/usefulFunctions";
-import { useNavigate } from "react-router-dom";
+import { UserType } from "../lib/types";
+import { printError } from "../utils/usefulFunctions";
 
 interface UserContext {
   user: UserType | null;
@@ -21,22 +20,21 @@ const UserContextProvider = ({ children }: { children: ReactElement }) => {
           credentials: "include",
         });
 
-        if (!response.ok) throw new Error("There was an issue getting user");
+        if (!response.ok) {
+          const body = await response.json();
+          throw new Error(`Error: ${body.message || "There was an issue getting user"}`);
+        }
 
         const data = await response.json();
 
         setUser(data);
       } catch (error) {
-        handleCatchError(error);
+        printError(error);
       }
     }
 
     getUser();
   }, []);
-
-  useEffect(() => {
-    // if (user) navigate("/dashboard");
-  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>

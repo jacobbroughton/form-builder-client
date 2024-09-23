@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
@@ -9,6 +9,7 @@ import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
 import { deleteDraftForm, getDraftForm } from "../../../utils/fetchRequests";
 import { PlanetIcon } from "../../ui/icons/PlanetIcon";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const Draft = () => {
   const navigate = useNavigate();
@@ -18,16 +19,23 @@ export const Draft = () => {
   const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [deletedViewShowing, setDeletedViewShowing] = useState(false);
+  const { setError } = useContext(ErrorContext);
 
   async function handleFormDelete(): Promise<void> {
     try {
-      const data = await deleteDraftForm({ formId });
+      await deleteDraftForm({ formId });
 
       setDeletedViewShowing(true);
 
       navigate("/");
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -42,7 +50,13 @@ export const Draft = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        handleCatchError(error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
+
+        printError(error);
       }
     }
 

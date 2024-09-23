@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InputTypeType } from "../../../lib/types";
 import { getInputTypes } from "../../../utils/fetchRequests";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const InputTypeSelector = ({
   setCurrentView,
@@ -14,13 +15,21 @@ export const InputTypeSelector = ({
 }) => {
   const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
 
+  const { setError } = useContext(ErrorContext);
+
   async function getInputTypesLocal(): Promise<void> {
     try {
       const data = await getInputTypes();
 
       setInputTypes(data);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 

@@ -5,13 +5,14 @@ import {
   storeInitialDraft,
   updateForm,
 } from "../../../utils/fetchRequests";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import { printError } from "../../../utils/usefulFunctions";
 import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import { UserContext } from "../../../UserContextProvider";
+import { UserContext } from "../../../providers/UserContextProvider";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const CreateForm = () => {
   const [draft, setDraft] = useState<{
@@ -43,6 +44,7 @@ export const CreateForm = () => {
   );
 
   const userContext = useContext(UserContext);
+  const { setError } = useContext(ErrorContext);
 
   const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
 
@@ -67,7 +69,13 @@ export const CreateForm = () => {
         inputs: [],
       });
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -86,7 +94,13 @@ export const CreateForm = () => {
         form: data,
       });
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -107,7 +121,13 @@ export const CreateForm = () => {
 
       setInitiallyLoading(false);
     } catch (error) {
-      handleCatchError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError(String(error));
+      }
+
+      printError(error);
     }
   }
 
@@ -190,7 +210,13 @@ export const CreateForm = () => {
         setNeedsAutoSave(false);
         setAutoSaveCountdown(2);
       } catch (error) {
-        handleCatchError(error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
+        
+        printError(error);
       }
     }
 
