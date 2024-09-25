@@ -8,23 +8,6 @@ main.create-form {
   gap: 10px;
 }
 
-main.create-form > .saved-status {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-main.create-form > .saved-status > span {
-  width: 12px;
-  height: 12px;
-  background-color: rgb(197, 197, 0);
-  border-radius: 100%;
-}
-
-main.create-form > .saved-status > span.saved {
-  background-color: rgb(67, 236, 67);
-}
-
 main.create-form > .no-items-yet {
   border: 1px solid #555;
   display: flex;
@@ -42,7 +25,6 @@ main.create-form > .navigation-buttons {
   display: flex;
   gap: 10px;
 }
-
 
 main.create-form > .navigation-buttons > .navigation-button.done:not(:disabled) svg {
   fill: lightgreen;

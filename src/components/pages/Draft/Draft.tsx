@@ -1,18 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
-import { printError } from "../../../utils/usefulFunctions";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
+import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
-import { deleteDraftForm, getDraftForm } from "../../../utils/fetchRequests";
-import { PlanetIcon } from "../../ui/icons/PlanetIcon";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const Draft = () => {
   const navigate = useNavigate();
+  const { deleteDraftForm } = useDeleteDraftForm();
+  const { getDraftForm } = useGetDraftForm();
   const { formId } = useParams();
   const [formLoading, setFormLoading] = useState(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
@@ -29,13 +32,7 @@ export const Draft = () => {
 
       navigate("/");
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -50,13 +47,7 @@ export const Draft = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-
-        printError(error);
+        handleCatchError(error, setError);
       }
     }
 
@@ -74,9 +65,7 @@ export const Draft = () => {
       ) : (
         <>
           <div className="form-controls">
-            <div className="published-status">
-              <PlanetIcon /> Draft
-            </div>
+            <DraftPublishedTag draftOrPublished="draft" />
             <div className="menu-toggle-button-container">
               <button
                 className="menu-toggle-button"
@@ -101,7 +90,7 @@ export const Draft = () => {
           </div>
           <div className="heading">
             <h1 className="title">{form.title}</h1>
-            <p className="description">{form.description}</p>
+            {form.description ? <p className="description">{form.description}</p> : false}
           </div>
           {inputs.length ? (
             <div className="inputs">

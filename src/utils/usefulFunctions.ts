@@ -25,10 +25,21 @@ export function timeAgo(date: string) {
   }
 }
 
-export function printError(error: Error | string | unknown) {
-  if (typeof error === "string") {
-    console.log(error.toUpperCase());
-  } else if (error instanceof Error) {
-    console.log(error.message);
+export function handleCatchError(
+  error: Error | string | unknown,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setLocalError: React.Dispatch<React.SetStateAction<string | null>>
+) {
+  let errorMessage = "";
+
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  } else {
+    errorMessage = String(error);
   }
+
+  console.error(errorMessage);
+
+  setError(errorMessage);
+  if (setLocalError !== null) setLocalError(errorMessage);
 }

@@ -1,0 +1,32 @@
+.published-status {
+  cursor: help;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background-color: #333;
+  border-radius: 3px;
+  padding: 3px 7px;
+  font-size: 0.875rem;
+  align-self: flex-start;
+}
+
+.published-status.draft {
+  border-left: 5px solid #c37f00;
+}
+
+.published-status.published {
+  border-left: 5px solid lightskyblue;
+}
+
+.published-status > svg {
+  width: 15px;
+}
+
+.published-status.draft > svg {
+  fill: #c37f00;
+}
+
+.published-status.published > svg {
+  fill: lightskyblue;
+}

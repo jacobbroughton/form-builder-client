@@ -14,7 +14,7 @@ export const InputPopupMenu = ({
   input: AddedInputType;
   setIdForInputPopup: React.Dispatch<React.SetStateAction<string | null>>;
   setInputPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
-  handleChangeDraftInputEnabledStatus: () => void;
+  handleChangeDraftInputEnabledStatus: () => Promise<void>;
 }): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
 

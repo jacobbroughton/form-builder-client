@@ -12,7 +12,7 @@ export const ExistingOrNewDraftSelector = ({
   draftForms: DraftFormType[];
   setDraftIdToFetch: React.Dispatch<React.SetStateAction<string | null>>;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
-  createNewDraft: () => void;
+  createNewDraft: () => Promise<void>;
 }) => {
   function handleCreateNewDraftClick() {
     createNewDraft();

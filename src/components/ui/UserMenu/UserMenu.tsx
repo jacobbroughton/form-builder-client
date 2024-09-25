@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { UserContext } from "../../../providers/UserContextProvider";
 import "./UserMenu.css";
+import LogoutIcon from "../icons/LogoutIcon";
 
 const UserMenu = ({
   setUserMenuToggled,
@@ -8,7 +9,7 @@ const UserMenu = ({
   setUserMenuToggled: React.Dispatch<React.SetStateAction<false>>;
 }) => {
   const userMenuRef = useRef<HTMLDivElement>(null);
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   async function logout() {
     try {
@@ -48,7 +49,10 @@ const UserMenu = ({
     <div ref={userMenuRef} className="user-menu">
       <ul>
         <li>
-          <button onClick={() => logout()}>Logout</button>
+          <p className="email">{user.email}</p>
+        </li>
+        <li>
+          <button onClick={() => logout()}><LogoutIcon/> Logout</button>
         </li>
       </ul>
     </div>

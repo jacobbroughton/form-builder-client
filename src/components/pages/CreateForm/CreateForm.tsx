@@ -1,20 +1,35 @@
 import { useContext, useEffect, useState } from "react";
 import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
-import {
-  getDraftForms,
-  storeInitialDraft,
-  updateForm,
-} from "../../../utils/fetchRequests";
-import { printError } from "../../../utils/usefulFunctions";
+
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import { UserContext } from "../../../providers/UserContextProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import SavedStatus from "../../ui/SavedStatus/SavedStatus";
+import { useNavigate } from "react-router-dom";
+import { TrashIcon } from "../../ui/icons/TrashIcon";
+import { SaveIcon } from "../../ui/icons/SaveIcon";
+import { ShareIcon } from "../../ui/icons/ShareIcon";
+import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
+import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
+import { useGetDraftForms } from "../../../hooks/useGetDraftForms";
+import { usePublish } from "../../../hooks/usePublish";
+import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
+import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 
 export const CreateForm = () => {
+  const navigate = useNavigate();
+  const { setError } = useContext(ErrorContext);
+  const { deleteDraftForm } = useDeleteDraftForm();
+  const { getDraftForm } = useGetDraftForm();
+  const { getDraftForms } = useGetDraftForms();
+  const { publish } = usePublish();
+  const { storeInitialDraft } = useStoreInitialDraft();
+  const { updateDraftForm } = useUpdateDraftForm();
+
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
     inputs: AddedInputType[];
@@ -32,20 +47,14 @@ export const CreateForm = () => {
   });
 
   const [draftIdToFetch, setDraftIdToFetch] = useState<string | null>(null);
-
   const [initiallyLoading, setInitiallyLoading] = useState(false);
   const [currentView, setCurrentView] = useState("existing-or-new-draft");
   const [saved, setSaved] = useState(true);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
   const [needsAutoSave, setNeedsAutoSave] = useState(false);
-
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-
-  const userContext = useContext(UserContext);
-  const { setError } = useContext(ErrorContext);
-
   const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
 
   let isStoring = false;
@@ -55,9 +64,7 @@ export const CreateForm = () => {
       if (isStoring) return;
       isStoring = true;
 
-      const data = await storeInitialDraft({
-        userId: userContext.user!.id,
-      });
+      const data = await storeInitialDraft();
 
       setPrevSavedForm({
         form: data,
@@ -69,24 +76,34 @@ export const CreateForm = () => {
         inputs: [],
       });
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
+  useEffect(() => {
+    async function fetchFormToModify() {
+      const data = await getDraftForm({ formId: draftIdToFetch! });
+
+      setPrevSavedForm({
+        form: data.form,
+        inputs: data.inputs,
+      });
+
+      setDraft({
+        form: data.form,
+        inputs: data.inputs,
+      });
+    }
+
+    if (draftIdToFetch) fetchFormToModify();
+  }, [draftIdToFetch]);
+
   async function saveDraft() {
     try {
-      const data = await updateForm({
+      const data = await updateDraftForm({
         formId: draft.form!.id,
         title: draft.form!.title,
         description: draft.form!.description,
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        isForDraft: true,
       });
 
       setDraft({
@@ -94,13 +111,7 @@ export const CreateForm = () => {
         form: data,
       });
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -108,9 +119,7 @@ export const CreateForm = () => {
     try {
       setInitiallyLoading(true);
 
-      const data = await getDraftForms({
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-      });
+      const data = await getDraftForms();
 
       setDraftForms(data);
 
@@ -121,13 +130,7 @@ export const CreateForm = () => {
 
       setInitiallyLoading(false);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -137,8 +140,6 @@ export const CreateForm = () => {
         return (
           <ExistingOrNewDraftSelector
             draftForms={draftForms}
-            // setPrevSavedForm={setPrevSavedForm}
-            // setDraft={setDraft}
             setDraftIdToFetch={setDraftIdToFetch}
             setCurrentView={setCurrentView}
             createNewDraft={createNewDraft}
@@ -148,11 +149,7 @@ export const CreateForm = () => {
       case "metadata-inputs": {
         return (
           <>
-            <p className="saved-status">
-              <span className={`${saved ? "saved" : ""}`}></span>
-              {saved ? "Saved Draft" : "Unsaved"}{" "}
-              {!saved ? `(Autosaving in ${autoSaveCountdown}s)` : false}
-            </p>
+            <SavedStatus saved={saved} autoSaveCountdown={autoSaveCountdown} />
             <MetadataInputs
               form={draft}
               setForm={setDraft}
@@ -161,6 +158,27 @@ export const CreateForm = () => {
               isForDraft={true}
               draftIdToFetch={draftIdToFetch}
             />
+            <button
+              className="action-button-with-icon red"
+              onClick={() => handleFormDelete()}
+            >
+              <TrashIcon /> Delete Draft
+            </button>
+
+            <button
+              className="action-button-with-icon"
+              disabled={saved}
+              onClick={() => saveDraft()}
+            >
+              <SaveIcon /> Save Draft
+            </button>
+
+            <button
+              className="action-button-with-icon green"
+              onClick={() => handlePublishForm()}
+            >
+              <ShareIcon /> Publish Form
+            </button>
           </>
         );
       }
@@ -192,6 +210,30 @@ export const CreateForm = () => {
     }
   }
 
+  async function handlePublishForm() {
+    try {
+      const data = await publish({
+        draftFormId: draft.form!.id,
+      });
+
+      navigate(`/form/${data[0].id}`);
+    } catch (error) {
+      handleCatchError(error, setError);
+    }
+  }
+
+  async function handleFormDelete() {
+    try {
+      if (!draft.form!.id) throw new Error("No form id provided");
+
+      await deleteDraftForm({ formId: draft.form!.id });
+
+      navigate("/");
+    } catch (error) {
+      handleCatchError(error, setError);
+    }
+  }
+
   useEffect(() => {
     getDraftFormsLocal();
   }, []);
@@ -210,13 +252,7 @@ export const CreateForm = () => {
         setNeedsAutoSave(false);
         setAutoSaveCountdown(2);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-        
-        printError(error);
+        handleCatchError(error, setError);
       }
     }
 
@@ -250,14 +286,12 @@ export const CreateForm = () => {
   }, [saved]);
 
   useEffect(() => {
-    if (
-      draft.form &&
-      prevSavedForm.form &&
-      (draft.form.title !== prevSavedForm.form.title ||
-        draft.form.description !== prevSavedForm.form.description)
-    ) {
-      setSaved(false);
-      setNeedsAutoSave(true);
+    if (draft.form && prevSavedForm.form) {
+      const condition =
+        draft.form.title !== prevSavedForm.form.title ||
+        draft.form.description !== prevSavedForm.form.description;
+      setSaved(!condition);
+      setNeedsAutoSave(condition);
     }
   }, [
     draft.form?.description,

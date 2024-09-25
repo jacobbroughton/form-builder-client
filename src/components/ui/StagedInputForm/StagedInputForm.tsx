@@ -6,16 +6,14 @@ import {
   InputTypePropertyType,
   InputTypeType,
 } from "../../../lib/types";
-import {
-  addNewInputToForm,
-  getInputTypeProperties,
-  getInputTypePropertyOptions,
-} from "../../../utils/fetchRequests";
-import { printError } from "../../../utils/usefulFunctions";
+import { useAddNewInputToForm } from "../../../hooks/useAddNewInputToForm";
+import { useGetInputTypeProperties } from "../../../hooks/useGetInputTypeProperties";
+import { useGetInputTypePropertyOptions } from "../../../hooks/useGetInputTypePropertyOptions";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { CheckIcon } from "../icons/CheckIcon";
 import "./StagedInputForm.css";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const StagedInputForm = ({
   form,
@@ -37,6 +35,10 @@ export const StagedInputForm = ({
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
   isForDraft: boolean;
 }) => {
+  const { addNewInputToForm } = useAddNewInputToForm();
+  const { getInputTypeProperties } = useGetInputTypeProperties();
+  const { getInputTypePropertyOptions } = useGetInputTypePropertyOptions();
+
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
 
@@ -57,13 +59,7 @@ export const StagedInputForm = ({
 
       setInputTypeProperties(data);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -73,13 +69,7 @@ export const StagedInputForm = ({
 
       setInputTypePropertyOptions(data);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -93,7 +83,6 @@ export const StagedInputForm = ({
         inputMetadataDescription: stagedInputDescription,
         properties,
         formId: form.form!.id,
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         isForDraft,
       });
 
@@ -106,13 +95,7 @@ export const StagedInputForm = ({
 
       setCurrentView("metadata-inputs");
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 

@@ -14,10 +14,55 @@ a {
   text-decoration: none;
 }
 
-a:hover,
-a:focus {
-  text-decoration: underline;
+button.action-button-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  align-self: flex-start;
+  font-size: 1rem;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding: 3px 5px;
+  cursor: pointer;
+  border: 1px solid #555;
+  background-color: transparent;
 }
+
+button.action-button-with-icon:not(:disabled):not(.green):hover {
+  background-color: #333;
+}
+
+
+button.action-button-with-icon.green {
+  font-weight: 600;
+  background-color: hsl(120, 73%, 75%);
+  color: #333;
+}
+
+button.action-button-with-icon.green:not(:disabled):hover {
+  background-color: hsl(120, 73%, 85%);
+}
+
+button.action-button-with-icon > svg {
+  width: 13px;
+  fill: whitesmoke;
+}
+
+button.action-button-with-icon:disabled > svg {
+  fill: grey
+}
+
+button.action-button-with-icon.red > svg {
+  width: 13px;
+  fill: rgb(218, 86, 112);
+}
+
+button.action-button-with-icon.green > svg {
+  width: 13px;
+  fill: #333;
+}
+
 
 textarea {
   resize: vertical;

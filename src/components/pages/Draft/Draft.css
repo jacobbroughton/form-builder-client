@@ -11,36 +11,8 @@ main.draft-form {
 main.draft-form > .form-controls {
   display: flex;
   justify-content: space-between;
-  /* border-bottom: 1px solid #444; */
-  /* padding-bottom: 10px; */
 }
 
-main.draft-form > .form-controls > .published-status {
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background-color: #333;
-  border-radius: 3px;
-  padding: 3px 7px;
-  border-left: 5px solid #c37f00;
-  font-size: 0.875rem;
-}
-
-main.draft-form > .form-controls > .published-status {
-}
-
-main.draft-form > .form-controls > .published-status > svg {
-  width: 15px;
-  cursor: help;
-  fill: lightskyblue;
-}
-
-
-main.draft-form > .form-controls > .published-status > svg {
-  width: 15px;
-  fill: #c37f00;
-}
 
 main.draft-form > .form-controls > .menu-toggle-button-container {
   position: relative;
@@ -85,6 +57,9 @@ main.draft-form > .heading {
    /* border-left: 5px solid #444;  */
    /* border-radius: 3px;  */
   /* margin-bottom: 10px; */
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 4px;
 }
 
 main.draft-form > .heading {

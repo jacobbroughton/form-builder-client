@@ -1,0 +1,16 @@
+.saved-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.saved-status > span {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(197, 197, 0);
+  border-radius: 100%;
+}
+
+.saved-status > span.saved {
+  background-color: rgb(67, 236, 67);
+}

@@ -1,18 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
-import { printError } from "../../../utils/usefulFunctions";
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
-import { deletePublishedForm, getPublishedForm } from "../../../utils/fetchRequests";
-import { PlanetIcon } from "../../ui/icons/PlanetIcon";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
+import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
+import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 
 export const Form = () => {
+  const { deletePublishedForm } = useDeletePublishedForm();
+  const { getPublishedForm } = useGetPublishedForm();
   const { formId } = useParams();
   const [formLoading, setFormLoading] = useState(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
@@ -20,7 +23,7 @@ export const Form = () => {
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
-  const {setError} = useContext(ErrorContext)
+  const { setError } = useContext(ErrorContext);
 
   async function handleFormDelete(): Promise<void> {
     try {
@@ -28,13 +31,7 @@ export const Form = () => {
 
       setDeletedViewShowing(true);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
@@ -51,13 +48,7 @@ export const Form = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-        
-        printError(error);
+        handleCatchError(error, setError);
       }
     }
 
@@ -75,9 +66,7 @@ export const Form = () => {
       ) : (
         <>
           <div className="form-controls">
-            <div className="published-status">
-              <PlanetIcon /> Published
-            </div>
+            <DraftPublishedTag draftOrPublished={"published"} />
             <div className="menu-toggle-button-container">
               <button
                 className="menu-toggle-button"
@@ -102,7 +91,7 @@ export const Form = () => {
           </div>
           <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
             <h1 className="title">{form.title}</h1>
-            <p className="description">{form.description}</p>
+            {form.description ? <p className="description">{form.description}</p> : false}
           </div>
           {inputs.length ? (
             <>

@@ -33,6 +33,36 @@ nav > ul {
   gap: 10px;
 }
 
+nav > ul > li > a {
+  padding: 9px 20px;
+  border-radius: 15px;
+  border: 1px solid transparent;
+  transition: 0.1s ease background-color;
+}
+
+nav > ul > li:first-child > a {
+  background-color: #333;
+  padding: 9px 20px;
+}
+
+nav > ul > li:first-child > a:hover {
+  background-color: #3b3b3b;
+}
+
+nav > ul > li:first-child > a:active {
+  background-color: #444;
+}
+
+nav > ul > li:not(:first-child) > a:hover {
+  background-color: #3b3b3b;
+  text-decoration: none;
+}
+
+nav > ul > li:not(:first-child) > a:active {
+  background-color: #444;
+  text-decoration: none;
+}
+
 nav > ul > li > .user-menu-toggle-container {
   position: relative;
   display: flex;

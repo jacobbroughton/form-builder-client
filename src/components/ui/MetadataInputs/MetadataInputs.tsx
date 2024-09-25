@@ -1,30 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AddedInputType, AllFormsType, DraftFormType } from "../../../lib/types";
-import {
-  changeInputEnabledStatus,
-  deleteDraftForm,
-  getDraftForm,
-  publish,
-} from "../../../utils/fetchRequests";
-import { printError } from "../../../utils/usefulFunctions";
+import { useContext, useState } from "react";
+import { AddedInputType, AllFormsType } from "../../../lib/types";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import { PlusIcon } from "../icons/PlusIcon";
-import { SaveIcon } from "../icons/SaveIcon";
-import { ShareIcon } from "../icons/ShareIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
-import { TrashIcon } from "../icons/TrashIcon";
 import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
 import "./MetadataInputs.css";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
 
 export const MetadataInputs = ({
   form,
   setForm,
   setCurrentView,
-  setPrevSavedForm,
   isForDraft,
-  draftIdToFetch,
-  saveForm,
 }: {
   form: {
     form: AllFormsType | null;
@@ -37,20 +25,11 @@ export const MetadataInputs = ({
     }>
   >;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
-  setPrevSavedForm: React.Dispatch<
-    React.SetStateAction<{
-      form: DraftFormType | null;
-      inputs: AddedInputType[];
-    }>
-  > | null;
   isForDraft: boolean;
-  draftIdToFetch: string | null;
-  saveForm: () => void | null;
 }) => {
+  const { changeInputEnabledStatus } = useChangeInputEnabledStatus();
   const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
-  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
-  const navigate = useNavigate();
 
   const { setError } = useContext(ErrorContext);
 
@@ -78,82 +57,11 @@ export const MetadataInputs = ({
         })),
       });
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
-
-  async function handlePublishForm() {
-    try {
-      if (!isForDraft) return;
-
-      const data = await publish({
-        draftFormId: form.form!.id,
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-      });
-
-      navigate(`/form/${data[0].id}`);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
-    }
-  }
-
-  async function handleFormDelete() {
-    try {
-      if (!form.form!.id) throw new Error("No form id provided");
-
-      await deleteDraftForm({ formId: form.form!.id });
-
-      setDeletedViewShowing(true);
-
-      navigate("/");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
-    }
-  }
-
-  useEffect(() => {
-    if (draftIdToFetch) {
-      async function fetchFormToModify() {
-        const data = await getDraftForm({ formId: draftIdToFetch! });
-
-        if (setPrevSavedForm) {
-          setPrevSavedForm({
-            form: data.form,
-            inputs: data.inputs,
-          });
-        }
-
-        setForm({
-          form: data.form,
-          inputs: data.inputs,
-        });
-      }
-
-      fetchFormToModify();
-    }
-  }, []);
 
   if (!form.form) return <p>No form found</p>;
-
-  if (deletedViewShowing) return <p>This form has been deleted</p>;
 
   return (
     <div className="metadata-inputs">
@@ -231,28 +139,12 @@ export const MetadataInputs = ({
         </div>
       )}
       <button
-        className="add-new-input"
+        className="action-button-with-icon add-new-input"
         type="button"
         onClick={() => setCurrentView("input-types-selector")}
       >
         <PlusIcon /> Add new form item
       </button>
-
-      {isForDraft ? (
-        <>
-          <button className="delete-button" onClick={() => handleFormDelete()}>
-            <TrashIcon /> Delete Draft
-          </button>
-
-          <button className="publish-button" onClick={() => handlePublishForm()}>
-            <ShareIcon /> Publish Form
-          </button>
-        </>
-      ) : (
-        <button className="save-button" onClick={() => saveForm()}>
-          <SaveIcon /> Save Form
-        </button>
-      )}
     </div>
   );
 };

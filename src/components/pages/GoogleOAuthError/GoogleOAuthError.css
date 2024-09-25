@@ -1,0 +1,13 @@
+main.google-oauth-error {
+  display: flex;
+  flex-direction: column;
+  padding: 69px 10px 50px 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+main.google-oauth-error > p > a {
+  text-decoration: underline;
+}

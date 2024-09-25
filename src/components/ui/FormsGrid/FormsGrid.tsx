@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { DraftIcon } from "../icons/DraftIcon";
 import { PlanetIcon } from "../icons/PlanetIcon";
 import React, { useState } from "react";
-import { deleteDraftForm, deletePublishedForm } from "../../../utils/fetchRequests";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
 import "./FormsGrid.css";
 import { AllFormsType } from "../../../lib/types";
+import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
+import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 
 const FormsGrid = ({
   forms,
@@ -15,6 +16,8 @@ const FormsGrid = ({
   forms: AllFormsType[];
   setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
 }) => {
+  const { deleteDraftForm } = useDeleteDraftForm();
+  const { deletePublishedForm } = useDeletePublishedForm();
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
   const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
 

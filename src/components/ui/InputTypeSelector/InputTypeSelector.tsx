@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { InputTypeType } from "../../../lib/types";
-import { getInputTypes } from "../../../utils/fetchRequests";
-import { printError } from "../../../utils/usefulFunctions";
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 
 export const InputTypeSelector = ({
   setCurrentView,
@@ -13,6 +13,7 @@ export const InputTypeSelector = ({
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
 }) => {
+  const { getInputTypes } = useGetInputTypes();
   const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
 
   const { setError } = useContext(ErrorContext);
@@ -23,13 +24,7 @@ export const InputTypeSelector = ({
 
       setInputTypes(data);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 

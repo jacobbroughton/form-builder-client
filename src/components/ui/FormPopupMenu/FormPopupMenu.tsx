@@ -13,7 +13,7 @@ export const FormPopupMenu = ({
   formId: string;
   isDraft: boolean;
   setFormPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
-  handleFormDelete: () => void;
+  handleFormDelete: () => Promise<void>;
 }): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
 

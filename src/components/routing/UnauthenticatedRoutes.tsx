@@ -1,13 +1,19 @@
 import { useContext } from "react";
 import { UserContext } from "../../providers/UserContextProvider";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../ui/Navbar/Navbar";
 import { ErrorContext } from "../../providers/ErrorContextProvider";
 import { ErrorBanner } from "../pages/ErrorBanner/ErrorBanner";
 
 export const UnauthenticatedRoutes = () => {
-  const { user } = useContext(UserContext);
+  const { user, loading: userLoading } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
+
+  const location = useLocation();
+
+  console.log(location.state?.from?.pathname)
+
+  if (userLoading) return <p>Loading user....</p>
 
   return !user ? (
     <>
@@ -18,6 +24,6 @@ export const UnauthenticatedRoutes = () => {
       </div>
     </>
   ) : (
-    <Navigate to="/dashboard" />
+    <Navigate to={location.state?.from?.pathname || "/dashboard"} />
   );
 };

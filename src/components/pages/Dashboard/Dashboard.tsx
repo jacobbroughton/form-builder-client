@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { AllFormsType, DraftFormType, SortOptionType } from "../../../lib/types";
-import { getAllForms } from "../../../utils/fetchRequests";
-import { printError } from "../../../utils/usefulFunctions";
+import { useGetAllForms } from "../../../hooks/useGetAllForms";
+import { AllFormsType, SortOptionType } from "../../../lib/types";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { UserContext } from "../../../providers/UserContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
 import FormsGrid from "../../ui/FormsGrid/FormsGrid";
 import FormsList from "../../ui/FormsList/FormsList";
 import GridIcon from "../../ui/icons/GridIcon";
@@ -10,10 +12,9 @@ import SortIcon from "../../ui/icons/SortIcon";
 import NoFormsMessage from "../../ui/NoFormsMessage/NoFormsMessage";
 import SortFormsMenu from "../../ui/SortFormsMenu/SortFormsMenu";
 import "./Dashboard.css";
-import { UserContext } from "../../../providers/UserContextProvider";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const Dashboard = () => {
+  const { getAllForms } = useGetAllForms();
   const [loading, setLoading] = useState<boolean>(true);
   const [forms, setForms] = useState<AllFormsType[]>([]);
   const [sortMenuToggled, setSortMenuToggled] = useState<boolean>(false);
@@ -26,13 +27,13 @@ export const Dashboard = () => {
     value: "date-new-old",
   });
   const { setError } = useContext(ErrorContext);
+  const { user } = useContext(UserContext);
 
   async function getForms() {
     try {
       setLoading(true);
 
       const data = await getAllForms({
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
         sort: selectedSort.value,
       });
 
@@ -42,18 +43,15 @@ export const Dashboard = () => {
     } catch (error) {
       setLoading(false);
 
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
-
-      printError(error);
+      handleCatchError(error, setError);
     }
   }
 
   useEffect(() => {
-    getForms();
+    if (user) {
+      console.log(user);
+      getForms();
+    }
   }, [selectedSort]);
 
   return (
@@ -63,7 +61,6 @@ export const Dashboard = () => {
       ) : (
         <>
           <div className="forms-container">
-            {/* <p className="section-heading">Published</p> */}
             <section className="header">
               <p className="small-text">Recent Forms</p>
               <div className="controls">

@@ -1,20 +1,38 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
+import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
+import { useUpdatePublishedForm } from "../../../hooks/useUpdatePublishedForm";
 import { AddedInputType, InputTypeType, PublishedFormType } from "../../../lib/types";
-import { printError } from "../../../utils/usefulFunctions";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
+import { SaveIcon } from "../../ui/icons/SaveIcon";
+import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
+import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
-import { getPublishedForm, updateForm } from "../../../utils/fetchRequests";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const EditPublishedForm = () => {
-  const { formId } = useParams();
   const navigate = useNavigate();
+  const { formId } = useParams();
+  const { setError } = useContext(ErrorContext);
+  const { deletePublishedForm } = useDeletePublishedForm();
+  const { getPublishedForm } = useGetPublishedForm();
+  const { updatePublishedForm } = useUpdatePublishedForm();
 
+  const [saved, setSaved] = useState(true);
   const [form, setForm] = useState<{
     form: PublishedFormType | null;
+    inputs: AddedInputType[];
+  }>({
+    form: null,
+    inputs: [],
+  });
+  const [prevSavedForm, setPrevSavedForm] = useState<{
+    form: DraftFormType | null;
     inputs: AddedInputType[];
   }>({
     form: null,
@@ -24,19 +42,14 @@ export const EditPublishedForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-
-  const { setError } = useContext(ErrorContexts);
+  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
   async function saveForm() {
     try {
-      if (!form.form) return;
-
-      const data = await updateForm({
+      const data = await updatePublishedForm({
         formId: form.form.id,
         title: form.form.title,
         description: form.form!.description,
-        userId: "75c75c02-b39b-4f33-b940-49aa20b9eda4",
-        isForDraft: false,
       });
 
       setForm({
@@ -44,15 +57,11 @@ export const EditPublishedForm = () => {
         form: data,
       });
 
-      navigate(`/form/${form.form.id}`);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError(String(error));
-      }
+      setSaved(true);
 
-      printError(error);
+      // navigate(`/form/${form.form.id}`);
+    } catch (error) {
+      handleCatchError(error, setError);
     }
   }
 
@@ -60,15 +69,28 @@ export const EditPublishedForm = () => {
     switch (currentView) {
       case "metadata-inputs": {
         return (
-          <MetadataInputs
-            form={form}
-            setForm={setForm}
-            setCurrentView={setCurrentView}
-            setPrevSavedForm={null}
-            isForDraft={false}
-            draftIdToFetch={null}
-            saveForm={saveForm}
-          />
+          <>
+            <SavedStatus saved={saved} />
+            <MetadataInputs
+              form={form}
+              setForm={setForm}
+              setCurrentView={setCurrentView}
+              isForDraft={false}
+            />
+            <button
+              className="action-button-with-icon red"
+              onClick={() => handleFormDelete()}
+            >
+              <TrashIcon /> Delete Form
+            </button>
+            <button
+              className="action-button-with-icon green"
+              type="button"
+              onClick={() => saveForm()}
+            >
+              <SaveIcon /> Save Form
+            </button>
+          </>
         );
       }
       case "input-types-selector": {
@@ -99,28 +121,64 @@ export const EditPublishedForm = () => {
     }
   }
 
+  async function handleFormDelete() {
+    try {
+      if (!form.form!.id) throw new Error("No form id provided");
+
+      await deletePublishedForm({ formId: form.form!.id });
+
+      setDeletedViewShowing(true);
+
+      navigate("/");
+    } catch (error) {
+      handleCatchError(error, setError);
+    }
+  }
+
+  useEffect(() => {
+    if (form.form && prevSavedForm.form) {
+      setSaved(
+        !(
+          form.form.title !== prevSavedForm.form.title ||
+          form.form.description !== prevSavedForm.form.description
+        )
+      );
+    }
+  }, [
+    form.form?.description,
+    form.form?.title,
+    prevSavedForm.form?.description,
+    prevSavedForm.form?.title,
+  ]);
+
   useEffect(() => {
     async function fetchFormForEdit() {
       try {
         const data = await getPublishedForm({ formId });
+
+        setPrevSavedForm({
+          form: data.form,
+          inputs: data.inputs,
+        });
 
         setForm({
           form: data.form,
           inputs: data.inputs,
         });
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-
-        printError(error);
+        handleCatchError(error, setError);
       }
     }
 
     fetchFormForEdit();
   }, []);
 
-  return <main className="edit-form">{renderView()}</main>;
+  if (deletedViewShowing) return <p>This form has been deleted</p>;
+
+  return (
+    <main className="edit-form">
+      <DraftPublishedTag draftOrPublished="published" />
+      {renderView()}
+    </main>
+  );
 };

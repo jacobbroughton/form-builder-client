@@ -17,6 +17,7 @@ import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoute
 import "./index.css";
 import UserContextProvider from "./providers/UserContextProvider.tsx";
 import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
+import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: "/draft/:formId",
         element: <Draft />,
       },
+      {
+        path: "/google-oauth-error",
+        element: <GoogleOAuthError/>
+      }
     ],
   },
   {

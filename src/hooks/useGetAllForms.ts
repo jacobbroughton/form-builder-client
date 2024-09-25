@@ -1,0 +1,44 @@
+import { useCallback, useContext, useState } from "react";
+import { AllFormsType } from "../lib/types";
+import { handleCatchError } from "../utils/usefulFunctions";
+import { ErrorContext } from "../providers/ErrorContextProvider";
+
+export const useGetAllForms = () => {
+  const [loading, setLoading] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const { setError } = useContext(ErrorContext);
+
+  const getAllForms = useCallback(
+    async (params: { sort: string }): Promise<AllFormsType[]> => {
+      setLoading(true);
+      setLocalError(null);
+
+      try {
+        const response = await fetch(
+          `http://localhost:3001/form/get-all-forms/${params.sort}`,
+          {
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          console.log(response);
+          const body = await response.json();
+          throw new Error(
+            `Error: ${body.message || "There was a problem fetching forms"}`
+          );
+        }
+
+        return await response.json();
+      } catch (error) {
+        handleCatchError(error, setError, setLocalError);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  return { getAllForms, loading, localError };
+};

@@ -1,8 +1,16 @@
-import React, { createContext, ReactElement, useEffect, useState } from "react";
+import React, {
+  createContext,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { UserType } from "../lib/types";
-import { printError } from "../utils/usefulFunctions";
+import { handleCatchError } from "../utils/usefulFunctions";
+import { ErrorContext } from "./ErrorContextProvider";
 
 interface UserContext {
+  loading: boolean;
   user: UserType | null;
   setUser: React.Dispatch<React.SetStateAction<UserType>>;
 }
@@ -11,12 +19,14 @@ export const UserContext = createContext<UserContext>({} as UserContext);
 
 const UserContextProvider = ({ children }: { children: ReactElement }) => {
   const [user, setUser] = useState<UserType>(null);
+  const [loading, setLoading] = useState(true);
+  const { setError } = useContext(ErrorContext);
 
   useEffect(() => {
     async function getUser() {
       try {
+        setLoading(true);
         const response = await fetch(`http://localhost:3001/api/sessions/me`, {
-          method: "get",
           credentials: "include",
         });
 
@@ -27,9 +37,10 @@ const UserContextProvider = ({ children }: { children: ReactElement }) => {
 
         const data = await response.json();
 
-        setUser(data);
+        setUser(data.user);
+        setLoading(false);
       } catch (error) {
-        printError(error);
+        handleCatchError(error, setError);
       }
     }
 
@@ -37,7 +48,9 @@ const UserContextProvider = ({ children }: { children: ReactElement }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ loading, user, setUser }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 export default UserContextProvider;
