@@ -40,7 +40,7 @@ const UserContextProvider = ({ children }: { children: ReactElement }) => {
         setUser(data.user);
         setLoading(false);
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 

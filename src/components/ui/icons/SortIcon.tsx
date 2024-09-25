@@ -7,8 +7,6 @@ const SortIcon = () => {
       height="44"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke="#ffffff"
-      fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
     >

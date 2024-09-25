@@ -43,7 +43,7 @@ export const Dashboard = () => {
     } catch (error) {
       setLoading(false);
 
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -81,6 +81,7 @@ export const Dashboard = () => {
                 </div>
                 <div className="button-container">
                   <button
+                  disabled={forms.length == 0}
                     className="sort-toggle-button"
                     onClick={(e) => {
                       e.stopPropagation();

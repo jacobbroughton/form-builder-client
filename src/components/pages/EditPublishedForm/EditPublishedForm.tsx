@@ -42,7 +42,6 @@ export const EditPublishedForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
   async function saveForm() {
     try {
@@ -61,7 +60,7 @@ export const EditPublishedForm = () => {
 
       // navigate(`/form/${form.form.id}`);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -127,11 +126,9 @@ export const EditPublishedForm = () => {
 
       await deletePublishedForm({ formId: form.form!.id });
 
-      setDeletedViewShowing(true);
-
-      navigate("/");
+      navigate("/form-deleted");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -166,14 +163,12 @@ export const EditPublishedForm = () => {
           inputs: data.inputs,
         });
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 
     fetchFormForEdit();
   }, []);
-
-  if (deletedViewShowing) return <p>This form has been deleted</p>;
 
   return (
     <main className="edit-form">

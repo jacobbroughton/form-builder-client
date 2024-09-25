@@ -1,11 +1,15 @@
 import { useCallback, useContext, useState } from "react";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
+import { UserContext } from "../providers/UserContextProvider";
+import { useNavigate } from "react-router-dom";
 
 export const useChangeInputEnabledStatus = () => {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const changeInputEnabledStatus = useCallback(
     async (
@@ -32,6 +36,11 @@ export const useChangeInputEnabledStatus = () => {
         );
 
         if (!response.ok) {
+          if (response.status == 401) {
+            setUser(null);
+            navigate("/login");
+          }
+
           const body = await response.json();
           throw new Error(
             `Error: ${

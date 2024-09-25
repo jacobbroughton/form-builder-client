@@ -88,3 +88,10 @@ nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > svg {
   width: 30px;
   height: 30px;
 }
+
+nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > .profile-picture {
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  border-radius: 100%;
+}

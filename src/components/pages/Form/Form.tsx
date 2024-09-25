@@ -1,37 +1,41 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
+import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { UserContext } from "../../../providers/UserContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
-import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
-import "./Form.css";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
-import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
-import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
-import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
+import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
+import "./Form.css";
+import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
   const { getPublishedForm } = useGetPublishedForm();
   const { formId } = useParams();
+  const { user } = useContext(UserContext);
   const [formLoading, setFormLoading] = useState(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
-  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
+  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
 
   const { setError } = useContext(ErrorContext);
+  const navigate = useNavigate();
 
   async function handleFormDelete(): Promise<void> {
     try {
-      const data = await deletePublishedForm({ formId });
+      await deletePublishedForm({ formId });
 
-      setDeletedViewShowing(true);
+      navigate("/form-deleted");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -48,7 +52,7 @@ export const Form = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 
@@ -61,12 +65,10 @@ export const Form = () => {
         <p>Form loading...</p>
       ) : !form ? (
         <p>No form found</p>
-      ) : deletedViewShowing ? (
-        <p>This form has been deleted.</p>
       ) : (
         <>
           <div className="form-controls">
-            <DraftPublishedTag draftOrPublished={"published"} />
+            {user ? <DraftPublishedTag draftOrPublished={"published"} /> : false}
             <div className="menu-toggle-button-container">
               <button
                 className="menu-toggle-button"
@@ -79,10 +81,12 @@ export const Form = () => {
               </button>
               {formPopupMenuToggled ? (
                 <FormPopupMenu
-                  formId={form.id}
+                  form={form}
                   isDraft={false}
                   setFormPopupToggled={setFormPopupMenuToggled}
-                  handleFormDelete={() => handleFormDelete()}
+                  handleDeleteClick={() => {
+                    setDeleteFormModalShowing(true);
+                  }}
                 />
               ) : (
                 false
@@ -112,6 +116,14 @@ export const Form = () => {
             <NoPromptsMessage formId={form.id} isDraft={false} />
           )}
         </>
+      )}
+      {deleteFormModalShowing ? (
+        <DeleteFormModal
+          handleDeleteClick={() => handleFormDelete()}
+          setDeleteFormModalShowing={setDeleteFormModalShowing}
+        />
+      ) : (
+        false
       )}
     </main>
   );

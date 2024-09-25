@@ -28,7 +28,7 @@ export function timeAgo(date: string) {
 export function handleCatchError(
   error: Error | string | unknown,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
-  setLocalError: React.Dispatch<React.SetStateAction<string | null>>
+  setLocalError: React.Dispatch<React.SetStateAction<string | null>> | null
 ) {
   let errorMessage = "";
 

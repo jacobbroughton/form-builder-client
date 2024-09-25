@@ -15,6 +15,7 @@ main.published-form > .form-controls {
 
 main.published-form > .form-controls > .menu-toggle-button-container {
   position: relative;
+  margin-left: auto;
 }
 
 main.published-form

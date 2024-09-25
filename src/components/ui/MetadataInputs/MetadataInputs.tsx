@@ -57,7 +57,7 @@ export const MetadataInputs = ({
         })),
       });
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 

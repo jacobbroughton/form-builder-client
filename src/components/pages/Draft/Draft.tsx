@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AddedInputType, PublishedFormType } from "../../../lib/types";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
+import { AddedInputType, PublishedFormType } from "../../../lib/types";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
@@ -17,22 +18,20 @@ export const Draft = () => {
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
   const { formId } = useParams();
-  const [formLoading, setFormLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState<boolean>(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<AddedInputType[]>([]);
-  const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
-  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
+  const [formPopupMenuToggled, setFormPopupMenuToggled] = useState<boolean>(false);
+  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
   const { setError } = useContext(ErrorContext);
 
   async function handleFormDelete(): Promise<void> {
     try {
       await deleteDraftForm({ formId });
 
-      setDeletedViewShowing(true);
-
-      navigate("/");
+      navigate("/form-deleted");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -47,7 +46,7 @@ export const Draft = () => {
         setInputs(data.inputs);
         setFormLoading(false);
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 
@@ -60,8 +59,6 @@ export const Draft = () => {
         <p>Form loading...</p>
       ) : !form ? (
         <p>No form found</p>
-      ) : deletedViewShowing ? (
-        <p>This form has been deleted.</p>
       ) : (
         <>
           <div className="form-controls">
@@ -78,10 +75,12 @@ export const Draft = () => {
               </button>
               {formPopupMenuToggled ? (
                 <FormPopupMenu
-                  formId={form.id}
+                  form={form}
                   isDraft={true}
                   setFormPopupToggled={setFormPopupMenuToggled}
-                  handleFormDelete={() => handleFormDelete()}
+                  handleDeleteClick={() => {
+                    setDeleteFormModalShowing(true);
+                  }}
                 />
               ) : (
                 false
@@ -102,6 +101,14 @@ export const Draft = () => {
             <NoPromptsMessage formId={form.id} isDraft={true} />
           )}
         </>
+      )}
+      {deleteFormModalShowing ? (
+        <DeleteFormModal
+          handleDeleteClick={() => handleFormDelete()}
+          setDeleteFormModalShowing={setDeleteFormModalShowing}
+        />
+      ) : (
+        false
       )}
     </main>
   );

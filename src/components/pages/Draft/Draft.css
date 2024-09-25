@@ -16,6 +16,7 @@ main.draft-form > .form-controls {
 
 main.draft-form > .form-controls > .menu-toggle-button-container {
   position: relative;
+  margin-left: auto;
 }
 
 main.draft-form

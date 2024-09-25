@@ -24,7 +24,7 @@ export const InputTypeSelector = ({
 
       setInputTypes(data);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 

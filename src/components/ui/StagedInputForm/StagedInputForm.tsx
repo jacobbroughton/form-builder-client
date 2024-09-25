@@ -59,7 +59,7 @@ export const StagedInputForm = ({
 
       setInputTypeProperties(data);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -69,7 +69,7 @@ export const StagedInputForm = ({
 
       setInputTypePropertyOptions(data);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -95,7 +95,7 @@ export const StagedInputForm = ({
 
       setCurrentView("metadata-inputs");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 

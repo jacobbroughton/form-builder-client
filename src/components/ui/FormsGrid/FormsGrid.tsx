@@ -72,7 +72,7 @@ const FormsGrid = ({
               </button>
               {idForPopupMenu == form.id && popupMenuToggled ? (
                 <FormPopupMenu
-                  formId={form.id}
+                  form={form}
                   isDraft={form.is_draft}
                   setFormPopupToggled={setPopupMenuToggled}
                   handleFormDelete={async () => {

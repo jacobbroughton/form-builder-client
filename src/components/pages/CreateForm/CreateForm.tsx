@@ -76,7 +76,7 @@ export const CreateForm = () => {
         inputs: [],
       });
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -111,7 +111,7 @@ export const CreateForm = () => {
         form: data,
       });
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -130,7 +130,7 @@ export const CreateForm = () => {
 
       setInitiallyLoading(false);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -218,7 +218,7 @@ export const CreateForm = () => {
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -230,7 +230,7 @@ export const CreateForm = () => {
 
       navigate("/");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -252,7 +252,7 @@ export const CreateForm = () => {
         setNeedsAutoSave(false);
         setAutoSaveCountdown(2);
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 

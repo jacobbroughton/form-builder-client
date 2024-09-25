@@ -2,6 +2,8 @@ import { useContext, useEffect, useRef } from "react";
 import { UserContext } from "../../../providers/UserContextProvider";
 import "./UserMenu.css";
 import LogoutIcon from "../icons/LogoutIcon";
+import { PlusIcon } from "../icons/PlusIcon";
+import { Link } from "react-router-dom";
 
 const UserMenu = ({
   setUserMenuToggled,
@@ -50,6 +52,9 @@ const UserMenu = ({
       <ul>
         <li>
           <p className="email">{user.email}</p>
+        </li>
+        <li>
+          <Link to="/create-form"><PlusIcon/> Create a new form</Link>
         </li>
         <li>
           <button onClick={() => logout()}><LogoutIcon/> Logout</button>

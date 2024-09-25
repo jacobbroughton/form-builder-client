@@ -14,7 +14,8 @@
 }
 
 .user-menu > ul > li > button,
-.user-menu > ul > li > p {
+.user-menu > ul > li > p,
+.user-menu > ul > li > a {
   background-color: transparent;
   border: 0;
   padding: 5px 10px;
@@ -27,19 +28,32 @@
   gap: 10px;
 }
 
-.user-menu > ul > li > button {
+
+.user-menu > ul > li > button,
+.user-menu > ul > li > a {
   cursor: pointer;
 }
 
-.user-menu > ul > li > button > svg {
+.user-menu > ul > li > button > svg,
+.user-menu > ul > li > a > svg {
   width: 15px;
   fill: whitesmoke;
 }
 
-.user-menu > ul > li > button:hover {
+.user-menu > ul > li > button:hover,
+.user-menu > ul > li > a:hover {
   background-color: #333;
 }
 
-.user-menu > ul > li > button:not(:last-child) {
-  border-bottom: 1px solid #555;
+.user-menu > ul > li:not(:last-child) > button,
+.user-menu > ul > li:not(:last-child) > a,
+.user-menu > ul > li > p {
+  border-bottom: 1px solid #444;
+}
+
+.user-menu > ul > li > p {
+  background-color: #333;
+  font-weight: 500;
+  border-left: 3px solid lightgreen;
+  padding-left: 15px;
 }

@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import HomeIcon from "../icons/HomeIcon";
 import UserIcon from "../icons/UserIcon";
 import "./Navbar.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import UserMenu from "../UserMenu/UserMenu";
+import { UserContext } from "../../../providers/UserContextProvider";
 
 export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
   const [userMenuToggled, setUserMenuToggled] = useState(false);
+  const { user } = useContext(UserContext);
 
   return (
     <nav>
@@ -24,7 +26,14 @@ export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
                   setUserMenuToggled(!userMenuToggled);
                 }}
               >
-                <UserIcon />
+                {user?.picture ? (
+                  <div
+                    className="profile-picture"
+                    style={{ backgroundImage: `url(${user?.picture})` }}
+                  ></div>
+                ) : (
+                  <UserIcon />
+                )}
               </button>
               {userMenuToggled ? (
                 <UserMenu setUserMenuToggled={setUserMenuToggled} />

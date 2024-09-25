@@ -47,7 +47,6 @@ export const EditDraftForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [deletedViewShowing, setDeletedViewShowing] = useState(false);
 
   async function saveDraft(): Promise<void> {
     try {
@@ -65,7 +64,7 @@ export const EditDraftForm = () => {
 
       setSaved(true);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -77,7 +76,7 @@ export const EditDraftForm = () => {
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -87,11 +86,11 @@ export const EditDraftForm = () => {
 
       await deleteDraftForm({ formId: form.form!.id });
 
-      setDeletedViewShowing(true);
+      navigate("/form-deleted");
 
       navigate("/");
     } catch (error) {
-      handleCatchError(error, setError);
+      handleCatchError(error, setError, null);
     }
   }
 
@@ -174,7 +173,7 @@ export const EditDraftForm = () => {
           inputs: data.inputs,
         });
       } catch (error) {
-        handleCatchError(error, setError);
+        handleCatchError(error, setError, null);
       }
     }
 
@@ -196,8 +195,6 @@ export const EditDraftForm = () => {
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
   ]);
-
-  if (deletedViewShowing) return <p>This form has been deleted</p>;
 
   return (
     <main className="edit-form">

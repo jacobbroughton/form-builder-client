@@ -18,6 +18,7 @@ import "./index.css";
 import UserContextProvider from "./providers/UserContextProvider.tsx";
 import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
 import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
+import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,13 +30,9 @@ const router = createBrowserRouter([
         element: <Form />,
       },
       {
-        path: "/draft/:formId",
-        element: <Draft />,
-      },
-      {
         path: "/google-oauth-error",
-        element: <GoogleOAuthError/>
-      }
+        element: <GoogleOAuthError />,
+      },
     ],
   },
   {
@@ -64,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/form-deleted",
+        element: <FormDeleted />,
+      },
+      {
+        path: "/draft/:formId",
+        element: <Draft />,
       },
       {
         path: "/create-form",

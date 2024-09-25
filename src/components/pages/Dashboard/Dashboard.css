@@ -59,7 +59,7 @@ main.forms
   > section.header
   > .controls
   > div.button-container
-  > button:hover {
+  > button:not(:disabled):hover {
   background-color: #333;
 }
 
@@ -71,7 +71,28 @@ main.forms
   > button
   > svg {
   fill: whitesmoke;
+  stroke: whitesmoke
 }
+
+main.forms
+  > div.forms-container
+  > section.header
+  > .controls
+  > div.button-container
+  > button.sort-toggle-button:disabled {
+    cursor: not-allowed;
+  }
+  
+
+main.forms
+  > div.forms-container
+  > section.header
+  > .controls
+  > div.button-container
+  > button.sort-toggle-button:disabled > svg  {
+    fill: grey;
+    stroke: grey;
+  }
 
 main.forms
   > div.forms-container
@@ -82,6 +103,7 @@ main.forms
   > svg {
   width: 20px;
 }
+
 
 main.forms
   > div.forms-container
