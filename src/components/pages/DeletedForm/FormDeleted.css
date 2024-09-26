@@ -25,7 +25,7 @@ main.form-deleted > .prompt-section > p {
 
 main.form-deleted > .prompt-section > .links {
   display: flex;
-  gap: 25px;
+  gap: 10px;
 }
 
 
@@ -44,4 +44,9 @@ main.form-deleted > .prompt-section > .links > a:hover {
 main.form-deleted > .prompt-section > .links > a > svg {
   width: 13px;
   fill: whitesmoke;
+  transition: 0.1s ease transform;
+}
+
+main.form-deleted > .prompt-section > .links > a:hover > svg {
+  transform: translateX(3px)
 }

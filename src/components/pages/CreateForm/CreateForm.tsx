@@ -1,24 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
 
-import { handleCatchError } from "../../../utils/usefulFunctions";
-import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
-import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
-import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
-import "./CreateForm.css";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
-import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { useNavigate } from "react-router-dom";
-import { TrashIcon } from "../../ui/icons/TrashIcon";
-import { SaveIcon } from "../../ui/icons/SaveIcon";
-import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { useGetDraftForms } from "../../../hooks/useGetDraftForms";
 import { usePublish } from "../../../hooks/usePublish";
 import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+import { SaveIcon } from "../../ui/icons/SaveIcon";
+import { ShareIcon } from "../../ui/icons/ShareIcon";
+import { TrashIcon } from "../../ui/icons/TrashIcon";
+import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
+import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
+import SavedStatus from "../../ui/SavedStatus/SavedStatus";
+import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
+import "./CreateForm.css";
+import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
+import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
+import { Link } from "react-router-dom";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -29,6 +33,8 @@ export const CreateForm = () => {
   const { publish } = usePublish();
   const { storeInitialDraft } = useStoreInitialDraft();
   const { updateDraftForm } = useUpdateDraftForm();
+  const { getExistingEmptyDraft } = useGetExistingEmptyDraft();
+  const { renewExistingDraft } = useRenewExistingDraft();
 
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
@@ -64,15 +70,28 @@ export const CreateForm = () => {
       if (isStoring) return;
       isStoring = true;
 
-      const data = await storeInitialDraft();
+      const storedFormData = await getExistingEmptyDraft();
+
+      console.log(storedFormData);
+
+      let formToUse = storedFormData[0];
+
+      if (storedFormData[0]) {
+        const data = await renewExistingDraft({ draftFormId: storedFormData[0].id });
+        if (data[0]) formToUse = data[0];
+      } else {
+        const data = await storeInitialDraft();
+
+        if (data) formToUse = data;
+      }
 
       setPrevSavedForm({
-        form: data,
+        form: formToUse,
         inputs: [],
       });
 
       setDraft({
-        form: data,
+        form: formToUse,
         inputs: [],
       });
     } catch (error) {
@@ -110,6 +129,9 @@ export const CreateForm = () => {
         inputs: draft?.inputs,
         form: data,
       });
+      setSaved(true);
+      setAutoSaveCountdown(5);
+      setNeedsAutoSave(false);
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -171,6 +193,18 @@ export const CreateForm = () => {
               onClick={() => saveDraft()}
             >
               <SaveIcon /> Save Draft
+            </button>
+
+            <button
+              className="action-button-with-icon"
+              onClick={async () => {
+                await saveDraft();
+                navigate(`/draft/${draft.form?.id}`);
+              }}
+            >
+              <ArrowRightIcon /> <span style={{...(saved && {
+                color: 'grey'
+              })}}>Save &</span> Go to draft
             </button>
 
             <button
@@ -250,7 +284,7 @@ export const CreateForm = () => {
 
         setSaved(true);
         setNeedsAutoSave(false);
-        setAutoSaveCountdown(2);
+        setAutoSaveCountdown(5);
       } catch (error) {
         handleCatchError(error, setError, null);
       }

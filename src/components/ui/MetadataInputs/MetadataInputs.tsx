@@ -7,6 +7,7 @@ import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
 import "./MetadataInputs.css";
 import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
+import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
 
 export const MetadataInputs = ({
   form,
@@ -94,9 +95,7 @@ export const MetadataInputs = ({
         />
       </form>
       {form.inputs.length === 0 ? (
-        <div className="no-items-yet">
-          <p>You haven't added any prompts yet</p>
-        </div>
+        <NoPromptsMessage/>
       ) : (
         <div className="added-inputs">
           {form.inputs.map((input) => (

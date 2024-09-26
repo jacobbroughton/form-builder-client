@@ -11,14 +11,20 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 0.1s ease background-color;
 }
 
 .floating-create-button:hover {
   background-color: #3b3b3b;
 }
 
-.floating-create-button svg {
+.floating-create-button > svg {
   width: 30px;
   height: 30px;
   fill: whitesmoke;
+  transition: 0.15s ease transform, 0.15s ease fill;
+}
+
+.floating-create-button:hover > svg {
+  transform: rotate(90deg);
 }

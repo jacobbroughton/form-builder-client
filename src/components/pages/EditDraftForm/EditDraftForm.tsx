@@ -16,6 +16,7 @@ import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import "./EditDraftForm.css";
+import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export const EditDraftForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
+  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
 
   async function saveDraft(): Promise<void> {
     try {
@@ -82,13 +84,11 @@ export const EditDraftForm = () => {
 
   async function handleFormDelete() {
     try {
-      if (!form.form!.id) throw new Error("No form id provided");
+      if (!draft.form!.id) throw new Error("No form id provided");
 
-      await deleteDraftForm({ formId: form.form!.id });
+      await deleteDraftForm({ formId: draft.form!.id });
 
       navigate("/form-deleted");
-
-      navigate("/");
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -107,8 +107,12 @@ export const EditDraftForm = () => {
               isForDraft={true}
             />
             <button
-              className="action-button-with-icon red delete-button"
-              onClick={() => handleFormDelete()}
+              className="action-button-with-icon red"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeleteFormModalShowing(true);
+              }}
             >
               <TrashIcon /> Delete Draft
             </button>
@@ -200,6 +204,14 @@ export const EditDraftForm = () => {
     <main className="edit-form">
       <DraftPublishedTag draftOrPublished="draft" />
       {renderView()}
+      {deleteFormModalShowing ? (
+        <DeleteFormModal
+          handleDeleteClick={() => handleFormDelete()}
+          setDeleteFormModalShowing={setDeleteFormModalShowing}
+        />
+      ) : (
+        false
+      )}
     </main>
   );
 };

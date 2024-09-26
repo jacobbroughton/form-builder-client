@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../../providers/UserContextProvider";
-import "./UserMenu.css";
 import LogoutIcon from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
-import { Link } from "react-router-dom";
+import "./UserMenu.css";
 
 const UserMenu = ({
   setUserMenuToggled,
@@ -28,6 +28,7 @@ const UserMenu = ({
 
       console.log("Logged out", data);
       setUser(null);
+      setUserMenuToggled(false)
     } catch (error) {
       console.error(error);
     }
@@ -54,10 +55,14 @@ const UserMenu = ({
           <p className="email">{user.email}</p>
         </li>
         <li>
-          <Link to="/create-form"><PlusIcon/> Create a new form</Link>
+          <Link to="/create-form" onClick={() => setUserMenuToggled(false)}>
+            <PlusIcon /> Create a new form
+          </Link>
         </li>
         <li>
-          <button onClick={() => logout()}><LogoutIcon/> Logout</button>
+          <button onClick={() => logout()}>
+            <LogoutIcon /> Logout
+          </button>
         </li>
       </ul>
     </div>

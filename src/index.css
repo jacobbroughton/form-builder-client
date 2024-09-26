@@ -14,7 +14,8 @@ a {
   text-decoration: none;
 }
 
-button.action-button-with-icon {
+button.action-button-with-icon,
+a.action-button-with-icon {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -29,40 +30,45 @@ button.action-button-with-icon {
   background-color: transparent;
 }
 
-button.action-button-with-icon:not(:disabled):not(.green):hover {
+button.action-button-with-icon:not(:disabled):not(.green):hover,
+a.action-button-with-icon:not(:disabled):not(.green):hover {
   background-color: #333;
 }
 
-
-button.action-button-with-icon.green {
+button.action-button-with-icon.green,
+a.action-button-with-icon.green {
   font-weight: 600;
   background-color: hsl(120, 73%, 75%);
   color: #333;
 }
 
-button.action-button-with-icon.green:not(:disabled):hover {
+button.action-button-with-icon.green:not(:disabled):hover,
+a.action-button-with-icon.green:not(:disabled):hover {
   background-color: hsl(120, 73%, 85%);
 }
 
-button.action-button-with-icon > svg {
+button.action-button-with-icon > svg,
+a.action-button-with-icon > svg {
   width: 13px;
   fill: whitesmoke;
 }
 
-button.action-button-with-icon:disabled > svg {
-  fill: grey
+button.action-button-with-icon:disabled > svg,
+a.action-button-with-icon:disabled > svg {
+  fill: grey;
 }
 
-button.action-button-with-icon.red > svg {
+button.action-button-with-icon.red > svg,
+a.action-button-with-icon.red > svg {
   width: 13px;
   fill: rgb(218, 86, 112);
 }
 
-button.action-button-with-icon.green > svg {
+button.action-button-with-icon.green > svg,
+a.action-button-with-icon.green > svg {
   width: 13px;
   fill: #333;
 }
-
 
 textarea {
   resize: vertical;

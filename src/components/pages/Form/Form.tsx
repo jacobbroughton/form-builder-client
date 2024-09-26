@@ -85,7 +85,8 @@ export const Form = () => {
                   isDraft={false}
                   setFormPopupToggled={setFormPopupMenuToggled}
                   handleDeleteClick={() => {
-                    setDeleteFormModalShowing(true);
+                    handleFormDelete();
+                    setDeleteFormModalShowing(false);
                   }}
                 />
               ) : (

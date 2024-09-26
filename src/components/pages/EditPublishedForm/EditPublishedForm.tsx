@@ -14,6 +14,7 @@ import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
+import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ export const EditPublishedForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
+  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
 
   async function saveForm() {
     try {
@@ -78,14 +80,20 @@ export const EditPublishedForm = () => {
             />
             <button
               className="action-button-with-icon red"
-              onClick={() => handleFormDelete()}
+              // onClick={() => handleFormDelete()}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeleteFormModalShowing(true);
+              }}
             >
               <TrashIcon /> Delete Form
             </button>
             <button
-              className="action-button-with-icon green"
+              className="action-button-with-icon "
               type="button"
               onClick={() => saveForm()}
+              disabled={saved}
             >
               <SaveIcon /> Save Form
             </button>
@@ -172,8 +180,17 @@ export const EditPublishedForm = () => {
 
   return (
     <main className="edit-form">
+      {deleteFormModalShowing.toString()}
       <DraftPublishedTag draftOrPublished="published" />
       {renderView()}
+      {deleteFormModalShowing ? (
+        <DeleteFormModal
+          handleDeleteClick={() => handleFormDelete()}
+          setDeleteFormModalShowing={setDeleteFormModalShowing}
+        />
+      ) : (
+        false
+      )}
     </main>
   );
 };
