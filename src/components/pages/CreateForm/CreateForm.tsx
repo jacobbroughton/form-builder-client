@@ -1,16 +1,24 @@
 import { useContext, useEffect, useState } from "react";
-import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
+import {
+  AddedInputType,
+  DraftFormType,
+  InputTypeType,
+  PrivacyOptionType,
+} from "../../../lib/types";
 
 import { useNavigate } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { useGetDraftForms } from "../../../hooks/useGetDraftForms";
+import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
 import { usePublish } from "../../../hooks/usePublish";
+import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
 import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
@@ -19,10 +27,11 @@ import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
-import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
-import { Link } from "react-router-dom";
-import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
+import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
+import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
+import { EditIcon } from "../../ui/icons/EditIcon";
+import { PlusIcon } from "../../ui/icons/PlusIcon";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -35,6 +44,17 @@ export const CreateForm = () => {
   const { updateDraftForm } = useUpdateDraftForm();
   const { getExistingEmptyDraft } = useGetExistingEmptyDraft();
   const { renewExistingDraft } = useRenewExistingDraft();
+  const {
+    privacyOptions,
+    setPrivacyOptions,
+    loading: privacyOptionsLoading,
+    error: privacyOptionsError,
+  } = useGetPrivacyOptions();
+
+  const [stagedPrivacyOptions, setStagedPrivacyOptions] = useState<PrivacyOptionType[]>(
+    []
+  );
+  const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
@@ -53,8 +73,8 @@ export const CreateForm = () => {
   });
 
   const [draftIdToFetch, setDraftIdToFetch] = useState<string | null>(null);
-  const [initiallyLoading, setInitiallyLoading] = useState(false);
-  const [currentView, setCurrentView] = useState("existing-or-new-draft");
+  const [initiallyLoading, setInitiallyLoading] = useState(true);
+  const [currentView, setCurrentView] = useState("metadata-inputs");
   const [saved, setSaved] = useState(true);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
   const [needsAutoSave, setNeedsAutoSave] = useState(false);
@@ -66,13 +86,13 @@ export const CreateForm = () => {
   let isStoring = false;
 
   async function createNewDraft(): Promise<void> {
+    setInitiallyLoading(true);
+
     try {
       if (isStoring) return;
       isStoring = true;
 
       const storedFormData = await getExistingEmptyDraft();
-
-      console.log(storedFormData);
 
       let formToUse = storedFormData[0];
 
@@ -94,9 +114,14 @@ export const CreateForm = () => {
         form: formToUse,
         inputs: [],
       });
+      // setInitiallyLoading(false)
     } catch (error) {
       handleCatchError(error, setError, null);
+      // setInitiallyLoading(false)
+    } finally {
+      console.log("asdfasdfasdfasdf");
     }
+    setInitiallyLoading(false);
   }
 
   useEffect(() => {
@@ -117,12 +142,25 @@ export const CreateForm = () => {
     if (draftIdToFetch) fetchFormToModify();
   }, [draftIdToFetch]);
 
+  useEffect(() => {
+    if (reflectFormPrivacyOption)
+      setStagedPrivacyOptions(
+        privacyOptions.map((privacyOption) => ({
+          ...privacyOption,
+          checked: privacyOption.id === draft.form?.privacy_id,
+        }))
+      );
+  }, [privacyOptions, draft, reflectFormPrivacyOption]);
+
   async function saveDraft() {
     try {
+      console.log({ stagedPrivacyOptions });
       const data = await updateDraftForm({
         formId: draft.form!.id,
         title: draft.form!.title,
         description: draft.form!.description,
+        privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
+          .id,
       });
 
       setDraft({
@@ -156,6 +194,10 @@ export const CreateForm = () => {
     }
   }
 
+  const selectedPrivacyOption = privacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
   function renderView() {
     switch (currentView) {
       case "existing-or-new-draft": {
@@ -168,10 +210,55 @@ export const CreateForm = () => {
           />
         );
       }
+      case "privacy-selector": {
+        return (
+          <>
+            <button
+              className="action-button-with-icon"
+              onClick={() => {
+                setStagedPrivacyOptions(privacyOptions);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              <ArrowLeftIcon /> Back
+            </button>
+            <PrivacyOptions
+              privacyOptions={stagedPrivacyOptions}
+              setPrivacyOptions={setStagedPrivacyOptions}
+              loading={privacyOptionsLoading}
+              error={privacyOptionsError}
+            />
+            {stagedPrivacyOptions?.find((privacyOption) => privacyOption.checked)
+              .needs_passkey ? (
+              <div className="passkey-section">
+                <p>Enter a passkey</p>
+                <p className="small-text">
+                  Users will need to fill this out before seeing/filling out the form
+                </p>
+                <input placeholder="password (use something different)" />
+              </div>
+            ) : (
+              false
+            )}
+            <button
+              className="action-button-with-icon"
+              onClick={() => {
+                console.log({ stagedPrivacyOptions });
+                setPrivacyOptions(stagedPrivacyOptions);
+                setReflectFormPrivacyOption(false);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              Confirm & Continue <ArrowRightIcon />
+            </button>
+          </>
+        );
+      }
       case "metadata-inputs": {
         return (
           <>
             <SavedStatus saved={saved} autoSaveCountdown={autoSaveCountdown} />
+
             <MetadataInputs
               form={draft}
               setForm={setDraft}
@@ -180,6 +267,25 @@ export const CreateForm = () => {
               isForDraft={true}
               draftIdToFetch={draftIdToFetch}
             />
+            <button
+              className="selected-privacy-option-button"
+              onClick={() => setCurrentView("privacy-selector")}
+            >
+              <div className="content">
+                <p>{selectedPrivacyOption.name}</p>
+                <p>{selectedPrivacyOption.description}</p>
+              </div>
+              <div className="icon-container">
+                <EditIcon />
+              </div>
+            </button>
+            <button
+              className="action-button-with-icon add-new-input"
+              type="button"
+              onClick={() => setCurrentView("input-types-selector")}
+            >
+              <PlusIcon /> Add new form item
+            </button>
             <button
               className="action-button-with-icon red"
               onClick={() => handleFormDelete()}
@@ -198,13 +304,21 @@ export const CreateForm = () => {
             <button
               className="action-button-with-icon"
               onClick={async () => {
-                await saveDraft();
+                if (!saved) await saveDraft();
                 navigate(`/draft/${draft.form?.id}`);
               }}
             >
-              <ArrowRightIcon /> <span style={{...(saved && {
-                color: 'grey'
-              })}}>Save &</span> Go to draft
+              <ArrowRightIcon />{" "}
+              <span
+                style={{
+                  ...(saved && {
+                    color: "grey",
+                  }),
+                }}
+              >
+                Save &
+              </span>{" "}
+              Go to draft
             </button>
 
             <button
@@ -269,7 +383,7 @@ export const CreateForm = () => {
   }
 
   useEffect(() => {
-    getDraftFormsLocal();
+    createNewDraft();
   }, []);
 
   useEffect(() => {
@@ -323,7 +437,8 @@ export const CreateForm = () => {
     if (draft.form && prevSavedForm.form) {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
-        draft.form.description !== prevSavedForm.form.description;
+        draft.form.description !== prevSavedForm.form.description ||
+        selectedPrivacyOption!.id !== draft.form.privacy_id;
       setSaved(!condition);
       setNeedsAutoSave(condition);
     }
@@ -332,6 +447,7 @@ export const CreateForm = () => {
     draft.form?.title,
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
+    selectedPrivacyOption?.id,
   ]);
 
   return (

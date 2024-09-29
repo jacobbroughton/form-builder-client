@@ -137,13 +137,7 @@ export const MetadataInputs = ({
           ))}
         </div>
       )}
-      <button
-        className="action-button-with-icon add-new-input"
-        type="button"
-        onClick={() => setCurrentView("input-types-selector")}
-      >
-        <PlusIcon /> Add new form item
-      </button>
+      
     </div>
   );
 };

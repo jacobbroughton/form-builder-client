@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddedInputType } from "../../../lib/types";
 import "./FormInput.css";
 
-export const FormInput = ({ input }: { input: AddedInputType }) => {
+export const FormInput = ({
+  input,
+  inputs,
+  setInputs,
+}: {
+  input: AddedInputType;
+  inputs: AddedInputType[];
+  setInputs: React.Dispatch<React.SetStateAction<AddedInputType[]>>;
+}) => {
   const [value, setValue] = useState(input.properties?.[`default-value`]?.value || "");
 
   function renderInput() {
     switch (input.input_type_name) {
-      case "text": {
+      case "Text": {
         return (
           <input
             type={"Text"}
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
-            defaultValue={input.properties?.[`default-value`]?.value}
+            // defaultValue={input.properties?.[`default-value`]?.value}
             minLength={parseInt(input.properties?.[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
+            maxLength={parseInt(input.properties?.[`max`]?.value)}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -24,7 +43,7 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
             minLength={parseInt(input.properties?.[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
+            maxLength={parseInt(input.properties?.[`max`]?.value)}
           />
         );
       }
@@ -114,15 +133,7 @@ export const FormInput = ({ input }: { input: AddedInputType }) => {
         );
       }
       default: {
-        return (
-          <input
-            type={"text"}
-            placeholder={input.properties?.[`placeholder`]?.value || "..."}
-            defaultValue={input.properties?.[`default-value`]?.value}
-            minLength={parseInt(input.properties?.[`min`]?.value || "0")}
-            maxLength={parseInt(input.properties?.[`max`]?.value || "0")}
-          />
-        );
+        return <p>Something went wrong while rendering this input</p>;
       }
     }
   }

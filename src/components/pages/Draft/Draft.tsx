@@ -44,9 +44,10 @@ export const Draft = () => {
 
         setForm(data.form);
         setInputs(data.inputs);
-        setFormLoading(false);
       } catch (error) {
         handleCatchError(error, setError, null);
+      } finally {
+        setFormLoading(false);
       }
     }
 
@@ -94,7 +95,7 @@ export const Draft = () => {
           {inputs.length ? (
             <div className="inputs">
               {inputs.map((input) => (
-                <FormInput input={input} />
+                <FormInput input={input} inputs={inputs} setInputs={setInputs} />
               ))}
             </div>
           ) : (

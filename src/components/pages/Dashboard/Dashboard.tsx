@@ -62,7 +62,7 @@ export const Dashboard = () => {
         <>
           <div className="forms-container">
             <section className="header">
-              <p className="small-text">Recent Forms</p>
+              <p className="small-text">Recent Forms (Sorted by {selectedSort.name.toLowerCase()})</p>
               <div className="controls">
                 <div className="button-container">
                   <button

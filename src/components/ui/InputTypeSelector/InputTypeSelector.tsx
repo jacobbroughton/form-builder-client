@@ -13,24 +13,7 @@ export const InputTypeSelector = ({
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
 }) => {
-  const { getInputTypes } = useGetInputTypes();
-  const [inputTypes, setInputTypes] = useState<InputTypeType[]>([]);
-
-  const { setError } = useContext(ErrorContext);
-
-  async function getInputTypesLocal(): Promise<void> {
-    try {
-      const data = await getInputTypes();
-
-      setInputTypes(data);
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
-
-  useEffect(() => {
-    getInputTypesLocal();
-  }, []);
+  const { inputTypes } = useGetInputTypes();
 
   return (
     <div className="input-type-selector">

@@ -1,40 +1,42 @@
 import { useCallback, useContext, useState } from "react";
-import { DraftFormType } from "../lib/types";
+import { AddedInputType, InputTypePropertyType } from "../lib/types";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 
-export const useUpdateDraftForm = () => {
+export const useAddNewInputToPublishedForm = () => {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const updateDraftForm = useCallback(
+  const addNewInputToPublishedForm = useCallback(
     async (body: {
-      formId: string;
-      title: string;
-      description: string;
-      privacyId: number;
-    }): Promise<DraftFormType> => {
+      inputTypeId: number | undefined;
+      inputMetadataQuestion: string;
+      inputMetadataDescription: string;
+      properties: InputTypePropertyType[];
+      formId: string | undefined;
+    }): Promise<AddedInputType> => {
       setLoading(true);
       setLocalError(null);
 
       try {
-        if (!body.formId) throw new Error("Form ID was not provided");
+        if (!body.inputTypeId) throw new Error("Input type id not provided");
+        if (!body.formId) throw new Error("Form ID for new input type was not provided");
 
-        const response = await fetch("http://localhost:3001/form/update-draft-form", {
-          method: "put",
+        const response = await fetch("http://localhost:3001/form/add-new-input-to-published-form", {
+          method: "post",
           headers: {
             "content-type": "application/json",
           },
           body: JSON.stringify({
+            inputTypeId: body.inputTypeId,
+            inputMetadataQuestion: body.inputMetadataQuestion,
+            inputMetadataDescription: body.inputMetadataDescription,
             formId: body.formId,
-            title: body.title,
-            description: body.description,
-            privacyId: body.privacyId,
           }),
           credentials: "include",
         });
@@ -47,7 +49,10 @@ export const useUpdateDraftForm = () => {
 
           const body = await response.json();
           throw new Error(
-            `Error: ${body.message || "An error occured while updating the form draft"}`
+            `Error: ${
+              body.message ||
+              "Something happened when trying to add a new form item to the published form"
+            }`
           );
         }
 
@@ -62,5 +67,5 @@ export const useUpdateDraftForm = () => {
     []
   );
 
-  return { updateDraftForm, loading, localError };
+  return { addNewInputToPublishedForm, loading, localError };
 };

@@ -30,6 +30,12 @@ a.action-button-with-icon {
   background-color: transparent;
 }
 
+button.action-button-with-icon:disabled,
+a.action-button-with-icon:disabled {
+  color: rgba(255, 255, 255, 0.35);
+  cursor: not-allowed;
+}
+
 button.action-button-with-icon:not(:disabled):not(.green):hover,
 a.action-button-with-icon:not(:disabled):not(.green):hover {
   background-color: #333;

@@ -6,7 +6,8 @@ import {
   InputTypePropertyType,
   InputTypeType,
 } from "../../../lib/types";
-import { useAddNewInputToForm } from "../../../hooks/useAddNewInputToForm";
+import { useAddNewInputToDraftForm } from "../../../hooks/useAddNewInputToDraftForm";
+import { useAddNewInputToPublishedForm } from "../../../hooks/useAddNewInputToPublishedForm";
 import { useGetInputTypeProperties } from "../../../hooks/useGetInputTypeProperties";
 import { useGetInputTypePropertyOptions } from "../../../hooks/useGetInputTypePropertyOptions";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
@@ -35,7 +36,8 @@ export const StagedInputForm = ({
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
   isForDraft: boolean;
 }) => {
-  const { addNewInputToForm } = useAddNewInputToForm();
+  const { addNewInputToDraftForm } = useAddNewInputToDraftForm();
+  const { addNewInputToPublishedForm } = useAddNewInputToPublishedForm();
   const { getInputTypeProperties } = useGetInputTypeProperties();
   const { getInputTypePropertyOptions } = useGetInputTypePropertyOptions();
 
@@ -77,14 +79,25 @@ export const StagedInputForm = ({
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
 
-      const data = await addNewInputToForm({
-        inputTypeId: stagedNewInputType?.id,
-        inputMetadataQuestion: stagedInputTitle,
-        inputMetadataDescription: stagedInputDescription,
-        properties,
-        formId: form.form!.id,
-        isForDraft,
-      });
+      let data;
+
+      if (isForDraft) {
+        data = await addNewInputToDraftForm({
+          inputTypeId: stagedNewInputType?.id,
+          inputMetadataQuestion: stagedInputTitle,
+          inputMetadataDescription: stagedInputDescription,
+          properties,
+          formId: form.form!.id,
+        });
+      } else {
+        data = await addNewInputToPublishedForm({
+          inputTypeId: stagedNewInputType?.id,
+          inputMetadataQuestion: stagedInputTitle,
+          inputMetadataDescription: stagedInputDescription,
+          properties,
+          formId: form.form!.id,
+        });
+      }
 
       setForm({
         ...form,

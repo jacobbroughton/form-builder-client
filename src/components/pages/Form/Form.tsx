@@ -39,7 +39,9 @@ export const Form = () => {
     }
   }
 
-  async function handleFormSubmit() {}
+  async function handleFormSubmit() {
+    console.log(inputs);
+  }
 
   useEffect(() => {
     async function getForm(): Promise<void> {
@@ -49,10 +51,16 @@ export const Form = () => {
         const data = await getPublishedForm({ formId });
 
         setForm(data.form);
-        setInputs(data.inputs);
-        setFormLoading(false);
+        setInputs(
+          data.inputs.map((input) => ({
+            ...input,
+            value: "",
+          }))
+        );
       } catch (error) {
         handleCatchError(error, setError, null);
+      } finally {
+        setFormLoading(false);
       }
     }
 
@@ -102,7 +110,7 @@ export const Form = () => {
             <>
               <div className="inputs">
                 {inputs.map((input) => (
-                  <FormInput input={input} />
+                  <FormInput input={input} inputs={inputs} setInputs={setInputs} />
                 ))}
               </div>
               <button

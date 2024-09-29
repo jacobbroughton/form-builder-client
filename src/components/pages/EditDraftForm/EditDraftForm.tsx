@@ -56,7 +56,7 @@ export const EditDraftForm = () => {
       const data = await updateDraftForm({
         formId: draft.form!.id,
         title: draft.form!.title,
-        description: draft.form!.description,
+        description: draft.form!.description
       });
 
       setDraft({
@@ -119,7 +119,7 @@ export const EditDraftForm = () => {
 
             <button
               className="action-button-with-icon save-button"
-              disabled={saved}
+              // disabled={saved}
               onClick={() => saveDraft()}
             >
               <SaveIcon /> Save Draft

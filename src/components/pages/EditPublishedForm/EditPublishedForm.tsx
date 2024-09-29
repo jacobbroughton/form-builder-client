@@ -15,6 +15,7 @@ import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
@@ -96,6 +97,25 @@ export const EditPublishedForm = () => {
               disabled={saved}
             >
               <SaveIcon /> Save Form
+            </button>
+            <button
+              className="action-button-with-icon"
+              onClick={async () => {
+                await saveForm();
+                navigate(`/form/${form.form?.id}`);
+              }}
+            >
+              <ArrowRightIcon />{" "}
+              <span
+                style={{
+                  ...(saved && {
+                    color: "grey",
+                  }),
+                }}
+              >
+                Save &
+              </span>{" "}
+              Go to form
             </button>
           </>
         );
@@ -180,7 +200,6 @@ export const EditPublishedForm = () => {
 
   return (
     <main className="edit-form">
-      {deleteFormModalShowing.toString()}
       <DraftPublishedTag draftOrPublished="published" />
       {renderView()}
       {deleteFormModalShowing ? (

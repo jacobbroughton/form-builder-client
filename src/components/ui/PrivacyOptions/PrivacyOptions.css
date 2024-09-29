@@ -1,0 +1,81 @@
+.privacy-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #555;
+  border-radius: 5px;
+}
+
+.privacy-options > .heading {
+  padding: 3px 5px;
+  border-bottom: 1px solid #555;
+  width: 100%;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.privacy-options > button {
+  border-radius: 3px;
+  border: 0;
+  background-color: transparent;
+  text-align: start;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  height: 100%;
+  position: relative;
+}
+
+.privacy-options > button:hover {
+  background-color: #333;
+  cursor: pointer;
+}
+
+.privacy-options > button:not(:last-child) {
+  border-bottom: 1px solid #555;
+}
+
+.privacy-options > button > .radio-container {
+  position: absolute;
+  border-right: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  padding: 10px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 40px;
+}
+
+.privacy-options > button > .radio-container > svg {
+  width: 15px;
+  height: 15px;
+  fill: whitesmoke;
+}
+
+.privacy-options > button > .content {
+  padding: 3px 5px;
+  margin-left: 41px;
+}
+
+.privacy-options > button > .content > p:first-child {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Loading */
+.privacy-options > p.loading {
+  text-align: start;
+  padding: 3px 5px;
+}
+
+/* Error */
+.privacy-options > p.error {
+  text-align: start;
+  padding: 3px 5px;
+  color: crimson;
+}

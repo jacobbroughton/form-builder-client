@@ -5,21 +5,20 @@ import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 
-export const useAddNewInputToForm = () => {
+export const useAddNewInputToDraftForm = () => {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const addNewInputToForm = useCallback(
+  const addNewInputToDraftForm = useCallback(
     async (body: {
       inputTypeId: number | undefined;
       inputMetadataQuestion: string;
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
       formId: string | undefined;
-      isForDraft: boolean;
     }): Promise<AddedInputType> => {
       setLoading(true);
       setLocalError(null);
@@ -28,7 +27,7 @@ export const useAddNewInputToForm = () => {
         if (!body.inputTypeId) throw new Error("Input type id not provided");
         if (!body.formId) throw new Error("Form ID for new input type was not provided");
 
-        const response = await fetch("http://localhost:3001/form/add-new-input-to-form", {
+        const response = await fetch("http://localhost:3001/form/add-new-input-to-draft-form", {
           method: "post",
           headers: {
             "content-type": "application/json",
@@ -38,7 +37,6 @@ export const useAddNewInputToForm = () => {
             inputMetadataQuestion: body.inputMetadataQuestion,
             inputMetadataDescription: body.inputMetadataDescription,
             formId: body.formId,
-            isForDraft: body.isForDraft,
           }),
           credentials: "include",
         });
@@ -69,5 +67,5 @@ export const useAddNewInputToForm = () => {
     []
   );
 
-  return { addNewInputToForm, loading, localError };
+  return { addNewInputToDraftForm, loading, localError };
 };

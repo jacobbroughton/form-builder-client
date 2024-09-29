@@ -52,6 +52,7 @@ export type CreatedPropertyType = {
 };
 
 export interface AddedInputType {
+  [x: string]: string | number | readonly string[] | undefined;
   id: string;
   input_type_id: number;
   draft_form_id: number;
@@ -80,6 +81,7 @@ export type DraftFormType = {
   created_by_id: string;
   modified_at: string | null;
   modified_by_id: string | null;
+  privacy_id: number;
 };
 
 export type PublishedFormType = {
@@ -112,3 +114,20 @@ export type UserType = {
   id: string;
   isAdmin: boolean;
 } | null;
+
+export type PrivacyOptionResponseType = {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string;
+  modified_at: string;
+};
+
+export type PrivacyOptionType = {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string;
+  modified_at: string;
+  checked: boolean;
+};
