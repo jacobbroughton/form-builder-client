@@ -119,6 +119,7 @@ export type PrivacyOptionResponseType = {
   id: number;
   name: string;
   description: string;
+  needs_passkey: boolean;
   created_at: string;
   modified_at: string;
 };
@@ -127,6 +128,7 @@ export type PrivacyOptionType = {
   id: number;
   name: string;
   description: string;
+  needs_passkey: boolean;
   created_at: string;
   modified_at: string;
   checked: boolean;

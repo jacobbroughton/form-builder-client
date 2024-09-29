@@ -17,6 +17,8 @@ export const useUpdatePublishedForm = () => {
       formId: string;
       title: string;
       description: string;
+      privacyId: number;
+      privacyPasskey: string;
     }): Promise<DraftFormType> => {
       setLoading(true);
       setLocalError(null);
@@ -33,6 +35,8 @@ export const useUpdatePublishedForm = () => {
             formId: body.formId,
             title: body.title,
             description: body.description,
+            privacyId: body.privacyId,
+            privacyPasskey: body.privacyPasskey,
           }),
           credentials: "include",
         });

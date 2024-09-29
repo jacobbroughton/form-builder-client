@@ -3,7 +3,6 @@ import { PlanetIcon } from "../icons/PlanetIcon";
 import "./DraftPublishedTag.css";
 
 export const DraftPublishedTag = ({ draftOrPublished }: { draftOrPublished: string }) => {
-  console.log(draftOrPublished);
   return (
     <div
       className={`published-status ${draftOrPublished}`}

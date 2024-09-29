@@ -4,7 +4,12 @@ import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { usePublish } from "../../../hooks/usePublish";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
-import { AddedInputType, DraftFormType, InputTypeType } from "../../../lib/types";
+import {
+  AddedInputType,
+  DraftFormType,
+  InputTypeType,
+  PrivacyOptionType,
+} from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
@@ -17,6 +22,11 @@ import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import "./EditDraftForm.css";
 import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
+import { EditIcon } from "../../ui/icons/EditIcon";
+import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
+import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
@@ -26,6 +36,20 @@ export const EditDraftForm = () => {
   const { getDraftForm } = useGetDraftForm();
   const { publish } = usePublish();
   const { updateDraftForm } = useUpdateDraftForm();
+
+  const {
+    getPrivacyOptions,
+    privacyOptions,
+    setPrivacyOptions,
+    loading: privacyOptionsLoading,
+    error: privacyOptionsError,
+  } = useGetPrivacyOptions();
+
+  const [stagedPrivacyOptions, setStagedPrivacyOptions] = useState<PrivacyOptionType[]>(
+    []
+  );
+  const [privacyPasskey, setPrivacyPasskey] = useState("");
+  const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [saved, setSaved] = useState(true);
   const [draft, setDraft] = useState<{
@@ -56,7 +80,10 @@ export const EditDraftForm = () => {
       const data = await updateDraftForm({
         formId: draft.form!.id,
         title: draft.form!.title,
-        description: draft.form!.description
+        description: draft.form!.description,
+        privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
+          .id,
+        privacyPasskey,
       });
 
       setDraft({
@@ -94,6 +121,14 @@ export const EditDraftForm = () => {
     }
   }
 
+  const stagedSelectedPrivacyOption = stagedPrivacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
+  const selectedPrivacyOption = privacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
   function renderView() {
     switch (currentView) {
       case "metadata-inputs": {
@@ -106,6 +141,22 @@ export const EditDraftForm = () => {
               setCurrentView={setCurrentView}
               isForDraft={true}
             />
+            {selectedPrivacyOption ? (
+              <button
+                className="selected-privacy-option-button"
+                onClick={() => setCurrentView("privacy-selector")}
+              >
+                <div className="content">
+                  <p>{selectedPrivacyOption.name}</p>
+                  <p>{selectedPrivacyOption.description}</p>
+                </div>
+                <div className="icon-container">
+                  <EditIcon />
+                </div>
+              </button>
+            ) : (
+              false
+            )}
             <button
               className="action-button-with-icon red"
               type="button"
@@ -130,6 +181,57 @@ export const EditDraftForm = () => {
               onClick={() => handlePublishForm()}
             >
               <ShareIcon /> Publish Form
+            </button>
+          </>
+        );
+      }
+      case "privacy-selector": {
+        return (
+          <>
+            <button
+              className="action-button-with-icon"
+              onClick={() => {
+                console.log(
+                  stagedSelectedPrivacyOption?.needs_passkey,
+                  privacyPasskey,
+                  !selectedPrivacyOption?.needs_passkey
+                );
+                if (
+                  stagedSelectedPrivacyOption?.needs_passkey &&
+                  privacyPasskey !== "" &&
+                  !selectedPrivacyOption?.needs_passkey
+                )
+                  setPrivacyPasskey("");
+                setStagedPrivacyOptions(privacyOptions);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              <ArrowLeftIcon /> Back
+            </button>
+            <PrivacyOptions
+              privacyOptions={stagedPrivacyOptions}
+              setPrivacyOptions={setStagedPrivacyOptions}
+              loading={privacyOptionsLoading}
+              error={privacyOptionsError}
+              setPrivacyPasskey={setPrivacyPasskey}
+              privacyPasskey={privacyPasskey}
+            />
+
+            <button
+              className="action-button-with-icon"
+              disabled={
+                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
+              }
+              onClick={() => {
+                if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
+                  return;
+                console.log({ stagedPrivacyOptions });
+                setPrivacyOptions(stagedPrivacyOptions);
+                setReflectFormPrivacyOption(false);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              Confirm & Continue <ArrowRightIcon />
             </button>
           </>
         );
@@ -167,6 +269,8 @@ export const EditDraftForm = () => {
       try {
         const data = await getDraftForm({ formId });
 
+        console.log(data);
+
         setPrevSavedForm({
           form: data.form,
           inputs: data.inputs,
@@ -176,6 +280,10 @@ export const EditDraftForm = () => {
           form: data.form,
           inputs: data.inputs,
         });
+
+        getPrivacyOptions(data.form.privacy_id);
+
+        setPrivacyPasskey(data.form.passkey);
       } catch (error) {
         handleCatchError(error, setError, null);
       }
@@ -186,19 +294,32 @@ export const EditDraftForm = () => {
 
   useEffect(() => {
     if (draft.form && prevSavedForm.form) {
-      setSaved(
-        !(
-          draft.form.title !== prevSavedForm.form.title ||
-          draft.form.description !== prevSavedForm.form.description
-        )
-      );
+      const condition =
+        draft.form.title !== prevSavedForm.form.title ||
+        draft.form.description !== prevSavedForm.form.description ||
+        selectedPrivacyOption?.id !== draft.form.privacy_id ||
+        privacyPasskey !== draft.form.passkey;
+        
+      setSaved(!condition);
     }
   }, [
     draft.form?.description,
     draft.form?.title,
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
+    selectedPrivacyOption?.id,
+    privacyPasskey,
   ]);
+
+  useEffect(() => {
+    if (reflectFormPrivacyOption)
+      setStagedPrivacyOptions(
+        privacyOptions.map((privacyOption) => ({
+          ...privacyOption,
+          checked: privacyOption.id === draft.form?.privacy_id,
+        }))
+      );
+  }, [privacyOptions, draft, reflectFormPrivacyOption]);
 
   return (
     <main className="edit-form">

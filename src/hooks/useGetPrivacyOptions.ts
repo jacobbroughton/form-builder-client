@@ -13,7 +13,7 @@ export const useGetPrivacyOptions = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  async function getPrivacyOptions() {
+  async function getPrivacyOptions(formPrivacyId: number) {
     try {
       setLoading(true);
       const response = await fetch("http://localhost:3001/form/get-privacy-options", {
@@ -37,7 +37,7 @@ export const useGetPrivacyOptions = () => {
       setPrivacyOptions(
         data.map((privacyOption) => ({
           ...privacyOption,
-          checked: privacyOption.id === 1,
+          checked: privacyOption.id === formPrivacyId,
         }))
       );
     } catch (error: unknown) {
@@ -48,9 +48,11 @@ export const useGetPrivacyOptions = () => {
     }
   }
 
-  useEffect(() => {
-    getPrivacyOptions();
-  }, []);
-
-  return { privacyOptions, setPrivacyOptions, loading, error: localError };
+  return {
+    getPrivacyOptions,
+    privacyOptions,
+    setPrivacyOptions,
+    loading,
+    error: localError,
+  };
 };

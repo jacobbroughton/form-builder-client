@@ -7,3 +7,44 @@ main.edit-form {
   margin: 0 auto;
   gap: 10px;
 }
+
+
+main.edit-form > .selected-privacy-option-button {
+  border: 1px solid #555;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  border-radius: 3px;
+  padding: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+main.edit-form > .selected-privacy-option-button:hover {
+  background-color: #333;
+}
+
+main.edit-form > .selected-privacy-option-button > .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+main.edit-form > .selected-privacy-option-button > .icon-container {
+  height: 100%;
+  border-left: 1px solid #555;
+  position: absolute;
+  right: 0;
+  width: 45px;
+  top: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.edit-form > .selected-privacy-option-button > .icon-container > svg {
+  fill: whitesmoke;
+  width: 15px;
+}
+

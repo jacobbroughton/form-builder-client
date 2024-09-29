@@ -3,7 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
 import { useUpdatePublishedForm } from "../../../hooks/useUpdatePublishedForm";
-import { AddedInputType, InputTypeType, PublishedFormType } from "../../../lib/types";
+import {
+  AddedInputType,
+  InputTypeType,
+  PublishedFormType,
+  PrivacyOptionType,
+} from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
@@ -16,6 +21,10 @@ import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
 import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
+import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
+import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
+import { EditIcon } from "../../ui/icons/EditIcon";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
@@ -24,6 +33,20 @@ export const EditPublishedForm = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
   const { getPublishedForm } = useGetPublishedForm();
   const { updatePublishedForm } = useUpdatePublishedForm();
+
+  const {
+    getPrivacyOptions,
+    privacyOptions,
+    setPrivacyOptions,
+    loading: privacyOptionsLoading,
+    error: privacyOptionsError,
+  } = useGetPrivacyOptions();
+
+  const [stagedPrivacyOptions, setStagedPrivacyOptions] = useState<PrivacyOptionType[]>(
+    []
+  );
+  const [privacyPasskey, setPrivacyPasskey] = useState("");
+  const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [saved, setSaved] = useState(true);
   const [form, setForm] = useState<{
@@ -52,6 +75,9 @@ export const EditPublishedForm = () => {
         formId: form.form.id,
         title: form.form.title,
         description: form.form!.description,
+        privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
+          .id,
+        privacyPasskey,
       });
 
       setForm({
@@ -67,6 +93,14 @@ export const EditPublishedForm = () => {
     }
   }
 
+  const stagedSelectedPrivacyOption = stagedPrivacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
+  const selectedPrivacyOption = privacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
   function renderView() {
     switch (currentView) {
       case "metadata-inputs": {
@@ -79,6 +113,22 @@ export const EditPublishedForm = () => {
               setCurrentView={setCurrentView}
               isForDraft={false}
             />
+            {selectedPrivacyOption ? (
+              <button
+                className="selected-privacy-option-button"
+                onClick={() => setCurrentView("privacy-selector")}
+              >
+                <div className="content">
+                  <p>{selectedPrivacyOption.name}</p>
+                  <p>{selectedPrivacyOption.description}</p>
+                </div>
+                <div className="icon-container">
+                  <EditIcon />
+                </div>
+              </button>
+            ) : (
+              false
+            )}
             <button
               className="action-button-with-icon red"
               // onClick={() => handleFormDelete()}
@@ -116,6 +166,57 @@ export const EditPublishedForm = () => {
                 Save &
               </span>{" "}
               Go to form
+            </button>
+          </>
+        );
+      }
+      case "privacy-selector": {
+        return (
+          <>
+            <button
+              className="action-button-with-icon"
+              onClick={() => {
+                console.log(
+                  stagedSelectedPrivacyOption?.needs_passkey,
+                  privacyPasskey,
+                  !selectedPrivacyOption?.needs_passkey
+                );
+                if (
+                  stagedSelectedPrivacyOption?.needs_passkey &&
+                  privacyPasskey !== "" &&
+                  !selectedPrivacyOption?.needs_passkey
+                )
+                  setPrivacyPasskey("");
+                setStagedPrivacyOptions(privacyOptions);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              <ArrowLeftIcon /> Back
+            </button>
+            <PrivacyOptions
+              privacyOptions={stagedPrivacyOptions}
+              setPrivacyOptions={setStagedPrivacyOptions}
+              loading={privacyOptionsLoading}
+              error={privacyOptionsError}
+              setPrivacyPasskey={setPrivacyPasskey}
+              privacyPasskey={privacyPasskey}
+            />
+
+            <button
+              className="action-button-with-icon"
+              disabled={
+                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
+              }
+              onClick={() => {
+                if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
+                  return;
+                console.log({ stagedPrivacyOptions });
+                setPrivacyOptions(stagedPrivacyOptions);
+                setReflectFormPrivacyOption(false);
+                setCurrentView("metadata-inputs");
+              }}
+            >
+              Confirm & Continue <ArrowRightIcon />
             </button>
           </>
         );
@@ -162,18 +263,27 @@ export const EditPublishedForm = () => {
 
   useEffect(() => {
     if (form.form && prevSavedForm.form) {
-      setSaved(
-        !(
-          form.form.title !== prevSavedForm.form.title ||
-          form.form.description !== prevSavedForm.form.description
-        )
+      console.log(
+        selectedPrivacyOption?.id,
+        form.form.privacy_id,
+        privacyPasskey,
+        form.form.passkey
       );
+      const condition =
+        form.form.title !== prevSavedForm.form.title ||
+        form.form.description !== prevSavedForm.form.description ||
+        selectedPrivacyOption?.id !== form.form.privacy_id ||
+        privacyPasskey !== form.form.passkey;
+
+      setSaved(!condition);
     }
   }, [
     form.form?.description,
     form.form?.title,
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
+    selectedPrivacyOption?.id,
+    privacyPasskey
   ]);
 
   useEffect(() => {
@@ -190,6 +300,9 @@ export const EditPublishedForm = () => {
           form: data.form,
           inputs: data.inputs,
         });
+
+        getPrivacyOptions(data.form.privacy_id);
+        setPrivacyPasskey(data.form.passkey);
       } catch (error) {
         handleCatchError(error, setError, null);
       }
@@ -197,6 +310,16 @@ export const EditPublishedForm = () => {
 
     fetchFormForEdit();
   }, []);
+
+  useEffect(() => {
+    if (reflectFormPrivacyOption)
+      setStagedPrivacyOptions(
+        privacyOptions.map((privacyOption) => ({
+          ...privacyOption,
+          checked: privacyOption.id === form.form?.privacy_id,
+        }))
+      );
+  }, [privacyOptions, form, reflectFormPrivacyOption]);
 
   return (
     <main className="edit-form">

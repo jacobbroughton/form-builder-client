@@ -17,7 +17,7 @@ import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+// import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
 import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
@@ -45,6 +45,7 @@ export const CreateForm = () => {
   const { getExistingEmptyDraft } = useGetExistingEmptyDraft();
   const { renewExistingDraft } = useRenewExistingDraft();
   const {
+    getPrivacyOptions,
     privacyOptions,
     setPrivacyOptions,
     loading: privacyOptionsLoading,
@@ -54,6 +55,7 @@ export const CreateForm = () => {
   const [stagedPrivacyOptions, setStagedPrivacyOptions] = useState<PrivacyOptionType[]>(
     []
   );
+  const [privacyPasskey, setPrivacyPasskey] = useState("");
   const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [draft, setDraft] = useState<{
@@ -126,6 +128,7 @@ export const CreateForm = () => {
 
   useEffect(() => {
     async function fetchFormToModify() {
+      console.log("This is running");
       const data = await getDraftForm({ formId: draftIdToFetch! });
 
       setPrevSavedForm({
@@ -141,6 +144,7 @@ export const CreateForm = () => {
 
     if (draftIdToFetch) fetchFormToModify();
   }, [draftIdToFetch]);
+
 
   useEffect(() => {
     if (reflectFormPrivacyOption)
@@ -161,6 +165,7 @@ export const CreateForm = () => {
         description: draft.form!.description,
         privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
           .id,
+        privacyPasskey,
       });
 
       setDraft({
@@ -194,28 +199,38 @@ export const CreateForm = () => {
     }
   }
 
+  const stagedSelectedPrivacyOption = stagedPrivacyOptions.find(
+    (privacyOption) => privacyOption.checked
+  );
+
   const selectedPrivacyOption = privacyOptions.find(
     (privacyOption) => privacyOption.checked
   );
 
   function renderView() {
     switch (currentView) {
-      case "existing-or-new-draft": {
-        return (
-          <ExistingOrNewDraftSelector
-            draftForms={draftForms}
-            setDraftIdToFetch={setDraftIdToFetch}
-            setCurrentView={setCurrentView}
-            createNewDraft={createNewDraft}
-          />
-        );
-      }
+      // case "existing-or-new-draft": {
+      //   return (
+      //     <ExistingOrNewDraftSelector
+      //       draftForms={draftForms}
+      //       setDraftIdToFetch={setDraftIdToFetch}
+      //       setCurrentView={setCurrentView}
+      //       createNewDraft={createNewDraft}
+      //     />
+      //   );
+      // }
       case "privacy-selector": {
         return (
           <>
             <button
               className="action-button-with-icon"
               onClick={() => {
+                if (
+                  stagedSelectedPrivacyOption?.needs_passkey &&
+                  privacyPasskey !== "" &&
+                  !selectedPrivacyOption?.needs_passkey
+                )
+                  setPrivacyPasskey("");
                 setStagedPrivacyOptions(privacyOptions);
                 setCurrentView("metadata-inputs");
               }}
@@ -227,22 +242,18 @@ export const CreateForm = () => {
               setPrivacyOptions={setStagedPrivacyOptions}
               loading={privacyOptionsLoading}
               error={privacyOptionsError}
+              setPrivacyPasskey={setPrivacyPasskey}
+              privacyPasskey={privacyPasskey}
             />
-            {stagedPrivacyOptions?.find((privacyOption) => privacyOption.checked)
-              .needs_passkey ? (
-              <div className="passkey-section">
-                <p>Enter a passkey</p>
-                <p className="small-text">
-                  Users will need to fill this out before seeing/filling out the form
-                </p>
-                <input placeholder="password (use something different)" />
-              </div>
-            ) : (
-              false
-            )}
+
             <button
               className="action-button-with-icon"
+              disabled={
+                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
+              }
               onClick={() => {
+                if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
+                  return;
                 console.log({ stagedPrivacyOptions });
                 setPrivacyOptions(stagedPrivacyOptions);
                 setReflectFormPrivacyOption(false);
@@ -267,18 +278,22 @@ export const CreateForm = () => {
               isForDraft={true}
               draftIdToFetch={draftIdToFetch}
             />
-            <button
-              className="selected-privacy-option-button"
-              onClick={() => setCurrentView("privacy-selector")}
-            >
-              <div className="content">
-                <p>{selectedPrivacyOption.name}</p>
-                <p>{selectedPrivacyOption.description}</p>
-              </div>
-              <div className="icon-container">
-                <EditIcon />
-              </div>
-            </button>
+            {selectedPrivacyOption ? (
+              <button
+                className="selected-privacy-option-button"
+                onClick={() => setCurrentView("privacy-selector")}
+              >
+                <div className="content">
+                  <p>{selectedPrivacyOption.name}</p>
+                  <p>{selectedPrivacyOption.description}</p>
+                </div>
+                <div className="icon-container">
+                  <EditIcon />
+                </div>
+              </button>
+            ) : (
+              false
+            )}
             <button
               className="action-button-with-icon add-new-input"
               type="button"
@@ -383,6 +398,7 @@ export const CreateForm = () => {
   }
 
   useEffect(() => {
+    getPrivacyOptions(1);
     createNewDraft();
   }, []);
 
@@ -438,7 +454,8 @@ export const CreateForm = () => {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
         draft.form.description !== prevSavedForm.form.description ||
-        selectedPrivacyOption!.id !== draft.form.privacy_id;
+        selectedPrivacyOption?.id !== draft.form.privacy_id || 
+        privacyPasskey !== draft.form.passkey;
       setSaved(!condition);
       setNeedsAutoSave(condition);
     }
@@ -448,6 +465,7 @@ export const CreateForm = () => {
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
     selectedPrivacyOption?.id,
+    privacyPasskey
   ]);
 
   return (
