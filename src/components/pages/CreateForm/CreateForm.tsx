@@ -145,7 +145,6 @@ export const CreateForm = () => {
     if (draftIdToFetch) fetchFormToModify();
   }, [draftIdToFetch]);
 
-
   useEffect(() => {
     if (reflectFormPrivacyOption)
       setStagedPrivacyOptions(
@@ -284,8 +283,8 @@ export const CreateForm = () => {
                 onClick={() => setCurrentView("privacy-selector")}
               >
                 <div className="content">
-                  <p>{selectedPrivacyOption.name}</p>
-                  <p>{selectedPrivacyOption.description}</p>
+                  <p className="small-text bold">{selectedPrivacyOption.name}</p>
+                  <p className="small-text">{selectedPrivacyOption.description}</p>
                 </div>
                 <div className="icon-container">
                   <EditIcon />
@@ -294,54 +293,55 @@ export const CreateForm = () => {
             ) : (
               false
             )}
-            <button
-              className="action-button-with-icon add-new-input"
-              type="button"
-              onClick={() => setCurrentView("input-types-selector")}
-            >
-              <PlusIcon /> Add new form item
-            </button>
-            <button
-              className="action-button-with-icon red"
-              onClick={() => handleFormDelete()}
-            >
-              <TrashIcon /> Delete Draft
-            </button>
 
-            <button
-              className="action-button-with-icon"
-              disabled={saved}
-              onClick={() => saveDraft()}
-            >
-              <SaveIcon /> Save Draft
-            </button>
+            <div className="form-buttons">
+              <button
+                className="action-button-with-icon red"
+                onClick={() => handleFormDelete()}
+              >
+                <TrashIcon />
+                Delete
+              </button>
 
-            <button
-              className="action-button-with-icon"
-              onClick={async () => {
-                if (!saved) await saveDraft();
-                navigate(`/draft/${draft.form?.id}`);
-              }}
-            >
-              <ArrowRightIcon />{" "}
-              <span
-                style={{
-                  ...(saved && {
-                    color: "grey",
-                  }),
+              <button
+                className="action-button-with-icon"
+                disabled={saved}
+                onClick={() => saveDraft()}
+              >
+                <SaveIcon />
+                Save
+              </button>
+
+              <button
+                className="action-button-with-icon"
+                onClick={async () => {
+                  if (!saved) await saveDraft();
+                  navigate(`/draft/${draft.form?.id}`);
                 }}
               >
-                Save &
-              </span>{" "}
-              Go to draft
-            </button>
+                <ArrowRightIcon />{" "}
+                <p>
+                  <span
+                    style={{
+                      ...(saved && {
+                        color: "grey",
+                      }),
+                    }}
+                  >
+                    Save &
+                  </span>{" "}
+                  Go to form
+                </p>
+              </button>
 
-            <button
-              className="action-button-with-icon green"
-              onClick={() => handlePublishForm()}
-            >
-              <ShareIcon /> Publish Form
-            </button>
+              <button
+                className="action-button-with-icon green"
+                onClick={() => handlePublishForm()}
+              >
+                <ShareIcon />
+                Publish
+              </button>
+            </div>
           </>
         );
       }
@@ -454,7 +454,7 @@ export const CreateForm = () => {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
         draft.form.description !== prevSavedForm.form.description ||
-        selectedPrivacyOption?.id !== draft.form.privacy_id || 
+        selectedPrivacyOption?.id !== draft.form.privacy_id ||
         privacyPasskey !== draft.form.passkey;
       setSaved(!condition);
       setNeedsAutoSave(condition);
@@ -465,12 +465,14 @@ export const CreateForm = () => {
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
     selectedPrivacyOption?.id,
-    privacyPasskey
+    privacyPasskey,
   ]);
 
   return (
     <main className="create-form">
-      {initiallyLoading ? <p>Loading...</p> : renderView()}
+      <div className="container">
+        {initiallyLoading ? <p>Loading...</p> : renderView()}
+      </div>
     </main>
   );
 };

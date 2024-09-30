@@ -69,71 +69,84 @@ export const Form = () => {
 
   return (
     <main className="published-form">
-      {formLoading ? (
-        <p>Form loading...</p>
-      ) : !form ? (
-        <p>No form found</p>
-      ) : (
-        <>
-          <div className="form-controls">
-            {user ? <DraftPublishedTag draftOrPublished={"published"} /> : false}
-            <div className="menu-toggle-button-container">
-              <button
-                className="menu-toggle-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFormPopupMenuToggled(!formPopupMenuToggled);
-                }}
-              >
-                <ThreeDotsIcon />
-              </button>
-              {formPopupMenuToggled ? (
-                <FormPopupMenu
-                  form={form}
-                  isDraft={false}
-                  setFormPopupToggled={setFormPopupMenuToggled}
-                  handleDeleteClick={() => {
-                    handleFormDelete();
-                    setDeleteFormModalShowing(false);
+      <div className="container">
+        {formLoading ? (
+          <p>Form loading...</p>
+        ) : !form ? (
+          <p>No form found</p>
+        ) : (
+          <>
+            <div className="form-controls">
+              {user ? <DraftPublishedTag draftOrPublished={"published"} /> : false}
+              <div className="menu-toggle-button-container">
+                <button
+                  className="menu-toggle-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFormPopupMenuToggled(!formPopupMenuToggled);
                   }}
-                />
+                >
+                  <ThreeDotsIcon />
+                </button>
+                {formPopupMenuToggled ? (
+                  <FormPopupMenu
+                    form={form}
+                    isDraft={false}
+                    setFormPopupToggled={setFormPopupMenuToggled}
+                    handleDeleteClick={() => {
+                      handleFormDelete();
+                      setDeleteFormModalShowing(false);
+                    }}
+                  />
+                ) : (
+                  false
+                )}
+              </div>
+            </div>
+            <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
+              <h1 className="title">{form.title}</h1>
+              {form.description ? (
+                <p className="description">{form.description}</p>
               ) : (
                 false
               )}
             </div>
-          </div>
-          <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
-            <h1 className="title">{form.title}</h1>
-            {form.description ? <p className="description">{form.description}</p> : false}
-          </div>
-          {inputs.length ? (
-            <>
-              <div className="inputs">
-                {inputs.map((input) => (
-                  <FormInput input={input} inputs={inputs} setInputs={setInputs} />
-                ))}
-              </div>
-              <button
-                className="submit-button"
-                type="button"
-                onClick={() => handleFormSubmit()}
-              >
-                <CheckIcon /> Submit
-              </button>
-            </>
-          ) : (
-            <NoPromptsMessage formId={form.id} isDraft={false} />
-          )}
-        </>
-      )}
-      {deleteFormModalShowing ? (
-        <DeleteFormModal
-          handleDeleteClick={() => handleFormDelete()}
-          setDeleteFormModalShowing={setDeleteFormModalShowing}
-        />
-      ) : (
-        false
-      )}
+            {inputs.length ? (
+              <>
+                <div className="inputs">
+                  {inputs.map((input) => (
+                    <FormInput input={input} inputs={inputs} setInputs={setInputs} />
+                  ))}
+                </div>
+                <button
+                  className="submit-button"
+                  type="button"
+                  onClick={() => handleFormSubmit()}
+                >
+                  <CheckIcon /> Submit
+                </button>
+              </>
+            ) : (
+              <NoPromptsMessage
+                formId={form.id}
+                isDraft={false}
+                handleClick={() => {
+                  navigate(`/edit-published-form/${form.id}/input-types-selector`);
+                  // setCurrentView("input-types-selector");
+                }}
+              />
+            )}
+          </>
+        )}
+        {deleteFormModalShowing ? (
+          <DeleteFormModal
+            handleDeleteClick={() => handleFormDelete()}
+            setDeleteFormModalShowing={setDeleteFormModalShowing}
+          />
+        ) : (
+          false
+        )}
+      </div>
     </main>
   );
 };

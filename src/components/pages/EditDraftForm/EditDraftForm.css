@@ -1,17 +1,26 @@
-main.edit-form {
+main.edit-draft-form {
   display: flex;
   flex-direction: column;
-  padding: 69px 10px 50px 10px;
-  width: 100%;
-  max-width: 500px;
   margin: 0 auto;
+  padding: 30px 10px;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.edit-draft-form > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
   gap: 10px;
 }
 
-
-main.edit-form > .selected-privacy-option-button {
-  border: 1px solid #555;
-  background-color: transparent;
+main.edit-draft-form > .container > .selected-privacy-option-button {
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
   display: flex;
   flex-direction: row;
   border-radius: 3px;
@@ -20,19 +29,19 @@ main.edit-form > .selected-privacy-option-button {
   cursor: pointer;
 }
 
-main.edit-form > .selected-privacy-option-button:hover {
-  background-color: #333;
+main.edit-draft-form > .container > .selected-privacy-option-button:hover {
+  background-color: var(--button-default-bg-color-hover);
 }
 
-main.edit-form > .selected-privacy-option-button > .content {
+main.edit-draft-form > .container > .selected-privacy-option-button > .content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-main.edit-form > .selected-privacy-option-button > .icon-container {
+main.edit-draft-form > .container > .selected-privacy-option-button > .icon-container {
   height: 100%;
-  border-left: 1px solid #555;
+  border-left: 1px solid var(--button-default-border-color);
   position: absolute;
   right: 0;
   width: 45px;
@@ -43,8 +52,23 @@ main.edit-form > .selected-privacy-option-button > .icon-container {
   justify-content: center;
 }
 
-main.edit-form > .selected-privacy-option-button > .icon-container > svg {
+main.edit-draft-form
+  > .container
+  > .selected-privacy-option-button
+  > .icon-container
+  > svg {
   fill: whitesmoke;
   width: 15px;
 }
 
+main.edit-draft-form > .container > .form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  gap: 10px;
+}

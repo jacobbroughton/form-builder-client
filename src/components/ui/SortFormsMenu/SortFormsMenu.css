@@ -6,7 +6,9 @@ ul.sort-menu {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  background-color: #333;
+  background-color: var(--popup-menu-bg-color);
+  border: 1px solid var(--popup-menu-border-color);
+  box-shadow: var(--popup-menu-box-shadow);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -27,9 +29,9 @@ ul.sort-menu > li > button {
 
 ul.sort-menu > li > button.selected {
   border-left: 3px solid lightgreen;
-  background-color: #3b3b3b;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 ul.sort-menu > li > button:hover {
-  background-color: #444;
+  background-color: var(--button-default-bg-color-hover);
 }

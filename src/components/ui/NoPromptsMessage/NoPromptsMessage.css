@@ -1,29 +1,51 @@
-div.no-prompts-message {
-  border: 1px solid #444;
+button.no-prompts-message {
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
   border-radius: 3px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
+  position: relative;
 }
 
-div.no-prompts-message > .top-section {
-  display: flex;
+button.no-prompts-message:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+button.no-prompts-message > .icon-container {
+  height: 100%;
+  border-right: 1px solid #555;
+  position: absolute;
+  left: 0;
+  width: 45px;
+  top: 0;
+  padding: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
 }
 
-div.no-prompts-message > .top-section > svg {
+button.no-prompts-message > .icon-container > svg {
+  fill: whitesmoke;
+  width: 15px;
+}
+
+button.no-prompts-message > .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  margin-left: 45px;
+}
+
+button.no-prompts-message > .content > svg {
   fill: whitesmoke;
   width: 25px;
 }
 
-div.no-prompts-message > .top-section > p {
-  font-size: 0.875rem;
-}
-
-div.no-prompts-message > a {
+button.no-prompts-message > a {
   display: flex;
   font-size: 0.875rem;
   gap: 10px;
@@ -36,19 +58,19 @@ div.no-prompts-message > a {
   transition: padding 0.1s ease;
 }
 
-div.no-prompts-message > a:hover {
+button.no-prompts-message > a:hover {
   /* background-color: #3b3b3b; */
   text-decoration: none;
   border-color: #4f4f4f;
   padding-right: 15px;
 }
 
-div.no-prompts-message > a > svg {
+button.no-prompts-message > a > svg {
   width: 15px;
   transition: transform 0.1s ease;
   fill: whitesmoke;
 }
 
-div.no-prompts-message > a:hover > svg {
+button.no-prompts-message > a:hover > svg {
   transform: translateX(5px);
 }

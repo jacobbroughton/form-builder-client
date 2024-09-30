@@ -6,15 +6,17 @@ import { getGoogleOAuthUrl } from "../../../utils/getGoogleOAuthUrl";
 const Login = () => {
   return (
     <main className="login">
-      <h1>Welcome back</h1>
-      <div className="providers-list">
-        <Link to={getGoogleOAuthUrl()} className="provider-link">
-          <GoogleIcon /> Continue with Google
-        </Link>
+      <div className="container">
+        <h1>Welcome back</h1>
+        <div className="providers-list">
+          <Link to={getGoogleOAuthUrl()} className="provider-link">
+            <GoogleIcon /> Continue with Google
+          </Link>
+        </div>
+        <p className='small-text account-prompt'>
+          Don't have an account? <Link to={"/create-account"}>Sign Up</Link>
+        </p>
       </div>
-      <p>
-        Don't have an account? <Link to={"/create-account"}>Sign Up</Link>
-      </p>
     </main>
   );
 };

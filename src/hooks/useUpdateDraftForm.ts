@@ -18,7 +18,7 @@ export const useUpdateDraftForm = () => {
       title: string;
       description: string;
       privacyId: number;
-      privacyPasskey
+      privacyPasskey: string;
     }): Promise<DraftFormType> => {
       setLoading(true);
       setLocalError(null);

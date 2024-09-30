@@ -28,7 +28,7 @@ import { EditIcon } from "../../ui/icons/EditIcon";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
-  const { formId } = useParams();
+  const { formId, initialView } = useParams();
   const { setError } = useContext(ErrorContext);
   const { deletePublishedForm } = useDeletePublishedForm();
   const { getPublishedForm } = useGetPublishedForm();
@@ -63,7 +63,7 @@ export const EditPublishedForm = () => {
     form: null,
     inputs: [],
   });
-  const [currentView, setCurrentView] = useState("metadata-inputs");
+  const [currentView, setCurrentView] = useState(initialView || "metadata-inputs");
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
@@ -106,6 +106,7 @@ export const EditPublishedForm = () => {
       case "metadata-inputs": {
         return (
           <>
+            <DraftPublishedTag draftOrPublished="published" />
             <SavedStatus saved={saved} />
             <MetadataInputs
               form={form}
@@ -119,8 +120,8 @@ export const EditPublishedForm = () => {
                 onClick={() => setCurrentView("privacy-selector")}
               >
                 <div className="content">
-                  <p>{selectedPrivacyOption.name}</p>
-                  <p>{selectedPrivacyOption.description}</p>
+                  <p className="small-text bold">{selectedPrivacyOption.name}</p>
+                  <p className="small-text">{selectedPrivacyOption.description}</p>
                 </div>
                 <div className="icon-container">
                   <EditIcon />
@@ -129,44 +130,46 @@ export const EditPublishedForm = () => {
             ) : (
               false
             )}
-            <button
-              className="action-button-with-icon red"
-              // onClick={() => handleFormDelete()}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setDeleteFormModalShowing(true);
-              }}
-            >
-              <TrashIcon /> Delete Form
-            </button>
-            <button
-              className="action-button-with-icon "
-              type="button"
-              onClick={() => saveForm()}
-              disabled={saved}
-            >
-              <SaveIcon /> Save Form
-            </button>
-            <button
-              className="action-button-with-icon"
-              onClick={async () => {
-                await saveForm();
-                navigate(`/form/${form.form?.id}`);
-              }}
-            >
-              <ArrowRightIcon />{" "}
-              <span
-                style={{
-                  ...(saved && {
-                    color: "grey",
-                  }),
+            <div className="form-buttons">
+              <button
+                className="action-button-with-icon red"
+                // onClick={() => handleFormDelete()}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteFormModalShowing(true);
                 }}
               >
-                Save &
-              </span>{" "}
-              Go to form
-            </button>
+                <TrashIcon /> Delete Form
+              </button>
+              <button
+                className="action-button-with-icon "
+                type="button"
+                onClick={() => saveForm()}
+                disabled={saved}
+              >
+                <SaveIcon /> Save Form
+              </button>
+              <button
+                className="action-button-with-icon"
+                onClick={async () => {
+                  await saveForm();
+                  navigate(`/form/${form.form?.id}`);
+                }}
+              >
+                <ArrowRightIcon />{" "}
+                <span
+                  style={{
+                    ...(saved && {
+                      color: "grey",
+                    }),
+                  }}
+                >
+                  Save &
+                </span>{" "}
+                Go to form
+              </button>
+            </div>
           </>
         );
       }
@@ -283,7 +286,7 @@ export const EditPublishedForm = () => {
     prevSavedForm.form?.description,
     prevSavedForm.form?.title,
     selectedPrivacyOption?.id,
-    privacyPasskey
+    privacyPasskey,
   ]);
 
   useEffect(() => {
@@ -322,17 +325,18 @@ export const EditPublishedForm = () => {
   }, [privacyOptions, form, reflectFormPrivacyOption]);
 
   return (
-    <main className="edit-form">
-      <DraftPublishedTag draftOrPublished="published" />
-      {renderView()}
-      {deleteFormModalShowing ? (
-        <DeleteFormModal
-          handleDeleteClick={() => handleFormDelete()}
-          setDeleteFormModalShowing={setDeleteFormModalShowing}
-        />
-      ) : (
-        false
-      )}
+    <main className="edit-published-form">
+      <div className="container">
+        {renderView()}
+        {deleteFormModalShowing ? (
+          <DeleteFormModal
+            handleDeleteClick={() => handleFormDelete()}
+            setDeleteFormModalShowing={setDeleteFormModalShowing}
+          />
+        ) : (
+          false
+        )}
+      </div>
     </main>
   );
 };

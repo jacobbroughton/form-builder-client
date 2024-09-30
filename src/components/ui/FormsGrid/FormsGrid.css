@@ -5,7 +5,8 @@
 }
 
 .form-grid > .form-grid-item {
-  border: 1px solid #555;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
   /* padding: 5px; */
   transition: 0.1s ease border-color;
   border-radius: 3px;
@@ -23,7 +24,7 @@
 
 .form-grid > .form-grid-item:hover {
   text-decoration: none;
-  border-color: #6f6f6f;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 .form-grid > .form-grid-item > .controls {
@@ -54,9 +55,8 @@
   padding: 3px;
 }
 
-.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button:hover {
-  background-color: #444;
-}
+/* .form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button:hover {
+} */
 
 .form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button > svg {
   width: 15px;
@@ -100,11 +100,6 @@
   fill: #c37f00;
 }
 
-.form-grid
-  > .form-grid-item
-  > div.controls
-  > .left-side
-  > .icon-container.public
-  > svg {
+.form-grid > .form-grid-item > div.controls > .left-side > .icon-container.public > svg {
   width: 15px;
 }

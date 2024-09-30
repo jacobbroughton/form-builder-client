@@ -1,24 +1,35 @@
 main.published-form {
   display: flex;
   flex-direction: column;
-  padding: 69px 10px 50px 10px;
-  width: 100%;
-  max-width: 500px;
   margin: 0 auto;
+  padding: 30px 10px;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.published-form > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
   gap: 10px;
 }
 
-main.published-form > .form-controls {
+main.published-form > .container > .form-controls {
   display: flex;
   justify-content: space-between;
 }
 
-main.published-form > .form-controls > .menu-toggle-button-container {
+main.published-form > .container > .form-controls > .menu-toggle-button-container {
   position: relative;
   margin-left: auto;
 }
 
 main.published-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button {
@@ -35,14 +46,16 @@ main.published-form
 }
 
 main.published-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button:hover {
-  background-color: #3b3b3b;
-  border-color: #5b5b5b;
+  background-color: var(--button-default-bg-color-hover);
+  border-color: var(--button-default-border-color-hover);
 }
 
 main.published-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button
@@ -51,7 +64,7 @@ main.published-form
   fill: white;
 }
 
-main.published-form > .heading {
+main.published-form > .container > .heading {
   /* padding: 10px; */
   padding-left: 10px;
   /* border-radius: 3px;  */
@@ -60,58 +73,55 @@ main.published-form > .heading {
   flex-direction: column;
   gap: 5px;
 
-  border: 1px solid #444;
+  border: 1px solid var(--container-border-color);
   padding: 10px;
   border-radius: 4px;
 }
 
-main.published-form > .heading.no-margin-bottom {
+main.published-form > .container > .heading.no-margin-bottom {
   margin-bottom: 0;
 }
 
-main.published-form > .heading > h1.title {
+main.published-form > .container > .heading > h1.title {
   font-size: 1rem;
 }
 
-main.published-form > .heading > p.description {
+main.published-form > .container > .heading > p.description {
   font-size: 0.875rem;
 }
 
-main.published-form > .inputs {
-  border: 1px solid #555;
+main.published-form > .container > .inputs {
+  border: 1px solid var(--container-border-color);
   border-radius: 3px;
   margin-top: 17px;
   position: relative;
 }
 
-main.published-form > .inputs::before {
+main.published-form > .container > .inputs::before {
   content: "Fill these prompts out";
 }
 
-main.published-form > .inputs::before {
+main.published-form > .container > .inputs::before {
   position: absolute;
   bottom: calc(100% + 0px);
   left: -1px;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: #555;
+  background-color: var(--container-bg-color);
   padding: 2px 5px;
   line-height: 0.875rem;
-  border-left: lightgreen 2px solid;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  background-color: transparent;
-  border: 1px solid #555;
-  border-bottom: 0;
+  border: 1px solid var(--container-border-color);
   z-index: 2;
-  background-color: #222;
 }
 
-main.published-form > .submit-button {
+main.published-form > .container > .submit-button {
   padding: 3px 5px;
   font-size: 1rem;
   background-color: transparent;
-  border: 1px solid #555;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
   border-radius: 3px;
   display: flex;
   flex-direction: row;
@@ -122,11 +132,12 @@ main.published-form > .submit-button {
   cursor: pointer;
 }
 
-main.published-form > .submit-button:not(:disabled):hover {
-  border-color: #666;
+main.published-form > .container > .submit-button:not(:disabled):hover {
+  border: 1px solid var(--button-default-border-color-hover);
+  background-color: var(--button-default-bg-color-hover);
 }
 
-main.published-form > .submit-button > svg {
+main.published-form > .container > .submit-button > svg {
   fill: lightgreen;
   width: 15px;
 }

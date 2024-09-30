@@ -67,35 +67,47 @@ export const MetadataInputs = ({
   return (
     <div className="metadata-inputs">
       <form className="title-and-description">
-        <input
-          value={form.form.title}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              form: {
-                ...form.form!,
-                title: e.target.value,
-              },
-            })
-          }
-          placeholder="Title"
-        />
-        <textarea
-          value={form.form.description || ""}
-          onChange={(e) => {
-            setForm({
-              ...form,
-              form: {
-                ...form.form!,
-                description: e.target.value,
-              },
-            });
-          }}
-          placeholder="Description"
-        />
+        <div className="form-group-container">
+          <p className="small-text bold">Form name *</p>
+          <input
+            value={form.form.title}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                form: {
+                  ...form.form!,
+                  title: e.target.value,
+                },
+              })
+            }
+            placeholder="Title"
+          />
+        </div>
+        <div className="form-group-container">
+          <p className="small-text bold">
+            Description <span className="optional">(optional)</span>
+          </p>
+          <textarea
+            value={form.form.description || ""}
+            onChange={(e) => {
+              setForm({
+                ...form,
+                form: {
+                  ...form.form!,
+                  description: e.target.value,
+                },
+              });
+            }}
+            placeholder="Description"
+          />
+        </div>
       </form>
       {form.inputs.length === 0 ? (
-        <NoPromptsMessage/>
+        <NoPromptsMessage
+          formId={form.form.id}
+          isDraft={isForDraft}
+          handleClick={() => setCurrentView("input-types-selector")}
+        />
       ) : (
         <div className="added-inputs">
           {form.inputs.map((input) => (
@@ -135,9 +147,18 @@ export const MetadataInputs = ({
               )}
             </div>
           ))}
+          <button
+            className="add-new-input"
+            type="button"
+            onClick={() => setCurrentView("input-types-selector")}
+          >
+            <p className="small-text bold">Add a new input</p>
+            <div className="icon-container">
+              <PlusIcon />
+            </div>
+          </button>
         </div>
       )}
-      
     </div>
   );
 };

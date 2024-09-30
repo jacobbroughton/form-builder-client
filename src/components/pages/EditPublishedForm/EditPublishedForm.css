@@ -1,9 +1,72 @@
-main.edit-form {
+main.edit-published-form {
   display: flex;
   flex-direction: column;
-  padding: 69px 10px 50px 10px;
-  width: 100%;
-  max-width: 500px;
   margin: 0 auto;
+  padding: 30px 10px;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.edit-published-form > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 10px;
+}
+
+main.edit-published-form > .container > .selected-privacy-option-button {
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
+  display: flex;
+  flex-direction: row;
+  border-radius: 3px;
+  padding: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+main.edit-published-form > .container > .selected-privacy-option-button:hover {
+  border: 1px solid var(--button-default-border-color-hover);
+  background-color: var(--button-default-bg-color-hover);
+}
+
+main.edit-published-form > .container > .selected-privacy-option-button > .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 45px;
+}
+
+main.edit-published-form > .container > .selected-privacy-option-button > .icon-container {
+  height: 100%;
+  border-right: 1px solid #555;
+  position: absolute;
+  left: 0;
+  width: 45px;
+  top: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.edit-published-form > .container > .selected-privacy-option-button > .icon-container > svg {
+  fill: whitesmoke;
+  width: 15px;
+}
+
+main.edit-published-form > .container > .form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
   gap: 10px;
 }

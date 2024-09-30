@@ -10,23 +10,31 @@
   gap: 10px;
 }
 
-.metadata-inputs > .title-and-description > input {
+.metadata-inputs > .title-and-description > .form-group-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.metadata-inputs > .title-and-description > .form-group-container > input {
+  width: 100%;
   font-size: 1.15rem;
   font-weight: 600;
   background-color: transparent;
-  border: 1px solid #555;
+  border: 1px solid var(--input-default-border-color);
   border-radius: 3px;
   padding: 5px 10px;
 }
 
-.metadata-inputs > .title-and-description > textarea {
+.metadata-inputs > .title-and-description > .form-group-container > textarea {
   background-color: transparent;
   font-family: inherit;
   padding: 5px 10px;
-  border: 1px solid #555;
+  border: 1px solid var(--input-default-border-color);
   border-radius: 3px;
   font-size: 1rem;
   min-height: 100px;
+  width: 100%;
 }
 
 .metadata-inputs > .added-inputs {
@@ -34,8 +42,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 1px solid #555;
-  background-color: #222;
+  border: 1px solid var(--container-border-color);
+  /* background-color: var(--button-default-bg-color); */
   border-radius: 3px;
   border-top-left-radius: 0;
   margin-top: 20px;
@@ -48,17 +56,15 @@
   left: -1px;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: #555;
   padding: 2px 5px;
   line-height: 0.875rem;
-  border-left: lightgreen 2px solid;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   background-color: transparent;
-  border: 1px solid #555;
+  border: 1px solid var(--container-border-color);
   border-bottom: 0;
   z-index: 2;
-  background-color: #222;
+  background-color: var(--container-bg-color);
 }
 
 .metadata-inputs > .added-inputs > .added-input {
@@ -67,6 +73,7 @@
   flex-direction: column;
   gap: 5px;
   position: relative;
+  padding-right: 30px;
 }
 
 .metadata-inputs > .added-inputs > .added-input.deleted {
@@ -97,16 +104,16 @@
 }
 
 .metadata-inputs > .added-inputs > .added-input:not(:last-child) {
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid var(--button-default-border-color);
 }
 
 .metadata-inputs > .added-inputs > .added-input > .popup-menu-button {
   position: absolute;
-  top: 3px;
-  right: 3px;
-  background-color: transparent;
-  border: 0;
-  border-radius: 100%;
+  top: 5px;
+  right: 5px;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+  border-radius: 5px;
   width: 30px;
   height: 30px;
   display: flex;
@@ -117,7 +124,7 @@
 }
 
 .metadata-inputs > .added-inputs > .added-input > .popup-menu-button:hover {
-  background-color: #333;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 .metadata-inputs > .added-inputs > .added-input > .popup-menu-button > svg {
@@ -132,8 +139,45 @@
 
 .metadata-inputs > .added-inputs > .added-input .tags p {
   border-radius: 15px;
-  background-color: #333;
+  border: 1px solid var(--container-border-color);
   padding: 0px 10px;
   font-size: 0.875rem;
 }
 
+.metadata-inputs > .added-inputs > button.add-new-input {
+  background-color: var(--button-default-bg-color);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 0;
+  padding: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.metadata-inputs > .added-inputs > button.add-new-input:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.metadata-inputs > .added-inputs > button.add-new-input > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.metadata-inputs > .added-inputs > button.add-new-input > .icon-container {
+  height: 100%;
+  border-left: 1px solid var(--button-default-border-color);
+  position: absolute;
+  right: 0;
+  width: 45px;
+  top: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metadata-inputs > .added-inputs > button.add-new-input > .icon-container > svg {
+  fill: whitesmoke;
+  width: 15px;
+}

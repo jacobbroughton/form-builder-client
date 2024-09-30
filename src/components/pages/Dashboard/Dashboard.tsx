@@ -56,62 +56,66 @@ export const Dashboard = () => {
 
   return (
     <main className="forms">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="forms-container">
-            <section className="header">
-              <p className="small-text">Recent Forms (Sorted by {selectedSort.name.toLowerCase()})</p>
-              <div className="controls">
-                <div className="button-container">
-                  <button
-                    className="view-toggle-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      localStorage.setItem(
-                        "formBuilderToggledView",
-                        toggledView === "grid" ? "list" : "grid"
-                      );
-                      setToggledView(toggledView === "grid" ? "list" : "grid");
-                    }}
-                  >
-                    {toggledView === "grid" ? <GridIcon /> : <ListIcon />}
-                  </button>
+      <div className="container">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <div className="forms-container">
+              <section className="header">
+                <p className="small-text">
+                  Recent Forms (Sorted by {selectedSort.name.toLowerCase()})
+                </p>
+                <div className="controls">
+                  <div className="button-container">
+                    <button
+                      className="view-toggle-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        localStorage.setItem(
+                          "formBuilderToggledView",
+                          toggledView === "grid" ? "list" : "grid"
+                        );
+                        setToggledView(toggledView === "grid" ? "list" : "grid");
+                      }}
+                    >
+                      {toggledView === "grid" ? <GridIcon /> : <ListIcon />}
+                    </button>
+                  </div>
+                  <div className="button-container">
+                    <button
+                      disabled={forms.length == 0}
+                      className="sort-toggle-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSortMenuToggled(!sortMenuToggled);
+                      }}
+                    >
+                      <SortIcon />
+                    </button>
+                    {sortMenuToggled && (
+                      <SortFormsMenu
+                        selectedSort={selectedSort}
+                        setSortMenuToggled={setSortMenuToggled}
+                        setSelectedSort={setSelectedSort}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="button-container">
-                  <button
-                  disabled={forms.length == 0}
-                    className="sort-toggle-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSortMenuToggled(!sortMenuToggled);
-                    }}
-                  >
-                    <SortIcon />
-                  </button>
-                  {sortMenuToggled && (
-                    <SortFormsMenu
-                      selectedSort={selectedSort}
-                      setSortMenuToggled={setSortMenuToggled}
-                      setSelectedSort={setSelectedSort}
-                    />
-                  )}
-                </div>
-              </div>
-            </section>
-            {forms.length ? (
-              toggledView === "grid" ? (
-                <FormsGrid setForms={setForms} forms={forms} />
+              </section>
+              {forms.length ? (
+                toggledView === "grid" ? (
+                  <FormsGrid setForms={setForms} forms={forms} />
+                ) : (
+                  <FormsList setForms={setForms} forms={forms} />
+                )
               ) : (
-                <FormsList setForms={setForms} forms={forms} />
-              )
-            ) : (
-              <NoFormsMessage />
-            )}
-          </div>
-        </>
-      )}
+                <NoFormsMessage />
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </main>
   );
 };

@@ -30,7 +30,7 @@ import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
-  const { formId } = useParams();
+  const { formId, initialView } = useParams();
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
@@ -68,7 +68,7 @@ export const EditDraftForm = () => {
     inputs: [],
   });
 
-  const [currentView, setCurrentView] = useState("metadata-inputs");
+  const [currentView, setCurrentView] = useState(initialView || "metadata-inputs");
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
@@ -157,31 +157,33 @@ export const EditDraftForm = () => {
             ) : (
               false
             )}
-            <button
-              className="action-button-with-icon red"
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setDeleteFormModalShowing(true);
-              }}
-            >
-              <TrashIcon /> Delete Draft
-            </button>
+            <div className="form-buttons">
+              <button
+                className="action-button-with-icon red"
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteFormModalShowing(true);
+                }}
+              >
+                <TrashIcon /> Delete Draft
+              </button>
 
-            <button
-              className="action-button-with-icon save-button"
-              // disabled={saved}
-              onClick={() => saveDraft()}
-            >
-              <SaveIcon /> Save Draft
-            </button>
+              <button
+                className="action-button-with-icon save-button"
+                // disabled={saved}
+                onClick={() => saveDraft()}
+              >
+                <SaveIcon /> Save Draft
+              </button>
 
-            <button
-              className="action-button-with-icon green publish-button"
-              onClick={() => handlePublishForm()}
-            >
-              <ShareIcon /> Publish Form
-            </button>
+              <button
+                className="action-button-with-icon green publish-button"
+                onClick={() => handlePublishForm()}
+              >
+                <ShareIcon /> Publish Form
+              </button>
+            </div>
           </>
         );
       }
@@ -299,7 +301,7 @@ export const EditDraftForm = () => {
         draft.form.description !== prevSavedForm.form.description ||
         selectedPrivacyOption?.id !== draft.form.privacy_id ||
         privacyPasskey !== draft.form.passkey;
-        
+
       setSaved(!condition);
     }
   }, [
@@ -322,17 +324,19 @@ export const EditDraftForm = () => {
   }, [privacyOptions, draft, reflectFormPrivacyOption]);
 
   return (
-    <main className="edit-form">
-      <DraftPublishedTag draftOrPublished="draft" />
-      {renderView()}
-      {deleteFormModalShowing ? (
-        <DeleteFormModal
-          handleDeleteClick={() => handleFormDelete()}
-          setDeleteFormModalShowing={setDeleteFormModalShowing}
-        />
-      ) : (
-        false
-      )}
+    <main className="edit-draft-form">
+      <div className="container">
+        <DraftPublishedTag draftOrPublished="draft" />
+        {renderView()}
+        {deleteFormModalShowing ? (
+          <DeleteFormModal
+            handleDeleteClick={() => handleFormDelete()}
+            setDeleteFormModalShowing={setDeleteFormModalShowing}
+          />
+        ) : (
+          false
+        )}
+      </div>
     </main>
   );
 };

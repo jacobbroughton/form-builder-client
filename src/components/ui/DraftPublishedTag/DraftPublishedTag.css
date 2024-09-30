@@ -4,7 +4,8 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  background-color: #333;
+  background-color: var(--container-bg-color);
+  border: 1px solid var(--container-border-color);
   border-radius: 3px;
   padding: 3px 7px;
   font-size: 0.875rem;

@@ -1,7 +1,6 @@
 nav {
-  /* background-color: #555; */
-  border-bottom: 1px solid #555;
-  background-color: transparent;
+  background-color: var(--nav-bg-color);
+  border-bottom: 1px solid #3d444d;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,12 +40,14 @@ nav > ul > li > a {
 }
 
 nav > ul > li:first-child > a {
-  background-color: #333;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
   padding: 9px 20px;
 }
 
 nav > ul > li:first-child > a:hover {
-  background-color: #3b3b3b;
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
 }
 
 nav > ul > li:first-child > a:active {
@@ -54,7 +55,8 @@ nav > ul > li:first-child > a:active {
 }
 
 nav > ul > li:not(:first-child) > a:hover {
-  background-color: #3b3b3b;
+    background-color: var(--button-default-bg-color);
+    border: 1px solid var(--button-default-border-color);
   text-decoration: none;
 }
 
@@ -76,22 +78,22 @@ nav > ul > li > .user-menu-toggle-container > .user-menu-toggle {
   border-radius: 100%;
   padding: 5px;
   cursor: pointer;
-  border: 0;
   background-color: transparent;
+  border: 0;
 }
 
 nav > ul > li > .user-menu-toggle-container > .user-menu-toggle:hover {
-  background-color: #3b3b3b;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > svg {
-  width: 30px;
-  height: 30px;
+  width: 33px;
+  height: 33px;
 }
 
 nav > ul > li > .user-menu-toggle-container > .user-menu-toggle > .profile-picture {
-  width: 30px;
-  height: 30px;
+  width: 33px;
+  height: 33px;
   background-size: cover;
   border-radius: 100%;
 }

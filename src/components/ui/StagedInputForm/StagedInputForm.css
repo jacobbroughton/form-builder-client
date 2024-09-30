@@ -11,17 +11,14 @@
 }
 
 .staged-item-form > .staged-input-form > .staged-input-type-info {
-}
-
-.staged-item-form > .staged-input-form > .staged-input-type-info {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  border: 1px solid #555;
+  border: 1px solid var(--container-border-color);
   border-left: 5px solid lightgreen;
-  padding: 3px 5px;
+  background-color: var(--container-bg-color);
+  padding: 5px;
   padding-left: 10px;
-  background-color: transparent;
   border-radius: 3px;
 }
 
@@ -36,21 +33,30 @@
 }
 
 .staged-item-form > .staged-input-form > .metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.staged-item-form > .staged-input-form > .metadata > input,
-.staged-item-form > .staged-input-form > .metadata > textarea {
+.staged-item-form > .staged-input-form > .metadata > .form-group-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 3px 5px;
+}
+
+.staged-item-form > .staged-input-form > .metadata > .form-group-container > input,
+.staged-item-form > .staged-input-form > .metadata > .form-group-container > textarea {
+  width: 100%;
+  padding: 5px;
   font-size: 1rem;
-  background-color: #333;
+  background-color: transparent;
   border-radius: 3px;
-  border: 1px solid #555;
+  border: 1px solid var(--input-default-border-color);
   transition: border-color 0.1s ease-out;
   font-family: inherit;
 }
 
-.staged-item-form > .staged-input-form > .metadata > input {
+.staged-item-form > .staged-input-form > .metadata > .form-group-container > input {
   font-weight: 500;
 }
 
@@ -65,53 +71,107 @@
   text-decoration: underline;
 }
 
-.staged-item-form > .staged-input-form > div.properties,
-.staged-item-form > .staged-input-form > .metadata {
+.staged-item-form > .staged-input-form > .properties-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--container-border-color);
+  background-color: transparent;
+  border-radius: 5px;
+  overflow: hidden;
+  
+}
+
+.staged-item-form > .staged-input-form > .properties-container.toggled > .header {
+  border-bottom: 1px solid var(--container-border-color);
+}
+
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .header
+  > button.properties-toggle {
+  background-color: var(--button-default-bg-color);
+  border: 0;
+  width: 100%;
+  text-align: start;
+  font-size: 1rem;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .header
+  > button.properties-toggle:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .header
+  > button.properties-toggle
+  > .icon-container {
+  position: absolute;
+  left: 0;
+  width: 45px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-right: 1px solid var(--button-default-border-color);
+}
+
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .header
+  > button.properties-toggle
+  > .icon-container
+  > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .header
+  > button.properties-toggle
+  > div.content {
+  margin-left: 45px;
+}
+
+.staged-item-form > .staged-input-form > .properties-container >.properties
+/* ,.staged-item-form > .staged-input-form > .metadata */ {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  border: 1px solid #555;
-  background-color: #222;
-  padding: 5px;
-  border-radius: 3px;
-  border-top-left-radius: 0;
-  margin-top: 20px;
-}
-
-.staged-item-form > .staged-input-form > div.properties::before {
-  content: "Properties (Optional)";
-}
-.staged-item-form > .staged-input-form > .metadata::before {
-  content: "Question/Prompt";
-}
-
-.staged-item-form > .staged-input-form > div.properties::before,
-.staged-item-form > .staged-input-form > .metadata::before {
-  position: absolute;
-  bottom: calc(100% + 0px);
-  left: -1px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background-color: #555;
-  padding: 2px 5px;
-  line-height: 0.875rem;
-  border-left: lightgreen 2px solid;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top: 0;
   background-color: transparent;
-  border: 1px solid #555;
-  border-bottom: 0;
-  z-index: 2;
-  background-color: #222;
+  padding: 10px;
+  /* border-radius: 5px; */
 }
 
 .staged-item-form > .staged-input-form > div.properties > label {
   font-size: 0.875rem;
 }
 
-.staged-item-form > .staged-input-form > .properties > .property-container {
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .properties
+  > .property-container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -135,13 +195,18 @@
   font-size: 0.8rem;
 }
 
-.staged-item-form > .staged-input-form > .properties > .property-container > input {
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .properties
+  > .property-container
+  > input {
   width: 100%;
-  padding: 3px 5px;
+  padding: 5px;
   font-size: 1rem;
-  background-color: #333;
+  background-color: transparent;
   border-radius: 3px;
-  border: 1px solid #555;
+  border: 1px solid var(--input-default-border-color);
   transition: border-color 0.1s ease-out;
   font-family: inherit;
 }
@@ -154,8 +219,13 @@
   cursor: pointer;
 }
 
-.staged-item-form > .staged-input-form > .properties > .property-container > input:hover {
-  border-color: #6f6f6f;
+.staged-item-form
+  > .staged-input-form
+  > .properties-container
+  > .properties
+  > .property-container
+  > input:hover {
+  border: 1px solid var(--input-default-border-color-hover);
 }
 
 .staged-item-form
@@ -201,12 +271,13 @@
 
 .staged-item-form > .navigation-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 10px;
 }
 
-.staged-item-form > .navigation-buttons .navigation-button:hover {
-  border: 1px solid #666;
+.staged-item-form > .navigation-buttons > button.navigation-button {
+  width: auto;
 }
 
 .staged-item-form > .navigation-buttons .navigation-button.done svg {

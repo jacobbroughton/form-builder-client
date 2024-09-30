@@ -1,25 +1,35 @@
 main.draft-form {
   display: flex;
   flex-direction: column;
-  padding: 69px 10px 50px 10px;
-  width: 100%;
-  max-width: 500px;
   margin: 0 auto;
+  padding: 30px 10px;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.draft-form > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
   gap: 10px;
 }
 
-main.draft-form > .form-controls {
+main.draft-form > .container > .form-controls {
   display: flex;
   justify-content: space-between;
 }
 
-
-main.draft-form > .form-controls > .menu-toggle-button-container {
+main.draft-form > .container > .form-controls > .menu-toggle-button-container {
   position: relative;
   margin-left: auto;
 }
 
 main.draft-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button {
@@ -36,14 +46,16 @@ main.draft-form
 }
 
 main.draft-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button:hover {
-  background-color: #3b3b3b;
-  border-color: #5b5b5b;
+  background-color: var(--button-default-bg-color-hover);
+  border-color: var(--button-default-border-color-hover);
 }
 
 main.draft-form
+  > .container
   > .form-controls
   > .menu-toggle-button-container
   > button.menu-toggle-button
@@ -52,109 +64,64 @@ main.draft-form
   fill: white;
 }
 
-main.draft-form > .heading {
-   /* padding: 10px; */
-   /* padding-left: 10px; */
-   /* border-left: 5px solid #444;  */
-   /* border-radius: 3px;  */
-  /* margin-bottom: 10px; */
-  border: 1px solid #444;
+main.draft-form > .container > .heading {
+  /* padding: 10px; */
+  padding-left: 10px;
+  /* border-radius: 3px;  */
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  border: 1px solid var(--container-border-color);
   padding: 10px;
   border-radius: 4px;
 }
 
-main.draft-form > .heading {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+main.draft-form > .container > .heading.no-margin-bottom {
+  margin-bottom: 0;
 }
 
-main.draft-form > .heading > h1.title {
+main.draft-form > .container > .heading > h1.title {
   font-size: 1rem;
 }
 
-main.draft-form > .heading > p.description {
+main.draft-form > .container > .heading > p.description {
   font-size: 0.875rem;
 }
 
-/* 
-main.draft-form > .heading > .status-title-and-menu > .menu-toggle-button-container {
-  position: relative;
-  margin-left: auto;
-  align-self: flex-start;
-}
-
-main.draft-form
-  > .heading
-  > .status-title-and-menu
-  > .menu-toggle-button-container
-  > button.menu-toggle-button {
-  background-color: transparent;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px;
-  border-radius: 3px;
-  cursor: pointer;
-  height: 25px;
-  width: 25px;
-}
-
-main.draft-form
-  > .heading
-  > .status-title-and-menu
-  > .menu-toggle-button-container
-  > button.menu-toggle-button:hover {
-  background-color: #3b3b3b;
-  border-color: #5b5b5b;
-}
-
-main.draft-form
-  > .heading
-  > .status-title-and-menu
-  > .menu-toggle-button-container
-  > button.menu-toggle-button
-  > svg {
-  width: 20px;
-  fill: white;
-} */
-
-main.draft-form > .inputs {
-  border: 1px solid #555;
+main.draft-form > .container > .inputs {
+  border: 1px solid var(--container-border-color);
   border-radius: 3px;
   margin-top: 17px;
   position: relative;
 }
 
-main.draft-form > .inputs::before {
-  content: "Prompts for this form";
+main.draft-form > .container > .inputs::before {
+  content: "Fill these prompts out";
 }
 
-main.draft-form > .inputs::before {
+main.draft-form > .container > .inputs::before {
   position: absolute;
   bottom: calc(100% + 0px);
   left: -1px;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: #555;
+  background-color: var(--container-bg-color);
   padding: 2px 5px;
   line-height: 0.875rem;
-  border-left: lightgreen 2px solid;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  background-color: transparent;
-  border: 1px solid #555;
-  border-bottom: 0;
+  border: 1px solid var(--container-border-color);
   z-index: 2;
-  background-color: #222;
 }
 
-main.draft-form > .submit-button {
+main.draft-form > .container > .submit-button {
   padding: 3px 5px;
   font-size: 1rem;
   background-color: transparent;
-  border: 1px solid #555;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
   border-radius: 3px;
   display: flex;
   flex-direction: row;
@@ -165,11 +132,12 @@ main.draft-form > .submit-button {
   cursor: pointer;
 }
 
-main.draft-form > .submit-button:not(:disabled):hover {
-  border-color: #666;
+main.draft-form > .container > .submit-button:not(:disabled):hover {
+  border: 1px solid var(--button-default-border-color-hover);
+  background-color: var(--button-default-bg-color-hover);
 }
 
-main.draft-form > .submit-button > svg {
+main.draft-form > .container > .submit-button > svg {
   fill: lightgreen;
   width: 15px;
 }

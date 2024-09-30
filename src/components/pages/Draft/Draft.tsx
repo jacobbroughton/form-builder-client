@@ -56,61 +56,73 @@ export const Draft = () => {
 
   return (
     <main className="draft-form">
-      {formLoading ? (
-        <p>Form loading...</p>
-      ) : !form ? (
-        <p>No form found</p>
-      ) : (
-        <>
-          <div className="form-controls">
-            <DraftPublishedTag draftOrPublished="draft" />
-            <div className="menu-toggle-button-container">
-              <button
-                className="menu-toggle-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFormPopupMenuToggled(!formPopupMenuToggled);
-                }}
-              >
-                <ThreeDotsIcon />
-              </button>
-              {formPopupMenuToggled ? (
-                <FormPopupMenu
-                  form={form}
-                  isDraft={true}
-                  setFormPopupToggled={setFormPopupMenuToggled}
-                  handleDeleteClick={() => {
-                    setDeleteFormModalShowing(true);
+      <div className="container">
+        {formLoading ? (
+          <p>Form loading...</p>
+        ) : !form ? (
+          <p>No form found</p>
+        ) : (
+          <>
+            <div className="form-controls">
+              <DraftPublishedTag draftOrPublished="draft" />
+              <div className="menu-toggle-button-container">
+                <button
+                  className="menu-toggle-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFormPopupMenuToggled(!formPopupMenuToggled);
                   }}
-                />
+                >
+                  <ThreeDotsIcon />
+                </button>
+                {formPopupMenuToggled ? (
+                  <FormPopupMenu
+                    form={form}
+                    isDraft={true}
+                    setFormPopupToggled={setFormPopupMenuToggled}
+                    handleDeleteClick={() => {
+                      setDeleteFormModalShowing(true);
+                    }}
+                  />
+                ) : (
+                  false
+                )}
+              </div>
+            </div>
+            <div className="heading">
+              <h1 className="title">{form.title}</h1>
+              {form.description ? (
+                <p className="description">{form.description}</p>
               ) : (
                 false
               )}
             </div>
-          </div>
-          <div className="heading">
-            <h1 className="title">{form.title}</h1>
-            {form.description ? <p className="description">{form.description}</p> : false}
-          </div>
-          {inputs.length ? (
-            <div className="inputs">
-              {inputs.map((input) => (
-                <FormInput input={input} inputs={inputs} setInputs={setInputs} />
-              ))}
-            </div>
-          ) : (
-            <NoPromptsMessage formId={form.id} isDraft={true} />
-          )}
-        </>
-      )}
-      {deleteFormModalShowing ? (
-        <DeleteFormModal
-          handleDeleteClick={() => handleFormDelete()}
-          setDeleteFormModalShowing={setDeleteFormModalShowing}
-        />
-      ) : (
-        false
-      )}
+            {inputs.length ? (
+              <div className="inputs">
+                {inputs.map((input) => (
+                  <FormInput input={input} inputs={inputs} setInputs={setInputs} />
+                ))}
+              </div>
+            ) : (
+              <NoPromptsMessage
+                formId={form.id}
+                isDraft={true}
+                handleClick={() => {
+                  navigate(`/edit-draft-form/${form.id}/input-types-selector`);
+                }}
+              />
+            )}
+          </>
+        )}
+        {deleteFormModalShowing ? (
+          <DeleteFormModal
+            handleDeleteClick={() => handleFormDelete()}
+            setDeleteFormModalShowing={setDeleteFormModalShowing}
+          />
+        ) : (
+          false
+        )}
+      </div>
     </main>
   );
 };

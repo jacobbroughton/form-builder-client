@@ -2,11 +2,12 @@
   position: absolute;
   right: 5px;
   top: calc(100% + 5px);
-  background-color: #222;
+  background-color: var(--popup-menu-bg-color);
   border-radius: 3px;
   overflow: hidden;
-  border: 1px solid #555;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border: 1px solid var(--popup-menu-border-color);
+  box-shadow: var(--popup-menu-box-shadow);
+
 }
 
 .user-menu > ul > li {
@@ -42,7 +43,7 @@
 
 .user-menu > ul > li > button:hover,
 .user-menu > ul > li > a:hover {
-  background-color: #333;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 .user-menu > ul > li:not(:last-child) > button,
@@ -52,7 +53,7 @@
 }
 
 .user-menu > ul > li > p {
-  background-color: #333;
+  background-color: var(--button-default-bg-color);
   font-weight: 500;
   border-left: 3px solid lightgreen;
   padding-left: 15px;

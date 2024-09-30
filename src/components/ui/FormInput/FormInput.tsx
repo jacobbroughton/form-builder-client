@@ -140,9 +140,9 @@ export const FormInput = ({
 
   return (
     <div className="input-container">
-      <p className="question">{input.metadata_question}</p>
+      <p className="small-text bold">{input.metadata_question}</p>
       {input.metadata_description && (
-        <p className="question-description">{input.metadata_description}</p>
+        <p className="small-text question-description">{input.metadata_description}</p>
       )}
       {renderInput()}
     </div>

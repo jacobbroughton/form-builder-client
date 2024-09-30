@@ -5,8 +5,7 @@
 }
 
 .form-list > .form-list-item {
-  border: 1px solid #555;
-  /* padding: 5px; */
+  border: 1px solid var(--button-default-border-color);
   transition: 0.1s ease border-color;
   border-radius: 3px;
   display: flex;
@@ -18,11 +17,13 @@
   height: 33px;
   white-space: nowrap;
   position: relative;
+  background-color: var(--button-default-bg-color);
 }
 
 .form-list > .form-list-item:hover {
   text-decoration: none;
-  border-color: #6f6f6f;
+  background-color: var(--button-default-bg-color-hover);
+  border-color: var(--button-default-border-color-hover);
 }
 
 .form-list > .form-list-item > .menu-button-container {
@@ -46,7 +47,7 @@
 }
 
 .form-list > .form-list-item > .menu-button-container > .menu-button:hover {
-  background-color: #444;
+  background-color: var(--button-default-bg-color-hover);
 }
 
 .form-list > .form-list-item > .menu-button-container > .menu-button > svg {

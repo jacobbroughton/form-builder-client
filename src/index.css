@@ -5,6 +5,59 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #151b23;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+
+  --nav-bg-color: #151b23;
+  --main-bg-color: #212830;
+
+  --shadow-tail-down: 0px 10px 12px -3px #1c212866;
+  --shadow-extended-border: 0px 0px 0px 1px #3d444d;
+
+  --popup-menu-bg-color: #2a313c;
+  --popup-menu-border-color: #3d444d;
+  --popup-menu-box-shadow: var(--shadow-extended-border), var(--shadow-tail-down);
+
+  --button-default-bg-color: #2a313c;
+  --button-default-bg-color-hover: #343d4b;
+  --button-default-border-color: #3d444d;
+  --button-default-border-color-hover: #3d444d;
+  --button-green-bg-color: #357e3a;
+  --button-green-bg-color-hover: #3c9042;
+
+  --input-default-border-color: #3d444d;
+  --input-default-border-color-hover: #3d444d;
+
+  --text-color-white: #d1d7e0;
+  --text-color-muted: #9198a1;
+
+  --container-bg-color: #2a313c;
+  --container-border-color: #3d444d;
+}
+
+html,
+body,
+#root,
+#detail {
+  height: 100%;
+}
+
+#root {
+  padding-top: 55px;
+}
+
 ul {
   list-style: none;
 }
@@ -26,8 +79,8 @@ a.action-button-with-icon {
   border-radius: 3px;
   padding: 3px 5px;
   cursor: pointer;
-  border: 1px solid #555;
-  background-color: transparent;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
 }
 
 button.action-button-with-icon:disabled,
@@ -38,19 +91,20 @@ a.action-button-with-icon:disabled {
 
 button.action-button-with-icon:not(:disabled):not(.green):hover,
 a.action-button-with-icon:not(:disabled):not(.green):hover {
-  background-color: #333;
+  background-color: var(--button-default-bg-color-hover);
+  border-color: var(--button-default-border-color-hover);
 }
 
 button.action-button-with-icon.green,
 a.action-button-with-icon.green {
   font-weight: 600;
-  background-color: hsl(120, 73%, 75%);
-  color: #333;
+  background-color: var(--button-green-bg-color);
+  color: whitesmoke;
 }
 
 button.action-button-with-icon.green:not(:disabled):hover,
 a.action-button-with-icon.green:not(:disabled):hover {
-  background-color: hsl(120, 73%, 85%);
+  background-color: var(--button-green-bg-color-hover);
 }
 
 button.action-button-with-icon > svg,
@@ -73,38 +127,37 @@ a.action-button-with-icon.red > svg {
 button.action-button-with-icon.green > svg,
 a.action-button-with-icon.green > svg {
   width: 13px;
-  fill: #333;
+  fill: whitesmoke;
 }
 
 textarea {
   resize: vertical;
 }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .small-text {
   font-size: 0.875rem;
+  color: var(--text-color-white);
+}
+
+.small-text.bold {
+  font-weight: 500;
+}
+
+.small-text.bolder {
+  font-weight: 600;
+}
+
+.small-text > span.optional {
+  color: var(--text-color-muted);
+  font-size: 0.75rem;
 }
 
 button.navigation-button {
   padding: 3px 5px;
   font-size: 1rem;
-  background-color: transparent;
   border-radius: 3px;
-  border: 1px solid #555;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -118,9 +171,9 @@ button.navigation-button .cancel {
   width: auto;
 }
 
-button.navigation-button :not(:disabled):hover {
-  border-color: #6f6f6f;
-  background-color: #55555525;
+button.navigation-button:not(:disabled):hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
 }
 
 button.navigation-button .cancel:not(:disabled):hover {

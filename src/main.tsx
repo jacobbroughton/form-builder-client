@@ -75,11 +75,11 @@ const router = createBrowserRouter([
         element: <CreateForm />,
       },
       {
-        path: "/edit-draft-form/:formId",
+        path: "/edit-draft-form/:formId/:initialView?",
         element: <EditDraftForm />,
       },
       {
-        path: "/edit-published-form/:formId",
+        path: "/edit-published-form/:formId/:initialView?",
         element: <EditPublishedForm />,
       },
     ],

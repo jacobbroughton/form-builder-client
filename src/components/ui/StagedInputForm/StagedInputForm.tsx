@@ -15,6 +15,7 @@ import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { CheckIcon } from "../icons/CheckIcon";
 import "./StagedInputForm.css";
+import PropertiesIcon from "../icons/PropertiesIcon";
 
 export const StagedInputForm = ({
   form,
@@ -52,6 +53,7 @@ export const StagedInputForm = ({
   const [inputTypeProperties, setInputTypeProperties] = useState<{
     [key: string]: InputTypePropertyType[];
   }>({});
+  const [propertiesToggled, setPropertiesToggled] = useState(false);
 
   const { setError } = useContext(ErrorContext);
 
@@ -108,6 +110,7 @@ export const StagedInputForm = ({
 
       setCurrentView("metadata-inputs");
     } catch (error) {
+      console.log('error here')
       handleCatchError(error, setError, null);
     }
   }
@@ -177,63 +180,96 @@ export const StagedInputForm = ({
           <p className="description">{stagedNewInputType.description}</p>
         </div>
         <div className="metadata">
-          <input
-            value={stagedInputTitle}
-            onChange={(e) => setStagedInputTitle(e.target.value)}
-            placeholder={"Question"}
-          />
-          {descriptionToggled ? (
+          <div className="form-group-container">
+            <p className="small-text bold">Question/Prompt *</p>
+            <input
+              value={stagedInputTitle}
+              onChange={(e) => setStagedInputTitle(e.target.value)}
+              placeholder={"Question"}
+            />
+          </div>
+          <div className="form-group-container">
+            <p className="small-text bold">
+              Description <span className="optional">(optional)</span>
+            </p>
+            {/* {descriptionToggled ? ( */}
             <textarea
               value={stagedInputDescription}
               placeholder="Description"
               onChange={(e) => setStagedInputDescription(e.target.value)}
             />
-          ) : (
-            false
-          )}
-          <button
+            {/* ) : (
+              false
+            )} */}
+          </div>
+          {/* <button
             onClick={() => setDescriptionToggled(!descriptionToggled)}
             type="button"
           >
             {descriptionToggled ? "Remove Description" : "Add Description"}
-          </button>
+          </button> */}
         </div>
-        <div className="properties">
-          {inputTypeProperties[stagedNewInputType.id]?.map((itemTypeProperty) => (
-            <div className={`property-container ${itemTypeProperty.property_type}`}>
-              <label className="property-name">{itemTypeProperty.property_name}</label>
-              <p className="property-description">
-                {itemTypeProperty.property_description}
-              </p>
-              {inputTypePropertyOptions[
-                `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-              ] ? (
-                <div className="radio-options">
+        <div className={`properties-container ${propertiesToggled ? "toggled" : ""}`}>
+          <div className="header">
+            <button
+              className="properties-toggle"
+              type="button"
+              onClick={() => setPropertiesToggled(!propertiesToggled)}
+            >
+              <div className="icon-container">
+                <PropertiesIcon />
+              </div>
+              <div className="content">
+                <p>Show optional properties</p>
+              </div>
+            </button>
+          </div>
+          {propertiesToggled ? (
+            <div className="properties">
+              {inputTypeProperties[stagedNewInputType.id]?.map((itemTypeProperty) => (
+                <div className={`property-container ${itemTypeProperty.property_type}`}>
+                  <label className="property-name">
+                    {itemTypeProperty.property_name}
+                  </label>
+                  <p className="property-description">
+                    {itemTypeProperty.property_description}
+                  </p>
                   {inputTypePropertyOptions[
                     `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
-                  ]?.map((option) => (
-                    <button
-                      type="button"
-                      className={`${option.checked ? "checked" : ""}`}
-                      onClick={() => {
-                        handleOptionClick(itemTypeProperty, option);
-                      }}
-                    >
-                      {option.option_name}
-                    </button>
-                  ))}
+                  ] ? (
+                    <div className="radio-options">
+                      {inputTypePropertyOptions[
+                        `${itemTypeProperty.input_type_id}-${itemTypeProperty.id}`
+                      ]?.map((option) => (
+                        <button
+                          type="button"
+                          className={`${option.checked ? "checked" : ""}`}
+                          onClick={() => {
+                            handleOptionClick(itemTypeProperty, option);
+                          }}
+                        >
+                          {option.option_name}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <input
+                      // placeholder={itemTypeProperty.property_name}
+                      placeholder="..."
+                      className={itemTypeProperty.property_type}
+                      type={itemTypeProperty.property_type || "text"}
+                      value={itemTypeProperty.value || ""}
+                      onChange={(e) =>
+                        handleInputChange(e.target.value, itemTypeProperty)
+                      }
+                    />
+                  )}
                 </div>
-              ) : (
-                <input
-                  placeholder={itemTypeProperty.property_name}
-                  className={itemTypeProperty.property_type}
-                  type={itemTypeProperty.property_type || "text"}
-                  value={itemTypeProperty.value || ""}
-                  onChange={(e) => handleInputChange(e.target.value, itemTypeProperty)}
-                />
-              )}
+              ))}
             </div>
-          ))}
+          ) : (
+            false
+          )}
         </div>
       </form>
 
