@@ -1,0 +1,14 @@
+.no-user-message {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.no-user-message > svg {
+  width: 20px;
+  fill: whitesmoke;
+}
+
+.no-user-message > p > a:hover {
+  text-decoration: underline;
+}

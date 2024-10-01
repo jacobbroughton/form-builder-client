@@ -22,7 +22,7 @@ export const useDeleteDraftForm = () => {
           throw new Error("No form ID was provided for deleting the draft form");
 
         const response = await fetch(
-          `http://localhost:3001/form/delete-draft-form/${params.formId}`,
+          `http://localhost:3001/api/form/delete-draft-form/${params.formId}`,
           {
             method: "put",
             credentials: "include",

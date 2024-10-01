@@ -64,6 +64,51 @@ main.published-form
   fill: white;
 }
 
+main.published-form > .container > button.previous-submission-info {
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--container-border-color);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+main.published-form > .container > button.previous-submission-info:hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
+}
+
+main.published-form > .container > .previous-submission-info > .icon-container {
+  position: absolute;
+  left: 0;
+  width: 45px;
+  padding: 10px;
+  border-right: 1px solid var(--container-border-color);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.published-form > .container > .previous-submission-info > .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 45px;
+  padding: 10px;
+  gap: 5px;
+}
+
+main.published-form > .container > .previous-submission-info > .icon-container > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+main.published-form > .container > .previous-submission-info > .content > p {
+  text-align: start;
+}
+
 main.published-form > .container > .heading {
   /* padding: 10px; */
   padding-left: 10px;

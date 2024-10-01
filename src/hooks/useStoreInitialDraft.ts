@@ -17,7 +17,7 @@ export const useStoreInitialDraft = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3001/form/store-initial-draft", {
+      const response = await fetch("http://localhost:3001/api/form/store-initial-draft", {
         method: "post",
 
         headers: {

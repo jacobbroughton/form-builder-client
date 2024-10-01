@@ -18,7 +18,7 @@ export const useGetInputTypes = () => {
     setLocalError(null);
 
     try {
-      const response = await fetch("http://localhost:3001/form/get-default-input-types", {
+      const response = await fetch("http://localhost:3001/api/form/get-default-input-types", {
         credentials: "include",
       });
 

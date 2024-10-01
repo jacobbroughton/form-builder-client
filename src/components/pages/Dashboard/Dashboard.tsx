@@ -49,7 +49,6 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       getForms();
     }
   }, [selectedSort]);

@@ -18,7 +18,7 @@ export const usePublish = () => {
       setLocalError(null);
 
       try {
-        const response = await fetch("http://localhost:3001/form/publish", {
+        const response = await fetch("http://localhost:3001/api/form/publish", {
           method: "post",
           headers: {
             "content-type": "application/json",

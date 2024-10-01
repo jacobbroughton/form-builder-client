@@ -1,15 +1,15 @@
 .input-popup-menu {
   position: absolute;
   right: 5px;
-  top: 35px;
+  top: 40px;
   z-index: 2;
   padding: 0;
-  background-color: #222;
-  border: 1px solid #555;
+  background-color: var(--popup-menu-bg-color);
+  border: 1px solid var(--popup-menu-border-color);
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  box-shadow:  rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow:  var(--popup-menu-box-shadow)
 }
 
 .input-popup-menu button {
@@ -32,9 +32,9 @@
 }
 
 .input-popup-menu button:not(:last-child) {
-  border-bottom: #444 1px solid;
+  border-bottom: 1px solid var(--button-default-border-color);
 }
 
 .input-popup-menu button:not(:disabled):hover {
-  background-color: #3a3a3a;
+  background-color: var(--button-default-bg-color-hover);
 }

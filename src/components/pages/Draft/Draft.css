@@ -115,29 +115,3 @@ main.draft-form > .container > .inputs::before {
   border: 1px solid var(--container-border-color);
   z-index: 2;
 }
-
-main.draft-form > .container > .submit-button {
-  padding: 3px 5px;
-  font-size: 1rem;
-  background-color: transparent;
-  border: 1px solid var(--button-default-border-color);
-  background-color: var(--button-default-bg-color);
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-  cursor: pointer;
-}
-
-main.draft-form > .container > .submit-button:not(:disabled):hover {
-  border: 1px solid var(--button-default-border-color-hover);
-  background-color: var(--button-default-bg-color-hover);
-}
-
-main.draft-form > .container > .submit-button > svg {
-  fill: lightgreen;
-  width: 15px;
-}

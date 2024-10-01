@@ -14,7 +14,7 @@ export const useGetExistingEmptyDraft = () => {
   const getExistingEmptyDraft = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3001/form/get-existing-empty-draft",
+        "http://localhost:3001/api/form/get-existing-empty-draft",
         {
           credentials: "include",
         }

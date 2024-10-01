@@ -44,47 +44,6 @@ main.create-form
   fill: lightgreen;
 }
 
-main.create-form > .container > .selected-privacy-option-button {
-  border: 1px solid var(--button-default-border-color);
-  background-color: var(--button-default-bg-color);
-  display: flex;
-  flex-direction: row;
-  border-radius: 3px;
-  padding: 10px;
-  position: relative;
-  cursor: pointer;
-}
-
-main.create-form > .container > .selected-privacy-option-button:hover {
-  border: 1px solid var(--button-default-border-color-hover);
-  background-color: var(--button-default-bg-color-hover);
-}
-
-main.create-form > .container > .selected-privacy-option-button > .content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-  margin-left: 45px;
-}
-
-main.create-form > .container > .selected-privacy-option-button > .icon-container {
-  height: 100%;
-  border-right: 1px solid #555;
-  position: absolute;
-  left: 0;
-  width: 45px;
-  top: 0;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-main.create-form > .container > .selected-privacy-option-button > .icon-container > svg {
-  fill: whitesmoke;
-  width: 15px;
-}
 
 main.create-form > .container > .form-buttons {
   display: flex;

@@ -45,6 +45,10 @@ button.no-prompts-message > .content > svg {
   width: 25px;
 }
 
+button.no-prompts-message > .content > p {
+  text-align: start;
+}
+
 button.no-prompts-message > a {
   display: flex;
   font-size: 0.875rem;

@@ -16,7 +16,7 @@ export const useGetPrivacyOptions = () => {
   async function getPrivacyOptions(formPrivacyId: number) {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3001/form/get-privacy-options", {
+      const response = await fetch("http://localhost:3001/api/form/get-privacy-options", {
         credentials: "include",
       });
 

@@ -20,7 +20,7 @@ export const useGetInputTypeProperties = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/form/get-default-input-properties",
+        "http://localhost:3001/api/form/get-default-input-properties",
         { credentials: "include" }
       );
 

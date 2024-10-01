@@ -22,7 +22,7 @@ export const useGetPublishedForm = () => {
           throw new Error("No form ID provided for fetching published form");
 
         const response = await fetch(
-          `http://localhost:3001/form/get-published-form/${params.formId}`,
+          `http://localhost:3001/api/form/get-published-form/${params.formId}`,
           { credentials: "include" }
         );
 

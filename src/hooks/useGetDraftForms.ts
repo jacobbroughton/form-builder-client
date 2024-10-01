@@ -17,7 +17,7 @@ export const useGetDraftForms = () => {
     setLocalError(null);
 
     try {
-      const response = await fetch(`http://localhost:3001/form/get-draft-forms/`, {
+      const response = await fetch(`http://localhost:3001/api/form/get-draft-forms/`, {
         credentials: "include",
       });
 

@@ -21,7 +21,7 @@ export const useChangeInputEnabledStatus = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/form/change-input-enabled-status/${params.inputId}`,
+          `http://localhost:3001/api/form/change-input-enabled-status/${params.inputId}`,
           {
             method: "put",
             headers: {

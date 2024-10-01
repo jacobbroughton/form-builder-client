@@ -3,14 +3,18 @@ import FloatingCreateButton from "./components/ui/FloatingCreateButton/FloatingC
 import { Navbar } from "./components/ui/Navbar/Navbar";
 import { useContext } from "react";
 import { UserContext } from "./providers/UserContextProvider";
+import { ErrorBanner } from "./components/pages/ErrorBanner/ErrorBanner";
+import { ErrorContext } from "./providers/ErrorContextProvider";
 
 function App() {
   const location = useLocation();
   const { user } = useContext(UserContext);
+  const { error, setError } = useContext(ErrorContext);
 
   return (
     <>
       <Navbar authenticated={user !== null} />
+      {error ? <ErrorBanner message={error.toString()} setError={setError} /> : false}
       <div id="detail">
         <Outlet />
       </div>

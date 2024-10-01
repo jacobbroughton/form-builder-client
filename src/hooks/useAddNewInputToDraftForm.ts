@@ -27,7 +27,7 @@ export const useAddNewInputToDraftForm = () => {
         if (!body.inputTypeId) throw new Error("Input type id not provided");
         if (!body.formId) throw new Error("Form ID for new input type was not provided");
 
-        const response = await fetch("http://localhost:3001/form/add-new-input-to-draft-form", {
+        const response = await fetch("http://localhost:3001/api/form/add-new-input-to-draft-form", {
           method: "post",
           headers: {
             "content-type": "application/json",

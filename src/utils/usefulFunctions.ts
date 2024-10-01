@@ -30,6 +30,7 @@ export function handleCatchError(
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLocalError: React.Dispatch<React.SetStateAction<string | null>> | null
 ) {
+  console.error(error);
   let errorMessage = "";
 
   if (error instanceof Error) {
@@ -37,8 +38,6 @@ export function handleCatchError(
   } else {
     errorMessage = String(error);
   }
-
-  console.error(errorMessage);
 
   setError(errorMessage);
   if (setLocalError !== null) setLocalError(errorMessage);

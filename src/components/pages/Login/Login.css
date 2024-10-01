@@ -18,7 +18,7 @@ main.login > .container {
   gap: 10px;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: calc(100% - 30px);
 }
 
 main.login > .container > h1 {

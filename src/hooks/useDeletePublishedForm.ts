@@ -19,7 +19,7 @@ export const useDeletePublishedForm = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/form/delete-published-form/${params.formId}`,
+          `http://localhost:3001/api/form/delete-published-form/${params.formId}`,
           {
             method: "put",
             credentials: "include",

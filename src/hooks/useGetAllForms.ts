@@ -19,7 +19,7 @@ export const useGetAllForms = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/form/get-all-forms/${params.sort}`,
+          `http://localhost:3001/api/form/get-all-forms/${params.sort}`,
           {
             credentials: "include",
           }

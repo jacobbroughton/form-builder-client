@@ -26,7 +26,7 @@ export const useUpdateDraftForm = () => {
       try {
         if (!body.formId) throw new Error("Form ID was not provided");
 
-        const response = await fetch("http://localhost:3001/form/update-draft-form", {
+        const response = await fetch("http://localhost:3001/api/form/update-draft-form", {
           method: "put",
           headers: {
             "content-type": "application/json",

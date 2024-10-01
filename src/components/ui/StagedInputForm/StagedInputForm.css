@@ -15,8 +15,6 @@
   flex-direction: column;
   gap: 3px;
   border: 1px solid var(--container-border-color);
-  border-left: 5px solid lightgreen;
-  background-color: var(--container-bg-color);
   padding: 5px;
   padding-left: 10px;
   border-radius: 3px;

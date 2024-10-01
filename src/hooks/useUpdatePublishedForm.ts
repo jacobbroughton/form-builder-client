@@ -26,7 +26,7 @@ export const useUpdatePublishedForm = () => {
       try {
         if (!body.formId) throw new Error("Form ID was not provided");
 
-        const response = await fetch("http://localhost:3001/form/update-published-form", {
+        const response = await fetch("http://localhost:3001/api/form/update-published-form", {
           method: "put",
           headers: {
             "content-type": "application/json",

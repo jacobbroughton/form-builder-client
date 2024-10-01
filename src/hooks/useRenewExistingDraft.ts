@@ -16,7 +16,7 @@ export const useRenewExistingDraft = () => {
       if (!draftFormId)
         throw new Error("Draft form ID to renew was not provided or found");
 
-      const response = await fetch("http://localhost:3001/form/renew-existing-empty-draft", {
+      const response = await fetch("http://localhost:3001/api/form/renew-existing-empty-draft", {
         method: "post",
         headers: {
           "content-type": "application/json",

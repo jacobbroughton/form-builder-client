@@ -22,7 +22,7 @@ export const useGetDraftForm = () => {
           throw new Error("No form ID provided for fetching draft form");
 
         const response = await fetch(
-          `http://localhost:3001/form/get-draft-form/${params.formId}`,
+          `http://localhost:3001/api/form/get-draft-form/${params.formId}`,
           { credentials: "include" }
         );
 

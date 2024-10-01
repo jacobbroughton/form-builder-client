@@ -62,7 +62,7 @@ const PrivacyOptions = ({
       {selectedOption?.needs_passkey ? (
         <div className="passkey-section">
           <div className="heading">
-            <p>Enter a passkey</p>
+            <p>Enter a passkey *</p>
             <p className="small-text">
               Users will need to fill this out before seeing/filling out the form.
             </p>

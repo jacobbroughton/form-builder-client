@@ -51,7 +51,7 @@ nav > ul > li:first-child > a:hover {
 }
 
 nav > ul > li:first-child > a:active {
-  background-color: #444;
+  /* background-color: #444; */
 }
 
 nav > ul > li:not(:first-child) > a:hover {
@@ -61,7 +61,7 @@ nav > ul > li:not(:first-child) > a:hover {
 }
 
 nav > ul > li:not(:first-child) > a:active {
-  background-color: #444;
+  /* background-color: #444; */
   text-decoration: none;
 }
 

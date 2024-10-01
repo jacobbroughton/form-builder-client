@@ -27,6 +27,7 @@ import { EditIcon } from "../../ui/icons/EditIcon";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
@@ -142,18 +143,10 @@ export const EditDraftForm = () => {
               isForDraft={true}
             />
             {selectedPrivacyOption ? (
-              <button
-                className="selected-privacy-option-button"
-                onClick={() => setCurrentView("privacy-selector")}
-              >
-                <div className="content">
-                  <p>{selectedPrivacyOption.name}</p>
-                  <p>{selectedPrivacyOption.description}</p>
-                </div>
-                <div className="icon-container">
-                  <EditIcon />
-                </div>
-              </button>
+              <SelectedPrivacyOptionButton
+                handleClick={() => setCurrentView("privacy-selector")}
+                selectedPrivacyOption={selectedPrivacyOption}
+              />
             ) : (
               false
             )}

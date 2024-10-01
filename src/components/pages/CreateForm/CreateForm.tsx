@@ -32,6 +32,7 @@ import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { EditIcon } from "../../ui/icons/EditIcon";
 import { PlusIcon } from "../../ui/icons/PlusIcon";
+import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -101,11 +102,17 @@ export const CreateForm = () => {
       if (storedFormData[0]) {
         const data = await renewExistingDraft({ draftFormId: storedFormData[0].id });
         if (data[0]) formToUse = data[0];
+
+        console.log("1");
       } else {
         const data = await storeInitialDraft();
 
         if (data) formToUse = data;
+
+        console.log(2);
       }
+
+      console.log({ formToUse });
 
       setPrevSavedForm({
         form: formToUse,
@@ -121,14 +128,12 @@ export const CreateForm = () => {
       handleCatchError(error, setError, null);
       // setInitiallyLoading(false)
     } finally {
-      console.log("asdfasdfasdfasdf");
+      setInitiallyLoading(false);
     }
-    setInitiallyLoading(false);
   }
 
   useEffect(() => {
     async function fetchFormToModify() {
-      console.log("This is running");
       const data = await getDraftForm({ formId: draftIdToFetch! });
 
       setPrevSavedForm({
@@ -157,7 +162,6 @@ export const CreateForm = () => {
 
   async function saveDraft() {
     try {
-      console.log({ stagedPrivacyOptions });
       const data = await updateDraftForm({
         formId: draft.form!.id,
         title: draft.form!.title,
@@ -253,7 +257,6 @@ export const CreateForm = () => {
               onClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
                   return;
-                console.log({ stagedPrivacyOptions });
                 setPrivacyOptions(stagedPrivacyOptions);
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
@@ -278,18 +281,10 @@ export const CreateForm = () => {
               draftIdToFetch={draftIdToFetch}
             />
             {selectedPrivacyOption ? (
-              <button
-                className="selected-privacy-option-button"
-                onClick={() => setCurrentView("privacy-selector")}
-              >
-                <div className="content">
-                  <p className="small-text bold">{selectedPrivacyOption.name}</p>
-                  <p className="small-text">{selectedPrivacyOption.description}</p>
-                </div>
-                <div className="icon-container">
-                  <EditIcon />
-                </div>
-              </button>
+              <SelectedPrivacyOptionButton
+                handleClick={() => setCurrentView("privacy-selector")}
+                selectedPrivacyOption={selectedPrivacyOption}
+              />
             ) : (
               false
             )}
@@ -451,6 +446,19 @@ export const CreateForm = () => {
 
   useEffect(() => {
     if (draft.form && prevSavedForm.form) {
+      console.log({
+        title: draft.form.title !== prevSavedForm.form.title,
+        description: draft.form.description !== prevSavedForm.form.description,
+        privacyId: selectedPrivacyOption?.id !== draft.form.privacy_id,
+        passkey: privacyPasskey !== draft.form.passkey,
+      });
+
+      console.log(
+        "privacyPasskey",
+        privacyPasskey,
+        "draft.form.passkey",
+        draft.form.passkey
+      );
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
         draft.form.description !== prevSavedForm.form.description ||

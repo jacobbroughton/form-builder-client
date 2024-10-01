@@ -44,20 +44,40 @@ export const FormInput = ({
             defaultValue={input.properties?.[`default-value`]?.value}
             minLength={parseInt(input.properties?.[`min`]?.value || "0")}
             maxLength={parseInt(input.properties?.[`max`]?.value)}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
       case "Number": {
         return (
           <input
-            value={value}
-            onChange={(e) => setValue(parseInt(e.target.value))}
             type="number"
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
             min={input.properties?.[`min`]?.value}
             max={input.properties?.[`max`]?.value}
             step={input.properties?.[`step`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -67,6 +87,17 @@ export const FormInput = ({
             type="email"
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -76,6 +107,17 @@ export const FormInput = ({
             type="url"
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -85,6 +127,17 @@ export const FormInput = ({
             type="tel"
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -96,6 +149,17 @@ export const FormInput = ({
             defaultValue={input.properties?.[`default-value`]?.value}
             min={input.properties?.[`min`]?.value}
             max={input.properties?.[`max`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -107,6 +171,17 @@ export const FormInput = ({
             defaultValue={input.properties?.[`default-value`]?.value}
             min={input.properties?.[`min`]?.value}
             max={input.properties?.[`max`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -118,6 +193,17 @@ export const FormInput = ({
             defaultValue={input.properties?.[`default-value`]?.value}
             min={input.properties?.[`min`]?.value}
             max={input.properties?.[`max`]?.value}
+            value={input.value}
+            onChange={(e) => {
+              setInputs(
+                inputs.map((localInput) => ({
+                  ...localInput,
+                  ...(localInput.id === input.id && {
+                    value: e.target.value,
+                  }),
+                }))
+              );
+            }}
           />
         );
       }
@@ -128,6 +214,17 @@ export const FormInput = ({
             <input
               type="color"
               defaultValue={input.properties?.[`default-value`]?.value}
+              value={input.value}
+              onChange={(e) => {
+                setInputs(
+                  inputs.map((localInput) => ({
+                    ...localInput,
+                    ...(localInput.id === input.id && {
+                      value: e.target.value,
+                    }),
+                  }))
+                );
+              }}
             />
           </div>
         );
