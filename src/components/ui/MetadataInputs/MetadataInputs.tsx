@@ -107,6 +107,7 @@ export const MetadataInputs = ({
           formId={form.form.id}
           isDraft={isForDraft}
           handleClick={() => setCurrentView("input-types-selector")}
+          isFormAdmin={true}
         />
       ) : (
         <div className="added-inputs">

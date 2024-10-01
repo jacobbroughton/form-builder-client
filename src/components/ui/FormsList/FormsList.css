@@ -60,7 +60,7 @@
   display: flex;
   height: 100%;
   position: relative;
-  padding-right: 100px;
+  padding-right: 120px;
 }
 
 .form-list > .form-list-item > a.form-list-item-link:hover {
@@ -90,6 +90,8 @@
   right: 23px;
   top: 0;
   bottom: 0;
+  display: flex;
+  gap: 5px;
 }
 
 .form-list > .form-list-item > a.form-list-item-link > .icon-container {

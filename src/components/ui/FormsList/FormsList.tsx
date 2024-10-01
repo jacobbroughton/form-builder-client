@@ -9,6 +9,7 @@ import "./FormsList.css";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 import DeleteFormModal from "../DeleteFormModal/DeleteFormModal";
+import { elapseTime, timeAgo } from "../../../utils/usefulFunctions";
 
 const FormsList = ({
   forms,
@@ -50,6 +51,8 @@ const FormsList = ({
                 className="created-date"
                 title={new Date(form.relevant_dt).toLocaleString()}
               >
+                <i>{elapseTime(form.relevant_dt)}</i>
+                <span>{"|"}</span>
                 {new Date(form.relevant_dt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
@@ -81,7 +84,7 @@ const FormsList = ({
                   setFormPopupToggled={setPopupMenuToggled}
                   handleDeleteClick={() => {
                     setFormStagedForDeletion(form);
-                    setDeleteFormModalShowing(true)
+                    setDeleteFormModalShowing(true);
                   }}
                 />
               ) : (
@@ -103,7 +106,7 @@ const FormsList = ({
             }
 
             setForms(forms.filter((f) => f.id !== formStagedForDeletion.id));
-            setDeleteFormModalShowing(false)
+            setDeleteFormModalShowing(false);
           }}
           setDeleteFormModalShowing={setDeleteFormModalShowing}
         />

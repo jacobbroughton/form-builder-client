@@ -17,3 +17,23 @@ main.edit-draft-form > .container {
   width: 100%;
   gap: 10px;
 }
+
+main.edit-draft-form > .container > .form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  gap: 10px;
+}
+
+main.edit-draft-form > .container > .form-buttons > button {
+  padding: 5px 10px;
+}
+
+main.edit-draft-form > .container > .form-buttons > button:not(:last-child) {
+  border-right: 1px solid #555;
+}

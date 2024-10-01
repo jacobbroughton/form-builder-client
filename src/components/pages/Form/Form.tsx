@@ -18,6 +18,10 @@ import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
 import { useGetPrevFormSubmission } from "../../../hooks/useGetPrevFormSubmission.ts";
 import ClockRotateLeft from "../../ui/icons/ClockRotateLeft.tsx";
+import {
+  IsFormAdminContext,
+  IsFormAdminContextProvider,
+} from "../../../providers/IsFormAdminProvider.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -50,7 +54,7 @@ export const Form = () => {
     try {
       const data = await submitForm({ formId: form.id, inputs });
 
-      console.log(data)
+      console.log(data);
 
       setPrevSubmissions(data[0]);
     } catch (error) {
@@ -87,119 +91,126 @@ export const Form = () => {
   }, []);
 
   return (
-    <main className="published-form">
-      <div className="container">
-        {formLoading ? (
-          <p>Form loading...</p>
-        ) : !form ? (
-          <p>No form found</p>
-        ) : (
-          <>
-            <div className="form-controls">
-              {user ? <DraftPublishedTag draftOrPublished={"published"} /> : false}
-              <div className="menu-toggle-button-container">
-                <button
-                  className="menu-toggle-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFormPopupMenuToggled(!formPopupMenuToggled);
-                  }}
-                >
-                  <ThreeDotsIcon />
-                </button>
-                {formPopupMenuToggled ? (
-                  <FormPopupMenu
-                    form={form}
-                    isDraft={false}
-                    setFormPopupToggled={setFormPopupMenuToggled}
-                    handleDeleteClick={() => {
-                      handleFormDelete();
-                      setDeleteFormModalShowing(false);
+    <IsFormAdminContextProvider form={form}>
+      <main className="published-form">
+        <div className="container">
+          {formLoading ? (
+            <p>Form loading...</p>
+          ) : !form ? (
+            <p>No form found</p>
+          ) : (
+            <>
+              <div className="form-controls">
+                <DraftPublishedTag draftOrPublished={"published"} />
+
+                <div className="menu-toggle-button-container">
+                  <button
+                    className="menu-toggle-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFormPopupMenuToggled(!formPopupMenuToggled);
                     }}
-                  />
+                  >
+                    <ThreeDotsIcon />
+                  </button>
+                  {formPopupMenuToggled ? (
+                    <FormPopupMenu
+                      form={form}
+                      isDraft={false}
+                      setFormPopupToggled={setFormPopupMenuToggled}
+                      handleDeleteClick={() => {
+                        handleFormDelete();
+                        setDeleteFormModalShowing(false);
+                      }}
+                    />
+                  ) : (
+                    false
+                  )}
+                </div>
+              </div>
+              {prevSubmissions?.length ? (
+                <button className="previous-submission-info">
+                  <div className="icon-container">
+                    <ClockRotateLeft />
+                  </div>
+                  <div className="content">
+                    <p className="small-text">
+                      You last submitted this form on{" "}
+                      {new Date(
+                        prevSubmissions[prevSubmissions.length - 1].created_at
+                      ).toLocaleDateString()}{" "}
+                      at{" "}
+                      {new Date(
+                        prevSubmissions[prevSubmissions.length - 1].created_at
+                      ).toLocaleTimeString()}
+                    </p>
+                    <p>
+                      <i>Click to view {prevSubmissions.length} previous submissions</i>
+                    </p>
+                  </div>
+                </button>
+              ) : (
+                false
+              )}
+              <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
+                <h1 className="title">{form.title}</h1>
+                {form.description ? (
+                  <p className="description">{form.description}</p>
                 ) : (
                   false
                 )}
               </div>
-            </div>
-            {prevSubmissions?.length ? (
-              <button className="previous-submission-info">
-                <div className="icon-container">
-                  <ClockRotateLeft />
-                </div>
-                <div className="content">
-                  <p className="small-text">
-                    You last submitted this form on{" "}
-                    {new Date(prevSubmissions[prevSubmissions.length - 1].created_at).toLocaleDateString()} at{" "}
-                    {new Date(prevSubmissions[prevSubmissions.length - 1].created_at).toLocaleTimeString()}
-                  </p>
-                  <p>
-                    <i>Click to view {prevSubmissions.length} previous submissions</i>
-                  </p>
-                </div>
-              </button>
-            ) : (
-              false
-            )}
-            <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
-              <h1 className="title">{form.title}</h1>
-              {form.description ? (
-                <p className="description">{form.description}</p>
-              ) : (
-                false
-              )}
-            </div>
-            {inputs.length ? (
-              <>
-                <div className="inputs">
-                  {inputs.map((input) => (
-                    <FormInput input={input} inputs={inputs} setInputs={setInputs} />
-                  ))}
-                </div>
-                {console.log({ prevSubmissions })}
-                {user ? (
-                  prevSubmissions?.length ? (
-                    <button
-                      className="submit-button"
-                      type="button"
-                      onClick={() => handleFormSubmit()}
-                    >
-                      Re-submit
-                    </button>
+              {inputs.length ? (
+                <>
+                  <div className="inputs">
+                    {inputs.map((input) => (
+                      <FormInput input={input} inputs={inputs} setInputs={setInputs} />
+                    ))}
+                  </div>
+                  {user ? (
+                    prevSubmissions?.length ? (
+                      <button
+                        className="submit-button"
+                        type="button"
+                        onClick={() => handleFormSubmit()}
+                      >
+                        Re-submit
+                      </button>
+                    ) : (
+                      <button
+                        className="submit-button"
+                        type="button"
+                        onClick={() => handleFormSubmit()}
+                      >
+                        <CheckIcon /> Submit
+                      </button>
+                    )
                   ) : (
-                    <button
-                      className="submit-button"
-                      type="button"
-                      onClick={() => handleFormSubmit()}
-                    >
-                      <CheckIcon /> Submit
-                    </button>
-                  )
-                ) : (
-                  <NoUserMessage message="to submit this form" />
-                )}
-              </>
-            ) : (
-              <NoPromptsMessage
-                formId={form.id}
-                isDraft={false}
-                handleClick={() => {
-                  navigate(`/edit-published-form/${form.id}/input-types-selector`);
-                  // setCurrentView("input-types-selector");
-                }}
-              />
-            )}
-          </>
-        )}
-        {deleteFormModalShowing ? (
-          <DeleteFormModal
-            handleDeleteClick={() => handleFormDelete()}
-            setDeleteFormModalShowing={setDeleteFormModalShowing}
-          />
-        ) : (
-          false
-        )}
-      </div>
-    </main>
+                    <NoUserMessage message="to submit this form" />
+                  )}
+                </>
+              ) : (
+                <NoPromptsMessage
+                  formId={form.id}
+                  isDraft={false}
+                  handleClick={() => {
+                    navigate(`/edit-published-form/${form.id}/input-types-selector`);
+                    // setCurrentView("input-types-selector");
+                  }}
+                />
+              )}
+            </>
+          )}
+          {deleteFormModalShowing ? (
+            <DeleteFormModal
+              handleDeleteClick={() => handleFormDelete()}
+              setDeleteFormModalShowing={setDeleteFormModalShowing}
+            />
+          ) : (
+            false
+          )}
+        </div>
+      </main>
+    </IsFormAdminContextProvider>
   );
 };

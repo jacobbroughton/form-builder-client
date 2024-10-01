@@ -110,6 +110,7 @@ export const Draft = () => {
                 handleClick={() => {
                   navigate(`/edit-draft-form/${form.id}/input-types-selector`);
                 }}
+                isFormAdmin={true}
               />
             )}
           </>

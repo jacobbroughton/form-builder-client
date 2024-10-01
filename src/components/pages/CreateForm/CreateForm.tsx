@@ -210,6 +210,30 @@ export const CreateForm = () => {
     (privacyOption) => privacyOption.checked
   );
 
+  async function handlePublishForm() {
+    try {
+      const data = await publish({
+        draftFormId: draft.form!.id,
+      });
+
+      navigate(`/form/${data[0].id}`);
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
+  async function handleFormDelete() {
+    try {
+      if (!draft.form!.id) throw new Error("No form id provided");
+
+      await deleteDraftForm({ formId: draft.form!.id });
+
+      navigate("/");
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
   function renderView() {
     switch (currentView) {
       // case "existing-or-new-draft": {
@@ -368,30 +392,6 @@ export const CreateForm = () => {
     }
   }
 
-  async function handlePublishForm() {
-    try {
-      const data = await publish({
-        draftFormId: draft.form!.id,
-      });
-
-      navigate(`/form/${data[0].id}`);
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
-
-  async function handleFormDelete() {
-    try {
-      if (!draft.form!.id) throw new Error("No form id provided");
-
-      await deleteDraftForm({ formId: draft.form!.id });
-
-      navigate("/");
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
-
   useEffect(() => {
     getPrivacyOptions(1);
     createNewDraft();
@@ -446,19 +446,6 @@ export const CreateForm = () => {
 
   useEffect(() => {
     if (draft.form && prevSavedForm.form) {
-      console.log({
-        title: draft.form.title !== prevSavedForm.form.title,
-        description: draft.form.description !== prevSavedForm.form.description,
-        privacyId: selectedPrivacyOption?.id !== draft.form.privacy_id,
-        passkey: privacyPasskey !== draft.form.passkey,
-      });
-
-      console.log(
-        "privacyPasskey",
-        privacyPasskey,
-        "draft.form.passkey",
-        draft.form.passkey
-      );
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
         draft.form.description !== prevSavedForm.form.description ||
@@ -474,6 +461,8 @@ export const CreateForm = () => {
     prevSavedForm.form?.title,
     selectedPrivacyOption?.id,
     privacyPasskey,
+    draft.form,
+    prevSavedForm.form,
   ]);
 
   return (
