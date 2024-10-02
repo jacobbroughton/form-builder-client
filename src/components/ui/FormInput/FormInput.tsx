@@ -3,10 +3,12 @@ import { AddedInputType } from "../../../lib/types";
 import "./FormInput.css";
 
 export const FormInput = ({
+  readOnly,
   input,
   inputs,
   setInputs,
 }: {
+  readOnly: boolean;
   input: AddedInputType;
   inputs: AddedInputType[];
   setInputs: React.Dispatch<React.SetStateAction<AddedInputType[]>>;
@@ -18,6 +20,7 @@ export const FormInput = ({
       case "Text": {
         return (
           <input
+            disabled={readOnly}
             type={"Text"}
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             // defaultValue={input.properties?.[`default-value`]?.value}
@@ -40,6 +43,7 @@ export const FormInput = ({
       case "Textarea": {
         return (
           <textarea
+            disabled={readOnly}
             placeholder={input.properties?.[`placeholder`]?.value || "..."}
             defaultValue={input.properties?.[`default-value`]?.value}
             minLength={parseInt(input.properties?.[`min`]?.value || "0")}

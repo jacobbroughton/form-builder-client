@@ -3,12 +3,13 @@ import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 
 export const useGetPrevFormSubmission = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
 
   const getPrevFormSubmissions = async ({ formId }: { formId: string }) => {
     try {
+      setLoading(true)
       const response = await fetch(
         `http://localhost:3001/api/form/get-prev-form-submissions/${formId}`,
         {

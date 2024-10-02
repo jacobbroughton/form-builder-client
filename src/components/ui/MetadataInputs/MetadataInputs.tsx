@@ -112,7 +112,10 @@ export const MetadataInputs = ({
       ) : (
         <div className="added-inputs">
           {form.inputs.map((input) => (
-            <div className={`added-input ${input.is_active ? "" : "deleted"}`}>
+            <div
+              className={`added-input ${input.is_active ? "" : "deleted"}`}
+              key={input.id}
+            >
               <p className="name">{input.metadata_question}</p>
               <div className="tags">
                 <p>{input.input_type_name || "Unnamed"}</p>

@@ -28,6 +28,8 @@ import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
+import CircleIcon from "../../ui/icons/CircleIcon";
+import FilledCircleIcon from "../../ui/icons/FilledCircleIcon";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ export const CreateForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [draftForms, setDraftForms] = useState<DraftFormType[]>([]);
+  const [canResubmit, setCanResubmit] = useState(false);
 
   let isStoring = false;
 
@@ -163,6 +165,7 @@ export const CreateForm = () => {
         privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
           .id,
         privacyPasskey,
+        canResubmit
       });
 
       setPrevSavedForm({
@@ -311,6 +314,23 @@ export const CreateForm = () => {
             ) : (
               false
             )}
+            <div className="is-resubmittable-selector">
+              <p className='small-text bold'>Users can re-submit their answers:</p>
+              <div className="toggle-container">
+                <button
+                  className={canResubmit ? "selected" : ""}
+                  onClick={() => setCanResubmit(true)}
+                >
+                  {canResubmit ? <FilledCircleIcon /> : <CircleIcon />} Yes
+                </button>
+                <button
+                  className={!canResubmit ? "selected" : ""}
+                  onClick={() => setCanResubmit(false)}
+                >
+                  {!canResubmit ? <FilledCircleIcon /> : <CircleIcon />} No
+                </button>
+              </div>
+            </div>
 
             <div className="form-buttons">
               <button

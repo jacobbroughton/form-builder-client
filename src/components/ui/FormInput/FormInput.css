@@ -21,6 +21,10 @@
   font-family: inherit;
 }
 
+.input-container > input {
+  margin-top: 5px;
+}
+
 .input-container > .question {
   font-size: 1rem;
   font-weight: 500;

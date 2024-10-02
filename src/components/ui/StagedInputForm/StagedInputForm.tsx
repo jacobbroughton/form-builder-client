@@ -110,7 +110,7 @@ export const StagedInputForm = ({
 
       setCurrentView("metadata-inputs");
     } catch (error) {
-      console.log('error here')
+      console.log("error here");
       handleCatchError(error, setError, null);
     }
   }
@@ -228,10 +228,10 @@ export const StagedInputForm = ({
             <div className="properties">
               {inputTypeProperties[stagedNewInputType.id]?.map((itemTypeProperty) => (
                 <div className={`property-container ${itemTypeProperty.property_type}`}>
-                  <label className="property-name">
+                  <label className="small-text bold property-name">
                     {itemTypeProperty.property_name}
                   </label>
-                  <p className="property-description">
+                  <p className="small-text property-description">
                     {itemTypeProperty.property_description}
                   </p>
                   {inputTypePropertyOptions[
@@ -247,6 +247,7 @@ export const StagedInputForm = ({
                           onClick={() => {
                             handleOptionClick(itemTypeProperty, option);
                           }}
+                          key={option.id}
                         >
                           {option.option_name}
                         </button>

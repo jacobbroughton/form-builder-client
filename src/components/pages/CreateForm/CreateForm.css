@@ -44,7 +44,6 @@ main.create-form
   fill: lightgreen;
 }
 
-
 main.create-form > .container > .form-buttons {
   display: flex;
   flex-direction: row;
@@ -55,6 +54,7 @@ main.create-form > .container > .form-buttons {
   overflow: hidden;
   width: 100%;
   gap: 10px;
+  margin-top: 20px;
 }
 
 main.create-form > .container > .form-buttons > button {
@@ -63,4 +63,67 @@ main.create-form > .container > .form-buttons > button {
 
 main.create-form > .container > .form-buttons > button:not(:last-child) {
   border-right: 1px solid #555;
+}
+
+main.create-form > .container > .is-resubmittable-selector {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 10px;
+}
+
+main.create-form > .container > .is-resubmittable-selector > .toggle-container {
+  display: flex;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
+  border-radius: 5px;
+}
+
+main.create-form > .container > .is-resubmittable-selector > .toggle-container > button {
+  background-color: transparent;
+  border: 0;
+  padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+main.create-form > .container > .is-resubmittable-selector > .toggle-container > button:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+main.create-form
+  > .container
+  > .is-resubmittable-selector
+  > .toggle-container
+  > button:not(:first-child) {
+  border-left: 1px solid var(--button-default-border-color);
+}
+
+main.create-form
+  > .container
+  > .is-resubmittable-selector
+  > .toggle-container
+  > button
+  > svg {
+  width: 10px;
+}
+
+main.create-form
+  > .container
+  > .is-resubmittable-selector
+  > .toggle-container
+  > button.selected
+  > svg {
+  fill: lightgreen;;
+}
+
+main.create-form
+  > .container
+  > .is-resubmittable-selector
+  > .toggle-container
+  > button:not(.selected)
+  > svg {
+  fill: grey;
 }

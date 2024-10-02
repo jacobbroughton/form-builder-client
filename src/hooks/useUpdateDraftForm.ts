@@ -19,6 +19,7 @@ export const useUpdateDraftForm = () => {
       description: string;
       privacyId: number;
       privacyPasskey: string;
+      canResubmit: boolean;
     }): Promise<DraftFormType> => {
       setLoading(true);
       setLocalError(null);
@@ -36,7 +37,8 @@ export const useUpdateDraftForm = () => {
             title: body.title,
             description: body.description,
             privacyId: body.privacyId,
-            privacyPasskey: body.privacyPasskey
+            privacyPasskey: body.privacyPasskey,
+            canResubmit: body.canResubmit
           }),
           credentials: "include",
         });

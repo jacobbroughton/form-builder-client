@@ -23,8 +23,10 @@ import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsM
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
   const { submitForm } = useSubmitForm();
-  const { getPrevFormSubmissions } = useGetPrevFormSubmission();
-  const { getInputSubmissions } = useGetInputSubmissions();
+  const { getPrevFormSubmissions, loading: prevFormSubmissionsLoading } =
+    useGetPrevFormSubmission();
+  const { getInputSubmissions, loading: inputSubmissionsLoading } =
+    useGetInputSubmissions();
   const { formId } = useParams();
   const { user } = useContext(UserContext);
   const { form, formLoading, inputs, setInputs } = useContext(FormContext);
@@ -39,6 +41,7 @@ export const Form = () => {
   const [latestInputSubmissions, setLatestInputSubmissions] = useState(null);
   const [submitCooldownToggled, setSubmitCooldownToggled] = useState(false);
   const [submitCooldownCountdown, setSubmitCooldownCountdown] = useState(5);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { setError } = useContext(ErrorContext);
   const navigate = useNavigate();
@@ -65,6 +68,7 @@ export const Form = () => {
 
       setSubmitCooldownToggled(true);
       setSubmitCooldownCountdown(5);
+      setFormSubmitted(true);
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -81,6 +85,7 @@ export const Form = () => {
           const inputSubmissions = await getInputSubmissions(formSubmissions[0].id);
           setLatestInputSubmissions(inputSubmissions);
         }
+        setFormSubmitted(true);
 
         setPrevSubmissions(formSubmissions);
       } catch (error) {
@@ -149,7 +154,7 @@ export const Form = () => {
                 )}
               </div>
             </div>
-            {prevSubmissions?.length ? (
+            {form.can_resubmit && prevSubmissions?.length ? (
               <button
                 className="previous-submission-info"
                 onClick={(e) => {
@@ -192,18 +197,36 @@ export const Form = () => {
               <>
                 <div className="inputs">
                   {inputs.map((input) => (
-                    <FormInput input={input} inputs={inputs} setInputs={setInputs} />
+                    <FormInput
+                      readOnly={
+                        (!form.can_resubmit && formSubmitted) ||
+                        prevFormSubmissionsLoading ||
+                        inputSubmissionsLoading
+                      }
+                      input={input}
+                      inputs={inputs}
+                      setInputs={setInputs}
+                    />
                   ))}
                 </div>
                 {user ? (
                   submitCooldownToggled ? (
-                    <p className="small-text">
-                      You can submit again in{" "}
-                      <i>
-                        <strong>{submitCooldownCountdown}</strong>
-                      </i>{" "}
-                      seconds
-                    </p>
+                    form.can_resubmit ? (
+                      <p className="small-text">
+                        You can submit again in{" "}
+                        <i>
+                          <strong>{submitCooldownCountdown}</strong>
+                        </i>{" "}
+                        seconds
+                      </p>
+                    ) : (
+                      <p>
+                        Form submitted on{" "}
+                        {new Date(
+                          prevSubmissions[prevSubmissions.length - 1].created_at
+                        ).toLocaleDateString()}
+                      </p>
+                    )
                   ) : prevSubmissions?.length ? (
                     form.can_resubmit ? (
                       <button
@@ -227,6 +250,7 @@ export const Form = () => {
                     )
                   ) : (
                     <button
+                      disabled={prevFormSubmissionsLoading || inputSubmissionsLoading}
                       className="submit-button"
                       type="button"
                       onClick={() => handleFormSubmit()}

@@ -183,6 +183,13 @@ main.published-form > .container > .submit-button:not(:disabled):hover {
 }
 
 main.published-form > .container > .submit-button > svg {
-  fill: lightgreen;
   width: 15px;
+}
+
+main.published-form > .container > .submit-button:disabled > svg {
+  fill: grey;
+}
+
+main.published-form > .container > .submit-button:not(:disabled) > svg {
+  fill: lightgreen;
 }
