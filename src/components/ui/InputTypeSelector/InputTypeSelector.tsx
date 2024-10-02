@@ -13,7 +13,11 @@ export const InputTypeSelector = ({
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
 }) => {
-  const { inputTypes } = useGetInputTypes();
+  const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
+
+  useEffect(() => {
+    console.log(inputTypes);
+  }, [inputTypes]);
 
   return (
     <div className="input-type-selector">
@@ -27,7 +31,11 @@ export const InputTypeSelector = ({
         </button>
       </div>
       <div className="input-types-selector">
-        {inputTypes.length === 0 ? (
+        {inputTypesLoading ? (
+          [...new Array(10)].map((arrItem) => (
+            <div className="skeleton input-type-placeholder" key={arrItem}>&nbsp;</div>
+          ))
+        ) : inputTypes.length === 0 ? (
           <p>No input types</p>
         ) : (
           inputTypes.map((inputType) => (

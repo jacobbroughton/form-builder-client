@@ -5,41 +5,35 @@ import {
   InputTypeType,
   PrivacyOptionType,
 } from "../../../lib/types";
-
 import { useNavigate } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
-import { useGetDraftForms } from "../../../hooks/useGetDraftForms";
 import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
+import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
 import { usePublish } from "../../../hooks/usePublish";
 import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
 import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-// import { ExistingOrNewDraftSelector } from "../../ui/ExistingOrNewDraftSelector/ExistingOrNewDraftSelector";
+import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
+import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
+import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
-import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
-import { EditIcon } from "../../ui/icons/EditIcon";
-import { PlusIcon } from "../../ui/icons/PlusIcon";
-import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
-  const { getDraftForms } = useGetDraftForms();
   const { publish } = usePublish();
   const { storeInitialDraft } = useStoreInitialDraft();
   const { updateDraftForm } = useUpdateDraftForm();
@@ -450,16 +444,6 @@ export const CreateForm = () => {
   }, [saved]);
 
   useEffect(() => {
-    console.log(
-      draft.form.title !== prevSavedForm.form.title,
-      draft.form.description !== prevSavedForm.form.description,
-      selectedPrivacyOption?.id !== draft.form.privacy_id,
-      privacyPasskey !== draft.form.passkey
-    );
-    console.log({
-      draftDescr: draft.form.description,
-      prevSavedDescr: prevSavedForm.form.description,
-    });
     if (draft.form && prevSavedForm.form) {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
