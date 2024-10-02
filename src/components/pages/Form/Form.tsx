@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
-import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
+import { useGetPrevFormSubmission } from "../../../hooks/useGetPrevFormSubmission.ts";
 import { useSubmitForm } from "../../../hooks/useSubmitInputs";
-import { AddedInputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { FormContext } from "../../../providers/FormProvider.tsx";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
@@ -14,17 +14,16 @@ import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import NoUserMessage from "../../ui/NoUserMessage/NoUserMessage";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
+import ClockRotateLeft from "../../ui/icons/ClockRotateLeft.tsx";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
-import { useGetPrevFormSubmission } from "../../../hooks/useGetPrevFormSubmission.ts";
-import ClockRotateLeft from "../../ui/icons/ClockRotateLeft.tsx";
-import { FormContext } from "../../../providers/FormProvider.tsx";
+import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions.ts";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
-  const { getPublishedForm } = useGetPublishedForm();
   const { submitForm } = useSubmitForm();
   const { getPrevFormSubmissions } = useGetPrevFormSubmission();
+  const { getInputSubmissions } = useGetInputSubmissions();
   const { formId } = useParams();
   const { user } = useContext(UserContext);
   const { form, formLoading, inputs, setInputs } = useContext(FormContext);
@@ -54,9 +53,12 @@ export const Form = () => {
   async function handleFormSubmit() {
     try {
       const data = await submitForm({ formId: form.id, inputs });
+
+      const inputSubmissions = await getInputSubmissions(data.id);
       console.log("After submitting", data, [...prevSubmissions, data]);
 
       setPrevSubmissions([...prevSubmissions, data]);
+      setLatestInputSubmissions(inputSubmissions);
 
       setSubmitCooldownToggled(true);
       setSubmitCooldownCountdown(5);
@@ -68,12 +70,16 @@ export const Form = () => {
   useEffect(() => {
     async function getFormSubmissions(): Promise<void> {
       try {
-        const submissions = await getPrevFormSubmissions({ formId: form.id });
+        const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
 
-        console.log({ submissions });
+        console.log({ formSubmissions });
 
-        setPrevSubmissions(submissions.submissions);
-        setLatestInputSubmissions(submissions.latestInputSubmissions);
+        if (formSubmissions[0]) {
+          const inputSubmissions = await getInputSubmissions(formSubmissions[0].id);
+          setLatestInputSubmissions(inputSubmissions);
+        }
+
+        setPrevSubmissions(formSubmissions);
       } catch (error) {
         handleCatchError(error, setError, null);
       }
@@ -101,8 +107,6 @@ export const Form = () => {
   const inputsUnchanged =
     inputs.filter((input) => input.value === latestInputSubmissions?.[input.id].value)
       .length === inputs.length;
-
-  console.log({ inputs, latestInputSubmissions, inputsUnchanged });
 
   return (
     <main className="published-form">
