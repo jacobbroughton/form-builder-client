@@ -4,6 +4,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../ui/Navbar/Navbar";
 import { ErrorContext } from "../../providers/ErrorContextProvider";
 import { ErrorBanner } from "../pages/ErrorBanner/ErrorBanner";
+import InitialLoadingSkeleton from "../ui/InitialLoadingSkeleton/InitialLoadingSkeleton";
 
 export const UnauthenticatedRoutes = () => {
   const { user, loading: userLoading } = useContext(UserContext);
@@ -13,7 +14,7 @@ export const UnauthenticatedRoutes = () => {
 
   console.log(location.state?.from?.pathname)
 
-  if (userLoading) return <p>Loading user....</p>
+  if (userLoading) return <InitialLoadingSkeleton/>
 
   return !user ? (
     <>

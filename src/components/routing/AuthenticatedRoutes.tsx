@@ -5,13 +5,14 @@ import { Navbar } from "../ui/Navbar/Navbar";
 import FloatingCreateButton from "../ui/FloatingCreateButton/FloatingCreateButton";
 import { ErrorContext } from "../../providers/ErrorContextProvider";
 import { ErrorBanner } from "../pages/ErrorBanner/ErrorBanner";
+import InitialLoadingSkeleton from "../ui/InitialLoadingSkeleton/InitialLoadingSkeleton";
 
 export const AuthenticatedRoutes = () => {
   const location = useLocation();
   const { user, loading: userLoading } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
 
-  if (userLoading) return <p>User loading....</p>;
+  if (userLoading) return <InitialLoadingSkeleton/>;
 
   return user ? (
     <>
