@@ -11,7 +11,6 @@ import ListIcon from "../icons/ListIcon";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { UserContext } from "../../../providers/UserContextProvider";
-import { usegetMyForms } from "../../../hooks/usegetMyForms";
 
 const FormsContainer = ({
   label,
@@ -75,6 +74,7 @@ const FormsContainer = ({
             <div className="button-container">
               <button
                 className="view-toggle-button"
+                disabled={forms.length == 0}
                 onClick={(e) => {
                   e.stopPropagation();
                   localStorage.setItem(
@@ -115,7 +115,7 @@ const FormsContainer = ({
             <FormsList setForms={setForms} forms={forms} />
           )
         ) : (
-          <NoFormsMessage />
+          <NoFormsMessage labelForSwitch={label} />
         )}
       </div>
     </div>

@@ -18,7 +18,7 @@ div.forms-container > section.header {
 }
 
 div.forms-container > section.header > p {
-  font-size: 1rem;
+  font-weight: 500;
 }
 
 div.forms-container > section.header > .controls {
@@ -59,7 +59,7 @@ div.forms-container
   > section.header
   > .controls
   > div.button-container
-  > button.sort-toggle-button:disabled {
+  > button:disabled {
   cursor: not-allowed;
 }
 
@@ -67,7 +67,7 @@ div.forms-container
   > section.header
   > .controls
   > div.button-container
-  > button.sort-toggle-button:disabled
+  > button:disabled
   > svg {
   fill: grey;
   stroke: grey;

@@ -35,10 +35,6 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
             value: input.existing_answer || "",
           }))
         );
-
-        // const submission = await getPrevFormSubmissions({ formId });
-
-        // if (submission) setPrevSubmissions(submission);
       } catch (error) {
         handleCatchError(error, setError, null);
       } finally {

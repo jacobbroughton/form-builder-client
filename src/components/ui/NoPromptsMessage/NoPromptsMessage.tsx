@@ -4,6 +4,7 @@ import { UserContext } from "../../../providers/UserContextProvider";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import "./NoPromptsMessage.css";
 import { PlusIcon } from "../icons/PlusIcon";
+import { FormContext } from "../../../providers/FormProvider";
 
 export const NoPromptsMessage = ({
   formId,
@@ -42,6 +43,6 @@ export const NoPromptsMessage = ({
       )}
     </button>
   ) : (
-    <p>This form doesn't have any prompts</p>
+    <p className="small-text">This form doesn't have any prompts</p>
   );
 };

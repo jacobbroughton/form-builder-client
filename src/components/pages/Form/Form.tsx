@@ -18,6 +18,7 @@ import ClockRotateLeft from "../../ui/icons/ClockRotateLeft.tsx";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
 import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions.ts";
+import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -32,7 +33,9 @@ export const Form = () => {
   // const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
-  const [prevSubmissions, setPrevSubmissions] = useState(null);
+  const [prevSubmissionsModalShowing, setPrevSubmissionsModalShowing] =
+    useState<boolean>(false);
+  const [prevSubmissions, setPrevSubmissions] = useState([]);
   const [latestInputSubmissions, setLatestInputSubmissions] = useState(null);
   const [submitCooldownToggled, setSubmitCooldownToggled] = useState(false);
   const [submitCooldownCountdown, setSubmitCooldownCountdown] = useState(5);
@@ -84,7 +87,7 @@ export const Form = () => {
         handleCatchError(error, setError, null);
       }
     }
-    if (form) getFormSubmissions();
+    if (form && user) getFormSubmissions();
   }, [form]);
 
   useEffect(() => {
@@ -118,7 +121,9 @@ export const Form = () => {
         ) : (
           <>
             <div className="form-controls">
-              <DraftPublishedTag draftOrPublished={"published"} />
+              {form.created_by_id === user?.id && (
+                <DraftPublishedTag draftOrPublished={"published"} />
+              )}
 
               <div className="menu-toggle-button-container">
                 <button
@@ -136,8 +141,7 @@ export const Form = () => {
                     isDraft={false}
                     setFormPopupToggled={setFormPopupMenuToggled}
                     handleDeleteClick={() => {
-                      handleFormDelete();
-                      setDeleteFormModalShowing(false);
+                      setDeleteFormModalShowing(true);
                     }}
                   />
                 ) : (
@@ -146,7 +150,14 @@ export const Form = () => {
               </div>
             </div>
             {prevSubmissions?.length ? (
-              <button className="previous-submission-info">
+              <button
+                className="previous-submission-info"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log(prevSubmissionsModalShowing);
+                  setPrevSubmissionsModalShowing(true);
+                }}
+              >
                 <div className="icon-container">
                   <ClockRotateLeft />
                 </div>
@@ -194,17 +205,26 @@ export const Form = () => {
                       seconds
                     </p>
                   ) : prevSubmissions?.length ? (
-                    <button
-                      className="submit-button"
-                      type="button"
-                      disabled={inputsUnchanged}
-                      onClick={() => {
-                        if (inputsUnchanged) return;
-                        handleFormSubmit();
-                      }}
-                    >
-                      Re-submit
-                    </button>
+                    form.can_resubmit ? (
+                      <button
+                        className="submit-button"
+                        type="button"
+                        disabled={inputsUnchanged}
+                        onClick={() => {
+                          if (inputsUnchanged) return;
+                          handleFormSubmit();
+                        }}
+                      >
+                        Re-submit
+                      </button>
+                    ) : (
+                      <p className="small-text">
+                        You submitted this form on{" "}
+                        {new Date(
+                          prevSubmissions[prevSubmissions.length - 1].created_at
+                        ).toLocaleDateString()}
+                      </p>
+                    )
                   ) : (
                     <button
                       className="submit-button"
@@ -226,6 +246,7 @@ export const Form = () => {
                   navigate(`/edit-published-form/${form.id}/input-types-selector`);
                   // setCurrentView("input-types-selector");
                 }}
+                isFormAdmin={form.created_by_id == user.id}
               />
             )}
           </>
@@ -234,6 +255,11 @@ export const Form = () => {
           <DeleteFormModal
             handleDeleteClick={() => handleFormDelete()}
             setDeleteFormModalShowing={setDeleteFormModalShowing}
+          />
+        ) : prevSubmissionsModalShowing ? (
+          <PrevSubmissionsModal
+            setPrevSubmissionsModalShowing={setPrevSubmissionsModalShowing}
+            prevSubmissions={prevSubmissions}
           />
         ) : (
           false

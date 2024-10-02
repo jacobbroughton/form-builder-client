@@ -1,4 +1,4 @@
-.delete-modal {
+.prev-submissions-modal {
   position: fixed;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -11,23 +11,25 @@
   border-radius: 10px;
   overflow: hidden;
   width: calc(100% - 20px);
-  max-width: 275px;
+  max-width: 500px;
   z-index: 4;
 }
 
-.delete-modal > .header,
-.delete-modal > .content,
-.delete-modal > .controls {
+.prev-submissions-modal > .header,
+.prev-submissions-modal > .content,
+.prev-submissions-modal > .controls {
   padding: 10px;
 }
 
-.delete-modal > .header,
-.delete-modal > .content {
+
+
+.prev-submissions-modal > .header,
+.prev-submissions-modal > .content {
   border-bottom: 1px solid #555;
 }
 
 /* Header */
-.delete-modal > .header {
+.prev-submissions-modal > .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,12 +37,12 @@
   gap: 50px;
 }
 
-.delete-modal > .header > h1 {
+.prev-submissions-modal > .header > h1 {
   font-size: 1.15rem;
   font-weight: 600;
 }
 
-.delete-modal > .header > button {
+.prev-submissions-modal > .header > button {
   border: 0;
   background-color: transparent;
   cursor: pointer;
@@ -52,37 +54,37 @@
   border: 1px solid transparent;
 }
 
-.delete-modal > .header > button:hover {
+.prev-submissions-modal > .header > button:hover {
   border: 1px solid var(--button-default-border-color-hover);
   background-color: var(--button-default-bg-color-hover);
 }
 
-.delete-modal > .header > button > svg {
+.prev-submissions-modal > .header > button > svg {
   width: 15px;
   fill: whitesmoke;
 }
 
 /* Content */
-.delete-modal > .content {
+.prev-submissions-modal > .content {
   display: flex;
   align-items: flex-start;
   padding-bottom: 25px;
 }
 
-.delete-modal > .content > p {
+.prev-submissions-modal > .content > p {
   text-align: start;
   opacity: 0.8;
 }
 
 /* Controls */
-.delete-modal > .controls {
+.prev-submissions-modal > .controls {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
 }
 
-.delete-modal > .controls > button {
+.prev-submissions-modal > .controls > button {
   border: 1px solid var(--button-default-border-color);;
   background-color: var(--button-default-bg-color);
   border-radius: 5px;
@@ -92,21 +94,21 @@
   cursor: pointer;
 }
 
-.delete-modal > .controls > button.delete {
+.prev-submissions-modal > .controls > button.delete {
   background-color: crimson;
   border: transparent 1px solid;
 }
 
-.delete-modal > .controls > button:not(:disabled):not(.delete):hover {
+.prev-submissions-modal > .controls > button:not(:disabled):not(.delete):hover {
   background-color: var(--button-default-bg-color-hover);
   border-color: var(--button-default-border-color-hover);
 }
 
-.delete-modal > .controls > button.delete:not(:disabled):hover {
+.prev-submissions-modal > .controls > button.delete:not(:disabled):hover {
   background-color: hsl(348, 83%, 55%);
 }
 
-.delete-modal-overlay {
+.prev-submissions-modal-overlay {
   z-index: 3;
   position: fixed;
   left: 0;

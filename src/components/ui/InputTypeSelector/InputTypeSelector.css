@@ -43,6 +43,7 @@ div.input-type-selector > .input-types-selector > button {
   cursor: pointer;
   font-size: 0.875rem;
   width: 100%;
+  position: relative;
 }
 
 div.input-type-selector > .input-types-selector > button:hover {
@@ -55,12 +56,43 @@ div.input-type-selector > .input-types-selector > button.selected {
   padding-left: 10px;
 }
 
-div.input-type-selector > .input-types-selector > button > .name {
+div.input-type-selector > .input-types-selector > button > .icon-container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  border-right: 1px solid var(--button-default-border-color);
+  padding: 5px;
+  height: 100%;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.input-type-selector > .input-types-selector > button > .icon-container > span {
+  font-size: 0.875rem;
+}
+
+div.input-type-selector > .input-types-selector > button > .icon-container > svg {
+  fill: whitesmoke;
+  height: 15px;
+  width: 15px;
+}
+
+div.input-type-selector > .input-types-selector > button > .content {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+div.input-type-selector > .input-types-selector > button > .content > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-div.input-type-selector > .input-types-selector > button > .description {
+div.input-type-selector > .input-types-selector > button > .content > .description {
   font-size: 0.875rem;
   text-align: start;
 }

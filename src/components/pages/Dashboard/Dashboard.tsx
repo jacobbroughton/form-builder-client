@@ -13,7 +13,7 @@ export const Dashboard = () => {
     <main className="forms">
       <div className="container">
         <FormsContainer label="Public Forms" getFormsFunc={getPublicForms} />
-        <FormsContainer label="Recent Forms" getFormsFunc={getMyForms} />
+        <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
         <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />
       </div>
     </main>
