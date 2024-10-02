@@ -171,6 +171,11 @@ export const CreateForm = () => {
         privacyPasskey,
       });
 
+      setPrevSavedForm({
+        inputs: draft?.inputs,
+        form: data,
+      });
+
       setDraft({
         inputs: draft?.inputs,
         form: data,
@@ -183,24 +188,24 @@ export const CreateForm = () => {
     }
   }
 
-  async function getDraftFormsLocal() {
-    try {
-      setInitiallyLoading(true);
+  // async function getDraftFormsLocal() {
+  //   try {
+  //     setInitiallyLoading(true);
 
-      const data = await getDraftForms();
+  //     const data = await getDraftForms();
 
-      setDraftForms(data);
+  //     setDraftForms(data);
 
-      if (!data.length) {
-        createNewDraft();
-        setCurrentView("metadata-inputs");
-      }
+  //     if (!data.length) {
+  //       createNewDraft();
+  //       setCurrentView("metadata-inputs");
+  //     }
 
-      setInitiallyLoading(false);
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
+  //     setInitiallyLoading(false);
+  //   } catch (error) {
+  //     handleCatchError(error, setError, null);
+  //   }
+  // }
 
   const stagedSelectedPrivacyOption = stagedPrivacyOptions.find(
     (privacyOption) => privacyOption.checked
@@ -445,6 +450,16 @@ export const CreateForm = () => {
   }, [saved]);
 
   useEffect(() => {
+    console.log(
+      draft.form.title !== prevSavedForm.form.title,
+      draft.form.description !== prevSavedForm.form.description,
+      selectedPrivacyOption?.id !== draft.form.privacy_id,
+      privacyPasskey !== draft.form.passkey
+    );
+    console.log({
+      draftDescr: draft.form.description,
+      prevSavedDescr: prevSavedForm.form.description,
+    });
     if (draft.form && prevSavedForm.form) {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||

@@ -14,20 +14,26 @@ import Landing from "./components/pages/Landing/Landing.tsx";
 import Login from "./components/pages/Login/Login.tsx";
 import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
 import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
+import { EitherAuthRoutes } from "./components/routing/EitherAuthRoutes.tsx";
 import "./index.css";
 import UserContextProvider from "./providers/UserContextProvider.tsx";
 import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
 import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
 import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
+import { FormContextProvider } from "./providers/FormProvider.tsx";
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: <EitherAuthRoutes />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: "/form/:formId",
-        element: <Form />,
+        element: (
+          <FormContextProvider>
+            <Form />
+          </FormContextProvider>
+        ),
       },
       {
         path: "/google-oauth-error",

@@ -4,19 +4,19 @@ import { UserContext } from "../../../providers/UserContextProvider";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import "./NoPromptsMessage.css";
 import { PlusIcon } from "../icons/PlusIcon";
-import { IsFormAdminContext } from "../../../providers/IsFormAdminProvider";
 
 export const NoPromptsMessage = ({
   formId,
   isDraft,
   handleClick,
+  isFormAdmin,
 }: {
   formId: string;
   isDraft: boolean;
   handleClick: () => void;
+  isFormAdmin: boolean;
 }) => {
   const userContext = useContext(UserContext);
-  const isFormAdmin = useContext(IsFormAdminContext);
 
   return isDraft || isFormAdmin ? (
     <button className="no-prompts-message" onClick={handleClick}>

@@ -87,6 +87,11 @@ export const EditDraftForm = () => {
         privacyPasskey,
       });
 
+      setPrevSavedForm({
+        inputs: draft?.inputs,
+        form: data,
+      });
+
       setDraft({
         inputs: draft?.inputs,
         form: data,
@@ -288,6 +293,7 @@ export const EditDraftForm = () => {
   }, []);
 
   useEffect(() => {
+ 
     if (draft.form && prevSavedForm.form) {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||
