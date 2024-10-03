@@ -8,7 +8,7 @@ import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormsList.css";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
-import DeleteFormModal from "../DeleteFormModal/DeleteFormModal";
+import DeleteModal from "../DeleteModal/DeleteModal";
 import { elapseTime, timeAgo } from "../../../utils/usefulFunctions";
 
 const FormsList = ({
@@ -22,7 +22,7 @@ const FormsList = ({
   const { deletePublishedForm } = useDeletePublishedForm();
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
   const [idForPopupMenu, setIdForPopupMenu] = useState<string | null>(null);
-  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState(false);
+  const [DeleteModalShowing, setDeleteModalShowing] = useState(false);
   const [formStagedForDeletion, setFormStagedForDeletion] = useState<AllFormsType | null>(
     null
   );
@@ -84,7 +84,7 @@ const FormsList = ({
                   setFormPopupToggled={setPopupMenuToggled}
                   handleDeleteClick={() => {
                     setFormStagedForDeletion(form);
-                    setDeleteFormModalShowing(true);
+                    setDeleteModalShowing(true);
                   }}
                 />
               ) : (
@@ -94,8 +94,9 @@ const FormsList = ({
           </div>
         ))}
       </section>
-      {deleteFormModalShowing ? (
-        <DeleteFormModal
+      {DeleteModalShowing ? (
+        <DeleteModal
+          label="Delete form?"
           handleDeleteClick={async () => {
             if (!formStagedForDeletion) return;
 
@@ -106,9 +107,9 @@ const FormsList = ({
             }
 
             setForms(forms.filter((f) => f.id !== formStagedForDeletion.id));
-            setDeleteFormModalShowing(false);
+            setDeleteModalShowing(false);
           }}
-          setDeleteFormModalShowing={setDeleteFormModalShowing}
+          setDeleteModalShowing={setDeleteModalShowing}
         />
       ) : (
         false

@@ -11,13 +11,23 @@ export const useGetInputSubmissions = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  async function getInputSubmissions(submissionId: string) {
+  async function getInputSubmissions({
+    submissionId,
+    bypass,
+  }: {
+    submissionId: string | null;
+    bypass: boolean;
+  }) {
     try {
-      
-      if (!submissionId) throw new Error("Submission ID was not provided");
+      if (!submissionId) {
+        setLoading(false);
+        if (bypass) {
+          return;
+        } else throw new Error("Submission ID was not provided");
+      }
 
-      setLoading(true)
-      
+      setLoading(true);
+
       const response = await fetch(
         `http://localhost:3001/api/form/get-input-submissions/${submissionId}`,
         {
@@ -44,7 +54,7 @@ export const useGetInputSubmissions = () => {
     } catch (error) {
       handleCatchError(error, setError, setLocalError);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 

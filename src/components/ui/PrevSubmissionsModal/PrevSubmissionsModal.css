@@ -1,8 +1,8 @@
 .prev-submissions-modal {
   position: fixed;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   left: 50%;
-  top: 50%;
+  top: 100px;
   background-color: var(--popup-menu-bg-color);
   /* border: 1px solid var(--popup-menu-border-color); */
   box-shadow: var(--popup-menu-box-shadow);
@@ -11,21 +11,19 @@
   border-radius: 10px;
   overflow: hidden;
   width: calc(100% - 20px);
-  max-width: 500px;
+  max-height: 75vh;
+  max-width: 700px;
   z-index: 4;
 }
 
 .prev-submissions-modal > .header,
-.prev-submissions-modal > .content,
 .prev-submissions-modal > .controls {
   padding: 10px;
 }
 
-
-
 .prev-submissions-modal > .header,
 .prev-submissions-modal > .content {
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid var(--container-border-color);
 }
 
 /* Header */
@@ -37,8 +35,8 @@
   gap: 50px;
 }
 
-.prev-submissions-modal > .header > h1 {
-  font-size: 1.15rem;
+.prev-submissions-modal > .header > .text > h1 {
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -68,12 +66,78 @@
 .prev-submissions-modal > .content {
   display: flex;
   align-items: flex-start;
-  padding-bottom: 25px;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.prev-submissions-modal > .content > p {
-  text-align: start;
-  opacity: 0.8;
+.prev-submissions-modal > .content > ul {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+  height: 100%;
+  border-right: 1px solid var(--container-border-color);
+  position: absolute;
+  left: 0;
+  width: 175px;
+}
+
+.prev-submissions-modal > .content > ul > li {
+  /* padding: 10px; */
+  display: flex;
+  justify-content: space-between;
+}
+
+.prev-submissions-modal > .content > ul > li:not(:last-child) {
+  border-bottom: 1px solid var(--container-border-color);
+}
+
+.prev-submissions-modal > .content > ul > li > button {
+  background-color: var(--button-default-bg-color);
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  border: 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--button-default-border-color);
+}
+
+.prev-submissions-modal > .content > ul > li > button:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.prev-submissions-modal > .content > ul > li > button.selected {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.prev-submissions-modal > .content > .form-mimic {
+  width: 100%;
+  margin-left: 175px;
+}
+
+.prev-submissions-modal > .content > .form-mimic > .heading {
+  border-bottom: 1px solid var(--container-border-color);
+  padding: 10px;
+}
+
+.prev-submissions-modal > .content > .form-mimic > .heading > h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.prev-submissions-modal > .content > .form-mimic > .prompts {
+  padding: 10px;
+}
+
+.prev-submissions-modal > .content > .form-mimic > .prompts > .prompt-container {
+}
+
+.prev-submissions-modal
+  > .content
+  > .form-mimic
+  > .prompts
+  > .prompt-container:not(:last-child) {
+  border-bottom: var(--container-border-color);
 }
 
 /* Controls */
@@ -85,27 +149,13 @@
 }
 
 .prev-submissions-modal > .controls > button {
-  border: 1px solid var(--button-default-border-color);;
+  border: 1px solid var(--button-default-border-color);
   background-color: var(--button-default-bg-color);
   border-radius: 5px;
   font-weight: 500;
   font-size: 1rem;
   padding: 5px 10px;
   cursor: pointer;
-}
-
-.prev-submissions-modal > .controls > button.delete {
-  background-color: crimson;
-  border: transparent 1px solid;
-}
-
-.prev-submissions-modal > .controls > button:not(:disabled):not(.delete):hover {
-  background-color: var(--button-default-bg-color-hover);
-  border-color: var(--button-default-border-color-hover);
-}
-
-.prev-submissions-modal > .controls > button.delete:not(:disabled):hover {
-  background-color: hsl(348, 83%, 55%);
 }
 
 .prev-submissions-modal-overlay {

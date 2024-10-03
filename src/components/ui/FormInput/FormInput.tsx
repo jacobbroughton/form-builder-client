@@ -234,7 +234,7 @@ export const FormInput = ({
         );
       }
       default: {
-        return <p>Something went wrong while rendering this input</p>;
+        return <p className="small-text">Something went wrong while rendering this input...</p>;
       }
     }
   }

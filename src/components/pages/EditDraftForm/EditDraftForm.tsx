@@ -21,7 +21,7 @@ import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import "./EditDraftForm.css";
-import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import DeleteModal from "../../ui/DeleteModal/DeleteModal";
 import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
 import { EditIcon } from "../../ui/icons/EditIcon";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
@@ -73,7 +73,7 @@ export const EditDraftForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
+  const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
 
   async function saveDraft(): Promise<void> {
     try {
@@ -161,7 +161,7 @@ export const EditDraftForm = () => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setDeleteFormModalShowing(true);
+                  setDeleteModalShowing(true);
                 }}
               >
                 <TrashIcon /> Delete Draft
@@ -327,10 +327,11 @@ export const EditDraftForm = () => {
       <div className="container">
         <DraftPublishedTag draftOrPublished="draft" />
         {renderView()}
-        {deleteFormModalShowing ? (
-          <DeleteFormModal
+        {DeleteModalShowing ? (
+          <DeleteModal
+            label="Delete draft?"
             handleDeleteClick={() => handleFormDelete()}
-            setDeleteFormModalShowing={setDeleteFormModalShowing}
+            setDeleteModalShowing={setDeleteModalShowing}
           />
         ) : (
           false

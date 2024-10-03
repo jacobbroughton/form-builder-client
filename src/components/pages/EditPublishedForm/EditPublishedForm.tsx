@@ -19,7 +19,7 @@ import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
-import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import DeleteModal from "../../ui/DeleteModal/DeleteModal";
 import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
@@ -68,7 +68,7 @@ export const EditPublishedForm = () => {
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
   );
-  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
+  const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
 
   async function saveForm() {
     try {
@@ -130,7 +130,7 @@ export const EditPublishedForm = () => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setDeleteFormModalShowing(true);
+                  setDeleteModalShowing(true);
                 }}
               >
                 <TrashIcon /> Delete Form
@@ -321,10 +321,10 @@ export const EditPublishedForm = () => {
     <main className="edit-published-form">
       <div className="container">
         {renderView()}
-        {deleteFormModalShowing ? (
-          <DeleteFormModal
+        {DeleteModalShowing ? (
+          <DeleteModal
             handleDeleteClick={() => handleFormDelete()}
-            setDeleteFormModalShowing={setDeleteFormModalShowing}
+            setDeleteModalShowing={setDeleteModalShowing}
           />
         ) : (
           false

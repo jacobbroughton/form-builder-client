@@ -5,7 +5,7 @@ import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { AddedInputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import DeleteModal from "../../ui/DeleteModal/DeleteModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
@@ -22,7 +22,7 @@ export const Draft = () => {
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState<boolean>(false);
-  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
+  const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const { setError } = useContext(ErrorContext);
 
   async function handleFormDelete(): Promise<void> {
@@ -81,7 +81,7 @@ export const Draft = () => {
                     isDraft={true}
                     setFormPopupToggled={setFormPopupMenuToggled}
                     handleDeleteClick={() => {
-                      setDeleteFormModalShowing(true);
+                      setDeleteModalShowing(true);
                     }}
                   />
                 ) : (
@@ -115,10 +115,11 @@ export const Draft = () => {
             )}
           </>
         )}
-        {deleteFormModalShowing ? (
-          <DeleteFormModal
+        {DeleteModalShowing ? (
+          <DeleteModal
+          label="Delete draft?"
             handleDeleteClick={() => handleFormDelete()}
-            setDeleteFormModalShowing={setDeleteFormModalShowing}
+            setDeleteModalShowing={setDeleteModalShowing}
           />
         ) : (
           false

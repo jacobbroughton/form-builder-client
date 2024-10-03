@@ -1,11 +1,24 @@
 main.error-page {
   display: flex;
   flex-direction: column;
-  padding: 69px 10px 50px 10px;
-  width: 100%;
-  max-width: 500px;
   margin: 0 auto;
+  padding: 30px 10px 75px 10px;
+  width: 100%;
+  min-height: 100%;
   gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.error-page > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 30px);
 }
 
 main.error-page > p.error-message {

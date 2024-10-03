@@ -8,6 +8,8 @@ import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
 import "./MetadataInputs.css";
 import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
 import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
+import { useDeleteInput } from "../../../hooks/useDeleteInput";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 export const MetadataInputs = ({
   form,
@@ -29,8 +31,13 @@ export const MetadataInputs = ({
   isForDraft: boolean;
 }) => {
   const { changeInputEnabledStatus } = useChangeInputEnabledStatus();
+  const { deleteInput } = useDeleteInput();
   const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
+  const [inputStagedForDelete, setInputStagedForDelete] = useState<AddedInputType | null>(
+    null
+  );
+  const [deleteModalToggled, setDeleteModalToggled] = useState(false);
 
   const { setError } = useContext(ErrorContext);
 
@@ -56,6 +63,19 @@ export const MetadataInputs = ({
           ...input,
           ...(input.id === clickedInput.id && { is_active: newActiveStatus }),
         })),
+      });
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
+  async function handleInputDelete(clickedInput: AddedInputType): Promise<void> {
+    try {
+      await deleteInput({ inputId: clickedInput.id });
+
+      setForm({
+        ...form,
+        inputs: form.inputs.filter((input) => input.id !== clickedInput.id),
       });
     } catch (error) {
       handleCatchError(error, setError, null);
@@ -145,6 +165,11 @@ export const MetadataInputs = ({
                   handleChangeDraftInputEnabledStatus={() =>
                     handleChangeDraftInputEnabledStatus(input)
                   }
+                  handleDeleteClick={(e) => {
+                    e.stopPropagation()
+                    setInputStagedForDelete(input);
+                    setDeleteModalToggled(true)
+                  }}
                 />
               ) : (
                 false
@@ -162,6 +187,15 @@ export const MetadataInputs = ({
             </div>
           </button>
         </div>
+      )}
+      {deleteModalToggled ? (
+        <DeleteModal
+          label="Delete input?"
+          setDeleteModalShowing={setDeleteModalToggled}
+          handleDeleteClick={() => handleInputDelete(inputStagedForDelete)}
+        />
+      ) : (
+        false
       )}
     </div>
   );

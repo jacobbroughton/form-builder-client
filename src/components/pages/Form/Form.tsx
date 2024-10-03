@@ -7,7 +7,7 @@ import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { FormContext } from "../../../providers/FormProvider.tsx";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import DeleteFormModal from "../../ui/DeleteFormModal/DeleteFormModal";
+import DeleteModal from "../../ui/DeleteModal/DeleteModal.tsx";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
@@ -34,7 +34,7 @@ export const Form = () => {
   // const [form, setForm] = useState<PublishedFormType | null>(null);
   // const [inputs, setInputs] = useState<AddedInputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
-  const [deleteFormModalShowing, setDeleteFormModalShowing] = useState<boolean>(false);
+  const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const [prevSubmissionsModalShowing, setPrevSubmissionsModalShowing] =
     useState<boolean>(false);
   const [prevSubmissions, setPrevSubmissions] = useState([]);
@@ -60,7 +60,7 @@ export const Form = () => {
     try {
       const data = await submitForm({ formId: form.id, inputs });
 
-      const inputSubmissions = await getInputSubmissions(data.id);
+      const inputSubmissions = await getInputSubmissions({submissionId: data.id, bypass: false});
       console.log("After submitting", data, [...prevSubmissions, data]);
 
       setPrevSubmissions([...prevSubmissions, data]);
@@ -78,14 +78,14 @@ export const Form = () => {
     async function getFormSubmissions(): Promise<void> {
       try {
         const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
+        console.log({formSubmissions})
 
-        console.log({ formSubmissions });
-
-        if (formSubmissions[0]) {
-          const inputSubmissions = await getInputSubmissions(formSubmissions[0].id);
+        // if (formSubmissions[0]) {
+          const inputSubmissions = await getInputSubmissions({submissionId: formSubmissions[0]?.id, bypass: true});
           setLatestInputSubmissions(inputSubmissions);
-        }
-        setFormSubmitted(true);
+          console.log("Makes it here")
+          setFormSubmitted(formSubmissions[0] ? true : false);
+        // }
 
         setPrevSubmissions(formSubmissions);
       } catch (error) {
@@ -146,7 +146,7 @@ export const Form = () => {
                     isDraft={false}
                     setFormPopupToggled={setFormPopupMenuToggled}
                     handleDeleteClick={() => {
-                      setDeleteFormModalShowing(true);
+                      setDeleteModalShowing(true);
                     }}
                   />
                 ) : (
@@ -200,8 +200,8 @@ export const Form = () => {
                     <FormInput
                       readOnly={
                         (!form.can_resubmit && formSubmitted) ||
-                        prevFormSubmissionsLoading ||
-                        inputSubmissionsLoading
+                        prevFormSubmissionsLoading// ||
+                        // inputSubmissionsLoading
                       }
                       input={input}
                       inputs={inputs}
@@ -275,13 +275,16 @@ export const Form = () => {
             )}
           </>
         )}
-        {deleteFormModalShowing ? (
-          <DeleteFormModal
+        {DeleteModalShowing ? (
+          <DeleteModal
+          label="Delete form?"
             handleDeleteClick={() => handleFormDelete()}
-            setDeleteFormModalShowing={setDeleteFormModalShowing}
+            setDeleteModalShowing={setDeleteModalShowing}
           />
         ) : prevSubmissionsModalShowing ? (
           <PrevSubmissionsModal
+            form={form}
+            inputs={inputs}
             setPrevSubmissionsModalShowing={setPrevSubmissionsModalShowing}
             prevSubmissions={prevSubmissions}
           />

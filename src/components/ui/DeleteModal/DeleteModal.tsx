@@ -1,12 +1,14 @@
 import { XIcon } from "../icons/XIcon";
 import { useEffect, useRef } from "react";
-import "./DeleteFormModal.css";
+import "./DeleteModal.css";
 
-const DeleteFormModal = ({
-  setDeleteFormModalShowing,
+const DeleteModal = ({
+  label = "",
+  setDeleteModalShowing,
   handleDeleteClick,
 }: {
-  setDeleteFormModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
+  label: string;
+  setDeleteModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
   handleDeleteClick: () => void;
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -14,7 +16,7 @@ const DeleteFormModal = ({
   useEffect(() => {
     function handler(e: MouseEvent) {
       if (modalRef.current && !modalRef.current.contains(e.target as HTMLDivElement)) {
-        setDeleteFormModalShowing(false);
+        setDeleteModalShowing(false);
       }
     }
 
@@ -27,11 +29,11 @@ const DeleteFormModal = ({
     <>
       <div className="delete-modal" ref={modalRef}>
         <div className="header">
-          <h1>Delete Form?</h1>
+          <h1>{label || "Delete?"}</h1>
           <button
             onClick={(e) => {
               e.preventDefault();
-              setDeleteFormModalShowing(false);
+              setDeleteModalShowing(false);
             }}
           >
             <XIcon />
@@ -43,7 +45,7 @@ const DeleteFormModal = ({
         <div className="controls">
           <button
             onClick={() => {
-              setDeleteFormModalShowing(false);
+              setDeleteModalShowing(false);
             }}
           >
             Cancel
@@ -52,7 +54,7 @@ const DeleteFormModal = ({
             className="delete"
             onClick={() => {
               handleDeleteClick();
-              setDeleteFormModalShowing(false);
+              setDeleteModalShowing(false);
             }}
           >
             Delete
@@ -63,4 +65,4 @@ const DeleteFormModal = ({
     </>
   );
 };
-export default DeleteFormModal;
+export default DeleteModal;
