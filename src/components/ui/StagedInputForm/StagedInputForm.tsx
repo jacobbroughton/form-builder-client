@@ -16,6 +16,7 @@ import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { CheckIcon } from "../icons/CheckIcon";
 import "./StagedInputForm.css";
 import PropertiesIcon from "../icons/PropertiesIcon";
+import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
 
 export const StagedInputForm = ({
   form,
@@ -44,6 +45,7 @@ export const StagedInputForm = ({
 
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
+  const [isRequired, setIsRequired] = useState(false);
 
   const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
   const [inputTypePropertyOptions, setInputTypePropertyOptions] = useState<{
@@ -90,6 +92,7 @@ export const StagedInputForm = ({
           inputMetadataDescription: stagedInputDescription,
           properties,
           formId: form.form!.id,
+          isRequired,
         });
       } else {
         data = await addNewInputToPublishedForm({
@@ -98,6 +101,7 @@ export const StagedInputForm = ({
           inputMetadataDescription: stagedInputDescription,
           properties,
           formId: form.form!.id,
+          isRequired,
         });
       }
 
@@ -173,7 +177,7 @@ export const StagedInputForm = ({
   if (!stagedNewInputType) return <p>No staged new input type</p>;
 
   return (
-    <div className="staged-item-form">
+    <div className="staged-input-form">
       <form className="staged-input-form">
         <div className="staged-input-type-info">
           <p className="name">{stagedNewInputType.name}</p>
@@ -184,7 +188,10 @@ export const StagedInputForm = ({
             <p className="small-text bold">Question/Prompt *</p>
             <input
               value={stagedInputTitle}
-              onChange={(e) => setStagedInputTitle(e.target.value)}
+              onChange={(e) => {
+                e.preventDefault();
+                setStagedInputTitle(e.target.value);
+              }}
               placeholder={"Question"}
             />
           </div>
@@ -196,7 +203,10 @@ export const StagedInputForm = ({
             <textarea
               value={stagedInputDescription}
               placeholder="Description"
-              onChange={(e) => setStagedInputDescription(e.target.value)}
+              onChange={(e) => {
+                e.preventDefault()
+                setStagedInputDescription(e.target.value);
+              }}
             />
             {/* ) : (
               false
@@ -272,6 +282,14 @@ export const StagedInputForm = ({
             false
           )}
         </div>
+        <SingleSelectToggle
+          label="Required?"
+          options={[
+            { label: "Yes", value: true, checkedCondition: isRequired },
+            { label: "No", value: false, checkedCondition: !isRequired },
+          ]}
+          onChange={(value) => setIsRequired(value)}
+        />
       </form>
 
       <div className="navigation-buttons">

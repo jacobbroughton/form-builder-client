@@ -47,6 +47,7 @@ const PrivacyOptions = ({
             <button
               onClick={() => handlePrivacyOptionClick(privacyOption)}
               key={privacyOption.id}
+              className={`${privacyOption.checked ? 'selected' : ''}`}
             >
               <div className="radio-container">
                 {privacyOption.checked ? <FilledCircleIcon /> : <CircleIcon />}

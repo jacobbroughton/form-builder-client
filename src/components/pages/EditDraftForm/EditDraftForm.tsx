@@ -244,7 +244,7 @@ export const EditDraftForm = () => {
           />
         );
       }
-      case "staged-item-form": {
+      case "staged-input-form": {
         return (
           <StagedInputForm
             form={draft}
@@ -258,7 +258,7 @@ export const EditDraftForm = () => {
       }
       default: {
         return (
-          <p>Hmm...not sure where you were trying to go, but it probably isn't here</p>
+          <p className="small-text">Hmm...not sure where you were trying to go, but it probably isn't here</p>
         );
       }
     }

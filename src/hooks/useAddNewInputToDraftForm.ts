@@ -19,6 +19,7 @@ export const useAddNewInputToDraftForm = () => {
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
       formId: string | undefined;
+      isRequired: boolean
     }): Promise<AddedInputType> => {
       setLoading(true);
       setLocalError(null);
@@ -37,6 +38,8 @@ export const useAddNewInputToDraftForm = () => {
             inputMetadataQuestion: body.inputMetadataQuestion,
             inputMetadataDescription: body.inputMetadataDescription,
             formId: body.formId,
+            isRequired: body.isRequired
+
           }),
           credentials: "include",
         });

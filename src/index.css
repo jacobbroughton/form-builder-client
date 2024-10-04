@@ -42,6 +42,8 @@
 
   --text-color-white: #d1d7e0;
   --text-color-muted: #9198a1;
+  --text-color-error: rgb(218, 76, 104);
+  --text-color-green: lightgreen;
 
   --container-bg-color: #2a313c;
   --container-border-color: #3d444d;
@@ -145,6 +147,14 @@ textarea {
 
 .small-text.bolder {
   font-weight: 600;
+}
+
+.small-text.red {
+  color: var(--text-color-error);
+}
+
+.small-text.green {
+  color: var(--text-color-green)
 }
 
 .small-text > span.optional {

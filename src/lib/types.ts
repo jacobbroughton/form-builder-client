@@ -60,6 +60,7 @@ export interface AddedInputType {
   metadata_description: string;
   is_active: boolean;
   is_deleted: boolean;
+  is_required: boolean;
   created_at: string;
   created_by_id: string;
   modified_by_id: string;

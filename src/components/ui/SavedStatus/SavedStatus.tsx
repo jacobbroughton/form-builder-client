@@ -10,7 +10,7 @@ const SavedStatus = ({
   return (
     <p className="saved-status">
       <span className={`${saved ? "saved" : ""}`}></span>
-      {saved ? "Saved Draft" : "Unsaved"}{" "}
+      {saved ? "Saved" : "Unsaved"}{" "}
       {!saved && autoSaveCountdown !== undefined
         ? `(Autosaving in ${autoSaveCountdown}s)`
         : false}

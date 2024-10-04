@@ -241,7 +241,7 @@ export const FormInput = ({
 
   return (
     <div className="input-container">
-      <p className="small-text bold">{input.metadata_question}</p>
+      <p className="small-text bold">{input.metadata_question} {input.is_required ? '*' : ''}</p>
       {input.metadata_description && (
         <p className="small-text question-description">{input.metadata_description}</p>
       )}

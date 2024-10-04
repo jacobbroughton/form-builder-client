@@ -1,0 +1,22 @@
+main.edit-input {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 30px 10px 75px 10px;
+  width: 100%;
+  min-height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.edit-input > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 30px);
+}

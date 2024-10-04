@@ -69,3 +69,17 @@ export function handleCatchError(
   setError(errorMessage);
   if (setLocalError !== null) setLocalError(errorMessage);
 }
+
+export function getErrorMessage(error: Error | string | unknown) {
+  console.error(error);
+
+  let errorMessage = "";
+
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  } else {
+    errorMessage = String(error);
+  }
+
+  return errorMessage;
+}

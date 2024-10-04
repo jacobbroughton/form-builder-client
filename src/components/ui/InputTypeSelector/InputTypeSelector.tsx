@@ -98,7 +98,7 @@ export const InputTypeSelector = ({
       </div>
       <div className="input-types-selector">
         {inputTypesLoading ? (
-          [...new Array(10)].map((arrItem) => (
+          [...new Array(9)].map((arrItem) => (
             <div className="skeleton input-type-placeholder" key={arrItem}>
               &nbsp;
             </div>
@@ -112,7 +112,7 @@ export const InputTypeSelector = ({
                 type="button"
                 onClick={() => {
                   setStagedNewInputType(inputType);
-                  setCurrentView("staged-item-form");
+                  setCurrentView("staged-input-form");
                 }}
               >
                 <div className="icon-container">

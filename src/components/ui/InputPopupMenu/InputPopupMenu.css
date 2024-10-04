@@ -9,10 +9,11 @@
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  box-shadow:  var(--popup-menu-box-shadow)
+  box-shadow: var(--popup-menu-box-shadow);
 }
 
-.input-popup-menu button {
+.input-popup-menu button,
+.input-popup-menu a {
   background-color: transparent;
   padding: 5px 10px;
   border: 0;
@@ -25,16 +26,19 @@
   gap: 10px;
 }
 
-.input-popup-menu button svg {
+.input-popup-menu button svg,
+.input-popup-menu a svg {
   width: 12px;
   height: 12px;
   fill: whitesmoke;
 }
 
-.input-popup-menu button:not(:last-child) {
+.input-popup-menu button:not(:last-child),
+.input-popup-menu a:not(:last-child) {
   border-bottom: 1px solid var(--button-default-border-color);
 }
 
-.input-popup-menu button:not(:disabled):hover {
+.input-popup-menu button:not(:disabled):hover,
+.input-popup-menu a:not(:disabled):hover {
   background-color: var(--button-default-bg-color-hover);
 }

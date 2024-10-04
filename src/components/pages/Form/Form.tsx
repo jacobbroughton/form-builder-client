@@ -19,6 +19,7 @@ import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import "./Form.css";
 import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions.ts";
 import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
+import PasscodeCover from "../../ui/PasscodeCover/PasscodeCover.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -29,10 +30,8 @@ export const Form = () => {
     useGetInputSubmissions();
   const { formId } = useParams();
   const { user } = useContext(UserContext);
-  const { form, formLoading, inputs, setInputs } = useContext(FormContext);
-  // const [formLoading, setFormLoading] = useState(true);
-  // const [form, setForm] = useState<PublishedFormType | null>(null);
-  // const [inputs, setInputs] = useState<AddedInputType[]>([]);
+  const { form, needsPasskeyValidation, formLoading, inputs, setInputs } =
+    useContext(FormContext);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const [prevSubmissionsModalShowing, setPrevSubmissionsModalShowing] =
@@ -56,12 +55,16 @@ export const Form = () => {
     }
   }
 
-  async function handleFormSubmit() {
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+
     try {
       const data = await submitForm({ formId: form.id, inputs });
 
-      const inputSubmissions = await getInputSubmissions({submissionId: data.id, bypass: false});
-      console.log("After submitting", data, [...prevSubmissions, data]);
+      const inputSubmissions = await getInputSubmissions({
+        submissionId: data.id,
+        bypass: false,
+      });
 
       setPrevSubmissions([...prevSubmissions, data]);
       setLatestInputSubmissions(inputSubmissions);
@@ -78,13 +81,16 @@ export const Form = () => {
     async function getFormSubmissions(): Promise<void> {
       try {
         const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
-        console.log({formSubmissions})
+        console.log({ formSubmissions });
 
         // if (formSubmissions[0]) {
-          const inputSubmissions = await getInputSubmissions({submissionId: formSubmissions[0]?.id, bypass: true});
-          setLatestInputSubmissions(inputSubmissions);
-          console.log("Makes it here")
-          setFormSubmitted(formSubmissions[0] ? true : false);
+        const inputSubmissions = await getInputSubmissions({
+          submissionId: formSubmissions[0]?.id,
+          bypass: true,
+        });
+        setLatestInputSubmissions(inputSubmissions);
+        console.log("Makes it here");
+        setFormSubmitted(formSubmissions[0] ? true : false);
         // }
 
         setPrevSubmissions(formSubmissions);
@@ -116,6 +122,10 @@ export const Form = () => {
     inputs.filter((input) => input.value === latestInputSubmissions?.[input.id].value)
       .length === inputs.length;
 
+  const isFormCreator = form?.created_by_id === user?.id;
+
+  if (!isFormCreator && needsPasskeyValidation) return <PasscodeCover />;
+
   return (
     <main className="published-form">
       <div className="container">
@@ -126,9 +136,7 @@ export const Form = () => {
         ) : (
           <>
             <div className="form-controls">
-              {form.created_by_id === user?.id && (
-                <DraftPublishedTag draftOrPublished={"published"} />
-              )}
+              {isFormCreator && <DraftPublishedTag draftOrPublished={"published"} />}
 
               <div className="menu-toggle-button-container">
                 <button
@@ -200,7 +208,7 @@ export const Form = () => {
                     <FormInput
                       readOnly={
                         (!form.can_resubmit && formSubmitted) ||
-                        prevFormSubmissionsLoading// ||
+                        prevFormSubmissionsLoading // ||
                         // inputSubmissionsLoading
                       }
                       input={input}
@@ -277,7 +285,7 @@ export const Form = () => {
         )}
         {DeleteModalShowing ? (
           <DeleteModal
-          label="Delete form?"
+            label="Delete form?"
             handleDeleteClick={() => handleFormDelete()}
             setDeleteModalShowing={setDeleteModalShowing}
           />

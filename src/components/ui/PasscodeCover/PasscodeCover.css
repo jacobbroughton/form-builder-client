@@ -1,0 +1,62 @@
+.passkey-cover {
+  background-color: var(--main-bg-color);
+  height: calc(100vh - 55px);
+  width: 100vw;
+  /* margin-top: 55px; */
+  z-index: 1;
+  /* position: fixed; */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passkey-cover > .container {
+  border: 1px solid var(--container-border-color);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.passkey-cover > .container > h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.passkey-cover > .container > form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 100%;
+}
+
+.passkey-cover > .container > form > input {
+  background-color: transparent;
+  border: 1px solid var(--input-default-border-color);
+  padding: 5px;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.passkey-cover > .container > form > button[type="submit"] {
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+  border-radius: 3px;
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: start;
+}
+
+.passkey-cover > .container > form > button[type="submit"]:disabled {
+  cursor: not-allowed;
+}
+
+.passkey-cover > .container > form > button[type="submit"]:not(:disabled):hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
+}

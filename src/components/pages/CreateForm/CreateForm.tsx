@@ -30,6 +30,7 @@ import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
 import CircleIcon from "../../ui/icons/CircleIcon";
 import FilledCircleIcon from "../../ui/icons/FilledCircleIcon";
+import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -165,7 +166,7 @@ export const CreateForm = () => {
         privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
           .id,
         privacyPasskey,
-        canResubmit
+        canResubmit,
       });
 
       setPrevSavedForm({
@@ -212,7 +213,7 @@ export const CreateForm = () => {
     (privacyOption) => privacyOption.checked
   );
 
-  async function handlePublishForm() {
+  async function handlePublishForm(e) {
     try {
       const data = await publish({
         draftFormId: draft.form!.id,
@@ -238,16 +239,6 @@ export const CreateForm = () => {
 
   function renderView() {
     switch (currentView) {
-      // case "existing-or-new-draft": {
-      //   return (
-      //     <ExistingOrNewDraftSelector
-      //       draftForms={draftForms}
-      //       setDraftIdToFetch={setDraftIdToFetch}
-      //       setCurrentView={setCurrentView}
-      //       createNewDraft={createNewDraft}
-      //     />
-      //   );
-      // }
       case "privacy-selector": {
         return (
           <>
@@ -314,23 +305,15 @@ export const CreateForm = () => {
             ) : (
               false
             )}
-            <div className="is-resubmittable-selector">
-              <p className='small-text bold'>Users can re-submit their answers:</p>
-              <div className="toggle-container">
-                <button
-                  className={canResubmit ? "selected" : ""}
-                  onClick={() => setCanResubmit(true)}
-                >
-                  {canResubmit ? <FilledCircleIcon /> : <CircleIcon />} Yes
-                </button>
-                <button
-                  className={!canResubmit ? "selected" : ""}
-                  onClick={() => setCanResubmit(false)}
-                >
-                  {!canResubmit ? <FilledCircleIcon /> : <CircleIcon />} No
-                </button>
-              </div>
-            </div>
+
+            <SingleSelectToggle
+              label="Users can re-submit their answers:"
+              options={[
+                { label: "Yes", value: true, checkedCondition: canResubmit },
+                { label: "No", value: false, checkedCondition: !canResubmit },
+              ]}
+              onChange={(value) => setCanResubmit(value)}
+            />
 
             <div className="form-buttons">
               <button
@@ -391,7 +374,7 @@ export const CreateForm = () => {
           />
         );
       }
-      case "staged-item-form": {
+      case "staged-input-form": {
         return (
           <StagedInputForm
             form={draft}
@@ -405,7 +388,9 @@ export const CreateForm = () => {
       }
       default: {
         return (
-          <p>Hmm...not sure where you were trying to go, but it probably isn't here</p>
+          <p className="small-text">
+            Hmm...not sure where you were trying to go, but it probably isn't here
+          </p>
         );
       }
     }

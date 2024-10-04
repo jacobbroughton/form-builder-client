@@ -1,16 +1,16 @@
-.staged-item-form {
+.staged-input-form {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
 
-.staged-item-form > .staged-input-form {
+.staged-input-form > .staged-input-form {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
 
-.staged-item-form > .staged-input-form > .staged-input-type-info {
+.staged-input-form > .staged-input-form > .staged-input-type-info {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -20,30 +20,30 @@
   border-radius: 3px;
 }
 
-.staged-item-form > .staged-input-form > .staged-input-type-info > .name {
+.staged-input-form > .staged-input-form > .staged-input-type-info > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-.staged-item-form > .staged-input-form > .staged-input-type-info > .description {
+.staged-input-form > .staged-input-form > .staged-input-type-info > .description {
   font-size: 0.875rem;
   text-align: start;
 }
 
-.staged-item-form > .staged-input-form > .metadata {
+.staged-input-form > .staged-input-form > .metadata {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.staged-item-form > .staged-input-form > .metadata > .form-group-container {
+.staged-input-form > .staged-input-form > .metadata > .form-group-container {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.staged-item-form > .staged-input-form > .metadata > .form-group-container > input,
-.staged-item-form > .staged-input-form > .metadata > .form-group-container > textarea {
+.staged-input-form > .staged-input-form > .metadata > .form-group-container > input,
+.staged-input-form > .staged-input-form > .metadata > .form-group-container > textarea {
   width: 100%;
   padding: 5px;
   font-size: 1rem;
@@ -54,22 +54,22 @@
   font-family: inherit;
 }
 
-.staged-item-form > .staged-input-form > .metadata > .form-group-container > input {
+.staged-input-form > .staged-input-form > .metadata > .form-group-container > input {
   font-weight: 500;
 }
 
-.staged-item-form > .staged-input-form > .metadata > button {
+.staged-input-form > .staged-input-form > .metadata > button {
   background-color: transparent;
   border: 0;
   align-self: flex-start;
   cursor: pointer;
 }
 
-.staged-item-form > .staged-input-form > .metadata > button:hover {
+.staged-input-form > .staged-input-form > .metadata > button:hover {
   text-decoration: underline;
 }
 
-.staged-item-form > .staged-input-form > .properties-container {
+.staged-input-form > .staged-input-form > .properties-container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -81,11 +81,11 @@
   
 }
 
-.staged-item-form > .staged-input-form > .properties-container.toggled > .header {
+.staged-input-form > .staged-input-form > .properties-container.toggled > .header {
   border-bottom: 1px solid var(--container-border-color);
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .header
@@ -103,7 +103,7 @@
   cursor: pointer;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .header
@@ -111,7 +111,7 @@
   background-color: var(--button-default-bg-color-hover);
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .header
@@ -128,7 +128,7 @@
   border-right: 1px solid var(--button-default-border-color);
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .header
@@ -139,7 +139,7 @@
   fill: whitesmoke;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .header
@@ -148,8 +148,8 @@
   margin-left: 45px;
 }
 
-.staged-item-form > .staged-input-form > .properties-container >.properties
-/* ,.staged-item-form > .staged-input-form > .metadata */ {
+.staged-input-form > .staged-input-form > .properties-container >.properties
+/* ,.staged-input-form > .staged-input-form > .metadata */ {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -161,11 +161,11 @@
   /* border-radius: 5px; */
 }
 
-.staged-item-form > .staged-input-form > div.properties > label {
+.staged-input-form > .staged-input-form > div.properties > label {
   font-size: 0.875rem;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .properties
@@ -176,7 +176,7 @@
   gap: 2px;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -185,7 +185,7 @@
   font-weight: 500;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -193,7 +193,7 @@
   font-size: 0.8rem;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .properties
@@ -209,7 +209,7 @@
   font-family: inherit;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container
@@ -217,7 +217,7 @@
   cursor: pointer;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties-container
   > .properties
@@ -226,7 +226,7 @@
   border: 1px solid var(--input-default-border-color-hover);
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -235,7 +235,7 @@
   gap: 5px;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -249,7 +249,7 @@
   cursor: pointer;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -258,7 +258,7 @@
   border-color: #6f6f6f;
 }
 
-.staged-item-form
+.staged-input-form
   > .staged-input-form
   > .properties
   > .property-container.radio
@@ -267,17 +267,17 @@
   border: 1px solid lightgreen;
 }
 
-.staged-item-form > .navigation-buttons {
+.staged-input-form > .navigation-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
 }
 
-.staged-item-form > .navigation-buttons > button.navigation-button {
+.staged-input-form > .navigation-buttons > button.navigation-button {
   width: auto;
 }
 
-.staged-item-form > .navigation-buttons .navigation-button.done svg {
+.staged-input-form > .navigation-buttons .navigation-button.done svg {
   fill: lightgreen;
 }

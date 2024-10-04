@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 import { AddedInputType } from "../../../lib/types";
-import { CheckIcon } from "../icons/CheckIcon";
+import { Link } from "react-router-dom";
 import { EditIcon } from "../icons/EditIcon";
+import EyeIcon from "../icons/EyeIcon";
+import EyeSlashIcon from "../icons/EyeSlashIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import "./InputPopupMenu.css";
-import EyeSlashIcon from "../icons/EyeSlashIcon";
-import EyeIcon from "../icons/EyeIcon";
-import { useDeleteInput } from "../../../hooks/useDeleteInput";
 
 export const InputPopupMenu = ({
   input,
@@ -22,7 +21,6 @@ export const InputPopupMenu = ({
   handleDeleteClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
-  const { deleteInput } = useDeleteInput();
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -39,9 +37,9 @@ export const InputPopupMenu = ({
 
   return (
     <div ref={ref} className="input-popup-menu">
-      <button type="button">
+      <Link to={`/edit-input/${input.id}`}>
         <EditIcon /> Edit
-      </button>
+      </Link>
       {input.is_active ? (
         <button
           onClick={() => {

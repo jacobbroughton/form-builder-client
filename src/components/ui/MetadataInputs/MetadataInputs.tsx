@@ -69,8 +69,10 @@ export const MetadataInputs = ({
     }
   }
 
-  async function handleInputDelete(clickedInput: AddedInputType): Promise<void> {
+  async function handleInputDelete(clickedInput: AddedInputType | null): Promise<void> {
     try {
+      if (!clickedInput) throw new Error("No input was found for deletion");
+
       await deleteInput({ inputId: clickedInput.id });
 
       setForm({
@@ -86,20 +88,21 @@ export const MetadataInputs = ({
 
   return (
     <div className="metadata-inputs">
-      <form className="title-and-description">
+      <form className="title-and-description" onSubmit={(e) => e.preventDefault()}>
         <div className="form-group-container">
           <p className="small-text bold">Form name *</p>
           <input
             value={form.form.title}
-            onChange={(e) =>
+            onChange={(e) => {
+              e.preventDefault();
               setForm({
                 ...form,
                 form: {
                   ...form.form!,
                   title: e.target.value,
                 },
-              })
-            }
+              });
+            }}
             placeholder="Title"
           />
         </div>
@@ -110,6 +113,7 @@ export const MetadataInputs = ({
           <textarea
             value={form.form.description || ""}
             onChange={(e) => {
+              e.preventDefault();
               setForm({
                 ...form,
                 form: {
@@ -144,6 +148,7 @@ export const MetadataInputs = ({
                 ) : (
                   false
                 )}
+                {input.is_required ? <p>Required</p> : false}
               </div>
               <button
                 className="popup-menu-button"
@@ -166,9 +171,14 @@ export const MetadataInputs = ({
                     handleChangeDraftInputEnabledStatus(input)
                   }
                   handleDeleteClick={(e) => {
-                    e.stopPropagation()
+                    e.stopPropagation();
                     setInputStagedForDelete(input);
-                    setDeleteModalToggled(true)
+                    setDeleteModalToggled(true);
+                  }}
+                  handleEditClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentView("staged-input-form");
+                    console.log(input);
                   }}
                 />
               ) : (

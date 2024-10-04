@@ -29,10 +29,10 @@ import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/Se
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
-  const { formId, initialView } = useParams();
+  const { initialView } = useParams();
   const { setError } = useContext(ErrorContext);
   const { deletePublishedForm } = useDeletePublishedForm();
-  const { getPublishedForm } = useGetPublishedForm();
+  const { form: initialPublishedForm, inputs } = useGetPublishedForm();
   const { updatePublishedForm } = useUpdatePublishedForm();
 
   const {
@@ -225,7 +225,7 @@ export const EditPublishedForm = () => {
           />
         );
       }
-      case "staged-item-form": {
+      case "staged-input-form": {
         return (
           <StagedInputForm
             form={form}
@@ -239,7 +239,9 @@ export const EditPublishedForm = () => {
       }
       default: {
         return (
-          <p>Hmm...not sure where you were trying to go, but it probably isn't here</p>
+          <p className="small-text">
+            Hmm...not sure where you were trying to go, but it probably isn't here
+          </p>
         );
       }
     }
@@ -285,27 +287,28 @@ export const EditPublishedForm = () => {
   useEffect(() => {
     async function fetchFormForEdit() {
       try {
-        const data = await getPublishedForm({ formId });
 
         setPrevSavedForm({
-          form: data.form,
-          inputs: data.inputs,
+          form: initialPublishedForm,
+          inputs: inputs,
         });
 
         setForm({
-          form: data.form,
-          inputs: data.inputs,
+          form: initialPublishedForm,
+          inputs: inputs,
         });
-
-        getPrivacyOptions(data.form.privacy_id);
-        setPrivacyPasskey(data.form.passkey);
       } catch (error) {
         handleCatchError(error, setError, null);
       }
     }
 
     fetchFormForEdit();
-  }, []);
+
+    if (form) {
+      getPrivacyOptions(form.privacy_id);
+      setPrivacyPasskey(form.passkey);
+    }
+  }, [form]);
 
   useEffect(() => {
     if (reflectFormPrivacyOption)
