@@ -11,6 +11,7 @@ const PasscodeCover = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [prevPasskey, setPrevPasskey] = useState<string>("");
+  const [redirectCountdown, setRedirectCountdown] = useState(3);
   const { formId } = useParams();
   const { setUser } = useContext(UserContext);
   const { setNeedsPasskeyValidation } = useContext(FormContext);
@@ -56,8 +57,13 @@ const PasscodeCover = () => {
       setError("");
       setSuccess(true);
 
+      const interval = setInterval(() => {
+        setRedirectCountdown((prev) => (prev -= 1));
+      }, 1000);
+
       setTimeout(() => {
-        setNeedsPasskeyValidation(false)
+        setNeedsPasskeyValidation(false);
+        clearInterval(interval);
       }, 3000);
       console.log("passkey worked", data);
     } catch (error) {
@@ -85,7 +91,11 @@ const PasscodeCover = () => {
             Submit
           </button>
           {error && <p className="small-text red">{error}</p>}
-          {success && <p className="small-text green">Success, redirecting you now...</p>}
+          {success && (
+            <p className="small-text green">
+              Success, redirecting you in {redirectCountdown} second{redirectCountdown > 1}...
+            </p>
+          )}
         </form>
       </div>
     </div>

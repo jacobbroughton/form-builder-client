@@ -21,6 +21,8 @@ import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions.ts
 import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
 import PasscodeCover from "../../ui/PasscodeCover/PasscodeCover.tsx";
 import { Link } from "react-router-dom";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon.tsx";
+import FormHeader from "../../ui/FormHeader/FormHeader.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -33,7 +35,7 @@ export const Form = () => {
   const { user } = useContext(UserContext);
   const { form, needsPasskeyValidation, formLoading, inputs, setInputs } =
     useContext(FormContext);
-  const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
+  // const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const [prevSubmissionsModalShowing, setPrevSubmissionsModalShowing] =
     useState<boolean>(false);
@@ -127,166 +129,127 @@ export const Form = () => {
 
   if (!isFormCreator && needsPasskeyValidation) return <PasscodeCover />;
 
+  if (formLoading) return <p>Form loading...</p>;
+
+  if (!form) return <p>No form found...</p>;
+
   return (
     <main className="published-form">
+      <FormHeader form={form} setDeleteModalShowing={setDeleteModalShowing} />
       <div className="container">
-        {formLoading ? (
-          <p>Form loading...</p>
-        ) : !form ? (
-          <p>No form found</p>
-        ) : (
-          <>
-            <div className="form-controls">
-              <Link className="view-responses-link" to={`/responses/${formId}`}>
-                View Responses
-              </Link>
-              {isFormCreator && <DraftPublishedTag draftOrPublished={"published"} />}
-
-              <div className="menu-toggle-button-container">
-                <button
-                  className="menu-toggle-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFormPopupMenuToggled(!formPopupMenuToggled);
-                  }}
-                >
-                  <ThreeDotsIcon />
-                </button>
-                {formPopupMenuToggled ? (
-                  <FormPopupMenu
-                    form={form}
-                    isDraft={false}
-                    setFormPopupToggled={setFormPopupMenuToggled}
-                    handleDeleteClick={() => {
-                      setDeleteModalShowing(true);
-                    }}
-                  />
-                ) : (
-                  false
-                )}
+        <>
+          {form.can_resubmit && prevSubmissions?.length ? (
+            <button
+              className="previous-submission-info"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log(prevSubmissionsModalShowing);
+                setPrevSubmissionsModalShowing(true);
+              }}
+            >
+              <div className="icon-container">
+                <ClockRotateLeft />
               </div>
-            </div>
-            {form.can_resubmit && prevSubmissions?.length ? (
-              <button
-                className="previous-submission-info"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log(prevSubmissionsModalShowing);
-                  setPrevSubmissionsModalShowing(true);
-                }}
-              >
-                <div className="icon-container">
-                  <ClockRotateLeft />
-                </div>
-                <div className="content">
-                  <p className="small-text">
-                    You last submitted this form on{" "}
-                    {new Date(
-                      prevSubmissions[prevSubmissions.length - 1].created_at
-                    ).toLocaleDateString()}{" "}
-                    at{" "}
-                    {new Date(
-                      prevSubmissions[prevSubmissions.length - 1].created_at
-                    ).toLocaleTimeString()}
-                  </p>
-                  <p>
-                    <i>Click to view {prevSubmissions.length} previous submissions</i>
-                  </p>
-                </div>
-              </button>
-            ) : (
-              false
-            )}
-            <div className={`heading ${inputs.length == 0 ? "no-margin-bottom" : ""}`}>
-              <h1 className="title">{form.title}</h1>
-              {form.description ? (
-                <p className="description">{form.description}</p>
-              ) : (
-                false
-              )}
-            </div>
-            {inputs.length ? (
-              <>
-                <div className="inputs">
-                  {inputs.map((input) => (
-                    <FormInput
-                      readOnly={
-                        (!form.can_resubmit && formSubmitted) ||
-                        prevFormSubmissionsLoading // ||
-                        // inputSubmissionsLoading
-                      }
-                      input={input}
-                      inputs={inputs}
-                      setInputs={setInputs}
-                    />
-                  ))}
-                </div>
-                {user ? (
-                  submitCooldownToggled ? (
-                    form.can_resubmit ? (
-                      <p className="small-text">
-                        You can submit again in{" "}
-                        <i>
-                          <strong>{submitCooldownCountdown}</strong>
-                        </i>{" "}
-                        seconds
-                      </p>
-                    ) : (
-                      <p>
-                        Form submitted on{" "}
-                        {new Date(
-                          prevSubmissions[prevSubmissions.length - 1].created_at
-                        ).toLocaleDateString()}
-                      </p>
-                    )
-                  ) : prevSubmissions?.length ? (
-                    form.can_resubmit ? (
-                      <button
-                        className="submit-button"
-                        type="button"
-                        disabled={inputsUnchanged}
-                        onClick={() => {
-                          if (inputsUnchanged) return;
-                          handleFormSubmit();
-                        }}
-                      >
-                        Re-submit
-                      </button>
-                    ) : (
-                      <p className="small-text">
-                        You submitted this form on{" "}
-                        {new Date(
-                          prevSubmissions[prevSubmissions.length - 1].created_at
-                        ).toLocaleDateString()}
-                      </p>
-                    )
+              <div className="content">
+                <p className="small-text">
+                  You last submitted this form on{" "}
+                  {new Date(
+                    prevSubmissions[prevSubmissions.length - 1].created_at
+                  ).toLocaleDateString()}{" "}
+                  at{" "}
+                  {new Date(
+                    prevSubmissions[prevSubmissions.length - 1].created_at
+                  ).toLocaleTimeString()}
+                </p>
+                <p>
+                  <i>Click to view {prevSubmissions.length} previous submissions</i>
+                </p>
+              </div>
+            </button>
+          ) : (
+            false
+          )}
+
+          {inputs.length ? (
+            <>
+              <div className="inputs">
+                {inputs.map((input) => (
+                  <FormInput
+                    readOnly={
+                      (!form.can_resubmit && formSubmitted) || prevFormSubmissionsLoading // ||
+                      // inputSubmissionsLoading
+                    }
+                    input={input}
+                    inputs={inputs}
+                    setInputs={setInputs}
+                  />
+                ))}
+              </div>
+              {user ? (
+                submitCooldownToggled ? (
+                  form.can_resubmit ? (
+                    <p className="small-text">
+                      You can submit again in{" "}
+                      <i>
+                        <strong>{submitCooldownCountdown}</strong>
+                      </i>{" "}
+                      seconds
+                    </p>
                   ) : (
+                    <p>
+                      Form submitted on{" "}
+                      {new Date(
+                        prevSubmissions[prevSubmissions.length - 1].created_at
+                      ).toLocaleDateString()}
+                    </p>
+                  )
+                ) : prevSubmissions?.length ? (
+                  form.can_resubmit ? (
                     <button
-                      disabled={prevFormSubmissionsLoading || inputSubmissionsLoading}
                       className="submit-button"
                       type="button"
-                      onClick={() => handleFormSubmit()}
+                      disabled={inputsUnchanged}
+                      onClick={() => {
+                        if (inputsUnchanged) return;
+                        handleFormSubmit();
+                      }}
                     >
-                      <CheckIcon /> Submit
+                      Re-submit
                     </button>
+                  ) : (
+                    <p className="small-text">
+                      You submitted this form on{" "}
+                      {new Date(
+                        prevSubmissions[prevSubmissions.length - 1].created_at
+                      ).toLocaleDateString()}
+                    </p>
                   )
                 ) : (
-                  <NoUserMessage message="to submit this form" />
-                )}
-              </>
-            ) : (
-              <NoPromptsMessage
-                formId={form.id}
-                isDraft={false}
-                handleClick={() => {
-                  navigate(`/edit-published-form/${form.id}/input-types-selector`);
-                  // setCurrentView("input-types-selector");
-                }}
-                isFormAdmin={form.created_by_id == user.id}
-              />
-            )}
-          </>
-        )}
+                  <button
+                    disabled={prevFormSubmissionsLoading || inputSubmissionsLoading}
+                    className="submit-button"
+                    type="button"
+                    onClick={() => handleFormSubmit()}
+                  >
+                    <CheckIcon /> Submit
+                  </button>
+                )
+              ) : (
+                <NoUserMessage message="to submit this form" />
+              )}
+            </>
+          ) : (
+            <NoPromptsMessage
+              formId={form.id}
+              isDraft={false}
+              handleClick={() => {
+                navigate(`/edit-published-form/${form.id}/input-types-selector`);
+                // setCurrentView("input-types-selector");
+              }}
+              isFormAdmin={form.created_by_id == user.id}
+            />
+          )}
+        </>
         {DeleteModalShowing ? (
           <DeleteModal
             label="Delete form?"

@@ -67,7 +67,7 @@ export const useGetPublishedForm = () => {
 
   const getPublishedForm = async (params: {
     formId: string | undefined;
-  }): Promise<PublishedFormType> => {
+  }): Promise<void> => {
     setLoading(true);
     setLocalError(null);
 
@@ -95,6 +95,11 @@ export const useGetPublishedForm = () => {
       }
 
       const data = await response.json();
+
+      if (data.requiresPasscode) {
+        setNeedsPasskeyValidation(true);
+        return;
+      }
 
       setForm(data.form);
       setInputs(
