@@ -1,0 +1,43 @@
+main.responses {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 30px 10px 75px 10px;
+  width: 100%;
+  min-height: 100%;
+  gap: 10px;
+  background-color: var(--main-bg-color);
+}
+
+main.responses > .container {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 10px;
+}
+
+main.responses > .container > .go-back {
+  padding: 3px 5px;
+  border-radius: 5px;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+}
+
+main.responses > .container > .go-back:hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
+}
+
+main.responses > .container > .go-back > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+main.responses > .container > .go-back > p {
+  font-size: 0.875rem
+}

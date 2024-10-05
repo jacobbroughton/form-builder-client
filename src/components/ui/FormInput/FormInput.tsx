@@ -189,32 +189,10 @@ export const FormInput = ({
           />
         );
       }
-      case "Datetime": {
-        return (
-          <input
-            type="datetime"
-            placeholder={input.properties?.[`placeholder`]?.value || "..."}
-            defaultValue={input.properties?.[`default-value`]?.value}
-            min={input.properties?.[`min`]?.value}
-            max={input.properties?.[`max`]?.value}
-            value={input.value}
-            onChange={(e) => {
-              setInputs(
-                inputs.map((localInput) => ({
-                  ...localInput,
-                  ...(localInput.id === input.id && {
-                    value: e.target.value,
-                  }),
-                }))
-              );
-            }}
-          />
-        );
-      }
+
       case "Color": {
         return (
           <div className="input-wrapper">
-            <p>sadf</p>
             <input
               type="color"
               defaultValue={input.properties?.[`default-value`]?.value}
@@ -234,14 +212,18 @@ export const FormInput = ({
         );
       }
       default: {
-        return <p className="small-text">Something went wrong while rendering this input...</p>;
+        return (
+          <p className="small-text">Something went wrong while rendering this input...</p>
+        );
       }
     }
   }
 
   return (
     <div className="input-container">
-      <p className="small-text bold">{input.metadata_question} {input.is_required ? '*' : ''}</p>
+      <p className="small-text bold">
+        {input.metadata_question} {input.is_required ? "*" : ""}
+      </p>
       {input.metadata_description && (
         <p className="small-text question-description">{input.metadata_description}</p>
       )}

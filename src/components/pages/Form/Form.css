@@ -21,6 +21,23 @@ main.published-form > .container {
 main.published-form > .container > .form-controls {
   display: flex;
   justify-content: space-between;
+  gap: 10px
+}
+
+.form-controls > .view-responses-link {
+  border-radius: 3px;
+  font-size: 0.875rem;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+  display: flex;
+  align-items: center;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+
+.form-controls > .view-responses-link:hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
 }
 
 main.published-form > .container > .form-controls > .menu-toggle-button-container {

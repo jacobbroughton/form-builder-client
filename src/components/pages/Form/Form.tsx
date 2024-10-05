@@ -20,6 +20,7 @@ import "./Form.css";
 import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions.ts";
 import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
 import PasscodeCover from "../../ui/PasscodeCover/PasscodeCover.tsx";
+import { Link } from "react-router-dom";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -136,6 +137,9 @@ export const Form = () => {
         ) : (
           <>
             <div className="form-controls">
+              <Link className="view-responses-link" to={`/responses/${formId}`}>
+                View Responses
+              </Link>
               {isFormCreator && <DraftPublishedTag draftOrPublished={"published"} />}
 
               <div className="menu-toggle-button-container">

@@ -22,6 +22,7 @@ import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthErr
 import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
 import { FormContextProvider } from "./providers/FormProvider.tsx";
 import EditInput from "./components/pages/EditInput/EditInput.tsx";
+import Responses from "./components/pages/Responses/Responses.tsx";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-input/:inputId",
         element: <EditInput />,
+      },
+      {
+        path: "/responses/:formId",
+        element: <Responses />,
       },
     ],
   },

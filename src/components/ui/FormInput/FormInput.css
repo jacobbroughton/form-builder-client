@@ -42,6 +42,20 @@
   gap: 3px;
 }
 
+
+.input-container > .input-wrapper > input[type='color'],
+.input-container > input[type='date'],
+.input-container > input[type='time'] {
+  background-color: var(--button-default-bg-color);
+  cursor: pointer;
+}
+
+.input-container > .input-wrapper > input[type='color']:hover,
+.input-container > input[type='date']:hover,
+.input-container > input[type='time']:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
 .input-container > .input-wrapper > p {
   font-size: 0.875rem;
 }
