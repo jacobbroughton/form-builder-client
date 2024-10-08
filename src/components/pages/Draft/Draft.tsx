@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
-import { AddedInputType, PublishedFormType } from "../../../lib/types";
+import { InputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import DeleteModal from "../../ui/DeleteModal/DeleteModal";
@@ -20,7 +20,7 @@ export const Draft = () => {
   const { formId } = useParams();
   const [formLoading, setFormLoading] = useState<boolean>(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
-  const [inputs, setInputs] = useState<AddedInputType[]>([]);
+  const [inputs, setInputs] = useState<InputType[]>([]);
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState<boolean>(false);
   const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const { setError } = useContext(ErrorContext);

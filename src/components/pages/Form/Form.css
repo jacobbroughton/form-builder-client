@@ -2,30 +2,10 @@ main.published-form {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  /* padding: 30px 10px 75px 10px; */
   width: 100%;
   min-height: 100%;
   gap: 10px;
   background-color: var(--main-bg-color);
-}
-
-main.published-form > header {
-  padding: 10px 30px;
-  background-color: var(--nav-bg-color);
-  border-bottom: 1px solid #3d444d;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-main.published-form > header > .row {
-  width: 100%;
-  display: flex;
-}
-
-
-main.published-form > header > .row > .text {
-  width: 100%;
 }
 
 main.published-form > .container {
@@ -36,87 +16,6 @@ main.published-form > .container {
   padding: 30px 10px;
   width: 100%;
   gap: 10px;
-}
-
-header > div.row > .buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  width: 100%;
-}
-
-header > div.row > .buttons > .view-responses-link {
-  border-radius: 3px;
-  font-size: 0.875rem;
-  background-color: var(--button-default-bg-color);
-  border: 1px solid var(--button-default-border-color);
-  display: flex;
-  align-items: center;
-  padding: 3px 5px;
-  cursor: pointer;
-  gap: 10px;
-  white-space: nowrap;
-}
-
-header > div.row > .buttons > .view-responses-link:hover {
-  background-color: var(--button-default-bg-color-hover);
-  border: 1px solid var(--button-default-border-color-hover);
-}
-
-header > div.row > .buttons > .view-responses-link > svg {
-  width: 13px;
-  fill: whitesmoke;
-}
-
-main.published-form > header > .row > .form-controls {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-main.published-form > header > .row > .form-controls > .menu-toggle-button-container {
-  position: relative;
-  margin-left: auto;
-}
-
-main.published-form
-  > header
-  > .row
-  > .form-controls
-  > .menu-toggle-button-container
-  > button.menu-toggle-button {
-  background-color: transparent;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px;
-  border-radius: 3px;
-  cursor: pointer;
-  height: 25px;
-  width: 25px;
-}
-
-main.published-form
-  > header
-  > .row
-  > .form-controls
-  > .menu-toggle-button-container
-  > button.menu-toggle-button:hover {
-  background-color: var(--button-default-bg-color-hover);
-  border-color: var(--button-default-border-color-hover);
-}
-
-main.published-form
-  > header
-  > .row
-  > .form-controls
-  > .menu-toggle-button-container
-  > button.menu-toggle-button
-  > svg {
-  width: 20px;
-  fill: white;
 }
 
 main.published-form > .container > button.previous-submission-info {
@@ -165,16 +64,10 @@ main.published-form > .container > .previous-submission-info > .content > p {
 }
 
 main.published-form > .container > .heading {
-  /* padding: 10px; */
   padding-left: 10px;
-  /* border-radius: 3px;  */
-  /* margin-bottom: 10px; */
   display: flex;
   flex-direction: column;
   gap: 5px;
-
-  /* border: 1px solid var(--container-border-color); */
-  /* padding: 10px; */
   border-radius: 4px;
 }
 
@@ -191,29 +84,12 @@ main.published-form > .container > .heading > p.description {
 }
 
 main.published-form > .container > .inputs {
-  border: 1px solid var(--container-border-color);
   border-radius: 3px;
   margin-top: 17px;
   position: relative;
-}
-
-main.published-form > .container > .inputs::before {
-  content: "Fill these prompts out";
-}
-
-main.published-form > .container > .inputs::before {
-  position: absolute;
-  bottom: calc(100% + 0px);
-  left: -1px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background-color: var(--container-bg-color);
-  padding: 2px 5px;
-  line-height: 0.875rem;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  border: 1px solid var(--container-border-color);
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 main.published-form > .container > .submit-button {

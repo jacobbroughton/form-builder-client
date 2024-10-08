@@ -8,7 +8,7 @@ import "./UserMenu.css";
 const UserMenu = ({
   setUserMenuToggled,
 }: {
-  setUserMenuToggled: React.Dispatch<React.SetStateAction<false>>;
+  setUserMenuToggled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useContext(UserContext);
@@ -28,7 +28,7 @@ const UserMenu = ({
 
       console.log("Logged out", data);
       setUser(null);
-      setUserMenuToggled(false)
+      setUserMenuToggled(false);
     } catch (error) {
       console.error(error);
     }
@@ -47,6 +47,8 @@ const UserMenu = ({
       document.removeEventListener("click", handler);
     };
   }, []);
+
+  if (!user) return false;
 
   return (
     <div ref={userMenuRef} className="user-menu">

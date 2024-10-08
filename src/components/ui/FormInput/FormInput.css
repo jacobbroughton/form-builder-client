@@ -1,17 +1,16 @@
-.input-container {
+.form-input {
   display: flex;
   flex-direction: column;
-  /* gap: 5px; */
-  padding: 10px;
+  gap: 5px;
 }
 
-.input-container:not(:last-child) {
+.form-input:not(:last-child) {
   border-bottom: 1px solid #333;
 }
 
-.input-container > input,
-.input-container > .input-wrapper > input,
-.input-container > textarea {
+.form-input > input,
+.form-input > .input-wrapper > input,
+.form-input > textarea {
   width: 100%;
   padding: 5px;
   border-radius: 3px;
@@ -21,41 +20,40 @@
   font-family: inherit;
 }
 
-.input-container > input {
+.form-input > input {
   margin-top: 5px;
 }
 
-.input-container > .question {
+.form-input > .question {
   font-size: 1rem;
   font-weight: 500;
 }
 
-.input-container > .question-description {
+.form-input > .question-description {
   font-size: 0.875rem;
   opacity: 0.8;
 }
 
-.input-container > .input-wrapper {
+.form-input > .input-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 3px;
 }
 
-
-.input-container > .input-wrapper > input[type='color'],
-.input-container > input[type='date'],
-.input-container > input[type='time'] {
+.form-input > .input-wrapper > input[type="color"],
+.form-input > input[type="date"],
+.form-input > input[type="time"] {
   background-color: var(--button-default-bg-color);
   cursor: pointer;
 }
 
-.input-container > .input-wrapper > input[type='color']:hover,
-.input-container > input[type='date']:hover,
-.input-container > input[type='time']:hover {
+.form-input > .input-wrapper > input[type="color"]:hover,
+.form-input > input[type="date"]:hover,
+.form-input > input[type="time"]:hover {
   background-color: var(--button-default-bg-color-hover);
 }
 
-.input-container > .input-wrapper > p {
+.form-input > .input-wrapper > p {
   font-size: 0.875rem;
 }

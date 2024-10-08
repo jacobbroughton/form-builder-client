@@ -1,31 +1,31 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
+import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
 import { useGetPublishedForm } from "../../../hooks/useGetPublishedForm";
 import { useUpdatePublishedForm } from "../../../hooks/useUpdatePublishedForm";
 import {
-  AddedInputType,
+  DraftFormType,
+  InputType,
   InputTypeType,
-  PublishedFormType,
   PrivacyOptionType,
+  PublishedFormType,
 } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import DeleteModal from "../../ui/DeleteModal/DeleteModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
+import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
+import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
+import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
+import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
-import DeleteModal from "../../ui/DeleteModal/DeleteModal";
-import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
-import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
-import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
-import { EditIcon } from "../../ui/icons/EditIcon";
-import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
@@ -52,14 +52,14 @@ export const EditPublishedForm = () => {
   const [saved, setSaved] = useState(true);
   const [form, setForm] = useState<{
     form: PublishedFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],
   });
   const [prevSavedForm, setPrevSavedForm] = useState<{
     form: DraftFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],
@@ -72,10 +72,12 @@ export const EditPublishedForm = () => {
 
   async function saveForm() {
     try {
+      if (!form) throw new Error("No form was found when attempting to save");
+      if (!form.form) throw new Error("Form.form was found when attempting to save");
       const data = await updatePublishedForm({
         formId: form.form.id,
         title: form.form.title,
-        description: form.form!.description,
+        description: form.form.description,
         privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
           .id,
         privacyPasskey,
@@ -285,30 +287,24 @@ export const EditPublishedForm = () => {
   ]);
 
   useEffect(() => {
-    async function fetchFormForEdit() {
-      try {
-
-        setPrevSavedForm({
-          form: initialPublishedForm,
-          inputs: inputs,
-        });
-
-        setForm({
-          form: initialPublishedForm,
-          inputs: inputs,
-        });
-      } catch (error) {
-        handleCatchError(error, setError, null);
-      }
-    }
-
-    fetchFormForEdit();
-
     if (form) {
+      console.log("here");
       getPrivacyOptions(form.privacy_id);
       setPrivacyPasskey(form.passkey);
     }
   }, [form]);
+
+  useEffect(() => {
+    setPrevSavedForm({
+      form: initialPublishedForm,
+      inputs: inputs,
+    });
+
+    setForm({
+      form: initialPublishedForm,
+      inputs: inputs,
+    });
+  }, [initialPublishedForm]);
 
   useEffect(() => {
     if (reflectFormPrivacyOption)

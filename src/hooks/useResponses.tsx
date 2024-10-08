@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../providers/UserContextProvider";
-import { ErrorContext } from "../providers/ErrorContextProvider";
-import { handleCatchError } from "../utils/usefulFunctions";
 import { useNavigate, useParams } from "react-router-dom";
+import { ErrorContext } from "../providers/ErrorContextProvider";
+import { UserContext } from "../providers/UserContextProvider";
+import { handleCatchError } from "../utils/usefulFunctions";
 
 export const useResponses = () => {
   const { formId } = useParams();
   const [loading, setLoading] = useState(true);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [responses, setResponses] = useState([]);
+  const [responses, setResponses] = useState({});
   const { setUser } = useContext(UserContext);
   const { setError } = useContext(ErrorContext);
   const navigate = useNavigate();
@@ -36,7 +36,12 @@ export const useResponses = () => {
 
       const data = await response.json();
 
-      setResponses(data);
+      console.log(data);
+
+      setResponses({
+        shallowSubmissionsList: data.shallowSubmissionsList,
+        submissionsWithInfo: data.submissionsWithInfo,
+      });
     } catch (error) {
       handleCatchError(error, setError, setLocalError);
     } finally {
@@ -48,5 +53,5 @@ export const useResponses = () => {
     getResponses();
   }, []);
 
-  return { responses };
+  return { responses, loading, error: localError };
 };

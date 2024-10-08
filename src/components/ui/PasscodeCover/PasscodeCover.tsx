@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
-import "./PasscodeCover.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { getErrorMessage, handleCatchError } from "../../../utils/usefulFunctions";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
-import { UserContext } from "../../../providers/UserContextProvider";
 import { FormContext } from "../../../providers/FormProvider";
+import { UserContext } from "../../../providers/UserContextProvider";
+import { getErrorMessage } from "../../../utils/usefulFunctions";
+import "./PasscodeCover.css";
 
 const PasscodeCover = () => {
   const [passkey, setPasskey] = useState<string>("");

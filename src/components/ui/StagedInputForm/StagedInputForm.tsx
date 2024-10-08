@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  AddedInputType,
+  InputType,
   AllFormsType,
   InputTypePropertyOptionType,
   InputTypePropertyType,
@@ -26,11 +26,11 @@ export const StagedInputForm = ({
   setStagedNewInputType,
   isForDraft,
 }: {
-  form: { form: AllFormsType | null; inputs: AddedInputType[] };
+  form: { form: AllFormsType | null; inputs: InputType[] };
   setForm: React.Dispatch<
     React.SetStateAction<{
       form: AllFormsType | null;
-      inputs: AddedInputType[];
+      inputs: InputType[];
     }>
   >;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
@@ -43,21 +43,19 @@ export const StagedInputForm = ({
   const { getInputTypeProperties } = useGetInputTypeProperties();
   const { getInputTypePropertyOptions } = useGetInputTypePropertyOptions();
 
+  const { setError } = useContext(ErrorContext);
+
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
   const [isRequired, setIsRequired] = useState(false);
 
-  const [descriptionToggled, setDescriptionToggled] = useState<boolean>(false);
   const [inputTypePropertyOptions, setInputTypePropertyOptions] = useState<{
     [key: string]: InputTypePropertyOptionType[];
   }>({});
-
   const [inputTypeProperties, setInputTypeProperties] = useState<{
     [key: string]: InputTypePropertyType[];
   }>({});
   const [propertiesToggled, setPropertiesToggled] = useState(false);
-
-  const { setError } = useContext(ErrorContext);
 
   async function getInputTypePropertiesLocal(): Promise<void> {
     try {
@@ -122,7 +120,6 @@ export const StagedInputForm = ({
   function handleInputReset(): void {
     setStagedInputTitle("Untitled Question");
     setStagedInputDescription("");
-    setDescriptionToggled(false);
     setStagedNewInputType(null);
   }
 
@@ -199,25 +196,15 @@ export const StagedInputForm = ({
             <p className="small-text bold">
               Description <span className="optional">(optional)</span>
             </p>
-            {/* {descriptionToggled ? ( */}
             <textarea
               value={stagedInputDescription}
               placeholder="Description"
               onChange={(e) => {
-                e.preventDefault()
+                e.preventDefault();
                 setStagedInputDescription(e.target.value);
               }}
             />
-            {/* ) : (
-              false
-            )} */}
           </div>
-          {/* <button
-            onClick={() => setDescriptionToggled(!descriptionToggled)}
-            type="button"
-          >
-            {descriptionToggled ? "Remove Description" : "Add Description"}
-          </button> */}
         </div>
         <div className={`properties-container ${propertiesToggled ? "toggled" : ""}`}>
           <div className="header">
@@ -288,7 +275,7 @@ export const StagedInputForm = ({
             { label: "Yes", value: true, checkedCondition: isRequired },
             { label: "No", value: false, checkedCondition: !isRequired },
           ]}
-          onChange={(value) => setIsRequired(value)}
+          onChange={(value) => setIsRequired(value as boolean)}
         />
       </form>
 

@@ -51,8 +51,7 @@ export type CreatedPropertyType = {
   property_type: string | null;
 };
 
-export interface AddedInputType {
-  [x: string]: string | number | readonly string[] | undefined;
+export interface InputType {
   id: string;
   input_type_id: number;
   draft_form_id: number;
@@ -68,6 +67,11 @@ export interface AddedInputType {
   input_type_name: string;
   input_type_description: string;
   num_custom_properties: number;
+  existing_answer: string;
+  value: string;
+}
+
+export interface InputTypeWithProperties extends InputType {
   properties: { [key: string]: CreatedPropertyType };
 }
 
@@ -89,15 +93,16 @@ export type PublishedFormType = {
   id: string;
   draft_id: string;
   title: string;
-  description: string | null;
+  description: string;
   passkey: string | null;
-  is_deleted: boolean | null;
+  is_deleted: boolean;
   published_by_id: string;
   published_at: string;
   created_by_id: string;
   created_at: string;
   modified_by_id: null;
   modified_at: null;
+  can_resubmit: boolean;
 };
 
 export type SortOptionType = {
@@ -113,7 +118,12 @@ export interface AllFormsType extends DraftFormType {
 
 export type UserType = {
   id: string;
-  isAdmin: boolean;
+  name: string;
+  email: string;
+  picture: string;
+  username: string | null;
+  created_at: string;
+  modified_at: string;
 } | null;
 
 export type PrivacyOptionResponseType = {
@@ -133,4 +143,13 @@ export type PrivacyOptionType = {
   created_at: string;
   modified_at: string;
   checked: boolean;
+};
+
+export type PrevSubmissionType = {
+  created_at: string;
+  created_by_id: string;
+  form_id: string;
+  id: string;
+  modified_at: string | null;
+  modified_by_id: string | null;
 };

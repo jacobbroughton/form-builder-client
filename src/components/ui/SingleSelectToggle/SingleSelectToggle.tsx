@@ -8,8 +8,8 @@ const SingleSelectToggle = ({
   onChange,
 }: {
   label: string;
-  options: { label: string; value: any; checkedCondition: boolean }[];
-  onChange: () => void;
+  options: { label: string; value: unknown; checkedCondition: boolean }[];
+  onChange: (value: unknown) => void;
 }) => {
   return (
     <div className="single-select-toggle">

@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
-import { useNavigate, useParams } from "react-router-dom";
 import { handleCatchError } from "../utils/usefulFunctions";
+import { InputTypeWithProperties } from "../lib/types";
 
 export const useInputForEdit = () => {
   const [loading, setLoading] = useState(false);
-  const [initialInput, setInitialInput] = useState(null);
-  const [updatedInput, setUpdatedInput] = useState(null);
+  const [initialInput, setInitialInput] = useState<InputTypeWithProperties | null>(null);
+  const [updatedInput, setUpdatedInput] = useState<InputTypeWithProperties | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const { setError } = useContext(ErrorContext);
@@ -53,8 +54,8 @@ export const useInputForEdit = () => {
   }
 
   useEffect(() => {
-    getInput({ inputId });
-  }, []);
+    if (inputId) getInput({ inputId });
+  }, [inputId]);
 
   return { initialInput, updatedInput, setUpdatedInput, loading, error: localError };
 };

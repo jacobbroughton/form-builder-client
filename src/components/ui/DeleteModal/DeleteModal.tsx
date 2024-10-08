@@ -2,15 +2,13 @@ import { XIcon } from "../icons/XIcon";
 import { useEffect, useRef } from "react";
 import "./DeleteModal.css";
 
-const DeleteModal = ({
-  label = "",
-  setDeleteModalShowing,
-  handleDeleteClick,
+function DeleteModal({
+  label = "", setDeleteModalShowing, handleDeleteClick,
 }: {
   label: string;
   setDeleteModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
   handleDeleteClick: () => void;
-}) => {
+}) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const DeleteModal = ({
             onClick={(e) => {
               e.preventDefault();
               setDeleteModalShowing(false);
-            }}
+            } }
           >
             <XIcon />
           </button>
@@ -46,7 +44,7 @@ const DeleteModal = ({
           <button
             onClick={() => {
               setDeleteModalShowing(false);
-            }}
+            } }
           >
             Cancel
           </button>
@@ -55,7 +53,7 @@ const DeleteModal = ({
             onClick={() => {
               handleDeleteClick();
               setDeleteModalShowing(false);
-            }}
+            } }
           >
             Delete
           </button>
@@ -64,5 +62,5 @@ const DeleteModal = ({
       <div className="delete-modal-overlay"></div>
     </>
   );
-};
+}
 export default DeleteModal;

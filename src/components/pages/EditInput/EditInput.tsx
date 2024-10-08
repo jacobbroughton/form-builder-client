@@ -1,7 +1,5 @@
-import { useParams } from "react-router-dom";
-import "./EditInput.css";
-import { useEffect } from "react";
 import { useInputForEdit } from "../../../hooks/useInputForEdit";
+import "./EditInput.css";
 const EditInput = () => {
   const {
     initialInput,
@@ -10,13 +8,13 @@ const EditInput = () => {
     loading: inputLoading,
   } = useInputForEdit();
 
+  if (inputLoading) return <p>Input loading...</p>;
+
+  if (!initialInput || !updatedInput) return <p>No input found</p>;
+
   const saveDisabled =
     initialInput.metadata_question === updatedInput.metadata_question &&
     initialInput.metadata_description === updatedInput.metadata_description;
-
-  if (inputLoading) return <p>Input loading...</p>;
-
-  if (!updatedInput) return <p>No input found</p>;
 
   return (
     <main className="edit-input">

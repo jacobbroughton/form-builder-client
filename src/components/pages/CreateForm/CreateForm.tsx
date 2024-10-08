@@ -1,19 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  AddedInputType,
-  DraftFormType,
-  InputTypeType,
-  PrivacyOptionType,
-} from "../../../lib/types";
 import { useNavigate } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
-import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
 import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
 import { usePublish } from "../../../hooks/usePublish";
 import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
 import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
+import {
+  DraftFormType,
+  InputType,
+  InputTypeType,
+  PrivacyOptionType,
+} from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
@@ -26,17 +25,14 @@ import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import SavedStatus from "../../ui/SavedStatus/SavedStatus";
 import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
+import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import CircleIcon from "../../ui/icons/CircleIcon";
-import FilledCircleIcon from "../../ui/icons/FilledCircleIcon";
-import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
-  const { getDraftForm } = useGetDraftForm();
   const { publish } = usePublish();
   const { storeInitialDraft } = useStoreInitialDraft();
   const { updateDraftForm } = useUpdateDraftForm();
@@ -58,7 +54,7 @@ export const CreateForm = () => {
 
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],
@@ -66,7 +62,7 @@ export const CreateForm = () => {
 
   const [prevSavedForm, setPrevSavedForm] = useState<{
     form: DraftFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],
@@ -128,24 +124,6 @@ export const CreateForm = () => {
       setInitiallyLoading(false);
     }
   }
-
-  useEffect(() => {
-    async function fetchFormToModify() {
-      const data = await getDraftForm({ formId: draftIdToFetch! });
-
-      setPrevSavedForm({
-        form: data.form,
-        inputs: data.inputs,
-      });
-
-      setDraft({
-        form: data.form,
-        inputs: data.inputs,
-      });
-    }
-
-    if (draftIdToFetch) fetchFormToModify();
-  }, [draftIdToFetch]);
 
   useEffect(() => {
     if (reflectFormPrivacyOption)
@@ -213,7 +191,7 @@ export const CreateForm = () => {
     (privacyOption) => privacyOption.checked
   );
 
-  async function handlePublishForm(e) {
+  async function handlePublishForm() {
     try {
       const data = await publish({
         draftFormId: draft.form!.id,
@@ -312,7 +290,7 @@ export const CreateForm = () => {
                 { label: "Yes", value: true, checkedCondition: canResubmit },
                 { label: "No", value: false, checkedCondition: !canResubmit },
               ]}
-              onChange={(value) => setCanResubmit(value)}
+              onChange={(value) => setCanResubmit(value as boolean)}
             />
 
             <div className="form-buttons">

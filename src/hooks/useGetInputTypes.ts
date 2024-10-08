@@ -1,14 +1,14 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { InputTypeType } from "../lib/types";
-import { handleCatchError } from "../utils/usefulFunctions";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
-import { useNavigate } from "react-router-dom";
+import { handleCatchError } from "../utils/usefulFunctions";
+import { InputType } from "../lib/types";
 
 export const useGetInputTypes = () => {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [inputTypes, setInputTypes] = useState([]);
+  const [inputTypes, setInputTypes] = useState<InputType[]>([]);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();

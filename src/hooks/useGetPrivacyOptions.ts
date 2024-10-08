@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { handleCatchError } from "../utils/usefulFunctions";
-import { ErrorContext } from "../providers/ErrorContextProvider";
-import { UserContext } from "../providers/UserContextProvider";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PrivacyOptionResponseType, PrivacyOptionType } from "../lib/types";
+import { ErrorContext } from "../providers/ErrorContextProvider";
+import { UserContext } from "../providers/UserContextProvider";
+import { handleCatchError } from "../utils/usefulFunctions";
 
 export const useGetPrivacyOptions = () => {
   const [loading, setLoading] = useState<boolean>(false);

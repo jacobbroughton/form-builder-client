@@ -1,12 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 import { InputTypeType } from "../../../lib/types";
-import { handleCatchError } from "../../../utils/usefulFunctions";
+import NumberIcon from "../icons/NumberIcon";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
-import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
-import LettersIcon from "../icons/LettersIcon";
-import NumberIcon from "../icons/NumberIcon";
 
 export const InputTypeSelector = ({
   setCurrentView,
@@ -17,7 +14,7 @@ export const InputTypeSelector = ({
 }) => {
   const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
 
-  function renderIcon(inputTypeName) {
+  function renderIcon(inputTypeName: string) {
     switch (inputTypeName) {
       case "Text": {
         return <p className="small-text">abc</p>;

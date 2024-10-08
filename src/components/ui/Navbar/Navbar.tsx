@@ -7,7 +7,7 @@ import UserMenu from "../UserMenu/UserMenu";
 import { UserContext } from "../../../providers/UserContextProvider";
 
 export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
-  const [userMenuToggled, setUserMenuToggled] = useState(false);
+  const [userMenuToggled, setUserMenuToggled] = useState<boolean>(false);
   const { user } = useContext(UserContext);
 
   return (
@@ -35,7 +35,7 @@ export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
                   <UserIcon />
                 )}
               </button>
-              {userMenuToggled ? (
+              {Boolean(user) && userMenuToggled ? (
                 <UserMenu setUserMenuToggled={setUserMenuToggled} />
               ) : (
                 false

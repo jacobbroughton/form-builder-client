@@ -20,7 +20,8 @@ const PrivacyOptions = ({
   setPrivacyPasskey: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   function handlePrivacyOptionClick(clickedPrivacyOption: PrivacyOptionType) {
-    if (!clickedPrivacyOption.needs_passkey && privacyPasskey !== '') setPrivacyPasskey('')
+    if (!clickedPrivacyOption.needs_passkey && privacyPasskey !== "")
+      setPrivacyPasskey("");
     setPrivacyOptions(
       privacyOptions.map((privacyOption) => ({
         ...privacyOption,
@@ -47,7 +48,7 @@ const PrivacyOptions = ({
             <button
               onClick={() => handlePrivacyOptionClick(privacyOption)}
               key={privacyOption.id}
-              className={`${privacyOption.checked ? 'selected' : ''}`}
+              className={`${privacyOption.checked ? "selected" : ""}`}
             >
               <div className="radio-container">
                 {privacyOption.checked ? <FilledCircleIcon /> : <CircleIcon />}
@@ -60,7 +61,7 @@ const PrivacyOptions = ({
           ))
         )}
       </div>
-      {selectedOption?.needs_passkey ? (
+      {selectedOption?.needs_passkey && (
         <div className="passkey-section">
           <div className="heading">
             <p>Enter a passkey *</p>
@@ -77,8 +78,6 @@ const PrivacyOptions = ({
             onChange={(e) => setPrivacyPasskey(e.target.value)}
           />
         </div>
-      ) : (
-        false
       )}
     </>
   );

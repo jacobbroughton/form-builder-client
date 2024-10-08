@@ -1,0 +1,81 @@
+.responses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.responses-container > div.row {
+  display: flex;
+  gap: 10px;
+}
+
+.responses-container > div.row > .users-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--container-border-color);
+  align-self: flex-start;
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 150px;
+  width: 100%;
+}
+
+.responses-container > div.row > .users-list > li > button {
+  border: 0;
+  background-color: var(--button-default-bg-color);
+  width: 100%;
+  padding: 5px;
+  text-align: start;
+  cursor: pointer;
+}
+
+.responses-container > div.row > .users-list > li:not(:last-child) > button {
+  border-bottom: 1px solid var(--button-default-border-color);
+}
+
+.responses-container > div.row > .users-list > li > button:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.responses-container > div.row > .users-list > li.selected > button {
+  background-color: var(--button-default-bg-color-hover);
+  text-decoration: underline;
+}
+
+.responses-container > div.row > .responses-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--container-border-color);
+  border-radius: 5px;
+}
+
+.responses-container > div.row > .responses-list > li.input-container {
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.responses-container > div.row > .responses-list > li.input-container:not(:last-child) {
+  border-bottom: 1px solid var(--container-border-color);
+}
+
+.responses-container
+  > div.row
+  > .responses-list
+  > li.input-container
+  > div.prompt-section
+  > label {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.responses-container
+  > div.row
+  > .responses-list
+  > li.input-container
+  > div.prompt-section
+  > p {
+}

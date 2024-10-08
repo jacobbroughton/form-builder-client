@@ -94,7 +94,7 @@ const FormsList = ({
           </div>
         ))}
       </section>
-      {DeleteModalShowing ? (
+      {DeleteModalShowing && (
         <DeleteModal
           label="Delete form?"
           handleDeleteClick={async () => {
@@ -111,8 +111,6 @@ const FormsList = ({
           }}
           setDeleteModalShowing={setDeleteModalShowing}
         />
-      ) : (
-        false
       )}
     </>
   );

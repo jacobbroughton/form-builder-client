@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { XIcon } from "../icons/XIcon";
 import "./PrevSubmissionsModal.css";
 import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions";
+import { InputType, PrevSubmissionType, PublishedFormType } from "../../../lib/types";
 
 const PrevSubmissionsModal = ({
   form,
@@ -9,26 +10,26 @@ const PrevSubmissionsModal = ({
   setPrevSubmissionsModalShowing,
   prevSubmissions,
 }: {
-  form;
-  inputs;
+  form: PublishedFormType;
+  inputs: InputType[];
   setPrevSubmissionsModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
-  prevSubmissions;
+  prevSubmissions: PrevSubmissionType[];
 }) => {
   const { getInputSubmissions } = useGetInputSubmissions();
   const modalRef = useRef<HTMLDivElement>(null);
-  const [currForm, setCurrForm] = useState(form);
-  const [currInputs, setCurrInputs] = useState(inputs);
+  const [currForm] = useState(form);
+  const [currInputs] = useState<InputType[]>(inputs);
   const [selectedSubmission, setSelectedSubmission] = useState(prevSubmissions[0]);
   const [inputSubmissions, setInputSubmissions] = useState(null);
 
-  async function handleSubmissionClick(clickedSubmission) {
+  async function handleSubmissionClick(clickedSubmission: PrevSubmissionType) {
     try {
       const inputs = await getInputSubmissions({
         submissionId: clickedSubmission.id,
         bypass: false,
       });
       console.log(inputs);
-      setSelectedSubmission(clickedSubmission)
+      setSelectedSubmission(clickedSubmission);
       setInputSubmissions(inputs);
     } catch (error) {
       console.error(error);
@@ -110,7 +111,7 @@ const PrevSubmissionsModal = ({
                   ) : (
                     false
                   )}
-                  <p className="answer" className="small-text">
+                  <p className="answer small-text">
                     {inputSubmissions?.[input.id].value}
                   </p>
                 </div>

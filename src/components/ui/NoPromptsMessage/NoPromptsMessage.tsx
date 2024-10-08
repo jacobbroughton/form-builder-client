@@ -2,9 +2,8 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../providers/UserContextProvider";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
-import "./NoPromptsMessage.css";
 import { PlusIcon } from "../icons/PlusIcon";
-import { FormContext } from "../../../providers/FormProvider";
+import "./NoPromptsMessage.css";
 
 export const NoPromptsMessage = ({
   formId,
@@ -32,14 +31,12 @@ export const NoPromptsMessage = ({
           <i>Click to add one</i>
         </p>
       </div>
-      {userContext.user?.isAdmin ? (
+      {isFormAdmin && (
         <Link
           to={isDraft ? `/edit-draft-form/${formId}` : `/edit-published-form/${formId}`}
         >
           Add a prompt <ArrowRightIcon />
         </Link>
-      ) : (
-        false
       )}
     </button>
   ) : (

@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { handleCatchError } from "../utils/usefulFunctions";
-import { AddedInputType } from "../lib/types";
 
 export const useSubmitForm = () => {
   const [loading, setLoading] = useState<boolean>(false);

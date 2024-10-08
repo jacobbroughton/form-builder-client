@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { AddedInputType } from "../../../lib/types";
+import { InputType } from "../../../lib/types";
 import { Link } from "react-router-dom";
 import { EditIcon } from "../icons/EditIcon";
 import EyeIcon from "../icons/EyeIcon";
@@ -14,7 +14,7 @@ export const InputPopupMenu = ({
   handleChangeDraftInputEnabledStatus,
   handleDeleteClick,
 }: {
-  input: AddedInputType;
+  input: InputType;
   setIdForInputPopup: React.Dispatch<React.SetStateAction<string | null>>;
   setInputPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
   handleChangeDraftInputEnabledStatus: () => Promise<void>;

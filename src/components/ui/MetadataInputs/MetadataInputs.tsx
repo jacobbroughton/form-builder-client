@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AddedInputType, AllFormsType } from "../../../lib/types";
+import { InputType, AllFormsType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { PlusIcon } from "../icons/PlusIcon";
@@ -19,12 +19,12 @@ export const MetadataInputs = ({
 }: {
   form: {
     form: AllFormsType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   };
   setForm: React.Dispatch<
     React.SetStateAction<{
       form: AllFormsType | null;
-      inputs: AddedInputType[];
+      inputs: InputType[];
     }>
   >;
   setCurrentView: React.Dispatch<React.SetStateAction<string>>;
@@ -34,7 +34,7 @@ export const MetadataInputs = ({
   const { deleteInput } = useDeleteInput();
   const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
   const [inputPopupToggled, setInputPopupToggled] = useState(false);
-  const [inputStagedForDelete, setInputStagedForDelete] = useState<AddedInputType | null>(
+  const [inputStagedForDelete, setInputStagedForDelete] = useState<InputType | null>(
     null
   );
   const [deleteModalToggled, setDeleteModalToggled] = useState(false);
@@ -42,7 +42,7 @@ export const MetadataInputs = ({
   const { setError } = useContext(ErrorContext);
 
   async function handleChangeDraftInputEnabledStatus(
-    clickedInput: AddedInputType
+    clickedInput: InputType
   ): Promise<void> {
     try {
       const newActiveStatus = clickedInput.is_active ? false : true;
@@ -69,7 +69,7 @@ export const MetadataInputs = ({
     }
   }
 
-  async function handleInputDelete(clickedInput: AddedInputType | null): Promise<void> {
+  async function handleInputDelete(clickedInput: InputType | null): Promise<void> {
     try {
       if (!clickedInput) throw new Error("No input was found for deletion");
 
@@ -143,12 +143,13 @@ export const MetadataInputs = ({
               <p className="name">{input.metadata_question}</p>
               <div className="tags">
                 <p>{input.input_type_name || "Unnamed"}</p>
-                {input.num_custom_properties ? (
-                  <p>{input.num_custom_properties} custom properties</p>
-                ) : (
-                  false
+                {input.num_custom_properties > 0 && (
+                  <p>
+                    {input.num_custom_properties} custom propert
+                    {input.num_custom_properties > 1 ? "ies" : "y"}
+                  </p>
                 )}
-                {input.is_required ? <p>Required</p> : false}
+                {input.is_required && <p>Required</p>}
               </div>
               <button
                 className="popup-menu-button"
@@ -198,14 +199,12 @@ export const MetadataInputs = ({
           </button>
         </div>
       )}
-      {deleteModalToggled ? (
+      {deleteModalToggled && (
         <DeleteModal
           label="Delete input?"
           setDeleteModalShowing={setDeleteModalToggled}
           handleDeleteClick={() => handleInputDelete(inputStagedForDelete)}
         />
-      ) : (
-        false
       )}
     </div>
   );

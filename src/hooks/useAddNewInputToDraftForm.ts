@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import { AddedInputType, InputTypePropertyType } from "../lib/types";
+import { InputType, InputTypePropertyType } from "../lib/types";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
@@ -20,7 +20,7 @@ export const useAddNewInputToDraftForm = () => {
       properties: InputTypePropertyType[];
       formId: string | undefined;
       isRequired: boolean
-    }): Promise<AddedInputType> => {
+    }): Promise<InputType> => {
       setLoading(true);
       setLocalError(null);
 

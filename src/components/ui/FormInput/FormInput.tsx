@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { AddedInputType } from "../../../lib/types";
+import { InputType, InputTypeWithProperties } from "../../../lib/types";
 import "./FormInput.css";
 
 export const FormInput = ({
@@ -9,12 +8,10 @@ export const FormInput = ({
   setInputs,
 }: {
   readOnly: boolean;
-  input: AddedInputType;
-  inputs: AddedInputType[];
-  setInputs: React.Dispatch<React.SetStateAction<AddedInputType[]>>;
+  input: InputTypeWithProperties;
+  inputs: InputTypeWithProperties[];
+  setInputs: React.Dispatch<React.SetStateAction<InputType[]>>;
 }) => {
-  const [value, setValue] = useState(input.properties?.[`default-value`]?.value || "");
-
   function renderInput() {
     switch (input.input_type_name) {
       case "Text": {
@@ -220,7 +217,7 @@ export const FormInput = ({
   }
 
   return (
-    <div className="input-container">
+    <div className="form-input">
       <p className="small-text bold">
         {input.metadata_question} {input.is_required ? "*" : ""}
       </p>

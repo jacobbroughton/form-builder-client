@@ -5,7 +5,7 @@ import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { usePublish } from "../../../hooks/usePublish";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 import {
-  AddedInputType,
+  InputType,
   DraftFormType,
   InputTypeType,
   PrivacyOptionType,
@@ -55,7 +55,7 @@ export const EditDraftForm = () => {
   const [saved, setSaved] = useState(true);
   const [draft, setDraft] = useState<{
     form: DraftFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],
@@ -63,7 +63,7 @@ export const EditDraftForm = () => {
 
   const [prevSavedForm, setPrevSavedForm] = useState<{
     form: DraftFormType | null;
-    inputs: AddedInputType[];
+    inputs: InputType[];
   }>({
     form: null,
     inputs: [],

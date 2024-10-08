@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.tsx";
 import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
 import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";

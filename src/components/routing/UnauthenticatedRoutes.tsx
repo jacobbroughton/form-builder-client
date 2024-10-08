@@ -12,14 +12,14 @@ export const UnauthenticatedRoutes = () => {
 
   const location = useLocation();
 
-  console.log(location.state?.from?.pathname)
+  console.log(location.state?.from?.pathname);
 
-  if (userLoading) return <InitialLoadingSkeleton/>
+  if (userLoading) return <InitialLoadingSkeleton />;
 
   return !user ? (
     <>
       <Navbar authenticated={false} />
-      {error ? <ErrorBanner message={error.toString()} setError={setError} /> : false}
+      {error && <ErrorBanner message={error.toString()} setError={setError} />}
       <div id="detail">
         <Outlet />
       </div>

@@ -12,19 +12,19 @@ export const AuthenticatedRoutes = () => {
   const { user, loading: userLoading } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
 
-  if (userLoading) return <InitialLoadingSkeleton/>;
+  if (userLoading) return <InitialLoadingSkeleton />;
 
   return user ? (
     <>
       <Navbar authenticated={true} />
 
-      {error ? <ErrorBanner message={error.toString()} setError={setError} /> : false}
+      {error && <ErrorBanner message={error.toString()} setError={setError} />}
 
       <div id="detail">
         <Outlet />
       </div>
 
-      {location.pathname !== "/create-form" ? <FloatingCreateButton /> : false}
+      {location.pathname !== "/create-form" && <FloatingCreateButton />}
     </>
   ) : (
     <Navigate to="/login" />
