@@ -18,7 +18,7 @@ export const EitherAuthRoutes = () => {
       <div id="detail">
         <Outlet />
       </div>
-      {location.pathname !== "/create-form" && <FloatingCreateButton />}
+      {location.pathname !== "/create-form" && user && <FloatingCreateButton />}
     </>
   );
 };

@@ -1,20 +1,21 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { InputTypePropertyOptionType } from "../lib/types";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 
-export const useGetInputTypePropertyOptions = () => {
+export const useInputTypePropertyOptions = () => {
+  const [inputTypePropertyOptions, setInputTypePropertyOptions] = useState<{
+    [key: string]: InputTypePropertyOptionType[];
+  }>({});
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const getInputTypePropertyOptions = useCallback(async (): Promise<{
-    [key: string]: InputTypePropertyOptionType[];
-  }> => {
+  async function getInputTypePropertyOptions(): Promise<void> {
     setLoading(true);
     setLocalError(null);
 
@@ -39,14 +40,20 @@ export const useGetInputTypePropertyOptions = () => {
         );
       }
 
-      return await response.json();
+      const data = await response.json();
+
+      setInputTypePropertyOptions(data);
     } catch (error) {
-      handleCatchError(error, setError, setLocalError);;
+      handleCatchError(error, setError, setLocalError);
       throw error;
     } finally {
       setLoading(false);
     }
+  }
+
+  useEffect(() => {
+    getInputTypePropertyOptions();
   }, []);
 
-  return { getInputTypePropertyOptions, loading, localError };
+  return { inputTypePropertyOptions, setInputTypePropertyOptions, loading, localError };
 };

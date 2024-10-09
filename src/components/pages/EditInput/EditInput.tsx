@@ -1,12 +1,24 @@
+import { useContext, useState } from "react";
 import { useInputForEdit } from "../../../hooks/useInputForEdit";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
+import InputPropertiesContainer from "../../ui/InputPropertiesContainer/InputPropertiesContainer";
+import InputTypeInfo from "../../ui/InputTypeInfo/InputTypeInfo";
+import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import "./EditInput.css";
+import { SaveIcon } from "../../ui/icons/SaveIcon";
+
 const EditInput = () => {
   const {
+    inputType,
     initialInput,
     updatedInput,
     setUpdatedInput,
     loading: inputLoading,
   } = useInputForEdit();
+  const { setError } = useContext(ErrorContext);
+  const [isRequired, setIsRequired] = useState(initialInput?.is_required || false);
 
   if (inputLoading) return <p>Input loading...</p>;
 
@@ -16,29 +28,72 @@ const EditInput = () => {
     initialInput.metadata_question === updatedInput.metadata_question &&
     initialInput.metadata_description === updatedInput.metadata_description;
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
   return (
     <main className="edit-input">
       <div className="container">
-        <h1>Edit Input</h1>
-        <input
-          value={updatedInput.metadata_question}
-          onChange={(e) =>
-            setUpdatedInput({
-              ...updatedInput,
-              metadata_question: e.target.value,
-            })
-          }
-        />
-        <input
-          value={updatedInput.metadata_description}
-          onChange={(e) =>
-            setUpdatedInput({
-              ...updatedInput,
-              metadata_description: e.target.value,
-            })
-          }
-        />
-        <button disabled={saveDisabled}>Save</button>
+        <div className="heading">
+          <h3>Edit Input</h3>
+        </div>
+
+        <InputTypeInfo inputType={inputType} />
+
+        <form onSubmit={handleSubmit}>
+          <FormGroupContainer
+            label="Prompt / Question"
+            placeholder="Prompt / Question"
+            inputValue={updatedInput.metadata_question}
+            handleChange={(e) =>
+              setUpdatedInput({
+                ...updatedInput,
+                metadata_question: e.target.value,
+              })
+            }
+            isRequired={true}
+            type="input"
+          />
+
+          <FormGroupContainer
+            label="Description"
+            placeholder="description"
+            inputValue={updatedInput.metadata_description}
+            handleChange={(e) =>
+              setUpdatedInput({
+                ...updatedInput,
+                metadata_description: e.target.value,
+              })
+            }
+            isRequired={true}
+            type="textarea"
+          />
+
+          {inputType && <InputPropertiesContainer inputTypeId={inputType.id} />}
+
+          <SingleSelectToggle
+            label="Required?"
+            options={[
+              { label: "Yes", value: true, checkedCondition: isRequired },
+              { label: "No", value: false, checkedCondition: !isRequired },
+            ]}
+            onChange={(value) => setIsRequired(value as boolean)}
+          />
+          <button
+            className="action-button-with-icon"
+            disabled={saveDisabled}
+            type="submit"
+          >
+            <SaveIcon />
+            Save
+          </button>
+        </form>
       </div>
     </main>
   );

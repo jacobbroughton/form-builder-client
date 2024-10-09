@@ -2,8 +2,10 @@ import { XIcon } from "../icons/XIcon";
 import { useEffect, useRef } from "react";
 import "./DeleteModal.css";
 
-function DeleteModal({
-  label = "", setDeleteModalShowing, handleDeleteClick,
+export function DeleteModal({
+  label = "",
+  setDeleteModalShowing,
+  handleDeleteClick,
 }: {
   label: string;
   setDeleteModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,7 +34,7 @@ function DeleteModal({
             onClick={(e) => {
               e.preventDefault();
               setDeleteModalShowing(false);
-            } }
+            }}
           >
             <XIcon />
           </button>
@@ -44,7 +46,7 @@ function DeleteModal({
           <button
             onClick={() => {
               setDeleteModalShowing(false);
-            } }
+            }}
           >
             Cancel
           </button>
@@ -53,7 +55,7 @@ function DeleteModal({
             onClick={() => {
               handleDeleteClick();
               setDeleteModalShowing(false);
-            } }
+            }}
           >
             Delete
           </button>
@@ -63,4 +65,3 @@ function DeleteModal({
     </>
   );
 }
-export default DeleteModal;

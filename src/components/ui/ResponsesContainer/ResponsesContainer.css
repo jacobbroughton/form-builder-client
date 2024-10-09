@@ -27,6 +27,9 @@
   padding: 5px;
   text-align: start;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .responses-container > div.row > .users-list > li:not(:last-child) > button {
@@ -39,7 +42,25 @@
 
 .responses-container > div.row > .users-list > li.selected > button {
   background-color: var(--button-default-bg-color-hover);
-  text-decoration: underline;
+}
+
+.responses-container > div.row > .users-list > li > button > p {
+  overflow: hidden;
+  white-space: nowrap;
+  /* text-overflow: ellipsis; */
+}
+
+.responses-container > div.row > .users-list > li > button > svg {
+  width: 13px;
+  min-width: 13px;
+}
+
+.responses-container > div.row > .users-list > li.selected > button > svg {
+  fill: lightgreen;
+}
+
+.responses-container > div.row > .users-list > li:not(.selected) > button > svg {
+  fill: grey;
 }
 
 .responses-container > div.row > .responses-list {

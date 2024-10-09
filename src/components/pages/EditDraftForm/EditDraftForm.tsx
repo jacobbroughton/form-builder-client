@@ -21,13 +21,14 @@ import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import "./EditDraftForm.css";
-import DeleteModal from "../../ui/DeleteModal/DeleteModal";
+import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
 import { EditIcon } from "../../ui/icons/EditIcon";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
+import CatchView from "../../ui/CatchView/CatchView";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
@@ -246,20 +247,20 @@ export const EditDraftForm = () => {
       }
       case "staged-input-form": {
         return (
-          <StagedInputForm
-            form={draft}
-            setForm={setDraft}
-            setCurrentView={setCurrentView}
-            stagedNewInputType={stagedNewInputType}
-            setStagedNewInputType={setStagedNewInputType}
-            isForDraft={true}
-          />
+          <>
+            <StagedInputForm
+              form={draft}
+              setForm={setDraft}
+              setCurrentView={setCurrentView}
+              stagedNewInputType={stagedNewInputType}
+              setStagedNewInputType={setStagedNewInputType}
+              isForDraft={true}
+            />
+          </>
         );
       }
       default: {
-        return (
-          <p className="small-text">Hmm...not sure where you were trying to go, but it probably isn't here</p>
-        );
+        return <CatchView />;
       }
     }
   }
@@ -293,7 +294,6 @@ export const EditDraftForm = () => {
   }, []);
 
   useEffect(() => {
- 
     if (draft.form && prevSavedForm.form) {
       const condition =
         draft.form.title !== prevSavedForm.form.title ||

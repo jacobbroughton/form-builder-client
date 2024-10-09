@@ -4,24 +4,23 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
 import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
+import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
 import { Draft } from "./components/pages/Draft/Draft.tsx";
 import { EditDraftForm } from "./components/pages/EditDraftForm/EditDraftForm.tsx";
+import EditInput from "./components/pages/EditInput/EditInput.tsx";
 import { EditPublishedForm } from "./components/pages/EditPublishedForm/EditPublishedForm.tsx";
 import { ErrorPage } from "./components/pages/Error/ErrorPage.tsx";
 import { Form } from "./components/pages/Form/Form.tsx";
+import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
 import Landing from "./components/pages/Landing/Landing.tsx";
 import Login from "./components/pages/Login/Login.tsx";
 import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
-import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
 import { EitherAuthRoutes } from "./components/routing/EitherAuthRoutes.tsx";
+import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
 import "./index.css";
-import UserContextProvider from "./providers/UserContextProvider.tsx";
 import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
-import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
-import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
 import { FormContextProvider } from "./providers/FormProvider.tsx";
-import EditInput from "./components/pages/EditInput/EditInput.tsx";
-import Responses from "./components/pages/Responses/Responses.tsx";
+import UserContextProvider from "./providers/UserContextProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +28,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/form/:formId",
+        path: "/form/:formId/",
         element: (
           <FormContextProvider>
             <Form />
@@ -87,15 +86,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/edit-published-form/:formId/:initialView?",
-        element: <EditPublishedForm />,
+        element: (
+          <FormContextProvider>
+            <EditPublishedForm />
+          </FormContextProvider>
+        ),
       },
       {
         path: "/edit-input/:inputId",
         element: <EditInput />,
-      },
-      {
-        path: "/responses/:formId",
-        element: <Responses />,
       },
     ],
   },

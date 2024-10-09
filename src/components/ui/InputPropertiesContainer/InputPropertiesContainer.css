@@ -1,0 +1,135 @@
+.properties-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--container-border-color);
+  background-color: transparent;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.properties-container.toggled > .header {
+  border-bottom: 1px solid var(--container-border-color);
+}
+
+.properties-container > .header > button.properties-toggle {
+  background-color: var(--button-default-bg-color);
+  border: 0;
+  width: 100%;
+  text-align: start;
+  font-size: 1rem;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.properties-container > .header > button.properties-toggle:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.properties-container > .header > button.properties-toggle > .icon-container {
+  position: absolute;
+  left: 0;
+  width: 45px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-right: 1px solid var(--button-default-border-color);
+}
+
+.properties-container > .header > button.properties-toggle > .icon-container > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.properties-container > .header > button.properties-toggle > div.content {
+  margin-left: 45px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.properties-container > .header > button.properties-toggle > div.content > svg {
+  fill: whitesmoke;
+  width: 10px;
+}
+
+.properties-container >.properties
+/* , .metadata */ {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  border-top: 0;
+  background-color: transparent;
+  padding: 10px;
+  /* border-radius: 5px; */
+}
+
+div.properties > label {
+  font-size: 0.875rem;
+}
+
+.properties-container > .properties > .property-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2px;
+}
+
+.property-container > label.property-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.property-container > p.property-description {
+  font-size: 0.8rem;
+}
+
+.properties-container > .properties > .property-container > input {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid var(--input-default-border-color);
+  transition: border-color 0.1s ease-out;
+  font-family: inherit;
+}
+
+.property-container > input:not(.string):not(.number):not(.url):not(.email) {
+  cursor: pointer;
+}
+
+.properties-container > .properties > .property-container > input:hover {
+  border: 1px solid var(--input-default-border-color-hover);
+}
+
+.property-container.radio > .radio-options {
+  display: flex;
+  gap: 5px;
+}
+
+.property-container.radio > .radio-options > button {
+  padding: 3px 5px;
+  font-size: 1rem;
+  background-color: #333;
+  border-radius: 3px;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+.property-container.radio > .radio-options > button:not(:disabled):not(.checked):hover {
+  border-color: #6f6f6f;
+}
+
+.property-container.radio > .radio-options > button.checked {
+  border: 1px solid lightgreen;
+}

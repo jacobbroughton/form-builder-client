@@ -35,9 +35,9 @@ export const useGetPrivacyOptions = () => {
       const data: PrivacyOptionResponseType[] = await response.json();
 
       setPrivacyOptions(
-        data.map((privacyOption) => ({
-          ...privacyOption,
-          checked: privacyOption.id === formPrivacyId,
+        data.map((option) => ({
+          ...option,
+          checked: formPrivacyId ? formPrivacyId === option.id : option.id === 1,
         }))
       );
     } catch (error: unknown) {

@@ -5,7 +5,7 @@ import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { InputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import DeleteModal from "../../ui/DeleteModal/DeleteModal";
+import  {DeleteModal} from "../../ui/DeleteModal/DeleteModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
@@ -110,14 +110,13 @@ export const Draft = () => {
                 handleClick={() => {
                   navigate(`/edit-draft-form/${form.id}/input-types-selector`);
                 }}
-                isFormAdmin={true}
               />
             )}
           </>
         )}
         {DeleteModalShowing ? (
           <DeleteModal
-          label="Delete draft?"
+            label="Delete draft?"
             handleDeleteClick={() => handleFormDelete()}
             setDeleteModalShowing={setDeleteModalShowing}
           />

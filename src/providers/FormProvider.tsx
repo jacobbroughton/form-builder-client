@@ -1,7 +1,7 @@
 import { createContext, ReactElement, useContext, useEffect, useState } from "react";
 import { useGetInputSubmissions } from "../hooks/useGetInputSubmissions";
 import { useGetPrevFormSubmission } from "../hooks/useGetPrevFormSubmission";
-import { useGetPublishedForm } from "../hooks/useGetPublishedForm";
+import { usePublishedForm } from "../hooks/usePublishedForm";
 import { useResponses } from "../hooks/useResponses";
 import {
   InputType,
@@ -85,7 +85,7 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
     inputs,
     loading: formLoading,
     setInputs,
-  } = useGetPublishedForm();
+  } = usePublishedForm();
   const { getPrevFormSubmissions } = useGetPrevFormSubmission();
   const { getInputSubmissions } = useGetInputSubmissions();
   const { user } = useContext(UserContext);
@@ -102,7 +102,6 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
   ): Promise<null> {
     const inputSubmissions = await getInputSubmissions({
       submissionId: newSubmission.id,
-      bypass: false,
     });
 
     setPrevSubmissions([...prevSubmissions, newSubmission]);
@@ -120,12 +119,13 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
         const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
         console.log({ formSubmissions });
 
-        const inputSubmissions = await getInputSubmissions({
-          submissionId: formSubmissions[0]?.id,
-          bypass: true,
-        });
-        setLatestInputSubmissions(inputSubmissions);
-        console.log("Makes it here");
+        if (formSubmissions.length) {
+          const inputSubmissions = await getInputSubmissions({
+            submissionId: formSubmissions[0]?.id,
+          });
+          setLatestInputSubmissions(inputSubmissions);
+        }
+
         setFormSubmitted(formSubmissions[0] ? true : false);
 
         setPrevSubmissions(formSubmissions);

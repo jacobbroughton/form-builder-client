@@ -4,9 +4,7 @@
   gap: 5px;
 }
 
-.form-input:not(:last-child) {
-  border-bottom: 1px solid #333;
-}
+
 
 .form-input > input,
 .form-input > .input-wrapper > input,
@@ -41,19 +39,36 @@
   gap: 3px;
 }
 
-.form-input > .input-wrapper > input[type="color"],
+.form-input > .input-wrapper > input,
 .form-input > input[type="date"],
 .form-input > input[type="time"] {
   background-color: var(--button-default-bg-color);
+}
+
+.form-input > .input-wrapper > input:not(:disabled),
+.form-input > input[type="date"]:not(:disabled),
+.form-input > input[type="time"]:not(:disabled) {
   cursor: pointer;
 }
 
-.form-input > .input-wrapper > input[type="color"]:hover,
-.form-input > input[type="date"]:hover,
-.form-input > input[type="time"]:hover {
+.form-input > .input-wrapper > input:not(:disabled):hover,
+.form-input > input[type="date"]:not(:disabled):hover,
+.form-input > input[type="time"]:not(:disabled):hover {
   background-color: var(--button-default-bg-color-hover);
 }
 
 .form-input > .input-wrapper > p {
   font-size: 0.875rem;
+}
+
+.form-input > .input-wrapper.color {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 0;
+}
+
+.form-input > .input-wrapper.color.disabled > p {
+  color: grey;
 }

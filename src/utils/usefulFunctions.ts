@@ -1,3 +1,5 @@
+import { Location, useLocation } from "react-router-dom";
+
 export function timeAgo(date: string) {
   const nowMs = new Date().getTime();
   const passedDateMs = new Date(date).getTime();
@@ -82,4 +84,19 @@ export function getErrorMessage(error: Error | string | unknown) {
   }
 
   return errorMessage;
+}
+
+export function copyUrlToClipboard(locationFromReactRouter: Location) {
+  const location = locationFromReactRouter;
+
+  const url = window.location.origin + location.pathname + location.search;
+
+  navigator.clipboard
+    .writeText(url)
+    .then(() => {
+      console.log("Url copied to clipboard", url);
+    })
+    .catch(() => {
+      console.error("failed to copy the url", url);
+    });
 }

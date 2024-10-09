@@ -1,0 +1,44 @@
+.form-creator-container {
+  border: 1px solid var(--container-border-color);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  height: fit-content;
+  position: relative;
+}
+
+.form-creator-container::before {
+  content: 'About the creator';
+  font-size: 0.875rem;
+  position: absolute;
+  top: 100%;
+  font-style: italic;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--container-border-color);;
+  padding: 1px 10px;
+  white-space: nowrap;
+  border-bottom-left-radius: 5px;;
+  border-bottom-right-radius: 5px;;
+
+}
+
+.form-creator-container > .profile-picture-container {
+  border-radius: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+  height: 35px;
+  min-width: 35px;
+  width: 35px;
+}
+
+.form-creator-container > .profile-picture-container > img {
+  width: 100%;
+  height: 100%;
+}

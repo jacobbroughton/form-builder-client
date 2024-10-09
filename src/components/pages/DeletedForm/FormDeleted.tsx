@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./FormDeleted.css";
-import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import  { ArrowRightIcon }from "../../ui/icons/ArrowRightIcon";
 
 const FormDeleted = () => {
   return (

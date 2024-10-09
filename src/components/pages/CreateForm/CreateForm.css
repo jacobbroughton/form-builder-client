@@ -16,6 +16,7 @@ main.create-form > .container {
   margin: 0 auto;
   width: 100%;
   gap: 10px;
+  height: 100%;
 }
 
 main.create-form > .container > .no-items-yet {

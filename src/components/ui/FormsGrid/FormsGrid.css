@@ -4,7 +4,12 @@
   gap: 10px;
 }
 
-.form-grid > .form-grid-item {
+.form-grid > .form-grid-item-container {
+  position: relative;
+  height: auto;
+}
+
+.form-grid > .form-grid-item-container > .form-grid-item {
   border: 1px solid var(--button-default-border-color);
   background-color: var(--button-default-bg-color);
   /* padding: 5px; */
@@ -18,16 +23,16 @@
   overflow: hidden;
 }
 
-.form-grid > .form-grid-item > .content {
+.form-grid > .form-grid-item-container > .form-grid-item > .content {
   padding: 5px;
 }
 
-.form-grid > .form-grid-item:hover {
+.form-grid > .form-grid-item-container > .form-grid-item:hover {
   text-decoration: none;
   background-color: var(--button-default-bg-color-hover);
 }
 
-.form-grid > .form-grid-item > .controls {
+.form-grid > .form-grid-item-container > .form-grid-item > .controls {
   border-top: 1px solid #555;
   width: 100%;
   align-self: flex-end;
@@ -37,13 +42,13 @@
   gap: 10px;
 }
 
-.form-grid > .form-grid-item > .controls > .menu-button-container {
-  /* padding: 5px; */
-  padding-right: 5px;
-  position: relative;
+.form-grid > .form-grid-item-container > .menu-button-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
-.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button {
+.form-grid > .form-grid-item-container > .menu-button-container > .menu-button {
   background-color: transparent;
   border: 0;
   /* width: 20px; */
@@ -53,53 +58,83 @@
   justify-content: center;
   border-radius: 3px;
   padding: 3px;
+  width: 30px;
+  height: 29px;
 }
 
-/* .form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button:hover {
+/* .form-grid > .form-grid-item-container > .form-grid-item > .controls > .menu-button-container > .menu-button:hover {
 } */
 
-.form-grid > .form-grid-item > .controls > .menu-button-container > .menu-button > svg {
+.form-grid > .form-grid-item-container > .menu-button-container > .menu-button > svg {
   width: 15px;
   fill: whitesmoke;
 }
 
-.form-grid > .form-grid-item > div.content > p.name {
+.form-grid > .form-grid-item-container > .form-grid-item > div.content > p.name {
   font-weight: 600;
   font-size: 0.875rem;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side {
+.form-grid > .form-grid-item-container > .form-grid-item > div.controls > .left-side {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 5px;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side > p.created-date {
+.form-grid
+  > .form-grid-item-container
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > p.created-date {
   cursor: help;
   font-size: 0.75rem;
   opacity: 0.5;
   white-space: nowrap;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side > .icon-container {
+.form-grid
+  > .form-grid-item-container
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: help;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side > .icon-container > svg {
+.form-grid
+  > .form-grid-item-container
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container
+  > svg {
   fill: lightskyblue;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side > .icon-container.draft > svg {
+.form-grid
+  > .form-grid-item-container
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container.draft
+  > svg {
   width: 15px;
   fill: #c37f00;
 }
 
-.form-grid > .form-grid-item > div.controls > .left-side > .icon-container.public > svg {
+.form-grid
+  > .form-grid-item-container
+  > .form-grid-item
+  > div.controls
+  > .left-side
+  > .icon-container.public
+  > svg {
   width: 15px;
 }

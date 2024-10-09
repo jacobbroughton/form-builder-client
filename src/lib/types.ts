@@ -103,6 +103,7 @@ export type PublishedFormType = {
   modified_by_id: null;
   modified_at: null;
   can_resubmit: boolean;
+  num_responses: number;
 };
 
 export type SortOptionType = {

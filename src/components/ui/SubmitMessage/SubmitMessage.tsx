@@ -8,7 +8,7 @@ const SubmitMessage = ({ canResubmitForm, submitCooldownCountdown, prevSubmissio
       seconds
     </p>
   ) : (
-    <p>
+    <p className='small-text'>
       Form submitted on{" "}
       {new Date(
         prevSubmissions[prevSubmissions.length - 1]?.created_at

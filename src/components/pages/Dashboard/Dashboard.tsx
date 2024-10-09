@@ -12,7 +12,6 @@ export const Dashboard = () => {
   return (
     <main className="forms">
       <div className="container">
-        <div></div>
         <FormsContainer label="Public Forms" getFormsFunc={getPublicForms} />
         <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
         <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />

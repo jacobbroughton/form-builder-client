@@ -9,7 +9,8 @@ import "./MetadataInputs.css";
 import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
 import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
 import { useDeleteInput } from "../../../hooks/useDeleteInput";
-import DeleteModal from "../DeleteModal/DeleteModal";
+import  {DeleteModal} from "../DeleteModal/DeleteModal";
+import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
 
 export const MetadataInputs = ({
   form,
@@ -89,49 +90,47 @@ export const MetadataInputs = ({
   return (
     <div className="metadata-inputs">
       <form className="title-and-description" onSubmit={(e) => e.preventDefault()}>
-        <div className="form-group-container">
-          <p className="small-text bold">Form name *</p>
-          <input
-            value={form.form.title}
-            onChange={(e) => {
-              e.preventDefault();
-              setForm({
-                ...form,
-                form: {
-                  ...form.form!,
-                  title: e.target.value,
-                },
-              });
-            }}
-            placeholder="Title"
-          />
-        </div>
-        <div className="form-group-container">
-          <p className="small-text bold">
-            Description <span className="optional">(optional)</span>
-          </p>
-          <textarea
-            value={form.form.description || ""}
-            onChange={(e) => {
-              e.preventDefault();
-              setForm({
-                ...form,
-                form: {
-                  ...form.form!,
-                  description: e.target.value,
-                },
-              });
-            }}
-            placeholder="Description"
-          />
-        </div>
+        <FormGroupContainer
+          label="Form name"
+          placeholder="Title"
+          type="input"
+          inputValue={form.form.title}
+          isRequired={true}
+          handleChange={(e) => {
+            e.preventDefault();
+            setForm({
+              ...form,
+              form: {
+                ...form.form!,
+                title: e.target.value,
+              },
+            });
+          }}
+        />
+
+        <FormGroupContainer
+          label="Description"
+          placeholder="Description"
+          type="textarea"
+          inputValue={form.form.description || ""}
+          isRequired={true}
+          handleChange={(e) => {
+            e.preventDefault();
+            setForm({
+              ...form,
+              form: {
+                ...form.form!,
+                description: e.target.value,
+              },
+            });
+          }}
+        />
       </form>
       {form.inputs.length === 0 ? (
         <NoPromptsMessage
           formId={form.form.id}
           isDraft={isForDraft}
           handleClick={() => setCurrentView("input-types-selector")}
-          isFormAdmin={true}
         />
       ) : (
         <div className="added-inputs">

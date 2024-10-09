@@ -1,0 +1,20 @@
+.input-type-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid var(--container-border-color);
+  padding: 5px;
+  padding-left: 10px;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.input-type-info > .name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.input-type-info > .description {
+  font-size: 0.875rem;
+  text-align: start;
+}

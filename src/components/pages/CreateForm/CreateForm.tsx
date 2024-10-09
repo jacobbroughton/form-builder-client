@@ -1,11 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
-import { useGetExistingEmptyDraft } from "../../../hooks/useGetExistingEmptyDraft";
 import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
+import { useNewDraft } from "../../../hooks/useNewDraft";
 import { usePublish } from "../../../hooks/usePublish";
-import { useRenewExistingDraft } from "../../../hooks/useRenewExistingDraft";
-import { useStoreInitialDraft } from "../../../hooks/useStoreInitialDraft";
 import { useUpdateDraftForm } from "../../../hooks/useUpdateDraftForm";
 import {
   DraftFormType,
@@ -15,11 +13,11 @@ import {
 } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import CatchView from "../../ui/CatchView/CatchView";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
-import ArrowRightIcon from "../../ui/icons/ArrowRightIcon";
+import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
-import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
 import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
@@ -34,10 +32,8 @@ export const CreateForm = () => {
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
   const { publish } = usePublish();
-  const { storeInitialDraft } = useStoreInitialDraft();
   const { updateDraftForm } = useUpdateDraftForm();
-  const { getExistingEmptyDraft } = useGetExistingEmptyDraft();
-  const { renewExistingDraft } = useRenewExistingDraft();
+  const { newDraft, loading: initiallyLoading } = useNewDraft();
   const {
     getPrivacyOptions,
     privacyOptions,
@@ -68,8 +64,7 @@ export const CreateForm = () => {
     inputs: [],
   });
 
-  const [draftIdToFetch, setDraftIdToFetch] = useState<string | null>(null);
-  const [initiallyLoading, setInitiallyLoading] = useState(true);
+  // const [initiallyLoading, setInitiallyLoading] = useState(true);
   const [currentView, setCurrentView] = useState("metadata-inputs");
   const [saved, setSaved] = useState(true);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
@@ -78,52 +73,6 @@ export const CreateForm = () => {
     null
   );
   const [canResubmit, setCanResubmit] = useState(false);
-
-  let isStoring = false;
-
-  async function createNewDraft(): Promise<void> {
-    setInitiallyLoading(true);
-
-    try {
-      if (isStoring) return;
-      isStoring = true;
-
-      const storedFormData = await getExistingEmptyDraft();
-
-      let formToUse = storedFormData[0];
-
-      if (storedFormData[0]) {
-        const data = await renewExistingDraft({ draftFormId: storedFormData[0].id });
-        if (data[0]) formToUse = data[0];
-
-        console.log("1");
-      } else {
-        const data = await storeInitialDraft();
-
-        if (data) formToUse = data;
-
-        console.log(2);
-      }
-
-      console.log({ formToUse });
-
-      setPrevSavedForm({
-        form: formToUse,
-        inputs: [],
-      });
-
-      setDraft({
-        form: formToUse,
-        inputs: [],
-      });
-      // setInitiallyLoading(false)
-    } catch (error) {
-      handleCatchError(error, setError, null);
-      // setInitiallyLoading(false)
-    } finally {
-      setInitiallyLoading(false);
-    }
-  }
 
   useEffect(() => {
     if (reflectFormPrivacyOption)
@@ -164,25 +113,6 @@ export const CreateForm = () => {
     }
   }
 
-  // async function getDraftFormsLocal() {
-  //   try {
-  //     setInitiallyLoading(true);
-
-  //     const data = await getDraftForms();
-
-  //     setDraftForms(data);
-
-  //     if (!data.length) {
-  //       createNewDraft();
-  //       setCurrentView("metadata-inputs");
-  //     }
-
-  //     setInitiallyLoading(false);
-  //   } catch (error) {
-  //     handleCatchError(error, setError, null);
-  //   }
-  // }
-
   const stagedSelectedPrivacyOption = stagedPrivacyOptions.find(
     (privacyOption) => privacyOption.checked
   );
@@ -193,8 +123,15 @@ export const CreateForm = () => {
 
   async function handlePublishForm() {
     try {
+      if (!draft || !draft.form)
+        throw new Error("No draft form found when trying to delete");
+
+      console.log(draft.form)
+
+      if (!draft.form.id) throw new Error("No form id provided");
+
       const data = await publish({
-        draftFormId: draft.form!.id,
+        draftFormId: draft.form.id,
       });
 
       navigate(`/form/${data[0].id}`);
@@ -203,17 +140,6 @@ export const CreateForm = () => {
     }
   }
 
-  async function handleFormDelete() {
-    try {
-      if (!draft.form!.id) throw new Error("No form id provided");
-
-      await deleteDraftForm({ formId: draft.form!.id });
-
-      navigate("/");
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
 
   function renderView() {
     switch (currentView) {
@@ -273,7 +199,6 @@ export const CreateForm = () => {
               setCurrentView={setCurrentView}
               setPrevSavedForm={setPrevSavedForm}
               isForDraft={true}
-              draftIdToFetch={draftIdToFetch}
             />
             {selectedPrivacyOption ? (
               <SelectedPrivacyOptionButton
@@ -294,13 +219,7 @@ export const CreateForm = () => {
             />
 
             <div className="form-buttons">
-              <button
-                className="action-button-with-icon red"
-                onClick={() => handleFormDelete()}
-              >
-                <TrashIcon />
-                Delete
-              </button>
+  
 
               <button
                 className="action-button-with-icon"
@@ -354,29 +273,38 @@ export const CreateForm = () => {
       }
       case "staged-input-form": {
         return (
-          <StagedInputForm
-            form={draft}
-            setForm={setDraft}
-            setCurrentView={setCurrentView}
-            stagedNewInputType={stagedNewInputType}
-            setStagedNewInputType={setStagedNewInputType}
-            isForDraft={true}
-          />
+          <>
+            <StagedInputForm
+              form={draft}
+              setForm={setDraft}
+              setCurrentView={setCurrentView}
+              stagedNewInputType={stagedNewInputType}
+              setStagedNewInputType={setStagedNewInputType}
+              isForDraft={true}
+            />
+          </>
         );
       }
       default: {
-        return (
-          <p className="small-text">
-            Hmm...not sure where you were trying to go, but it probably isn't here
-          </p>
-        );
+        return <CatchView />;
       }
     }
   }
 
   useEffect(() => {
+    setDraft({
+      form: newDraft,
+      inputs: [],
+    });
+
+    setPrevSavedForm({
+      form: newDraft,
+      inputs: [],
+    });
+  }, [newDraft]);
+
+  useEffect(() => {
     getPrivacyOptions(1);
-    createNewDraft();
   }, []);
 
   useEffect(() => {

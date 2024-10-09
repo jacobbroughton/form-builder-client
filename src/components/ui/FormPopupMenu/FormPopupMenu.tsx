@@ -1,11 +1,12 @@
-import { useContext, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AllFormsType } from "../../../lib/types";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { EditIcon } from "../icons/EditIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import "./FormPopupMenu.css";
+import { copyUrlToClipboard } from "../../../utils/usefulFunctions";
 
 export const FormPopupMenu = ({
   form,
@@ -20,8 +21,17 @@ export const FormPopupMenu = ({
 }): JSX.Element => {
   const ref = useRef<HTMLDivElement>(null);
   const { user } = useContext(UserContext);
+  const location = useLocation();
+  const [sharedTextShowing, setSharedTextShowing] = useState(false);
 
-  function handleShare() {}
+  function handleShare() {
+    copyUrlToClipboard(location);
+    setSharedTextShowing(true);
+
+    setTimeout(() => {
+      setSharedTextShowing(false);
+    }, 3000);
+  }
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -62,8 +72,8 @@ export const FormPopupMenu = ({
           </button>
         </>
       )}
-      <button type="button" onClick={handleShare}>
-        <ShareIcon /> Share
+      <button type="button" onClick={handleShare} disabled={sharedTextShowing}>
+        <ShareIcon /> {sharedTextShowing ? 'Copied to clipboard' : 'Share'}
       </button>
     </div>
   );

@@ -26,7 +26,6 @@ const PrevSubmissionsModal = ({
     try {
       const inputs = await getInputSubmissions({
         submissionId: clickedSubmission.id,
-        bypass: false,
       });
       console.log(inputs);
       setSelectedSubmission(clickedSubmission);
@@ -41,7 +40,6 @@ const PrevSubmissionsModal = ({
       try {
         const inputs = await getInputSubmissions({
           submissionId: selectedSubmission.id,
-          bypass: false,
         });
         console.log(inputs);
         setInputSubmissions(inputs);

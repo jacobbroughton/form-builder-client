@@ -24,7 +24,7 @@ export const AuthenticatedRoutes = () => {
         <Outlet />
       </div>
 
-      {location.pathname !== "/create-form" && <FloatingCreateButton />}
+      {location.pathname !== "/create-form" && user && <FloatingCreateButton />}
     </>
   ) : (
     <Navigate to="/login" />

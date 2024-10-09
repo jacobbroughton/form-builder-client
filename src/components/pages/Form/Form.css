@@ -8,17 +8,23 @@ main.published-form {
   background-color: var(--main-bg-color);
 }
 
-main.published-form > .container {
+main.published-form > .row {
   display: flex;
-  flex-direction: column;
-  max-width: 550px;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   padding: 30px 10px;
+}
+
+main.published-form > .row > .container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   gap: 10px;
 }
 
-main.published-form > .container > button.previous-submission-info {
+main.published-form > .row > .container > button.previous-submission-info {
   background-color: var(--button-default-bg-color);
   border: 1px solid var(--container-border-color);
   border-radius: 5px;
@@ -28,12 +34,12 @@ main.published-form > .container > button.previous-submission-info {
   cursor: pointer;
 }
 
-main.published-form > .container > button.previous-submission-info:hover {
+main.published-form > .row > .container > button.previous-submission-info:hover {
   background-color: var(--button-default-bg-color-hover);
   border: 1px solid var(--button-default-border-color-hover);
 }
 
-main.published-form > .container > .previous-submission-info > .icon-container {
+main.published-form > .row > .container > .previous-submission-info > .icon-container {
   position: absolute;
   left: 0;
   width: 45px;
@@ -45,7 +51,7 @@ main.published-form > .container > .previous-submission-info > .icon-container {
   justify-content: center;
 }
 
-main.published-form > .container > .previous-submission-info > .content {
+main.published-form > .row > .container > .previous-submission-info > .content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -54,16 +60,21 @@ main.published-form > .container > .previous-submission-info > .content {
   gap: 5px;
 }
 
-main.published-form > .container > .previous-submission-info > .icon-container > svg {
+main.published-form
+  > .row
+  > .container
+  > .previous-submission-info
+  > .icon-container
+  > svg {
   width: 15px;
   fill: whitesmoke;
 }
 
-main.published-form > .container > .previous-submission-info > .content > p {
+main.published-form > .row > .container > .previous-submission-info > .content > p {
   text-align: start;
 }
 
-main.published-form > .container > .heading {
+main.published-form > .row > .container > .heading {
   padding-left: 10px;
   display: flex;
   flex-direction: column;
@@ -71,19 +82,19 @@ main.published-form > .container > .heading {
   border-radius: 4px;
 }
 
-main.published-form > .container > .heading.no-margin-bottom {
+main.published-form > .row > .container > .heading.no-margin-bottom {
   margin-bottom: 0;
 }
 
-main.published-form > .container > .heading > h1.title {
+main.published-form > .row > .container > .heading > h1.title {
   font-size: 1rem;
 }
 
-main.published-form > .container > .heading > p.description {
+main.published-form > .row > .container > .heading > p.description {
   font-size: 0.875rem;
 }
 
-main.published-form > .container > .inputs {
+main.published-form > .row > .container > .inputs {
   border-radius: 3px;
   margin-top: 17px;
   position: relative;
@@ -92,7 +103,7 @@ main.published-form > .container > .inputs {
   gap: 20px;
 }
 
-main.published-form > .container > .submit-button {
+main.published-form > .row > .container > .submit-button {
   padding: 3px 5px;
   font-size: 1rem;
   background-color: transparent;
@@ -108,19 +119,19 @@ main.published-form > .container > .submit-button {
   cursor: pointer;
 }
 
-main.published-form > .container > .submit-button:not(:disabled):hover {
+main.published-form > .row > .container > .submit-button:not(:disabled):hover {
   border: 1px solid var(--button-default-border-color-hover);
   background-color: var(--button-default-bg-color-hover);
 }
 
-main.published-form > .container > .submit-button > svg {
+main.published-form > .row > .container > .submit-button > svg {
   width: 15px;
 }
 
-main.published-form > .container > .submit-button:disabled > svg {
+main.published-form > .row > .container > .submit-button:disabled > svg {
   fill: grey;
 }
 
-main.published-form > .container > .submit-button:not(:disabled) > svg {
+main.published-form > .row > .container > .submit-button:not(:disabled) > svg {
   fill: lightgreen;
 }

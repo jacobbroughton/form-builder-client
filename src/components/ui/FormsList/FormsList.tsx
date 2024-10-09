@@ -8,7 +8,7 @@ import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormsList.css";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
-import DeleteModal from "../DeleteModal/DeleteModal";
+import  {DeleteModal} from "../DeleteModal/DeleteModal";
 import { elapseTime, timeAgo } from "../../../utils/usefulFunctions";
 
 const FormsList = ({

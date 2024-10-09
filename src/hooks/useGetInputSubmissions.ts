@@ -13,17 +13,13 @@ export const useGetInputSubmissions = () => {
 
   async function getInputSubmissions({
     submissionId,
-    bypass,
   }: {
     submissionId: string | null;
-    bypass: boolean;
   }) {
     try {
       if (!submissionId) {
         setLoading(false);
-        if (bypass) {
-          return;
-        } else throw new Error("Submission ID was not provided");
+        throw new Error("Submission ID was not provided");
       }
 
       setLoading(true);

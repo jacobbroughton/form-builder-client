@@ -20,17 +20,33 @@
   font-size: 1rem;
   text-align: start;
   min-width: 75px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
+  white-space: nowrap;
+}
+
+.form-popup-menu button:not(:disabled),
+.form-popup-menu .edit-link:not(:disabled) {
+  cursor: pointer;
+  
+
 }
 
 .form-popup-menu .edit-link svg,
 .form-popup-menu button svg {
   width: 12px;
   height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  fill: grey;
+}
+
+
+.form-popup-menu .edit-link:not(:disabled) svg,
+.form-popup-menu button:not(:disabled) svg {
   fill: whitesmoke;
+
 }
 
 .form-popup-menu .edit-link:not(:last-child),

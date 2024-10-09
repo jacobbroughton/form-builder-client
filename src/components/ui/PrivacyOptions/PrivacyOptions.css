@@ -25,6 +25,7 @@
   flex-direction: row;
   height: 100%;
   position: relative;
+  padding: 5px
 }
 
 .privacy-options > button:hover {

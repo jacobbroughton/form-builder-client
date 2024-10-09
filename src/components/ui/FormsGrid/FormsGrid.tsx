@@ -24,73 +24,78 @@ const FormsGrid = ({
   return (
     <section className="form-grid">
       {forms.map((form) => (
-        <Link
-          key={form.id}
-          to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
-          className="form-grid-item"
-        >
-          <div className="content">
-            <p className="name">{form.title}</p>
-          </div>
-          <div className="controls">
-            <div className="left-side">
-              {form.is_draft ? (
-                <div className="icon-container draft" title="This form is still a draft">
-                  <DraftIcon />
-                </div>
-              ) : (
-                <div className="icon-container public" title="This form is public">
-                  <PlanetIcon />
-                </div>
-              )}
-              <p
-                className="created-date"
-                title={new Date(form.relevant_dt).toLocaleString()}
-              >
-                {new Date(form.relevant_dt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </p>
+        <div className="form-grid-item-container">
+          <Link
+            key={form.id}
+            to={form.is_draft ? `/draft/${form.id}` : `/form/${form.id}`}
+            className="form-grid-item"
+          >
+            <div className="content">
+              <p className="name">{form.title}</p>
             </div>
-            <div className="menu-button-container">
-              <button
-                className="menu-button"
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
+            <div className="controls">
+              <div className="left-side">
+                {form.is_draft ? (
+                  <div
+                    className="icon-container draft"
+                    title="This form is still a draft"
+                  >
+                    <DraftIcon />
+                  </div>
+                ) : (
+                  <div className="icon-container public" title="This form is public">
+                    <PlanetIcon />
+                  </div>
+                )}
+                <p
+                  className="created-date"
+                  title={new Date(form.relevant_dt).toLocaleString()}
+                >
+                  {new Date(form.relevant_dt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            </div>
+          </Link>
+          <div className="menu-button-container">
+            <button
+              className="menu-button"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
 
-                  setIdForPopupMenu(form.id);
-                  setPopupMenuToggled(
-                    idForPopupMenu === form.id ? !popupMenuToggled : true
-                  );
+                setIdForPopupMenu(form.id);
+                setPopupMenuToggled(
+                  idForPopupMenu === form.id ? !popupMenuToggled : true
+                );
+              }}
+            >
+              <ThreeDotsIcon />
+            </button>
+            {idForPopupMenu == form.id && popupMenuToggled ? (
+              <FormPopupMenu
+                form={form}
+                isDraft={form.is_draft}
+                setFormPopupToggled={setPopupMenuToggled}
+                handleFormDelete={async () => {
+                  if (form.is_draft) {
+                    await deleteDraftForm({ formId: form.id });
+                  } else {
+                    await deletePublishedForm({ formId: form.id });
+                  }
+
+                  setForms(forms.filter((f) => f.id !== form.id));
                 }}
-              >
-                <ThreeDotsIcon />
-              </button>
-              {idForPopupMenu == form.id && popupMenuToggled ? (
-                <FormPopupMenu
-                  form={form}
-                  isDraft={form.is_draft}
-                  setFormPopupToggled={setPopupMenuToggled}
-                  handleFormDelete={async () => {
-                    if (form.is_draft) {
-                      await deleteDraftForm({ formId: form.id });
-                    } else {
-                      await deletePublishedForm({ formId: form.id });
-                    }
-
-                    setForms(forms.filter((f) => f.id !== form.id));
-                  }}
-                />
-              ) : (
-                false
-              )}
-            </div>
+              />
+            ) : (
+              false
+            )}
           </div>
-        </Link>
+        </div>
       ))}
     </section>
   );

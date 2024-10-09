@@ -5,7 +5,7 @@ import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
 import { handleCatchError } from "../utils/usefulFunctions";
 
-export const useGetPublishedForm = () => {
+export const usePublishedForm = () => {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const [needsPasskeyValidation, setNeedsPasskeyValidation] = useState(false);
