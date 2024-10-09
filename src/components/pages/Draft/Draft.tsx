@@ -5,13 +5,13 @@ import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { InputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import  {DeleteModal} from "../../ui/DeleteModal/DeleteModal";
+import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
-import { FormInput } from "../../ui/FormInput/FormInput";
 import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
 import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
+import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
 
 export const Draft = () => {
   const navigate = useNavigate();
@@ -100,7 +100,23 @@ export const Draft = () => {
             {inputs.length ? (
               <div className="inputs">
                 {inputs.map((input) => (
-                  <FormInput input={input} inputs={inputs} setInputs={setInputs} />
+                  <FormGroupContainer
+                    label="Form name"
+                    placeholder="Title"
+                    type="input"
+                    inputValue={input.value}
+                    isRequired={false}
+                    handleChange={(e) => {
+                      setInputs(
+                        inputs.map((localInput) => ({
+                          ...localInput,
+                          ...(localInput.id === input.id && {
+                            value: e.target.value,
+                          }),
+                        }))
+                      );
+                    }}
+                  />
                 ))}
               </div>
             ) : (

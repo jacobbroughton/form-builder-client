@@ -7,8 +7,9 @@ import { FormContext } from "../../../providers/FormProvider.tsx";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal.tsx";
+import FormCreator from "../../ui/FormCreator/FormCreator.tsx";
+import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer.tsx";
 import FormHeader from "../../ui/FormHeader/FormHeader.tsx";
-import { FormInput } from "../../ui/FormInput/FormInput";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import NoUserMessage from "../../ui/NoUserMessage/NoUserMessage";
 import PasscodeCover from "../../ui/PasscodeCover/PasscodeCover.tsx";
@@ -18,7 +19,6 @@ import ResponsesContainer from "../../ui/ResponsesContainer/ResponsesContainer.t
 import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
-import FormCreator from "../../ui/FormCreator/FormCreator.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -122,7 +122,6 @@ export const Form = () => {
         />
       )}
       <div className="row">
-        
         <div className="container">
           {formLoading ? (
             <p className="small-text">Form Loading...</p>
@@ -141,11 +140,24 @@ export const Form = () => {
                 <>
                   <div className="inputs">
                     {inputs.map((input) => (
-                      <FormInput
-                        readOnly={!form.can_resubmit && formSubmitted}
-                        input={input}
-                        inputs={inputs}
-                        setInputs={setInputs}
+                      <FormGroupContainer
+                        label={input.metadata_question}
+                        description={input.metadata_description}
+                        placeholder={input.properties?.[`placeholder`]?.value || "..."}
+                        disabled={!form.can_resubmit && formSubmitted}
+                        type={input.input_type_name}
+                        inputValue={input.value}
+                        isRequired={input.is_required}
+                        handleChange={(e) => {
+                          setInputs(
+                            inputs.map((localInput) => ({
+                              ...localInput,
+                              ...(localInput.id === input.id && {
+                                value: e.target.value,
+                              }),
+                            }))
+                          );
+                        }}
                       />
                     ))}
                   </div>

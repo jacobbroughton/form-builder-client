@@ -64,7 +64,7 @@ export interface InputType {
   created_by_id: string;
   modified_by_id: string;
   modified_at: string;
-  input_type_name: string;
+  input_type_name: "short answer" | "paragraph" | "color" | "date" | "time";
   input_type_description: string;
   num_custom_properties: number;
   existing_answer: string;

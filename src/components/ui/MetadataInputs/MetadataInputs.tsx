@@ -113,7 +113,7 @@ export const MetadataInputs = ({
           placeholder="Description"
           type="textarea"
           inputValue={form.form.description || ""}
-          isRequired={true}
+          isRequired={false}
           handleChange={(e) => {
             e.preventDefault();
             setForm({
