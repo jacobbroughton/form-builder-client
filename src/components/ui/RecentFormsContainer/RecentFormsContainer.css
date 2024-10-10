@@ -1,0 +1,57 @@
+div.recents-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+div.recents-container > p {
+  opacity: 0.7;
+}
+
+div.recents-container > ul.recents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+div.recents-container > ul.recents-list > li > a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+div.recents-container > ul.recents-list > li > a > span.title {
+  text-overflow: ellipsis;
+  /* width: 100%; */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+div.recents-container > ul.recents-list > li > a > span.elapsed-time {
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+div.recents-container > ul.recents-list > li > a:hover {
+  text-decoration: underline;
+}
+
+div.recents-container > ul.recents-list > li > a > .profile-picture-container {
+  background: grey;
+  min-width: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+div.recents-container > ul.recents-list > li > a > .profile-picture-container > img {
+  width: 100%;
+  height: 100%;
+}
