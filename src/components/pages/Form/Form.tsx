@@ -19,9 +19,11 @@ import ResponsesContainer from "../../ui/ResponsesContainer/ResponsesContainer.t
 import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
+import { useAddFormView } from "../../../hooks/useAddFormView.ts";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
+  const { addFormView } = useAddFormView();
   const { submitForm } = useSubmitForm();
   const { formId } = useParams();
   const [queryParams] = useSearchParams();
@@ -90,6 +92,10 @@ export const Form = () => {
       setSubmitCooldownCountdown(5);
     }
   }, [submitCooldownCountdown]);
+
+  useEffect(() => {
+    addFormView()
+  }, [])
 
   const inputsUnchanged =
     inputs.filter(
@@ -235,7 +241,7 @@ export const Form = () => {
             false
           )}
         </div>
-        <FormCreator />
+        {view === 'form' && <FormCreator />}
       </div>
     </main>
   );

@@ -19,7 +19,7 @@ const FormGroupContainer = ({
   handleChange: (e: any) => void;
 }) => {
   return (
-    <div className="form-group-container">
+    <div className={`form-group-container disabled`}>
       <p className="small-text bold">
         {label}{" "}
         {isRequired ? (
@@ -28,7 +28,7 @@ const FormGroupContainer = ({
           <span className="optional">(optional)</span>
         )}
       </p>
-      {description && <p className="small-text">{description}</p>}
+      {description && <p className="tiny-text">{description}</p>}
       {type === "Short Answer" ? (
         <input
           disabled={disabled}

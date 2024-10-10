@@ -100,12 +100,20 @@ const router = createBrowserRouter([
   },
 ]);
 
+// createRoot(document.getElementById("root")!).render(
+//   <StrictMode>
+//     <ErrorContextProvider>
+//       <UserContextProvider>
+//         <RouterProvider router={router} />
+//       </UserContextProvider>
+//     </ErrorContextProvider>
+//   </StrictMode>
+// );
+
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ErrorContextProvider>
-      <UserContextProvider>
-        <RouterProvider router={router} />
-      </UserContextProvider>
-    </ErrorContextProvider>
-  </StrictMode>
+  <ErrorContextProvider>
+    <UserContextProvider>
+      <RouterProvider router={router} />
+    </UserContextProvider>
+  </ErrorContextProvider>
 );

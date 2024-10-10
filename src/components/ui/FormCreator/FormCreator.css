@@ -8,22 +8,23 @@
   gap: 5px;
   height: fit-content;
   position: relative;
+  min-width: 170px;
+  max-width: 170px;
 }
 
 .form-creator-container::before {
-  content: 'About the creator';
+  content: "About the creator";
   font-size: 0.875rem;
   position: absolute;
   top: 100%;
   font-style: italic;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--container-border-color);;
+  background-color: var(--container-border-color);
   padding: 1px 10px;
   white-space: nowrap;
-  border-bottom-left-radius: 5px;;
-  border-bottom-right-radius: 5px;;
-
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .form-creator-container > .profile-picture-container {

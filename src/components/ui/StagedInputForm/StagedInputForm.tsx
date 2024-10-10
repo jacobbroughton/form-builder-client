@@ -100,7 +100,9 @@ export const StagedInputForm = ({
 
         <FormGroupContainer
           label="Question/Prompt"
-          type="input"
+          description=""
+          disabled={false}
+          type="Short Answer"
           placeholder="Question"
           inputValue={stagedInputTitle}
           isRequired={true}
@@ -111,7 +113,9 @@ export const StagedInputForm = ({
         />
         <FormGroupContainer
           label="Description"
-          type="textarea"
+          description=""
+          disabled={false}
+          type="Paragraph"
           placeholder="Description"
           inputValue={stagedInputDescription}
           isRequired={false}

@@ -59,6 +59,7 @@ export const FormContext = createContext<{
           modified_by_id: string | null;
           submission_id: string;
           value: string;
+          input_type_name: string;
         }[];
       };
     };

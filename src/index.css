@@ -134,6 +134,7 @@ a.action-button-with-icon.green > svg {
 
 textarea {
   resize: vertical;
+  white-space: pre-wrap;
 }
 
 input {

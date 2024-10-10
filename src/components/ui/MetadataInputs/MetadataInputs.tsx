@@ -93,7 +93,7 @@ export const MetadataInputs = ({
         <FormGroupContainer
           label="Form name"
           placeholder="Title"
-          type="input"
+          type="Short Answer"
           inputValue={form.form.title}
           isRequired={true}
           handleChange={(e) => {
@@ -111,7 +111,7 @@ export const MetadataInputs = ({
         <FormGroupContainer
           label="Description"
           placeholder="Description"
-          type="textarea"
+          type="Paragraph"
           inputValue={form.form.description || ""}
           isRequired={false}
           handleChange={(e) => {

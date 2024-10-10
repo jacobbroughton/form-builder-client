@@ -96,7 +96,6 @@ main.published-form > .row > .container > .heading > p.description {
 
 main.published-form > .row > .container > .inputs {
   border-radius: 3px;
-  margin-top: 17px;
   position: relative;
   display: flex;
   flex-direction: column;
