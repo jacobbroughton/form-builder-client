@@ -3,7 +3,7 @@
   right: 20px;
   bottom: 20px;
   background-color: var(--button-default-bg-color);
-  /* box-shadow: var(--shadow-tail-down); */
+  box-shadow: var(--shadow-tail-down);
   padding: 15px;
   border-radius: 100%;
   border: 1px solid var(--button-default-border-color);

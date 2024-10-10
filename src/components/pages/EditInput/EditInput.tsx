@@ -39,61 +39,64 @@ const EditInput = () => {
 
   return (
     <main className="edit-input">
-      <div className="container">
-        <div className="heading">
-          <h3>Edit Input</h3>
-        </div>
-
+      <div className="row">
         <InputTypeInfo inputType={inputType} />
+        <div className="container">
+          <div className="heading">
+            <h3>Edit Input</h3>
+          </div>
 
-        <form onSubmit={handleSubmit}>
-          <FormGroupContainer
-            label="Prompt / Question"
-            placeholder="Prompt / Question"
-            inputValue={updatedInput.metadata_question}
-            handleChange={(e) =>
-              setUpdatedInput({
-                ...updatedInput,
-                metadata_question: e.target.value,
-              })
-            }
-            isRequired={true}
-            type="input"
-          />
+          <form onSubmit={handleSubmit}>
+            <FormGroupContainer
+              label="Prompt / Question"
+              placeholder="Prompt / Question"
+              inputValue={updatedInput.metadata_question}
+              handleChange={(e) =>
+                setUpdatedInput({
+                  ...updatedInput,
+                  metadata_question: e.target.value,
+                })
+              }
+              isRequired={true}
+              disabled={false}
+              type="Short Answer"
+            />
 
-          <FormGroupContainer
-            label="Description"
-            placeholder="description"
-            inputValue={updatedInput.metadata_description}
-            handleChange={(e) =>
-              setUpdatedInput({
-                ...updatedInput,
-                metadata_description: e.target.value,
-              })
-            }
-            isRequired={true}
-            type="textarea"
-          />
+            <FormGroupContainer
+              label="Description"
+              placeholder="Description"
+              inputValue={updatedInput.metadata_description}
+              handleChange={(e) =>
+                setUpdatedInput({
+                  ...updatedInput,
+                  metadata_description: e.target.value,
+                })
+              }
+              isRequired={true}
+              disabled={false}
+              type="Paragraph"
+            />
 
-          {inputType && <InputPropertiesContainer inputTypeId={inputType.id} />}
+            {inputType && <InputPropertiesContainer inputTypeId={inputType.id} />}
 
-          <SingleSelectToggle
-            label="Required?"
-            options={[
-              { label: "Yes", value: true, checkedCondition: isRequired },
-              { label: "No", value: false, checkedCondition: !isRequired },
-            ]}
-            onChange={(value) => setIsRequired(value as boolean)}
-          />
-          <button
-            className="action-button-with-icon"
-            disabled={saveDisabled}
-            type="submit"
-          >
-            <SaveIcon />
-            Save
-          </button>
-        </form>
+            <SingleSelectToggle
+              label="Required?"
+              options={[
+                { label: "Yes", value: true, checkedCondition: isRequired },
+                { label: "No", value: false, checkedCondition: !isRequired },
+              ]}
+              onChange={(value) => setIsRequired(value as boolean)}
+            />
+            <button
+              className="action-button-with-icon"
+              disabled={saveDisabled}
+              type="submit"
+            >
+              <SaveIcon />
+              Save
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );

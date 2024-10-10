@@ -9,10 +9,10 @@ main.edit-input {
   background-color: var(--main-bg-color);
 }
 
-main.edit-input > .container {
+main.edit-input > .row > .container {
   display: flex;
   flex-direction: column;
-  max-width: 550px;
+  max-width: 650px;
   margin: 0 auto;
   width: 100%;
   gap: 10px;
@@ -21,19 +21,29 @@ main.edit-input > .container {
   height: calc(100% - 30px);
 }
 
-main.edit-input > .container > .heading {
+main.edit-input > .row > .container > .heading {
+  width: 100%;
   display: flex;
   justify-content: flex-start;
 }
 
-main.edit-input > .container > form {
+main.edit-input > .row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 10px;
+}
+
+main.edit-input > .row > .container > form {
   display: flex;
   gap: 10px;
   flex-direction: column;
   width: 100%;
 }
 
-main.edit-input > .container > form > input {
+main.edit-input > .row > .container > form > input {
   width: 100%;
   font-size: 1.15rem;
   font-weight: 600;
@@ -43,7 +53,7 @@ main.edit-input > .container > form > input {
   padding: 5px 10px;
 }
 
-main.edit-input > .container > form > textarea {
+main.edit-input > .row > .container > form > textarea {
   background-color: transparent;
   font-family: inherit;
   padding: 5px 10px;
@@ -54,6 +64,5 @@ main.edit-input > .container > form > textarea {
   width: 100%;
 }
 
-main.edit-input > .container > form > button[type='submit'] {
-  
+main.edit-input > .row > .container > form > button[type="submit"] {
 }

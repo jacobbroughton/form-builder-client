@@ -95,63 +95,66 @@ export const StagedInputForm = ({
 
   return (
     <div className="staged-input-form">
-      <form className="staged-input-form">
+      <div className="row">
         <InputTypeInfo inputType={stagedNewInputType} />
+        <div className="staged-input-form-container">
+          <form className="staged-input-form">
+            <FormGroupContainer
+              label="Question/Prompt"
+              description=""
+              disabled={false}
+              type="Short Answer"
+              placeholder="Question"
+              inputValue={stagedInputTitle}
+              isRequired={true}
+              handleChange={(e) => {
+                e.preventDefault();
+                setStagedInputTitle(e.target.value);
+              }}
+            />
+            <FormGroupContainer
+              label="Description"
+              description=""
+              disabled={false}
+              type="Paragraph"
+              placeholder="Description"
+              inputValue={stagedInputDescription}
+              isRequired={false}
+              handleChange={(e) => {
+                e.preventDefault();
+                setStagedInputDescription(e.target.value);
+              }}
+            />
 
-        <FormGroupContainer
-          label="Question/Prompt"
-          description=""
-          disabled={false}
-          type="Short Answer"
-          placeholder="Question"
-          inputValue={stagedInputTitle}
-          isRequired={true}
-          handleChange={(e) => {
-            e.preventDefault();
-            setStagedInputTitle(e.target.value);
-          }}
-        />
-        <FormGroupContainer
-          label="Description"
-          description=""
-          disabled={false}
-          type="Paragraph"
-          placeholder="Description"
-          inputValue={stagedInputDescription}
-          isRequired={false}
-          handleChange={(e) => {
-            e.preventDefault();
-            setStagedInputDescription(e.target.value);
-          }}
-        />
+            <InputPropertiesContainer inputTypeId={stagedNewInputType.id} />
 
-        <InputPropertiesContainer inputTypeId={stagedNewInputType.id} />
+            <SingleSelectToggle
+              label="Required?"
+              options={[
+                { label: "Yes", value: true, checkedCondition: isRequired },
+                { label: "No", value: false, checkedCondition: !isRequired },
+              ]}
+              onChange={(value) => setIsRequired(value as boolean)}
+            />
+          </form>
 
-        <SingleSelectToggle
-          label="Required?"
-          options={[
-            { label: "Yes", value: true, checkedCondition: isRequired },
-            { label: "No", value: false, checkedCondition: !isRequired },
-          ]}
-          onChange={(value) => setIsRequired(value as boolean)}
-        />
-      </form>
-
-      <div className="navigation-buttons">
-        <button
-          className="navigation-button back"
-          type="button"
-          onClick={() => setCurrentView("input-types-selector")}
-        >
-          <ArrowLeftIcon /> Back
-        </button>
-        <button
-          className="navigation-button done"
-          type="button"
-          onClick={handleAddNewInput}
-        >
-          <CheckIcon /> Done, add to form
-        </button>
+          <div className="navigation-buttons">
+            <button
+              className="navigation-button back"
+              type="button"
+              onClick={() => setCurrentView("input-types-selector")}
+            >
+              <ArrowLeftIcon /> Back
+            </button>
+            <button
+              className="navigation-button done"
+              type="button"
+              onClick={handleAddNewInput}
+            >
+              <CheckIcon /> Done, add to form
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

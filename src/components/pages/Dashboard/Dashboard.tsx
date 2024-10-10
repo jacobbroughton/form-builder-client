@@ -21,7 +21,7 @@ export const Dashboard = () => {
         <div className="mobile-recents-list-container">
           <RecentFormsContainer recentFormViews={recentFormViews} />
         </div>
-        <FormsContainer label="Public Forms" getFormsFunc={getPublicForms} />
+        <FormsContainer label="Unanswered Public Forms" getFormsFunc={getPublicForms} />
         <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
         <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />
       </div>

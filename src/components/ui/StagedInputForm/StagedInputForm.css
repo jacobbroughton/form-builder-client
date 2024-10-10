@@ -4,24 +4,48 @@
   flex-direction: column;
 }
 
-.staged-input-form > .staged-input-form {
+.staged-input-form > .row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 10px;
+}
+
+.staged-input-form > .row > .staged-input-form-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  width: 100%;
+}
+
+.staged-input-form > .row > .staged-input-form-container > .staged-input-form {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
 
-
-.staged-input-form > .navigation-buttons {
+.staged-input-form > .row > .staged-input-form-container > .navigation-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
 }
 
-.staged-input-form > .navigation-buttons > button.navigation-button {
+.staged-input-form
+  > .row
+  > .staged-input-form-container
+  > .navigation-buttons
+  > button.navigation-button {
   width: auto;
 }
 
-.staged-input-form > .navigation-buttons .navigation-button.done svg {
+.staged-input-form
+  > .row
+  > .staged-input-form-container
+  > .navigation-buttons
+  .navigation-button.done
+  svg {
   fill: lightgreen;
 }

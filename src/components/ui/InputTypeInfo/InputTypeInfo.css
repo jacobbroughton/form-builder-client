@@ -1,20 +1,36 @@
 .input-type-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
   border: 1px solid var(--container-border-color);
-  padding: 5px;
-  padding-left: 10px;
+
   border-radius: 3px;
   width: 100%;
+  max-width: 200px;
+  height: fit-content;
 }
 
-.input-type-info > .name {
+.input-type-info > .heading {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--container-border-color);
+  padding: 5px;
+}
+
+.input-type-info > .heading > svg {
+  width: 20px;
+  fill: whitesmoke;
+}
+
+.input-type-info > .heading > .name {
   font-weight: 500;
   font-size: 1rem;
 }
 
-.input-type-info > .description {
+.input-type-info > .content {
+  padding: 5px;
+}
+
+.input-type-info > .content > .description {
   font-size: 0.875rem;
   text-align: start;
 }
