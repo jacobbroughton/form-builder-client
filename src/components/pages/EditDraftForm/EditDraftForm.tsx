@@ -29,6 +29,7 @@ import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
 import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import CatchView from "../../ui/CatchView/CatchView";
+import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
@@ -157,31 +158,35 @@ export const EditDraftForm = () => {
               false
             )}
             <div className="form-buttons">
-              <button
-                className="action-button-with-icon red"
-                type="button"
-                onClick={(e) => {
+              <ActionButtonWithIcon
+                label="Delete Draft"
+                disabled={false}
+                color="red"
+                icon={<TrashIcon />}
+                iconPlacement="before"
+                handleClick={(e) => {
                   e.stopPropagation();
                   setDeleteModalShowing(true);
                 }}
-              >
-                <TrashIcon /> Delete Draft
-              </button>
+              />
 
-              <button
-                className="action-button-with-icon save-button"
-                // disabled={saved}
-                onClick={() => saveDraft()}
-              >
-                <SaveIcon /> Save Draft
-              </button>
+              <ActionButtonWithIcon
+                label="Save Draft"
+                disabled={false}
+                color="none"
+                icon={<SaveIcon />}
+                iconPlacement="before"
+                handleClick={() => saveDraft()}
+              />
 
-              <button
-                className="action-button-with-icon green publish-button"
-                onClick={() => handlePublishForm()}
-              >
-                <ShareIcon /> Publish Form
-              </button>
+              <ActionButtonWithIcon
+                label="Publish Form"
+                disabled={false}
+                color="green"
+                icon={<ShareIcon />}
+                iconPlacement="before"
+                handleClick={() => handlePublishForm()}
+              />
             </div>
           </>
         );
@@ -189,14 +194,15 @@ export const EditDraftForm = () => {
       case "privacy-selector": {
         return (
           <>
-            <button
-              className="action-button-with-icon"
-              onClick={() => {
-                console.log(
-                  stagedSelectedPrivacyOption?.needs_passkey,
-                  privacyPasskey,
-                  !selectedPrivacyOption?.needs_passkey
-                );
+            <ActionButtonWithIcon
+              label="Back"
+              disabled={
+                (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "") ||
+                false
+              }
+              icon={<ArrowLeftIcon />}
+              iconPlacement="before"
+              handleClick={() => {
                 if (
                   stagedSelectedPrivacyOption?.needs_passkey &&
                   privacyPasskey !== "" &&
@@ -206,9 +212,9 @@ export const EditDraftForm = () => {
                 setStagedPrivacyOptions(privacyOptions);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              <ArrowLeftIcon /> Back
-            </button>
+              color="none"
+            />
+
             <PrivacyOptions
               privacyOptions={stagedPrivacyOptions}
               setPrivacyOptions={setStagedPrivacyOptions}
@@ -218,12 +224,15 @@ export const EditDraftForm = () => {
               privacyPasskey={privacyPasskey}
             />
 
-            <button
-              className="action-button-with-icon"
+            <ActionButtonWithIcon
+              label="Confirm & Continue"
               disabled={
-                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
+                (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "") ||
+                false
               }
-              onClick={() => {
+              icon={<ArrowRightIcon />}
+              iconPlacement="after"
+              handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
                   return;
                 console.log({ stagedPrivacyOptions });
@@ -231,9 +240,8 @@ export const EditDraftForm = () => {
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              Confirm & Continue <ArrowRightIcon />
-            </button>
+              color="none"
+            />
           </>
         );
       }
@@ -247,16 +255,14 @@ export const EditDraftForm = () => {
       }
       case "staged-input-form": {
         return (
-          <>
-            <StagedInputForm
-              form={draft}
-              setForm={setDraft}
-              setCurrentView={setCurrentView}
-              stagedNewInputType={stagedNewInputType}
-              setStagedNewInputType={setStagedNewInputType}
-              isForDraft={true}
-            />
-          </>
+          <StagedInputForm
+            form={draft}
+            setForm={setDraft}
+            setCurrentView={setCurrentView}
+            stagedNewInputType={stagedNewInputType}
+            setStagedNewInputType={setStagedNewInputType}
+            isForDraft={true}
+          />
         );
       }
       default: {

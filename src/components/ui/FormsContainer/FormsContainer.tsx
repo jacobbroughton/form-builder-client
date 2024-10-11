@@ -58,12 +58,11 @@ const FormsContainer = ({
     if (user) {
       getForms();
     }
-  }, [selectedSort, user]);
+  }, [label, selectedSort, user]);
 
-  return (
-    // loading ? (
-    //   <p>Loading...</p>
-    // ) : (
+  return loading ? (
+    <p>Loading...</p>
+  ) : (
     <div>
       <div className="forms-container">
         <section className="header">

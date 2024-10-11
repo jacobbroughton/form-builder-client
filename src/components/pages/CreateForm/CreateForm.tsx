@@ -26,6 +26,8 @@ import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/Se
 import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
+import { debounce } from "../../../utils/debounce";
+import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ export const CreateForm = () => {
   // const [initiallyLoading, setInitiallyLoading] = useState(true);
   const [currentView, setCurrentView] = useState("metadata-inputs");
   const [saved, setSaved] = useState(true);
-  const [autoSaveCountdown, setAutoSaveCountdown] = useState(2);
+  const [autoSaveCountdown, setAutoSaveCountdown] = useState(5);
   const [needsAutoSave, setNeedsAutoSave] = useState(false);
   const [stagedNewInputType, setStagedNewInputType] = useState<InputTypeType | null>(
     null
@@ -126,7 +128,7 @@ export const CreateForm = () => {
       if (!draft || !draft.form)
         throw new Error("No draft form found when trying to delete");
 
-      console.log(draft.form)
+      console.log(draft.form);
 
       if (!draft.form.id) throw new Error("No form id provided");
 
@@ -140,15 +142,15 @@ export const CreateForm = () => {
     }
   }
 
-
   function renderView() {
     switch (currentView) {
       case "privacy-selector": {
         return (
           <>
-            <button
-              className="action-button-with-icon"
-              onClick={() => {
+            <ActionButtonWithIcon
+              label="Back"
+              disabled={false}
+              handleClick={() => {
                 if (
                   stagedSelectedPrivacyOption?.needs_passkey &&
                   privacyPasskey !== "" &&
@@ -158,9 +160,9 @@ export const CreateForm = () => {
                 setStagedPrivacyOptions(privacyOptions);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              <ArrowLeftIcon /> Back
-            </button>
+              iconPlacement="before"
+              icon={<ArrowLeftIcon />}
+            />
             <PrivacyOptions
               privacyOptions={stagedPrivacyOptions}
               setPrivacyOptions={setStagedPrivacyOptions}
@@ -170,21 +172,21 @@ export const CreateForm = () => {
               privacyPasskey={privacyPasskey}
             />
 
-            <button
-              className="action-button-with-icon"
+            <ActionButtonWithIcon
+              label="Confirm & Continue"
               disabled={
                 stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
               }
-              onClick={() => {
+              handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
                   return;
                 setPrivacyOptions(stagedPrivacyOptions);
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              Confirm & Continue <ArrowRightIcon />
-            </button>
+              iconPlacement="after"
+              icon={<ArrowRightIcon />}
+            />
           </>
         );
       }
@@ -219,46 +221,35 @@ export const CreateForm = () => {
             />
 
             <div className="form-buttons">
-  
-
-              <button
-                className="action-button-with-icon"
+              <ActionButtonWithIcon
+                label="Save"
+                icon={<SaveIcon />}
+                iconPlacement="before"
                 disabled={saved}
-                onClick={() => saveDraft()}
-              >
-                <SaveIcon />
-                Save
-              </button>
+                handleClick={() => saveDraft()}
+                color="none"
+              />
 
-              <button
-                className="action-button-with-icon"
-                onClick={async () => {
+              <ActionButtonWithIcon
+                label="Save & Go to form"
+                handleClick={async () => {
                   if (!saved) await saveDraft();
                   navigate(`/draft/${draft.form?.id}`);
                 }}
-              >
-                <ArrowRightIcon />{" "}
-                <p>
-                  <span
-                    style={{
-                      ...(saved && {
-                        color: "grey",
-                      }),
-                    }}
-                  >
-                    Save &
-                  </span>{" "}
-                  Go to form
-                </p>
-              </button>
+                icon={<ArrowRightIcon />}
+                iconPlacement="before"
+                disabled={false}
+                color="none"
+              />
 
-              <button
-                className="action-button-with-icon green"
-                onClick={() => handlePublishForm()}
-              >
-                <ShareIcon />
-                Publish
-              </button>
+              <ActionButtonWithIcon
+                label="Publish"
+                disabled={false}
+                color="green"
+                icon={<ShareIcon />}
+                iconPlacement="before"
+                handleClick={() => handlePublishForm()}
+              />
             </div>
           </>
         );
@@ -324,7 +315,6 @@ export const CreateForm = () => {
         handleCatchError(error, setError, null);
       }
     }
-
     const interval1 = setInterval(() => {
       if (needsAutoSave && draft.form) {
         autoSaveDraft();
@@ -336,11 +326,13 @@ export const CreateForm = () => {
     };
   }, [
     needsAutoSave,
+    autoSaveCountdown,
     draft.form?.description,
     draft.form?.title,
     draft.form,
     draft.inputs,
     saveDraft,
+    setError,
   ]);
 
   useEffect(() => {

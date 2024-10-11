@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGetAnsweredForms } from "../../../hooks/useGetAnsweredForms";
 import { useGetMyForms } from "../../../hooks/useGetMyForms";
 import { useGetPublicForms } from "../../../hooks/useGetPublicForms";
@@ -12,19 +13,61 @@ export const Dashboard = () => {
   const { getAnsweredForms } = useGetAnsweredForms();
   const { recentFormViews } = useRecentFormViews();
 
+  const formTypes = [
+    {
+      id: 1,
+      label: "Public",
+      value: "public",
+    },
+    {
+      id: 2,
+      label: "Created by me",
+      value: "created-by-me",
+    },
+    {
+      id: 3,
+      label: "Answered",
+      value: "answered",
+    },
+  ];
+
+  const [selectedFormType, setSelectedFormType] = useState(formTypes[1]);
+
   return (
-    <main className="forms">
+    <div className="forms">
       <aside>
         <RecentFormsContainer recentFormViews={recentFormViews} />
       </aside>
-      <div className="container">
-        <div className="mobile-recents-list-container">
-          <RecentFormsContainer recentFormViews={recentFormViews} />
+      <main>
+        <div className="container">
+          <div className="mobile-recents-list-container">
+            <RecentFormsContainer recentFormViews={recentFormViews} />
+          </div>
+          <div className="forms-selector">
+            {formTypes.map((formType) => (
+              <button
+                className={`${selectedFormType.id === formType.id ? "selected" : ""}`}
+                key={formType.id}
+                onClick={() => setSelectedFormType(formType)}
+              >
+                {formType.label}
+              </button>
+            ))}
+          </div>
+          {selectedFormType.id === 1 ? (
+            <FormsContainer
+              label="Unanswered Public Forms"
+              getFormsFunc={getPublicForms}
+            />
+          ) : selectedFormType.id === 2 ? (
+            <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
+          ) : selectedFormType.id === 3 ? (
+            <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />
+          ) : (
+            false
+          )}
         </div>
-        <FormsContainer label="Unanswered Public Forms" getFormsFunc={getPublicForms} />
-        <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
-        <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };

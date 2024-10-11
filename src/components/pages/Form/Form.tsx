@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useAddFormView } from "../../../hooks/useAddFormView.ts";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 import { useSubmitForm } from "../../../hooks/useSubmitInputs";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
@@ -19,7 +20,6 @@ import ResponsesContainer from "../../ui/ResponsesContainer/ResponsesContainer.t
 import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
-import { useAddFormView } from "../../../hooks/useAddFormView.ts";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -94,8 +94,8 @@ export const Form = () => {
   }, [submitCooldownCountdown]);
 
   useEffect(() => {
-    addFormView()
-  }, [])
+    addFormView();
+  }, []);
 
   const inputsUnchanged =
     inputs.filter(
@@ -241,7 +241,7 @@ export const Form = () => {
             false
           )}
         </div>
-        {view === 'form' && <FormCreator />}
+        {view === "form" && <FormCreator />}
       </div>
     </main>
   );

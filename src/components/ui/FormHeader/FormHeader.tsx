@@ -1,14 +1,13 @@
 import { useContext, useState } from "react";
-import { PublishedFormType } from "../../../lib/types";
+import { useSearchParams } from "react-router-dom";
+import { FormContext } from "../../../providers/FormProvider";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { DraftPublishedTag } from "../DraftPublishedTag/DraftPublishedTag";
 import { FormPopupMenu } from "../FormPopupMenu/FormPopupMenu";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import  { ArrowRightIcon }from "../icons/ArrowRightIcon";
+import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormHeader.css";
-import { useSearchParams } from "react-router-dom";
-import { FormContext } from "../../../providers/FormProvider";
 
 const FormHeader = ({
   setDeleteModalShowing,
@@ -22,7 +21,7 @@ const FormHeader = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const { user } = useContext(UserContext);
-  const { form, formLoading } = useContext(FormContext);
+  const { form } = useContext(FormContext);
 
   const isFormCreator = form?.created_by_id === user?.id;
 

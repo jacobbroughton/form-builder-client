@@ -1,4 +1,4 @@
-main.forms {
+div.forms {
   display: flex;
   flex-direction: row;
   margin: 0 auto;
@@ -7,7 +7,7 @@ main.forms {
   height: 100vh;
 }
 
-main.forms > aside {
+div.forms > aside {
   position: fixed;
   padding: 20px;
   top: 55px;
@@ -18,7 +18,12 @@ main.forms > aside {
   border-right: 1px solid var(--container-border-color);
 }
 
-main.forms > .container {
+div.forms > main {
+  margin-left: 275px;
+  width: 100%;
+}
+
+div.forms > main > .container {
   padding: 30px 20px 75px 20px;
   display: flex;
   flex-direction: column;
@@ -28,24 +33,55 @@ main.forms > .container {
   width: 100%;
   gap: 20px;
   background-color: var(--nav-bg-color);
-  margin-left: 275px;
   overflow-y: auto;
 }
 
-main.forms > .container > div.mobile-recents-list-container {
+div.forms > main > .container > div.mobile-recents-list-container {
   display: none;
 }
 
+div.forms > main > .container > .forms-selector {
+  width: 100%;
+  border: 1px solid var(--button-default-border-color);
+  display: flex;
+  border-radius: 5px;
+}
+
+div.forms > main > .container > .forms-selector > button {
+  width: 100%;
+  white-space: nowrap;;
+  padding: 5px;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  /* transition: background-color 0.1s ease; */
+}
+
+div.forms > main > .container > .forms-selector > button:not(:last-child) {
+  border-right: 1px solid var(--button-default-border-color);
+}
+
+div.forms > main > .container > .forms-selector > button.selected {
+  background-color: var(--button-default-bg-color-hover);
+  color: white;
+  font-weight: 600;
+}
+
+div.forms > main > .container > .forms-selector > button:not(.selected):hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
 @media screen and (max-width: 550px) {
-  main.forms > aside {
+  div.forms > aside {
     display: none;
   }
 
-  main.forms > .container {
+  div.forms > main{
     margin-left: 0;
   }
 
-  main.forms > .container > div.mobile-recents-list-container {
+  div.forms > main > .container > div.mobile-recents-list-container {
     display: flex;
     flex-direction: column;
     gap: 10px;

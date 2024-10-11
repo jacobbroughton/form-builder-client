@@ -26,6 +26,7 @@ import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/Se
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 import CatchView from "../../ui/CatchView/CatchView";
+import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const EditPublishedForm = () => {
   const navigate = useNavigate();
@@ -118,44 +119,37 @@ export const EditPublishedForm = () => {
               false
             )}
             <div className="form-buttons">
-              <button
-                className="action-button-with-icon red"
-                // onClick={() => handleFormDelete()}
-                type="button"
-                onClick={(e) => {
+              <ActionButtonWithIcon
+                label="Delete Form"
+                color="red"
+                icon={<TrashIcon />}
+                iconPlacement="before"
+                handleClick={(e) => {
                   e.stopPropagation();
                   setDeleteModalShowing(true);
                 }}
-              >
-                <TrashIcon /> Delete Form
-              </button>
-              <button
-                className="action-button-with-icon "
-                type="button"
-                onClick={() => saveForm()}
+              />
+
+              <ActionButtonWithIcon
+                label="Save Form"
+                color="none"
+                icon={<SaveIcon />}
+                iconPlacement="before"
+                handleClick={() => saveForm()}
                 disabled={saved}
-              >
-                <SaveIcon /> Save Form
-              </button>
-              <button
-                className="action-button-with-icon"
-                onClick={async () => {
+              />
+
+              <ActionButtonWithIcon
+                label="Save & Go to form"
+                color="none"
+                icon={<ArrowRightIcon />}
+                iconPlacement="before"
+                handleClick={async () => {
                   await saveForm();
                   navigate(`/form/${form.form?.id}`);
                 }}
-              >
-                <ArrowRightIcon />{" "}
-                <span
-                  style={{
-                    ...(saved && {
-                      color: "grey",
-                    }),
-                  }}
-                >
-                  Save &
-                </span>{" "}
-                Go to form
-              </button>
+                disabled={saved}
+              />
             </div>
           </>
         );
@@ -163,9 +157,12 @@ export const EditPublishedForm = () => {
       case "privacy-selector": {
         return (
           <>
-            <button
-              className="action-button-with-icon"
-              onClick={() => {
+            <ActionButtonWithIcon
+              label="Back"
+              color="none"
+              icon={<ArrowLeftIcon />}
+              iconPlacement="before"
+              handleClick={() => {
                 if (
                   selectedPrivacyOption?.needs_passkey &&
                   privacyPasskey !== "" &&
@@ -175,9 +172,9 @@ export const EditPublishedForm = () => {
                 setPrivacyOptions(privacyOptions);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              <ArrowLeftIcon /> Back
-            </button>
+              disabled={false}
+            />
+
             <PrivacyOptions
               privacyOptions={privacyOptions}
               setPrivacyOptions={setPrivacyOptions}
@@ -187,18 +184,21 @@ export const EditPublishedForm = () => {
               privacyPasskey={privacyPasskey}
             />
 
-            <button
-              className="action-button-with-icon"
-              disabled={privacyOptions?.needs_passkey && privacyPasskey === ""}
-              onClick={() => {
+           
+
+            <ActionButtonWithIcon
+              label="Confirm & Continue"
+              color="none"
+              icon={<ArrowRightIcon />}
+              iconPlacement="before"
+              handleClick={() => {
                 if (privacyOptions?.needs_passkey && privacyPasskey === "") return;
                 setPrivacyOptions(privacyOptions);
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-            >
-              Confirm & Continue <ArrowRightIcon />
-            </button>
+              disabled={privacyOptions?.needs_passkey && privacyPasskey === ""}
+            />
           </>
         );
       }
