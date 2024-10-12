@@ -45,7 +45,7 @@ export const useInputForEdit = () => {
 
       const data = await response.json();
 
-      getInputType({ inputTypeId: data.input_type_id });
+      getInputType({ inputTypeId: data.info.input_type_id });
 
       setInitialInput(data);
       setUpdatedInput(data);

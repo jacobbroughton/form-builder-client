@@ -64,7 +64,6 @@ const PasscodeCover = () => {
         setNeedsPasskeyValidation(false);
         clearInterval(interval);
       }, 3000);
-      console.log("passkey worked", data);
     } catch (error) {
       const message = getErrorMessage(error);
       setError(message);
@@ -92,7 +91,8 @@ const PasscodeCover = () => {
           {error && <p className="small-text red">{error}</p>}
           {success && (
             <p className="small-text green">
-              Success, redirecting you in {redirectCountdown} second{redirectCountdown > 1}...
+              Success, redirecting you in {redirectCountdown} second
+              {redirectCountdown > 1}...
             </p>
           )}
         </form>

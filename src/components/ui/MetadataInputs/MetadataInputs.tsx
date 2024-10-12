@@ -57,78 +57,7 @@ export const MetadataInputs = ({
           }}
         />
       </form>
-      {/* {form.inputs.length === 0 ? (
-        <NoPromptsMessage
-          formId={form.id}
-          isDraft={isForDraft}
-          handleClick={() => setCurrentView("input-types-selector")}
-        />
-      ) : (
-        <div className="added-inputs">
-          {form.inputs.map((input) => (
-            <div
-              className={`added-input ${input.is_active ? "" : "deleted"}`}
-              key={input.id}
-            >
-              <p className="name">{input.metadata_question}</p>
-              <div className="tags">
-                <p>{input.input_type_name || "Unnamed"}</p>
-                {input.num_custom_properties > 0 && (
-                  <p>
-                    {input.num_custom_properties} custom propert
-                    {input.num_custom_properties > 1 ? "ies" : "y"}
-                  </p>
-                )}
-                {input.is_required && <p>Required</p>}
-              </div>
-              <button
-                className="popup-menu-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIdForInputPopup(input.id);
-                  setInputPopupToggled(
-                    idForInputPopup == input.id ? !inputPopupToggled : true
-                  );
-                }}
-              >
-                <ThreeDotsIcon />
-              </button>
-              {idForInputPopup == input.id && inputPopupToggled ? (
-                <InputPopupMenu
-                  input={input}
-                  setIdForInputPopup={setIdForInputPopup}
-                  setInputPopupToggled={setInputPopupToggled}
-                  handleChangeDraftInputEnabledStatus={() =>
-                    handleChangeDraftInputEnabledStatus(input)
-                  }
-                  handleDeleteClick={(e) => {
-                    e.stopPropagation();
-                    setInputStagedForDelete(input);
-                    setDeleteModalToggled(true);
-                  }}
-                  handleEditClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentView("staged-input-form");
-                    console.log(input);
-                  }}
-                />
-              ) : (
-                false
-              )}
-            </div>
-          ))}
-          <button
-            className="add-new-input"
-            type="button"
-            onClick={() => setCurrentView("input-types-selector")}
-          >
-            <p className="small-text bold">Add a new input</p>
-            <div className="icon-container">
-              <PlusIcon />
-            </div>
-          </button>
-        </div>
-      )} */}
+      
       {/* <AddedInputsList form={form} setForm={setForm} isForDraft={isForDraft}/> */}
     </div>
   );

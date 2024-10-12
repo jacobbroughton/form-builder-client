@@ -10,7 +10,7 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 30px 10px;
+  /* padding: 30px 10px; */
 }
 
 .staged-input-form > .row > .staged-input-form-container {
@@ -48,4 +48,11 @@
   .navigation-button.done
   svg {
   fill: lightgreen;
+}
+
+@media screen and (max-width: 600px) {
+  
+.staged-input-form > .row {
+  flex-direction: column;
+}
 }

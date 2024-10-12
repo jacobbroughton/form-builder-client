@@ -172,6 +172,7 @@ export const CreateForm = () => {
               }}
               iconPlacement="before"
               icon={<ArrowLeftIcon />}
+              color="none"
             />
             <PrivacyOptions
               privacyOptions={stagedPrivacyOptions}
@@ -294,11 +295,6 @@ export const CreateForm = () => {
   useEffect(() => {
     async function autoSaveDraft(): Promise<void> {
       try {
-        // setPrevSavedForm({
-        //   form: form,
-        //   inputs: draft.inputs,
-        // });
-
         setPrevSavedForm(form);
         setPrevSavedInputs(inputs);
 

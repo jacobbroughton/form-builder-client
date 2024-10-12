@@ -99,27 +99,6 @@ main.draft-form > .row > .container > .heading > p.description {
 }
 
 main.draft-form > .row > .container > .inputs {
-  border: 1px solid var(--container-border-color);
-  border-radius: 3px;
-  margin-top: 17px;
   position: relative;
 }
 
-main.draft-form > .row > .container > .inputs::before {
-  content: "Fill these prompts out";
-}
-
-main.draft-form > .row > .container > .inputs::before {
-  position: absolute;
-  bottom: calc(100% + 0px);
-  left: -1px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background-color: var(--container-bg-color);
-  padding: 2px 5px;
-  line-height: 0.875rem;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  border: 1px solid var(--container-border-color);
-  z-index: 2;
-}

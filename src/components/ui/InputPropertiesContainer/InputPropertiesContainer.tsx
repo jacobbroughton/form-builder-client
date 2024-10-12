@@ -1,13 +1,20 @@
 import { useState } from "react";
+import { useInputTypePropertyOptions } from "../../../hooks/useInputTypePropertyOptions";
+import { InputTypePropertyOptionType, InputTypePropertyType } from "../../../lib/types";
+import CaretIcon from "../icons/CaretIcon";
 import PropertiesIcon from "../icons/PropertiesIcon";
 import "./InputPropertiesContainer.css";
-import { InputTypePropertyType, InputTypePropertyOptionType } from "../../../lib/types";
-import { useInputTypePropertyOptions } from "../../../hooks/useInputTypePropertyOptions";
-import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
-import CaretIcon from "../icons/CaretIcon";
 
-const InputPropertiesContainer = ({ inputTypeId }: { inputTypeId: number }) => {
-  const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
+const InputPropertiesContainer = ({
+  inputTypeId,
+  inputTypeProperties,
+  setInputTypeProperties,
+}: {
+  inputTypeId: number;
+  inputTypeProperties: InputTypePropertyType[];
+  setInputTypeProperties: React.Dispatch<React.SetStateAction<InputTypePropertyType[]>>
+}) => {
+  // const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
   const { inputTypePropertyOptions, setInputTypePropertyOptions } =
     useInputTypePropertyOptions();
   const [propertiesToggled, setPropertiesToggled] = useState(false);
@@ -67,7 +74,7 @@ const InputPropertiesContainer = ({ inputTypeId }: { inputTypeId: number }) => {
           </div>
           <div className="content">
             <p>Show optional properties</p>
-            <CaretIcon direction={propertiesToggled? 'up' : 'down'} />
+            <CaretIcon direction={propertiesToggled ? "up" : "down"} />
           </div>
         </button>
       </div>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useGetDraftForm } from "../../../hooks/useGetDraftForm";
 import { InputType, PublishedFormType } from "../../../lib/types";
@@ -10,19 +10,18 @@ import { DraftFormHeader } from "../../ui/DraftFormHeader/DraftFormHeader";
 import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
+import FormCreator from "../../ui/FormCreator/FormCreator";
 
 export const Draft = () => {
   const navigate = useNavigate();
-  const [queryParams] = useSearchParams();
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
   const { formId } = useParams();
   const [formLoading, setFormLoading] = useState<boolean>(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<InputType[]>([]);
-  const [formPopupMenuToggled, setFormPopupMenuToggled] = useState<boolean>(false);
+
   const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
-  const [view, setView] = useState<string>(queryParams.get("view") || "form");
   const { setError } = useContext(ErrorContext);
 
   async function handleFormDelete(): Promise<void> {
@@ -112,6 +111,13 @@ export const Draft = () => {
             false
           )}
         </div>
+        <FormCreator
+          creatorInfo={{
+            profile_picture: form?.created_by_profile_picture || "",
+            username: form?.created_by_username || "",
+            created_at: form?.created_at || "",
+          }}
+        />
       </div>
     </main>
   );

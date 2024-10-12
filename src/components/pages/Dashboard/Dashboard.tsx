@@ -42,9 +42,9 @@ export const Dashboard = () => {
       </aside>
       <main>
         <div className="container">
-          <div className="mobile-recents-list-container">
+          {recentFormViews.length >= 1 && <div className="mobile-recents-list-container">
             <RecentFormsContainer recentFormViews={recentFormViews} />
-          </div>
+          </div>}
           <div className="forms-selector">
             {formTypes.map((formType) => (
               <button

@@ -8,6 +8,7 @@ import InputTypeInfo from "../../ui/InputTypeInfo/InputTypeInfo";
 import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import "./EditInput.css";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
+import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
 
 const EditInput = () => {
   const {
@@ -20,13 +21,15 @@ const EditInput = () => {
   const { setError } = useContext(ErrorContext);
   const [isRequired, setIsRequired] = useState(initialInput?.is_required || false);
 
+  const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
+
   if (inputLoading) return <p>Input loading...</p>;
 
   if (!initialInput || !updatedInput) return <p>No input found</p>;
 
-  const saveDisabled =
-    initialInput.metadata_question === updatedInput.metadata_question &&
-    initialInput.metadata_description === updatedInput.metadata_description;
+  const prevSavedDraft =
+    initialInput.info.metadata_question === updatedInput.info.metadata_question &&
+    initialInput.info.metadata_description === updatedInput.info.metadata_description;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -37,9 +40,7 @@ const EditInput = () => {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({
-          input: updatedInput,
-        }),
+        body: JSON.stringify(updatedInput),
         credentials: "include",
       });
 
@@ -69,11 +70,14 @@ const EditInput = () => {
               label="Prompt / Question"
               description=""
               placeholder="Prompt / Question"
-              inputValue={updatedInput.metadata_question}
+              inputValue={updatedInput.info.metadata_question}
               handleChange={(e) =>
                 setUpdatedInput({
                   ...updatedInput,
-                  metadata_question: e.target.value,
+                  info: {
+                    ...updatedInput.info,
+                    metadata_question: e.target.value,
+                  },
                 })
               }
               isRequired={true}
@@ -85,11 +89,14 @@ const EditInput = () => {
               label="Description"
               description=""
               placeholder="Description"
-              inputValue={updatedInput.metadata_description}
+              inputValue={updatedInput.info.metadata_description}
               handleChange={(e) =>
                 setUpdatedInput({
                   ...updatedInput,
-                  metadata_description: e.target.value,
+                  info: {
+                    ...updatedInput.info,
+                    metadata_description: e.target.value,
+                  },
                 })
               }
               isRequired={true}
@@ -97,7 +104,13 @@ const EditInput = () => {
               type="Paragraph"
             />
 
-            {inputType && <InputPropertiesContainer inputTypeId={inputType.id} />}
+            {inputType && (
+              <InputPropertiesContainer
+                inputTypeId={inputType.id}
+                inputTypeProperties={inputTypeProperties}
+                setInputTypeProperties={setInputTypeProperties}
+              />
+            )}
 
             <SingleSelectToggle
               label="Required?"
@@ -109,7 +122,7 @@ const EditInput = () => {
             />
             <button
               className="action-button-with-icon"
-              disabled={saveDisabled}
+              disabled={prevSavedDraft}
               type="submit"
             >
               <SaveIcon />

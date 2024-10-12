@@ -241,7 +241,15 @@ export const Form = () => {
             false
           )}
         </div>
-        {view === "form" && <FormCreator />}
+        {view === "form" && (
+          <FormCreator
+            creatorInfo={{
+              profile_picture: form?.created_by_profile_picture || "",
+              username: form?.created_by_username || "",
+              created_at: form?.created_at || "",
+            }}
+          />
+        )}
       </div>
     </main>
   );

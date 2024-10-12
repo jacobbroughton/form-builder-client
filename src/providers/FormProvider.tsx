@@ -118,7 +118,6 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
         if (!form) throw new Error("No form found when fetching form submissions.");
 
         const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
-        console.log({ formSubmissions });
 
         if (formSubmissions.length) {
           const inputSubmissions = await getInputSubmissions({

@@ -38,8 +38,8 @@ export const useAddNewInputToDraftForm = () => {
             inputMetadataQuestion: body.inputMetadataQuestion,
             inputMetadataDescription: body.inputMetadataDescription,
             formId: body.formId,
-            isRequired: body.isRequired
-
+            isRequired: body.isRequired,
+            properties: body.properties
           }),
           credentials: "include",
         });

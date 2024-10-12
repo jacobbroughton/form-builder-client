@@ -9,6 +9,14 @@ main.edit-input {
   background-color: var(--main-bg-color);
 }
 
+main.edit-input > .row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 main.edit-input > .row > .container {
   display: flex;
   flex-direction: column;
@@ -25,15 +33,6 @@ main.edit-input > .row > .container > .heading {
   width: 100%;
   display: flex;
   justify-content: flex-start;
-}
-
-main.edit-input > .row {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px 10px;
 }
 
 main.edit-input > .row > .container > form {

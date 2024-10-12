@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useAddNewInputToDraftForm } from "../../../hooks/useAddNewInputToDraftForm";
 import { useAddNewInputToPublishedForm } from "../../../hooks/useAddNewInputToPublishedForm";
 import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
-import { AllFormsType, InputType, InputTypeType } from "../../../lib/types";
+import { InputType, InputTypeType } from "../../../lib/types";
+import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
@@ -12,7 +13,6 @@ import InputPropertiesContainer from "../InputPropertiesContainer/InputPropertie
 import InputTypeInfo from "../InputTypeInfo/InputTypeInfo";
 import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
 import "./StagedInputForm.css";
-import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 
 export const StagedInputForm = ({
   formId,
@@ -31,7 +31,7 @@ export const StagedInputForm = ({
 }) => {
   const { addNewInputToDraftForm } = useAddNewInputToDraftForm();
   const { addNewInputToPublishedForm } = useAddNewInputToPublishedForm();
-  const { inputTypeProperties } = useInputTypeProperties();
+  const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
 
   const { setError } = useContext(ErrorContext);
   const { setCurrentView } = useContext(CurrentViewContext);
@@ -40,9 +40,11 @@ export const StagedInputForm = ({
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
   const [isRequired, setIsRequired] = useState(false);
 
-  async function handleAddNewInput(): Promise<void> {
+  const handleAddNewInput = useCallback(async (): Promise<void> => {
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
+
+      console.log({ inputTypeProperties, properties });
 
       let data;
 
@@ -75,7 +77,7 @@ export const StagedInputForm = ({
       console.log("error here");
       handleCatchError(error, setError, null);
     }
-  }
+  }, [inputTypeProperties]);
 
   function handleInputReset(): void {
     setStagedInputTitle("Untitled Question");
@@ -120,7 +122,11 @@ export const StagedInputForm = ({
               }}
             />
 
-            <InputPropertiesContainer inputTypeId={stagedNewInputType.id} />
+            <InputPropertiesContainer
+              inputTypeId={stagedNewInputType.id}
+              inputTypeProperties={inputTypeProperties}
+              setInputTypeProperties={setInputTypeProperties}
+            />
 
             <SingleSelectToggle
               label="Required?"
