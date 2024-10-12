@@ -11,9 +11,13 @@ import {
   InputTypeType,
   PrivacyOptionType,
 } from "../../../lib/types";
+import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
+import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
+import AddedInputsList from "../../ui/AddedInputsList/AddedInputsList";
 import CatchView from "../../ui/CatchView/CatchView";
+import FormHeader from "../../ui/FormHeader/FormHeader";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
@@ -26,13 +30,10 @@ import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/Se
 import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
-import { debounce } from "../../../utils/debounce";
-import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const CreateForm = () => {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
-  const { deleteDraftForm } = useDeleteDraftForm();
   const { publish } = usePublish();
   const { updateDraftForm } = useUpdateDraftForm();
   const { newDraft, loading: initiallyLoading } = useNewDraft();
@@ -50,24 +51,28 @@ export const CreateForm = () => {
   const [privacyPasskey, setPrivacyPasskey] = useState("");
   const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
-  const [draft, setDraft] = useState<{
-    form: DraftFormType | null;
-    inputs: InputType[];
-  }>({
-    form: null,
-    inputs: [],
-  });
+  // const [draft, setDraft] = useState<{
+  //   form: DraftFormType | null;
+  //   inputs: InputType[];
+  // }>({
+  //   form: null,
+  //   inputs: [],
+  // });
 
-  const [prevSavedForm, setPrevSavedForm] = useState<{
-    form: DraftFormType | null;
-    inputs: InputType[];
-  }>({
-    form: null,
-    inputs: [],
-  });
+  // const [prevSavedDraft, setPrevSavedForm] = useState<{
+  //   form: DraftFormType | null;
+  //   inputs: InputType[];
+  // }>({
+  //   form: null,
+  //   inputs: [],
+  // });
 
-  // const [initiallyLoading, setInitiallyLoading] = useState(true);
-  const [currentView, setCurrentView] = useState("metadata-inputs");
+  const [form, setForm] = useState<DraftFormType | null>(null);
+  const [inputs, setInputs] = useState<InputType[]>([]);
+  const [prevSavedForm, setPrevSavedForm] = useState<DraftFormType | null>(null);
+  const [prevSavedInputs, setPrevSavedInputs] = useState<InputType[]>([]);
+
+  const { currentView, setCurrentView } = useContext(CurrentViewContext);
   const [saved, setSaved] = useState(true);
   const [autoSaveCountdown, setAutoSaveCountdown] = useState(5);
   const [needsAutoSave, setNeedsAutoSave] = useState(false);
@@ -81,32 +86,38 @@ export const CreateForm = () => {
       setStagedPrivacyOptions(
         privacyOptions.map((privacyOption) => ({
           ...privacyOption,
-          checked: privacyOption.id === draft.form?.privacy_id,
+          checked: privacyOption.id === form?.privacy_id,
         }))
       );
-  }, [privacyOptions, draft, reflectFormPrivacyOption]);
+  }, [privacyOptions, form, reflectFormPrivacyOption]);
 
   async function saveDraft() {
     try {
       const data = await updateDraftForm({
-        formId: draft.form!.id,
-        title: draft.form!.title,
-        description: draft.form!.description,
+        formId: form!.id,
+        title: form!.title,
+        description: form!.description,
         privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
           .id,
         privacyPasskey,
         canResubmit,
       });
 
-      setPrevSavedForm({
-        inputs: draft?.inputs,
-        form: data,
-      });
+      // setPrevSavedForm({
+      //   inputs: draft?.inputs,
+      //   form: data,
+      // });
 
-      setDraft({
-        inputs: draft?.inputs,
-        form: data,
-      });
+      // setDraft({
+      //   inputs: draft?.inputs,
+      //   form: data,
+      // });
+
+      setPrevSavedForm(data);
+      setPrevSavedInputs(inputs);
+
+      setForm(data);
+
       setSaved(true);
       setAutoSaveCountdown(5);
       setNeedsAutoSave(false);
@@ -125,15 +136,14 @@ export const CreateForm = () => {
 
   async function handlePublishForm() {
     try {
-      if (!draft || !draft.form)
-        throw new Error("No draft form found when trying to delete");
+      if (!form) throw new Error("No draft form found when trying to delete");
 
-      console.log(draft.form);
+      console.log(form);
 
-      if (!draft.form.id) throw new Error("No form id provided");
+      if (!form.id) throw new Error("No form id provided");
 
       const data = await publish({
-        draftFormId: draft.form.id,
+        draftFormId: form.id,
       });
 
       navigate(`/form/${data[0].id}`);
@@ -195,13 +205,8 @@ export const CreateForm = () => {
           <>
             <SavedStatus saved={saved} autoSaveCountdown={autoSaveCountdown} />
 
-            <MetadataInputs
-              form={draft}
-              setForm={setDraft}
-              setCurrentView={setCurrentView}
-              setPrevSavedForm={setPrevSavedForm}
-              isForDraft={true}
-            />
+            <MetadataInputs form={form} setForm={setForm} />
+            <AddedInputsList inputs={inputs} setInputs={inputs} isForDraft={true} />
             {selectedPrivacyOption ? (
               <SelectedPrivacyOptionButton
                 handleClick={() => setCurrentView("privacy-selector")}
@@ -231,10 +236,10 @@ export const CreateForm = () => {
               />
 
               <ActionButtonWithIcon
-                label="Save & Go to form"
+                label={`${!saved ? "Save & " : ""}Go to form`}
                 handleClick={async () => {
                   if (!saved) await saveDraft();
-                  navigate(`/draft/${draft.form?.id}`);
+                  navigate(`/draft/${form?.id}`);
                 }}
                 icon={<ArrowRightIcon />}
                 iconPlacement="before"
@@ -255,20 +260,15 @@ export const CreateForm = () => {
         );
       }
       case "input-types-selector": {
-        return (
-          <InputTypeSelector
-            setCurrentView={setCurrentView}
-            setStagedNewInputType={setStagedNewInputType}
-          />
-        );
+        return <InputTypeSelector setStagedNewInputType={setStagedNewInputType} />;
       }
       case "staged-input-form": {
         return (
           <>
             <StagedInputForm
-              form={draft}
-              setForm={setDraft}
-              setCurrentView={setCurrentView}
+              formId={form.id}
+              inputs={inputs}
+              setInputs={setInputs}
               stagedNewInputType={stagedNewInputType}
               setStagedNewInputType={setStagedNewInputType}
               isForDraft={true}
@@ -283,15 +283,8 @@ export const CreateForm = () => {
   }
 
   useEffect(() => {
-    setDraft({
-      form: newDraft,
-      inputs: [],
-    });
-
-    setPrevSavedForm({
-      form: newDraft,
-      inputs: [],
-    });
+    setPrevSavedForm(newDraft);
+    setForm(newDraft);
   }, [newDraft]);
 
   useEffect(() => {
@@ -301,10 +294,13 @@ export const CreateForm = () => {
   useEffect(() => {
     async function autoSaveDraft(): Promise<void> {
       try {
-        setPrevSavedForm({
-          form: draft.form,
-          inputs: draft.inputs,
-        });
+        // setPrevSavedForm({
+        //   form: form,
+        //   inputs: draft.inputs,
+        // });
+
+        setPrevSavedForm(form);
+        setPrevSavedInputs(inputs);
 
         saveDraft();
 
@@ -316,7 +312,7 @@ export const CreateForm = () => {
       }
     }
     const interval1 = setInterval(() => {
-      if (needsAutoSave && draft.form) {
+      if (needsAutoSave && form) {
         autoSaveDraft();
       }
     }, autoSaveCountdown * 1000);
@@ -327,10 +323,10 @@ export const CreateForm = () => {
   }, [
     needsAutoSave,
     autoSaveCountdown,
-    draft.form?.description,
-    draft.form?.title,
-    draft.form,
-    draft.inputs,
+    form?.description,
+    form?.title,
+    form,
+    inputs,
     saveDraft,
     setError,
   ]);
@@ -347,24 +343,24 @@ export const CreateForm = () => {
   }, [saved]);
 
   useEffect(() => {
-    if (draft.form && prevSavedForm.form) {
+    if (form && prevSavedForm) {
       const condition =
-        draft.form.title !== prevSavedForm.form.title ||
-        draft.form.description !== prevSavedForm.form.description ||
-        selectedPrivacyOption?.id !== draft.form.privacy_id ||
-        privacyPasskey !== draft.form.passkey;
+        form.title !== prevSavedForm.title ||
+        form.description !== prevSavedForm.description ||
+        selectedPrivacyOption?.id !== form.privacy_id ||
+        privacyPasskey !== form.passkey;
       setSaved(!condition);
       setNeedsAutoSave(condition);
     }
   }, [
-    draft.form?.description,
-    draft.form?.title,
-    prevSavedForm.form?.description,
-    prevSavedForm.form?.title,
+    form?.description,
+    form?.title,
+    prevSavedForm?.description,
+    prevSavedForm?.title,
     selectedPrivacyOption?.id,
     privacyPasskey,
-    draft.form,
-    prevSavedForm.form,
+    form,
+    prevSavedForm,
   ]);
 
   return (

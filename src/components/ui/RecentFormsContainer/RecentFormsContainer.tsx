@@ -2,13 +2,24 @@ import { Link } from "react-router-dom";
 import { elapseTime } from "../../../utils/usefulFunctions";
 import "./RecentFormsContainer.css";
 
-const RecentFormsContainer = ({ recentFormViews }) => {
+type RecentFormViewType = {
+  form_id: string;
+  max_created_at: string;
+  profile_picture: string;
+  title: string;
+};
+
+const RecentFormsContainer = ({
+  recentFormViews,
+}: {
+  recentFormViews: RecentFormViewType[];
+}) => {
   return (
     <div className="recents-container">
       <p className="small-text bold">Recents</p>
       {recentFormViews.length > 0 ? (
         <ul className="recents-list">
-          {recentFormViews.map((formView, i) => (
+          {recentFormViews.map((formView) => (
             <li>
               <Link to={`/form/${formView.form_id}`}>
                 <div className="profile-picture-container">
@@ -16,7 +27,7 @@ const RecentFormsContainer = ({ recentFormViews }) => {
                 </div>
                 <span className="title">{formView.title}</span>{" "}
                 <span className="elapsed-time tiny-text">
-                  {elapseTime(new Date(formView.max_created_at))}
+                  {elapseTime(formView.max_created_at)}
                 </span>
               </Link>
             </li>

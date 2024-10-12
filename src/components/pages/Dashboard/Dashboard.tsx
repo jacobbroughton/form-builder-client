@@ -6,6 +6,8 @@ import { useRecentFormViews } from "../../../hooks/useRecentFormViews";
 import FormsContainer from "../../ui/FormsContainer/FormsContainer";
 import RecentFormsContainer from "../../ui/RecentFormsContainer/RecentFormsContainer";
 import "./Dashboard.css";
+import CircleIcon from "../../ui/icons/CircleIcon";
+import FilledCircleIcon from "../../ui/icons/FilledCircleIcon";
 
 export const Dashboard = () => {
   const { getMyForms } = useGetMyForms();
@@ -16,17 +18,17 @@ export const Dashboard = () => {
   const formTypes = [
     {
       id: 1,
-      label: "Public",
+      label: "Public Forms",
       value: "public",
     },
     {
       id: 2,
-      label: "Created by me",
+      label: "My Forms",
       value: "created-by-me",
     },
     {
       id: 3,
-      label: "Answered",
+      label: "Answered Forms",
       value: "answered",
     },
   ];
@@ -50,6 +52,11 @@ export const Dashboard = () => {
                 key={formType.id}
                 onClick={() => setSelectedFormType(formType)}
               >
+                {selectedFormType.id === formType.id ? (
+                  <FilledCircleIcon />
+                ) : (
+                  <CircleIcon />
+                )}{" "}
                 {formType.label}
               </button>
             ))}

@@ -32,6 +32,24 @@ const EditInput = () => {
     e.preventDefault();
 
     try {
+      const response = await fetch(`http://localhost:3001/api/form/edit-input`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          input: updatedInput,
+        }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("There was an error updating this input");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -49,6 +67,7 @@ const EditInput = () => {
           <form onSubmit={handleSubmit}>
             <FormGroupContainer
               label="Prompt / Question"
+              description=""
               placeholder="Prompt / Question"
               inputValue={updatedInput.metadata_question}
               handleChange={(e) =>
@@ -64,6 +83,7 @@ const EditInput = () => {
 
             <FormGroupContainer
               label="Description"
+              description=""
               placeholder="Description"
               inputValue={updatedInput.metadata_description}
               handleChange={(e) =>
@@ -95,7 +115,6 @@ const EditInput = () => {
               <SaveIcon />
               Save
             </button>
-            
           </form>
         </div>
       </div>

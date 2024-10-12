@@ -21,6 +21,7 @@ import "./index.css";
 import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
 import { FormContextProvider } from "./providers/FormProvider.tsx";
 import UserContextProvider from "./providers/UserContextProvider.tsx";
+import CurrentViewContextProvider from "./providers/CurrentViewProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -74,21 +75,35 @@ const router = createBrowserRouter([
       },
       {
         path: "/draft/:formId",
-        element: <Draft />,
+        element: (
+          <CurrentViewContextProvider>
+            <Draft />
+          </CurrentViewContextProvider>
+        ),
       },
       {
         path: "/create-form",
-        element: <CreateForm />,
+        element: (
+          <CurrentViewContextProvider>
+            <CreateForm />
+          </CurrentViewContextProvider>
+        ),
       },
       {
         path: "/edit-draft-form/:formId/:initialView?",
-        element: <EditDraftForm />,
+        element: (
+          <CurrentViewContextProvider>
+            <EditDraftForm />
+          </CurrentViewContextProvider>
+        ),
       },
       {
         path: "/edit-published-form/:formId/:initialView?",
         element: (
           <FormContextProvider>
-            <EditPublishedForm />
+            <CurrentViewContextProvider>
+              <EditPublishedForm />
+            </CurrentViewContextProvider>
           </FormContextProvider>
         ),
       },

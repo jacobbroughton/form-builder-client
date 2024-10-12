@@ -1,71 +1,80 @@
 import { useContext, useState } from "react";
-import { InputType, AllFormsType } from "../../../lib/types";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { PlusIcon } from "../icons/PlusIcon";
+import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
+import { useDeleteInput } from "../../../hooks/useDeleteInput";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
+import { InputType } from "../../../lib/types";
+import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
-import "./MetadataInputs.css";
-import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
-import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
-import { useDeleteInput } from "../../../hooks/useDeleteInput";
 import { DeleteModal } from "../DeleteModal/DeleteModal";
-import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
-import AddedInputsList from "../AddedInputsList/AddedInputsList";
+import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
+import "./AddedInputsList.css";
 
-export const MetadataInputs = ({
-  form,
-  setForm,
-}: {
-  form: AllFormsType | null;
-  setForm: React.Dispatch<React.SetStateAction<AllFormsType | null>>;
-}) => {
-  if (!form) return <p>No form found</p>;
+const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
+  const { changeInputEnabledStatus } = useChangeInputEnabledStatus();
+  const { deleteInput } = useDeleteInput();
+  const { setError } = useContext(ErrorContext);
+  const { setCurrentView } = useContext(CurrentViewContext);
+
+  const [idForInputPopup, setIdForInputPopup] = useState<string | null>(null);
+  const [inputPopupToggled, setInputPopupToggled] = useState(false);
+  const [inputStagedForDelete, setInputStagedForDelete] = useState<InputType | null>(
+    null
+  );
+  const [deleteModalToggled, setDeleteModalToggled] = useState(false);
+
+  async function handleChangeDraftInputEnabledStatus(
+    clickedInput: InputType
+  ): Promise<void> {
+    try {
+      const newActiveStatus = clickedInput.is_active ? false : true;
+
+      await changeInputEnabledStatus(
+        {
+          inputId: clickedInput.id,
+        },
+        {
+          newActiveStatus,
+          isDraft: isForDraft ? true : false,
+        }
+      );
+
+      setInputs(
+        inputs.map((input) => ({
+          ...input,
+          ...(input.id === clickedInput.id && { is_active: newActiveStatus }),
+        }))
+      );
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
+  async function handleInputDelete(clickedInput: InputType | null): Promise<void> {
+    try {
+      if (!clickedInput) throw new Error("No input was found for deletion");
+
+      await deleteInput({ inputId: clickedInput.id });
+
+      setInputs(inputs.filter((input) => input.id !== clickedInput.id));
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
 
   return (
-    <div className="metadata-inputs">
-      <form className="title-and-description" onSubmit={(e) => e.preventDefault()}>
-        <FormGroupContainer
-          label="Form name"
-          placeholder="Title"
-          type="Short Answer"
-          inputValue={form.title}
-          disabled={false}
-          isRequired={true}
-          handleChange={(e) => {
-            e.preventDefault();
-            setForm({
-              ...form,
-              title: e.target.value,
-            });
-          }}
-        />
-
-        <FormGroupContainer
-          label="Description"
-          placeholder="Description"
-          type="Paragraph"
-          inputValue={form.description || ""}
-          disabled={false}
-          isRequired={false}
-          handleChange={(e) => {
-            e.preventDefault();
-            setForm({
-              ...form!,
-              description: e.target.value,
-            });
-          }}
-        />
-      </form>
-      {/* {form.inputs.length === 0 ? (
+    <>
+    
+      {!inputs ? false : inputs.length === 0 ? (
         <NoPromptsMessage
-          formId={form.id}
           isDraft={isForDraft}
           handleClick={() => setCurrentView("input-types-selector")}
         />
       ) : (
         <div className="added-inputs">
-          {form.inputs.map((input) => (
+          {inputs.map((input) => (
             <div
               className={`added-input ${input.is_active ? "" : "deleted"}`}
               key={input.id}
@@ -128,8 +137,15 @@ export const MetadataInputs = ({
             </div>
           </button>
         </div>
-      )} */}
-      {/* <AddedInputsList form={form} setForm={setForm} isForDraft={isForDraft}/> */}
-    </div>
+      )}
+      {deleteModalToggled && (
+        <DeleteModal
+          label="Delete input?"
+          setDeleteModalShowing={setDeleteModalToggled}
+          handleDeleteClick={() => handleInputDelete(inputStagedForDelete)}
+        />
+      )}
+    </>
   );
 };
+export default AddedInputsList;

@@ -12,23 +12,19 @@ import InputPropertiesContainer from "../InputPropertiesContainer/InputPropertie
 import InputTypeInfo from "../InputTypeInfo/InputTypeInfo";
 import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
 import "./StagedInputForm.css";
+import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 
 export const StagedInputForm = ({
-  form,
-  setForm,
-  setCurrentView,
+  formId,
+  inputs,
+  setInputs,
   stagedNewInputType,
   setStagedNewInputType,
   isForDraft,
 }: {
-  form: { form: AllFormsType | null; inputs: InputType[] };
-  setForm: React.Dispatch<
-    React.SetStateAction<{
-      form: AllFormsType | null;
-      inputs: InputType[];
-    }>
-  >;
-  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
+  formId: string;
+  inputs: InputType[];
+  setInputs: React.Dispatch<React.SetStateAction<InputType[]>>;
   stagedNewInputType: InputTypeType | null;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
   isForDraft: boolean;
@@ -38,6 +34,7 @@ export const StagedInputForm = ({
   const { inputTypeProperties } = useInputTypeProperties();
 
   const { setError } = useContext(ErrorContext);
+  const { setCurrentView } = useContext(CurrentViewContext);
 
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
@@ -55,7 +52,7 @@ export const StagedInputForm = ({
           inputMetadataQuestion: stagedInputTitle,
           inputMetadataDescription: stagedInputDescription,
           properties,
-          formId: form.form!.id,
+          formId: formId,
           isRequired,
         });
       } else {
@@ -64,15 +61,12 @@ export const StagedInputForm = ({
           inputMetadataQuestion: stagedInputTitle,
           inputMetadataDescription: stagedInputDescription,
           properties,
-          formId: form.form!.id,
+          formId: formId,
           isRequired,
         });
       }
 
-      setForm({
-        ...form,
-        inputs: [...form.inputs, data],
-      });
+      setInputs([...inputs, data]);
 
       handleInputReset();
 
@@ -89,7 +83,7 @@ export const StagedInputForm = ({
     setStagedNewInputType(null);
   }
 
-  if (!form.form) return <p>Form not found</p>;
+  if (!formId) return <p>Form id not provided</p>;
 
   if (!stagedNewInputType) return <p>No staged new input type</p>;
 

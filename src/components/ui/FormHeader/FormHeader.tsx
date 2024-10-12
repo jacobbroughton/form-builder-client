@@ -8,6 +8,7 @@ import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormHeader.css";
+import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
 
 const FormHeader = ({
   setDeleteModalShowing,
@@ -32,6 +33,7 @@ const FormHeader = ({
           <h3 className="title">{form?.title}</h3>
           {form?.description && <p className="description">{form.description}</p>}
         </div>
+
         {Boolean(form) && (
           <div className="form-controls">
             <div className="menu-toggle-button-container">

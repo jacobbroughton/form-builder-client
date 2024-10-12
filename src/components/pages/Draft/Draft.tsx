@@ -6,14 +6,10 @@ import { InputType, PublishedFormType } from "../../../lib/types";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
-import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
-import { FormPopupMenu } from "../../ui/FormPopupMenu/FormPopupMenu";
-import { ThreeDotsIcon } from "../../ui/icons/ThreeDotsIcon";
+import { DraftFormHeader } from "../../ui/DraftFormHeader/DraftFormHeader";
+import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
-import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
-import FormHeader from "../../ui/FormHeader/FormHeader";
-import { DraftFormHeader } from "../../ui/DraftFormHeader/DraftFormHeader";
 
 export const Draft = () => {
   const navigate = useNavigate();

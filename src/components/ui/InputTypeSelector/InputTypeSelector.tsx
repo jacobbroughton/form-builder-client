@@ -1,18 +1,17 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 import { InputTypeType } from "../../../lib/types";
-import NumberIcon from "../icons/NumberIcon";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
+import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 
 export const InputTypeSelector = ({
-  setCurrentView,
   setStagedNewInputType,
 }: {
-  setCurrentView: React.Dispatch<React.SetStateAction<string>>;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
 }) => {
   const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
+  const { setCurrentView } = useContext(CurrentViewContext);
 
   function renderIcon(inputTypeName: string) {
     switch (inputTypeName) {
@@ -77,10 +76,6 @@ export const InputTypeSelector = ({
       }
     }
   }
-
-  useEffect(() => {
-    console.log(inputTypes);
-  }, [inputTypes]);
 
   return (
     <div className="input-type-selector">

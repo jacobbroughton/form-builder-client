@@ -104,6 +104,9 @@ export type PublishedFormType = {
   modified_at: null;
   can_resubmit: boolean;
   num_responses: number;
+  privacy_id: number;
+  created_by_profile_picture: string;
+  created_by_username: string;
 };
 
 export type SortOptionType = {

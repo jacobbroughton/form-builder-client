@@ -1,0 +1,145 @@
+
+.added-inputs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--container-border-color);
+  background-color: var(--main-bg-color);
+  border-radius: 3px;
+  border-top-left-radius: 0;
+  margin-top: 20px;
+}
+
+.added-inputs::before {
+  content: "Your custom inputs";
+  position: absolute;
+  bottom: 100%;
+  left: -1px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 2px 5px;
+  line-height: 0.875rem;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: transparent;
+  border: 1px solid var(--container-border-color);
+  border-bottom: 0;
+  z-index: 2;
+  background-color: var(--container-bg-color);
+}
+
+.added-inputs > .added-input {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  padding-right: 30px;
+}
+
+.added-inputs > .added-input.deleted {
+  border-left: 1px solid crimson;
+  /* padding-left: 35px; */
+}
+
+.added-inputs > .added-input.deleted p:not(.deleted) {
+  opacity: 0.5;
+}
+
+.added-inputs > .added-input.deleted .deleted-icon-container {
+  background-color: transparent;
+  border-left: 1px solid #666;
+  width: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.added-inputs > .added-input.deleted .deleted-icon-container svg {
+  fill: crimson;
+  width: 15px;
+}
+
+.added-inputs > .added-input:not(:last-child) {
+  border-bottom: 1px solid var(--button-default-border-color);
+}
+
+.added-inputs > .added-input > .popup-menu-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.1s linear;
+}
+
+.added-inputs > .added-input > .popup-menu-button:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.added-inputs > .added-input > .popup-menu-button > svg {
+  fill: white;
+  width: 20px;
+}
+
+.added-inputs > .added-input .tags {
+  display: flex;
+  gap: 10px;
+}
+
+.added-inputs > .added-input .tags p {
+  border-radius: 15px;
+  border: 1px solid var(--container-border-color);
+  padding: 0px 10px;
+  font-size: 0.875rem;
+}
+
+.added-inputs > button.add-new-input {
+  background-color: var(--button-default-bg-color);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 0;
+  padding: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.added-inputs > button.add-new-input:hover {
+  background-color: var(--button-default-bg-color-hover);
+}
+
+.added-inputs > button.add-new-input > svg {
+  width: 15px;
+  fill: whitesmoke;
+}
+
+.added-inputs > button.add-new-input > .icon-container {
+  height: 100%;
+  border-left: 1px solid var(--button-default-border-color);
+  position: absolute;
+  right: 0;
+  width: 45px;
+  top: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.added-inputs > button.add-new-input > .icon-container > svg {
+  fill: whitesmoke;
+  width: 15px;
+}

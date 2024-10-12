@@ -66,3 +66,9 @@ main.edit-input > .row > .container > form > textarea {
 
 main.edit-input > .row > .container > form > button[type="submit"] {
 }
+
+@media screen and (max-width: 600px) {
+  main.edit-input > .row {
+    flex-direction: column;
+  }
+}

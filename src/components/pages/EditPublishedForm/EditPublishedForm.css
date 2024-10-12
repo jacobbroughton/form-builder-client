@@ -2,9 +2,9 @@ main.edit-published-form {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 30px 10px 75px 10px;
   width: 100%;
   min-height: 100%;
+  padding: 30px 10px 75px 10px;
   gap: 10px;
   background-color: var(--main-bg-color);
 }
@@ -17,7 +17,6 @@ main.edit-published-form > .container {
   width: 100%;
   gap: 10px;
 }
-
 
 main.edit-published-form > .container > .form-buttons {
   display: flex;

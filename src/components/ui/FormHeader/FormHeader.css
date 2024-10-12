@@ -12,6 +12,14 @@ header > .row {
   display: flex;
 }
 
+header > .row > form.edit-fields {
+  width: 100%;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 header > .row > .text {
   width: 100%;
 }
