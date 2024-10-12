@@ -68,6 +68,8 @@ export const StagedInputForm = ({
         });
       }
 
+      console.log(data);
+
       setInputs([...inputs, data]);
 
       handleInputReset();
@@ -77,7 +79,7 @@ export const StagedInputForm = ({
       console.log("error here");
       handleCatchError(error, setError, null);
     }
-  }, [inputTypeProperties]);
+  }, [inputTypeProperties, stagedInputTitle, stagedInputDescription, isRequired]);
 
   function handleInputReset(): void {
     setStagedInputTitle("Untitled Question");
@@ -92,7 +94,6 @@ export const StagedInputForm = ({
   return (
     <div className="staged-input-form">
       <div className="row">
-        <InputTypeInfo inputType={stagedNewInputType} />
         <div className="staged-input-form-container">
           <form className="staged-input-form">
             <FormGroupContainer
@@ -105,6 +106,7 @@ export const StagedInputForm = ({
               isRequired={true}
               handleChange={(e) => {
                 e.preventDefault();
+                console.log(e.target.value);
                 setStagedInputTitle(e.target.value);
               }}
             />
@@ -155,6 +157,7 @@ export const StagedInputForm = ({
             </button>
           </div>
         </div>
+        <InputTypeInfo inputType={stagedNewInputType} />
       </div>
     </div>
   );

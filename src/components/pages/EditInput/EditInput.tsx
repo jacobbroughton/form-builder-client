@@ -59,7 +59,7 @@ const EditInput = () => {
   return (
     <main className="edit-input">
       <div className="row">
-        <InputTypeInfo inputType={inputType} />
+        
         <div className="container">
           <div className="heading">
             <h3>Edit Input</h3>
@@ -130,6 +130,7 @@ const EditInput = () => {
             </button>
           </form>
         </div>
+        <InputTypeInfo inputType={inputType} />
       </div>
     </main>
   );
