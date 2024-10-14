@@ -35,12 +35,6 @@ export const LinearScaleForUser = ({
       </p>
       {description && <p className="tiny-text">{description}</p>}
 
-      <p className="small-text">
-        <i>
-          Select a number between {minLinearScale} and {maxLinearScale}
-        </i>
-      </p>
-
       <div className="picker-wrapper">
         <div className="line"></div>
         <div className="buttons">

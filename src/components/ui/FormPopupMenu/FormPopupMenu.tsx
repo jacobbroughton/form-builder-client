@@ -8,6 +8,7 @@ import { TrashIcon } from "../icons/TrashIcon";
 import "./FormPopupMenu.css";
 import { copyUrlToClipboard, handleCatchError } from "../../../utils/usefulFunctions";
 import { usePublish } from "../../../hooks/usePublish";
+import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
 export const FormPopupMenu = ({
   form,
@@ -23,8 +24,9 @@ export const FormPopupMenu = ({
   const ref = useRef<HTMLDivElement>(null);
   const { publish } = usePublish();
   const { user } = useContext(UserContext);
+  const { setError } = useContext(ErrorContext);
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [sharedTextShowing, setSharedTextShowing] = useState(false);
 
   function handleShare() {

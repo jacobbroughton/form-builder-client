@@ -21,6 +21,7 @@ import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
 import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser.tsx";
+import { LinearScaleForUser } from "../../ui/LinearScaleForUser/LinearScaleForUser.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -47,6 +48,9 @@ export const Form = () => {
   const [submitCooldownToggled, setSubmitCooldownToggled] = useState<boolean>(false);
   const [submitCooldownCountdown, setSubmitCooldownCountdown] = useState<number>(5);
   const [view, setView] = useState<string>(queryParams.get("view") || "form");
+  const [selectedLinearScaleNumber, setSelectedLinearScaleNumber] = useState<
+    number | null
+  >(null);
 
   const { setError } = useContext(ErrorContext);
   const navigate = useNavigate();
@@ -167,6 +171,16 @@ export const Form = () => {
                               }))
                             );
                           }}
+                        />
+                      ) : input.input_type_name === "Linear Scale" ? (
+                        <LinearScaleForUser
+                          question={input.metadata_question}
+                          description={input.metadata_description}
+                          isRequired={input.is_required}
+                          minLinearScale={input.linearScale?.min}
+                          maxLinearScale={input.linearScale?.max}
+                          selectedLinearScaleNumber={selectedLinearScaleNumber}
+                          setSelectedLinearScaleNumber={setSelectedLinearScaleNumber}
                         />
                       ) : (
                         <FormGroupContainer
