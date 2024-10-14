@@ -19,6 +19,7 @@ export const useAddNewInputToPublishedForm = () => {
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
       options: MultipleChoiceOptionType[];
+      linearScale: { min: number; max: number };
       formId: string | undefined;
       isRequired: boolean;
     }): Promise<InputType> => {
@@ -29,21 +30,26 @@ export const useAddNewInputToPublishedForm = () => {
         if (!body.inputTypeId) throw new Error("Input type id not provided");
         if (!body.formId) throw new Error("Form ID for new input type was not provided");
 
-        const response = await fetch("http://localhost:3001/api/form/add-new-input-to-published-form", {
-          method: "post",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            inputTypeId: body.inputTypeId,
-            inputMetadataQuestion: body.inputMetadataQuestion,
-            inputMetadataDescription: body.inputMetadataDescription,
-            formId: body.formId,
-            isRequired: body.isRequired,
-            properties: body.properties
-          }),
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://localhost:3001/api/form/add-new-input-to-published-form",
+          {
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              inputTypeId: body.inputTypeId,
+              inputMetadataQuestion: body.inputMetadataQuestion,
+              inputMetadataDescription: body.inputMetadataDescription,
+              formId: body.formId,
+              isRequired: body.isRequired,
+              properties: body.properties,
+              options: body.options,
+              linearScale: body.linearScale
+            }),
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           if (response.status == 401) {

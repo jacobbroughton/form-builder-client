@@ -1,9 +1,17 @@
 import { useState } from "react";
 import "./LinearScaleForAdmin.css";
 
-export const LinearScaleForAdmin = () => {
-  const [minLinearScale, setMinLinearScale] = useState(1);
-  const [maxLinearScale, setMaxLinearScale] = useState(10);
+export const LinearScaleForAdmin = ({
+  minLinearScale,
+  setMinLinearScale,
+  maxLinearScale,
+  setMaxLinearScale,
+}: {
+  minLinearScale: number;
+  setMinLinearScale: React.Dispatch<React.SetStateAction<number>>;
+  maxLinearScale: number;
+  setMaxLinearScale: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const [scaleToMove, setScaleToMove] = useState<"min" | "max" | null>(null);
 
   const initialLinearScaleOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -66,7 +74,7 @@ export const LinearScaleForAdmin = () => {
                 if (num === minLinearScale) {
                   if (scaleToMove === "min") {
                     setScaleToMove(null);
-                    setMinLinearScale(1)
+                    setMinLinearScale(1);
                   } else setScaleToMove("min");
                 } else if (num === maxLinearScale) {
                   if (scaleToMove === "max") {
@@ -99,8 +107,8 @@ export const LinearScaleForAdmin = () => {
         </div>
       </div>
       <p className="small-text">
-        Users will be able to select a number <strong>between {minLinearScale}</strong> and{" "}
-        <strong>{maxLinearScale}</strong>
+        Users will be able to select a number <strong>between {minLinearScale}</strong>{" "}
+        and <strong>{maxLinearScale}</strong>
       </p>
     </div>
   );

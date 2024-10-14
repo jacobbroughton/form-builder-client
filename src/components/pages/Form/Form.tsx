@@ -20,6 +20,7 @@ import ResponsesContainer from "../../ui/ResponsesContainer/ResponsesContainer.t
 import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
+import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser.tsx";
 
 export const Form = () => {
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -145,27 +146,50 @@ export const Form = () => {
               {inputs.length ? (
                 <>
                   <div className="inputs">
-                    {inputs.map((input) => (
-                      <FormGroupContainer
-                        label={input.metadata_question}
-                        description={input.metadata_description}
-                        placeholder={input.properties?.[`placeholder`]?.value || "..."}
-                        disabled={!form.can_resubmit && formSubmitted}
-                        type={input.input_type_name}
-                        inputValue={input.value}
-                        isRequired={input.is_required}
-                        handleChange={(e) => {
-                          setInputs(
-                            inputs.map((localInput) => ({
-                              ...localInput,
-                              ...(localInput.id === input.id && {
-                                value: e.target.value,
-                              }),
-                            }))
-                          );
-                        }}
-                      />
-                    ))}
+                    {inputs.map((input) =>
+                      input.input_type_name === "Multiple Choice" ? (
+                        <MultipleChoiceForUser
+                          question={input.metadata_question}
+                          description={input.metadata_description}
+                          isRequired={input.is_required}
+                          options={input.options}
+                          handleOptionClick={(option) => {
+                            console.log(inputs);
+                            setInputs(
+                              inputs.map((input) => ({
+                                ...input,
+                                ...(option.input_id === input.id && {
+                                  options: input.options.map((innerOption) => ({
+                                    ...innerOption,
+                                    checked: innerOption.id === option.id,
+                                  })),
+                                }),
+                              }))
+                            );
+                          }}
+                        />
+                      ) : (
+                        <FormGroupContainer
+                          label={input.metadata_question}
+                          description={input.metadata_description}
+                          placeholder={input.properties?.[`placeholder`]?.value || "..."}
+                          disabled={!form.can_resubmit && formSubmitted}
+                          type={input.input_type_name}
+                          inputValue={input.value}
+                          isRequired={input.is_required}
+                          handleChange={(e) => {
+                            setInputs(
+                              inputs.map((localInput) => ({
+                                ...localInput,
+                                ...(localInput.id === input.id && {
+                                  value: e.target.value,
+                                }),
+                              }))
+                            );
+                          }}
+                        />
+                      )
+                    )}
                   </div>
                   {user ? (
                     submitCooldownToggled && prevSubmissions[0] ? (

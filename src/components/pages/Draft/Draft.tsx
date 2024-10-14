@@ -12,6 +12,7 @@ import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
 import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
+import { LinearScaleForUser } from "../../ui/LinearScaleForUser/LinearScaleForUser";
 
 export const Draft = () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ export const Draft = () => {
   const [formLoading, setFormLoading] = useState<boolean>(true);
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<InputType[]>([]);
+  const [selectedLinearScaleNumber, setSelectedLinearScaleNumber] = useState<
+    number | null
+  >(null);
 
   const [DeleteModalShowing, setDeleteModalShowing] = useState<boolean>(false);
   const { setError } = useContext(ErrorContext);
@@ -91,15 +95,25 @@ export const Draft = () => {
                           );
                         }}
                       />
+                    ) : input.input_type_name === "Linear Scale" ? (
+                      <LinearScaleForUser
+                        question={input.metadata_question}
+                        description={input.metadata_description}
+                        isRequired={input.is_required}
+                        minLinearScale={input.linearScale?.min}
+                        maxLinearScale={input.linearScale?.max}
+                        selectedLinearScaleNumber={selectedLinearScaleNumber}
+                        setSelectedLinearScaleNumber={setSelectedLinearScaleNumber}
+                      />
                     ) : (
                       <FormGroupContainer
                         label={input.metadata_question}
                         description={input.metadata_description}
+                        isRequired={input.is_required}
                         placeholder={input.properties?.[`placeholder`]?.value || "..."}
                         disabled={false}
                         type={input.input_type_name}
                         inputValue={input.value}
-                        isRequired={input.is_required}
                         handleChange={(e) => {
                           setInputs(
                             inputs.map((localInput) => ({

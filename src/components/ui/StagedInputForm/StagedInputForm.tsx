@@ -59,11 +59,12 @@ export const StagedInputForm = ({
     },
   ]);
 
+  const [minLinearScale, setMinLinearScale] = useState(1);
+  const [maxLinearScale, setMaxLinearScale] = useState(10);
+
   const handleAddNewInput = useCallback(async (): Promise<void> => {
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
-
-      console.log({ inputTypeProperties, properties });
 
       let data;
 
@@ -74,6 +75,7 @@ export const StagedInputForm = ({
           inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
           options,
+          linearScale: { min: minLinearScale, max: maxLinearScale },
           formId: formId,
           isRequired,
         });
@@ -84,6 +86,7 @@ export const StagedInputForm = ({
           inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
           options,
+          linearScale: { min: minLinearScale, max: maxLinearScale },
           formId: formId,
           isRequired,
         });
@@ -105,7 +108,9 @@ export const StagedInputForm = ({
     isRequired,
     descriptionToggled,
     options,
-    isRequired
+    isRequired,
+    minLinearScale,
+    maxLinearScale,
   ]);
 
   function handleInputReset(): void {
@@ -114,7 +119,8 @@ export const StagedInputForm = ({
     setStagedNewInputType(null);
   }
 
-  const noMultipleChoiceOptionsEmpty = options.filter(option => option.label === '').length === 0
+  const noMultipleChoiceOptionsEmpty =
+    options.filter((option) => option.label === "").length === 0;
 
   if (!formId) return <p>Form id not provided</p>;
 
@@ -135,7 +141,6 @@ export const StagedInputForm = ({
               isRequired={true}
               handleChange={(e) => {
                 e.preventDefault();
-                console.log(e.target.value);
                 setStagedInputTitle(e.target.value);
               }}
             />
@@ -163,7 +168,14 @@ export const StagedInputForm = ({
               {descriptionToggled ? "-" : "+"}
             </button>
 
-            {stagedNewInputType.name === "Linear Scale" && <LinearScaleForAdmin />}
+            {stagedNewInputType.name === "Linear Scale" && (
+              <LinearScaleForAdmin
+                minLinearScale={minLinearScale}
+                setMinLinearScale={setMinLinearScale}
+                maxLinearScale={maxLinearScale}
+                setMaxLinearScale={setMaxLinearScale}
+              />
+            )}
 
             {stagedNewInputType.name === "Multiple Choice" && (
               <MultipleChoiceForAdmin options={options} setOptions={setOptions} />
@@ -188,8 +200,6 @@ export const StagedInputForm = ({
           </form>
 
           <div className="navigation-buttons">
-       
-
             <ActionButtonWithIcon
               label="Back"
               icon={<ArrowLeftIcon />}
@@ -201,7 +211,12 @@ export const StagedInputForm = ({
 
             <ActionButtonWithIcon
               label="Done, add to form"
-              disabled={!stagedInputTitle || (stagedNewInputType.name === "Multiple Choice" ?  !noMultipleChoiceOptionsEmpty: false)}
+              disabled={
+                !stagedInputTitle ||
+                (stagedNewInputType.name === "Multiple Choice"
+                  ? !noMultipleChoiceOptionsEmpty
+                  : false)
+              }
               icon={<CheckIcon />}
               iconPlacement="before"
               color="green-icon"

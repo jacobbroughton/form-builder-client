@@ -19,6 +19,7 @@ export const useAddNewInputToDraftForm = () => {
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
       options: MultipleChoiceOptionType[];
+      linearScale: { min: number; max: number };
       formId: string | undefined;
       isRequired: boolean;
     }): Promise<InputType> => {
@@ -43,7 +44,8 @@ export const useAddNewInputToDraftForm = () => {
               formId: body.formId,
               isRequired: body.isRequired,
               properties: body.properties,
-              options: body.options
+              options: body.options,
+              linearScale: body.linearScale
             }),
             credentials: "include",
           }

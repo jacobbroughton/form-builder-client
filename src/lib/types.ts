@@ -67,6 +67,7 @@ export interface InputType {
   input_type_name: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time" | "Multiple Choice" | "Linear Scale";
   input_type_description: string;
   num_custom_properties: number;
+  num_multiple_choice_options: number;
   existing_answer: string;
   value: string;
 }

@@ -12,7 +12,15 @@ import { DeleteModal } from "../DeleteModal/DeleteModal";
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import "./AddedInputsList.css";
 
-const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
+const AddedInputsList = ({
+  inputs,
+  setInputs,
+  isForDraft,
+}: {
+  inputs: InputType[];
+  setInputs: React.Dispatch<React.SetStateAction<InputType[]>>;
+  isForDraft: boolean;
+}) => {
   const { changeInputEnabledStatus } = useChangeInputEnabledStatus();
   const { deleteInput } = useDeleteInput();
   const { setError } = useContext(ErrorContext);
@@ -66,8 +74,7 @@ const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
 
   return (
     <>
-    
-      { inputs.length === 0 ? (
+      {inputs.length === 0 ? (
         <NoPromptsMessage
           isDraft={isForDraft}
           handleClick={() => setCurrentView("input-types-selector")}
@@ -120,11 +127,6 @@ const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
                     e.stopPropagation();
                     setInputStagedForDelete(input);
                     setDeleteModalToggled(true);
-                  }}
-                  handleEditClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentView("staged-input-form");
-                    console.log(input);
                   }}
                 />
               ) : (
