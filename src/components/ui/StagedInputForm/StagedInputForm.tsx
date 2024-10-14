@@ -13,6 +13,8 @@ import InputPropertiesContainer from "../InputPropertiesContainer/InputPropertie
 import InputTypeInfo from "../InputTypeInfo/InputTypeInfo";
 import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
 import "./StagedInputForm.css";
+import { LinearScaleForAdmin } from "../LinearScaleForAdmin/LinearScaleForAdmin";
+import { MultipleChoiceCreator } from "../MultipleChoiceCreator/MultipleChoiceCreator";
 
 export const StagedInputForm = ({
   formId,
@@ -39,6 +41,7 @@ export const StagedInputForm = ({
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
   const [isRequired, setIsRequired] = useState(false);
+  const [descriptionToggled, setDescriptionToggled] = useState(false);
 
   const handleAddNewInput = useCallback(async (): Promise<void> => {
     try {
@@ -52,7 +55,7 @@ export const StagedInputForm = ({
         data = await addNewInputToDraftForm({
           inputTypeId: stagedNewInputType?.id,
           inputMetadataQuestion: stagedInputTitle,
-          inputMetadataDescription: stagedInputDescription,
+          inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
           formId: formId,
           isRequired,
@@ -61,14 +64,12 @@ export const StagedInputForm = ({
         data = await addNewInputToPublishedForm({
           inputTypeId: stagedNewInputType?.id,
           inputMetadataQuestion: stagedInputTitle,
-          inputMetadataDescription: stagedInputDescription,
+          inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
           formId: formId,
           isRequired,
         });
       }
-
-      console.log(data);
 
       setInputs([...inputs, data]);
 
@@ -79,7 +80,13 @@ export const StagedInputForm = ({
       console.log("error here");
       handleCatchError(error, setError, null);
     }
-  }, [inputTypeProperties, stagedInputTitle, stagedInputDescription, isRequired]);
+  }, [
+    inputTypeProperties,
+    stagedInputTitle,
+    stagedInputDescription,
+    isRequired,
+    descriptionToggled,
+  ]);
 
   function handleInputReset(): void {
     setStagedInputTitle("Untitled Question");
@@ -110,25 +117,41 @@ export const StagedInputForm = ({
                 setStagedInputTitle(e.target.value);
               }}
             />
-            <FormGroupContainer
-              label="Description"
-              description=""
-              disabled={false}
-              type="Paragraph"
-              placeholder="Description"
-              inputValue={stagedInputDescription}
-              isRequired={false}
-              handleChange={(e) => {
-                e.preventDefault();
-                setStagedInputDescription(e.target.value);
-              }}
-            />
+            {descriptionToggled && (
+              <FormGroupContainer
+                label="Description"
+                description=""
+                disabled={false}
+                type="Paragraph"
+                placeholder="Description"
+                inputValue={stagedInputDescription}
+                isRequired={false}
+                handleChange={(e) => {
+                  e.preventDefault();
+                  setStagedInputDescription(e.target.value);
+                }}
+              />
+            )}
+            <button
+              className="description-toggle"
+              type="button"
+              onClick={() => setDescriptionToggled(!descriptionToggled)}
+            >
+              {descriptionToggled ? "Remove" : "Add"} Description{" "}
+              {descriptionToggled ? "-" : "+"}
+            </button>
 
-            <InputPropertiesContainer
-              inputTypeId={stagedNewInputType.id}
-              inputTypeProperties={inputTypeProperties}
-              setInputTypeProperties={setInputTypeProperties}
-            />
+            {stagedNewInputType.name === "Linear Scale" && <LinearScaleForAdmin />}
+
+            {stagedNewInputType.name === "Multiple Choice" && <MultipleChoiceCreator />}
+
+            {inputTypeProperties[stagedNewInputType.id] && (
+              <InputPropertiesContainer
+                inputTypeId={stagedNewInputType.id}
+                inputTypeProperties={inputTypeProperties}
+                setInputTypeProperties={setInputTypeProperties}
+              />
+            )}
 
             <SingleSelectToggle
               label="Required?"

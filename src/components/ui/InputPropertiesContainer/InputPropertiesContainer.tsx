@@ -11,13 +11,16 @@ const InputPropertiesContainer = ({
   setInputTypeProperties,
 }: {
   inputTypeId: number;
-  inputTypeProperties: InputTypePropertyType[];
-  setInputTypeProperties: React.Dispatch<React.SetStateAction<InputTypePropertyType[]>>
+  inputTypeProperties: { [key: string]: InputTypePropertyType[] };
+  setInputTypeProperties: React.Dispatch<
+    React.SetStateAction<{ [key: string]: InputTypePropertyType[] }>
+  >;
 }) => {
-  // const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
   const { inputTypePropertyOptions, setInputTypePropertyOptions } =
     useInputTypePropertyOptions();
   const [propertiesToggled, setPropertiesToggled] = useState(false);
+
+  console.log(inputTypeProperties);
 
   function handleOptionClick(
     property: InputTypePropertyType,
@@ -47,7 +50,6 @@ const InputPropertiesContainer = ({
   }
 
   function handleInputChange(value: string, property: InputTypePropertyType) {
-    console.log(inputTypeProperties, value, property);
     setInputTypeProperties({
       ...inputTypeProperties,
       [property.input_type_id]: inputTypeProperties[property.input_type_id].map(
@@ -109,7 +111,6 @@ const InputPropertiesContainer = ({
                 </div>
               ) : (
                 <input
-                  // placeholder={itemTypeProperty.property_name}
                   placeholder="..."
                   className={itemTypeProperty.property_type}
                   type={itemTypeProperty.property_type || "text"}

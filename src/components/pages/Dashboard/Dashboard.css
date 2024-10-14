@@ -103,5 +103,23 @@ div.forms > main > .container > .forms-selector > button.selected > svg {
     border: 1px solid var(--container-border-color);
     padding: 10px;
     border-radius: 5px;
+    order: 3
+  }
+}
+
+@media screen and (max-width: 500px) {
+  div.forms > main > .container > .forms-selector {
+    flex-direction: column;
+
+  }
+
+  div.forms > main > .container > .forms-selector > button {
+    justify-content:  flex-start;
+    padding: 5px 10px;
+    border-right: 0;
+  }
+
+  div.forms > main > .container > .forms-selector > button:not(:last-child) {
+    border-bottom: 1px solid var(--button-default-border-color);
   }
 }

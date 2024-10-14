@@ -1,0 +1,77 @@
+.multiple-choice-creator {
+  border: 1px solid var(--container-border-color);
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+.multiple-choice-creator > .options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.multiple-choice-creator > .options > .option {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.multiple-choice-creator > .options > .option > input {
+  width: 100%;
+  padding: 5px;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid var(--input-default-border-color);
+}
+
+.multiple-choice-creator > .options > .option > input:hover {
+  border: 1px solid var(--input-default-border-color-hover);
+}
+
+.multiple-choice-creator > .options > .option > button {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.multiple-choice-creator > .options > .option > button:hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
+}
+
+.multiple-choice-creator > .options > .option > button > svg {
+  width: 10px;
+  fill: whitesmoke;
+}
+
+.multiple-choice-creator > button.add-option {
+  width: 100%;
+  background-color: var(--button-default-bg-color);
+  border: 1px solid var(--button-default-border-color);
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.multiple-choice-creator > button.add-option > svg {
+  width: 12px;
+  fill: whitesmoke;
+}
+
+.multiple-choice-creator > button.add-option:hover {
+  background-color: var(--button-default-bg-color-hover);
+  border: 1px solid var(--button-default-border-color-hover);
+}

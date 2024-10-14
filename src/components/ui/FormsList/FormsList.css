@@ -114,3 +114,11 @@
 .form-list > .form-list-item > a.form-list-item-link > .icon-container.public > svg {
   width: 15px;
 }
+
+
+@media screen and (max-width: 450px) {
+  .form-list > .form-list-item > a.form-list-item-link > p.created-date > span.long-date,
+  .form-list > .form-list-item > a.form-list-item-link > p.created-date > span.break {
+    display: none;
+  }
+}

@@ -9,6 +9,10 @@
   border-bottom: 1px solid hsla(348, 83%, 47%, 0.45);;
 }
 
+.error-banner.account-for-sidebar {
+  margin-left: 275px;
+}
+
 .error-banner > button {
   position: absolute;
   right: 0;
@@ -25,4 +29,11 @@
 .error-banner > button > svg {
   width: 13px;
   fill: whitesmoke;
+}
+
+
+@media screen and (max-width: 550px) {
+  .error-banner.account-for-sidebar {
+    margin-left: 0;
+  }
 }

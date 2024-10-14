@@ -4,9 +4,6 @@ div.recents-container {
   gap: 10px;
 }
 
-div.recents-container > p {
-  opacity: 0.7;
-}
 
 div.recents-container > ul.recents-list {
   display: flex;

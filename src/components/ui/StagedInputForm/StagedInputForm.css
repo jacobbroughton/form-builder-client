@@ -50,9 +50,30 @@
   fill: lightgreen;
 }
 
-@media screen and (max-width: 600px) {
-  
-.staged-input-form > .row {
-  flex-direction: column;
+.staged-input-form > .row > .staged-input-form-container > form > .description-toggle {
+  text-align: start;
+  padding: 3px 5px;
+  background-color: var(--button-default-bg-color);
+  border-radius: 3px;
+  border: 1px solid var(--button-default-border-color);
+  font-size: 0.875rem;
+  cursor: pointer;
 }
+
+.staged-input-form
+  > .row
+  > .staged-input-form-container
+  > form
+  > .description-toggle:hover {
+    background-color: var(--button-default-bg-color-hover);
+}
+
+@media screen and (max-width: 600px) {
+  .staged-input-form > .row {
+    flex-direction: column;
+  }
+
+  .staged-input-form > .row > .staged-input-form-container {
+    order: 2;
+  }
 }

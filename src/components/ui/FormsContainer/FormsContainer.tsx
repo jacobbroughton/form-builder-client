@@ -66,7 +66,7 @@ const FormsContainer = ({
     <div>
       <div className="forms-container">
         <section className="header">
-          <p className="small-text">
+          <p className="small-text text-subtle">
             {label} (Sorted by {selectedSort.name.toLowerCase()})
           </p>
           <div className="controls">

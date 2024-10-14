@@ -141,6 +141,10 @@ input {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.text-subtle {
+  opacity: 0.7;
+}
+
 .tiny-text {
   font-size: 0.75rem;
   color: var(--text-color-white);
@@ -152,7 +156,7 @@ input {
 
 .small-text {
   font-size: 0.875rem;
-  color: var(--text-color-white);
+  color: white;
 }
 
 .small-text.bold {
@@ -174,6 +178,22 @@ input {
 .small-text > span.optional {
   color: var(--text-color-muted);
   font-size: 0.75rem;
+}
+
+.button-stripped {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.875rem;
+  text-align: start;
+}
+
+.button-stripped:not(:disabled) {
+  cursor: pointer;
+}
+
+.button-stripped:not(:disabled):hover {
+  text-decoration: underline;
 }
 
 button.navigation-button {

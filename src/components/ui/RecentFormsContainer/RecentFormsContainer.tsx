@@ -16,7 +16,7 @@ const RecentFormsContainer = ({
 }) => {
   return (
     <div className="recents-container">
-      <p className="small-text bold">Recents</p>
+      <p className="small-text bold text-subtle">Recents</p>
       {recentFormViews.length > 0 ? (
         <ul className="recents-list">
           {recentFormViews.map((formView) => (

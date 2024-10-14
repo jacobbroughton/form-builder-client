@@ -34,7 +34,7 @@ import "./EditDraftForm.css";
 
 export const EditDraftForm = () => {
   const navigate = useNavigate();
-  const { formId, initialView } = useParams();
+  const { formId } = useParams();
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
@@ -56,21 +56,6 @@ export const EditDraftForm = () => {
   const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [saved, setSaved] = useState(true);
-  // const [draft, setForm] = useState<{
-  //   form: DraftFormType | null;
-  //   inputs: InputType[];
-  // }>({
-  //   form: null,
-  //   inputs: [],
-  // });
-
-  // const [prevSavedForm, setPrevSavedForm] = useState<{
-  //   form: DraftFormType | null;
-  //   inputs: InputType[];
-  // }>({
-  //   form: null,
-  //   inputs: [],
-  // });
 
   const [form, setForm] = useState<DraftFormType | null>(null);
   const [inputs, setInputs] = useState<InputType[]>([]);
@@ -85,7 +70,6 @@ export const EditDraftForm = () => {
 
   async function saveDraft(): Promise<void> {
     try {
-      console.log(draft);
       const data = await updateDraftForm({
         formId: form!.id,
         title: form!.title,
@@ -146,7 +130,7 @@ export const EditDraftForm = () => {
           <>
             <SavedStatus saved={saved} />
             <MetadataInputs form={form} setForm={setForm} />
-            <AddedInputsList form={form} setForm={setForm} isForDraft={true} />
+            <AddedInputsList inputs={inputs} setInputs={setInputs} isForDraft={true} />
             {selectedPrivacyOption ? (
               <SelectedPrivacyOptionButton
                 handleClick={() => setCurrentView("privacy-selector")}
@@ -312,7 +296,7 @@ export const EditDraftForm = () => {
           checked: privacyOption.id === form?.privacy_id,
         }))
       );
-  }, [privacyOptions, draft, reflectFormPrivacyOption]);
+  }, [privacyOptions, form, reflectFormPrivacyOption]);
 
   return (
     <main className="edit-draft-form">

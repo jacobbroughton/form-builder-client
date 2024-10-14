@@ -1,17 +1,6 @@
-import { useContext, useState } from "react";
-import { InputType, AllFormsType } from "../../../lib/types";
-import { ErrorContext } from "../../../providers/ErrorContextProvider";
-import { handleCatchError } from "../../../utils/usefulFunctions";
-import { PlusIcon } from "../icons/PlusIcon";
-import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
-import { InputPopupMenu } from "../InputPopupMenu/InputPopupMenu";
-import "./MetadataInputs.css";
-import { useChangeInputEnabledStatus } from "../../../hooks/useChangeInputEnabledStatus";
-import { NoPromptsMessage } from "../NoPromptsMessage/NoPromptsMessage";
-import { useDeleteInput } from "../../../hooks/useDeleteInput";
-import { DeleteModal } from "../DeleteModal/DeleteModal";
+import { AllFormsType } from "../../../lib/types";
 import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
-import AddedInputsList from "../AddedInputsList/AddedInputsList";
+import "./MetadataInputs.css";
 
 export const MetadataInputs = ({
   form,
@@ -27,6 +16,7 @@ export const MetadataInputs = ({
       <form className="title-and-description" onSubmit={(e) => e.preventDefault()}>
         <FormGroupContainer
           label="Form name"
+          description=""
           placeholder="Title"
           type="Short Answer"
           inputValue={form.title}
@@ -43,6 +33,7 @@ export const MetadataInputs = ({
 
         <FormGroupContainer
           label="Description"
+          description=""
           placeholder="Description"
           type="Paragraph"
           inputValue={form.description || ""}
@@ -57,8 +48,6 @@ export const MetadataInputs = ({
           }}
         />
       </form>
-      
-      {/* <AddedInputsList form={form} setForm={setForm} isForDraft={isForDraft}/> */}
     </div>
   );
 };

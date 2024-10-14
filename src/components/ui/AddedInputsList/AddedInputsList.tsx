@@ -67,7 +67,7 @@ const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
   return (
     <>
     
-      {!inputs ? false : inputs.length === 0 ? (
+      { inputs.length === 0 ? (
         <NoPromptsMessage
           isDraft={isForDraft}
           handleClick={() => setCurrentView("input-types-selector")}
