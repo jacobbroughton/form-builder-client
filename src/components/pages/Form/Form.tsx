@@ -211,7 +211,6 @@ export const Form = () => {
                 </>
               ) : (
                 <NoPromptsMessage
-                  formId={form.id}
                   isDraft={false}
                   handleClick={() =>
                     navigate(`/edit-published-form/${form.id}/input-types-selector`)

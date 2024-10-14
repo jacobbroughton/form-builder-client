@@ -1,24 +1,24 @@
-.multiple-choice-creator {
+.multiple-choice-for-admin {
   border: 1px solid var(--container-border-color);
   border-radius: 5px;
   padding: 10px;
   width: 100%;
 }
 
-.multiple-choice-creator > .options {
+.multiple-choice-for-admin > .options {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.multiple-choice-creator > .options > .option {
+.multiple-choice-for-admin > .options > .option {
   width: 100%;
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.multiple-choice-creator > .options > .option > input {
+.multiple-choice-for-admin > .options > .option > input {
   width: 100%;
   padding: 5px;
   background-color: transparent;
@@ -26,11 +26,11 @@
   border: 1px solid var(--input-default-border-color);
 }
 
-.multiple-choice-creator > .options > .option > input:hover {
+.multiple-choice-for-admin > .options > .option > input:hover {
   border: 1px solid var(--input-default-border-color-hover);
 }
 
-.multiple-choice-creator > .options > .option > button {
+.multiple-choice-for-admin > .options > .option > button {
   width: 25px;
   height: 25px;
   border-radius: 100%;
@@ -42,21 +42,20 @@
   cursor: pointer;
 }
 
-.multiple-choice-creator > .options > .option > button:hover {
+.multiple-choice-for-admin > .options > .option > button:hover {
   background-color: var(--button-default-bg-color-hover);
   border: 1px solid var(--button-default-border-color-hover);
 }
 
-.multiple-choice-creator > .options > .option > button > svg {
+.multiple-choice-for-admin > .options > .option > button > svg {
   width: 10px;
   fill: whitesmoke;
 }
 
-.multiple-choice-creator > button.add-option {
+.multiple-choice-for-admin > button.add-option {
   width: 100%;
   background-color: var(--button-default-bg-color);
   border: 1px solid var(--button-default-border-color);
-  cursor: pointer;
   margin-top: 10px;
   padding: 5px;
   font-size: 0.875rem;
@@ -66,12 +65,20 @@
   gap: 10px;
 }
 
-.multiple-choice-creator > button.add-option > svg {
+.multiple-choice-for-admin > button.add-option > svg {
   width: 12px;
   fill: whitesmoke;
 }
 
-.multiple-choice-creator > button.add-option:hover {
+.multiple-choice-for-admin > button.add-option:not(:disabled) {
+  cursor: pointer;
+}
+
+.multiple-choice-for-admin > button.add-option:not(:disabled):hover {
   background-color: var(--button-default-bg-color-hover);
   border: 1px solid var(--button-default-border-color-hover);
+}
+
+.multiple-choice-for-admin > button.add-option:disabled > svg {
+  fill: grey;
 }

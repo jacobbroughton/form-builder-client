@@ -69,68 +69,6 @@ a {
   text-decoration: none;
 }
 
-button.action-button-with-icon,
-a.action-button-with-icon {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 10px;
-  align-self: flex-start;
-  font-size: 1rem;
-  white-space: nowrap;
-  border-radius: 3px;
-  padding: 3px 5px;
-  cursor: pointer;
-  border: 1px solid var(--button-default-border-color);
-  background-color: var(--button-default-bg-color);
-}
-
-button.action-button-with-icon:disabled,
-a.action-button-with-icon:disabled {
-  color: rgba(255, 255, 255, 0.35);
-  cursor: not-allowed;
-}
-
-button.action-button-with-icon:not(:disabled):not(.green):hover,
-a.action-button-with-icon:not(:disabled):not(.green):hover {
-  background-color: var(--button-default-bg-color-hover);
-  border-color: var(--button-default-border-color-hover);
-}
-
-button.action-button-with-icon.green,
-a.action-button-with-icon.green {
-  font-weight: 600;
-  background-color: var(--button-green-bg-color);
-  color: whitesmoke;
-}
-
-button.action-button-with-icon.green:not(:disabled):hover,
-a.action-button-with-icon.green:not(:disabled):hover {
-  background-color: var(--button-green-bg-color-hover);
-}
-
-button.action-button-with-icon > svg,
-a.action-button-with-icon > svg {
-  width: 13px;
-  fill: whitesmoke;
-}
-
-button.action-button-with-icon:disabled > svg,
-a.action-button-with-icon:disabled > svg {
-  fill: grey;
-}
-
-button.action-button-with-icon.red > svg,
-a.action-button-with-icon.red > svg {
-  width: 13px;
-  fill: rgb(218, 86, 112);
-}
-
-button.action-button-with-icon.green > svg,
-a.action-button-with-icon.green > svg {
-  width: 13px;
-  fill: whitesmoke;
-}
 
 textarea {
   resize: vertical;
@@ -194,38 +132,4 @@ input {
 
 .button-stripped:not(:disabled):hover {
   text-decoration: underline;
-}
-
-button.navigation-button {
-  padding: 3px 5px;
-  font-size: 1rem;
-  border-radius: 3px;
-  background-color: var(--button-default-bg-color);
-  border: 1px solid var(--button-default-border-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  white-space: nowrap;
-}
-
-button.navigation-button .cancel {
-  margin-top: 0;
-  width: auto;
-}
-
-button.navigation-button:not(:disabled):hover {
-  background-color: var(--button-default-bg-color-hover);
-  border: 1px solid var(--button-default-border-color-hover);
-}
-
-button.navigation-button .cancel:not(:disabled):hover {
-  border-color: #6f6f6f;
-}
-
-button.navigation-button > svg {
-  width: 12px;
-  min-width: 12px;
-  fill: white;
 }

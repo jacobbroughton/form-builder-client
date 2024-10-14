@@ -186,7 +186,7 @@ export const CreateForm = () => {
             <ActionButtonWithIcon
               label="Confirm & Continue"
               disabled={
-                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === ""
+                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "" || false
               }
               handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
@@ -195,8 +195,9 @@ export const CreateForm = () => {
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-              iconPlacement="after"
+              iconPlacement="before"
               icon={<ArrowRightIcon />}
+              color='green-icon'
             />
           </>
         );

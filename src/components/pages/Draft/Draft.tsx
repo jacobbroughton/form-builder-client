@@ -7,10 +7,11 @@ import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { DraftFormHeader } from "../../ui/DraftFormHeader/DraftFormHeader";
+import FormCreator from "../../ui/FormCreator/FormCreator";
 import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
+import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
-import FormCreator from "../../ui/FormCreator/FormCreator";
 
 export const Draft = () => {
   const navigate = useNavigate();
@@ -68,31 +69,53 @@ export const Draft = () => {
             <>
               {inputs.length ? (
                 <div className="inputs">
-                  {inputs.map((input) => (
-                    <FormGroupContainer
-                      label={input.metadata_question}
-                      description={input.metadata_description}
-                      placeholder={input.properties?.[`placeholder`]?.value || "..."}
-                      disabled={false}
-                      type={input.input_type_name}
-                      inputValue={input.value}
-                      isRequired={input.is_required}
-                      handleChange={(e) => {
-                        setInputs(
-                          inputs.map((localInput) => ({
-                            ...localInput,
-                            ...(localInput.id === input.id && {
-                              value: e.target.value,
-                            }),
-                          }))
-                        );
-                      }}
-                    />
-                  ))}
+                  {inputs.map((input) =>
+                    input.input_type_name === "Multiple Choice" ? (
+                      <MultipleChoiceForUser
+                        question={input.metadata_question}
+                        description={input.metadata_description}
+                        isRequired={input.is_required}
+                        options={input.options}
+                        handleOptionClick={(option) => {
+                          console.log(inputs);
+                          setInputs(
+                            inputs.map((input) => ({
+                              ...input,
+                              ...(option.input_id === input.id && {
+                                options: input.options.map((innerOption) => ({
+                                  ...innerOption,
+                                  checked: innerOption.id === option.id,
+                                })),
+                              }),
+                            }))
+                          );
+                        }}
+                      />
+                    ) : (
+                      <FormGroupContainer
+                        label={input.metadata_question}
+                        description={input.metadata_description}
+                        placeholder={input.properties?.[`placeholder`]?.value || "..."}
+                        disabled={false}
+                        type={input.input_type_name}
+                        inputValue={input.value}
+                        isRequired={input.is_required}
+                        handleChange={(e) => {
+                          setInputs(
+                            inputs.map((localInput) => ({
+                              ...localInput,
+                              ...(localInput.id === input.id && {
+                                value: e.target.value,
+                              }),
+                            }))
+                          );
+                        }}
+                      />
+                    )
+                  )}
                 </div>
               ) : (
                 <NoPromptsMessage
-                  formId={form.id}
                   isDraft={true}
                   handleClick={() => {
                     navigate(`/edit-draft-form/${form.id}/input-types-selector`);

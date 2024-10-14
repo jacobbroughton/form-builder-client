@@ -5,6 +5,7 @@ import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import FilledCircleIcon from "../icons/FilledCircleIcon";
+import ActionButtonWithIcon from "../ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const InputTypeSelector = ({
   setStagedNewInputType,
@@ -76,22 +77,21 @@ export const InputTypeSelector = ({
         );
       }
       case "Multiple Choice": {
-        return <FilledCircleIcon/>
+        return <FilledCircleIcon />;
       }
     }
   }
 
   return (
     <div className="input-type-selector">
-      <div className="navigation-buttons">
-        <button
-          className="navigation-button cancel"
-          type="button"
-          onClick={() => setCurrentView("metadata-inputs")}
-        >
-          <XIcon /> Cancel
-        </button>
-      </div>
+      <ActionButtonWithIcon
+        label="Cancel"
+        icon={<XIcon />}
+        iconPlacement="before"
+        handleClick={() => setCurrentView("metadata-inputs")}
+        color="none"
+        disabled={false}
+      />
       <div className="input-types-selector">
         {inputTypesLoading ? (
           [...new Array(5)].map((arrItem) => (

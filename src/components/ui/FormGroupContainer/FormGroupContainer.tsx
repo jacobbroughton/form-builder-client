@@ -1,3 +1,4 @@
+import { MultipleChoiceForUser } from "../MultipleChoiceForUser/MultipleChoiceForUser";
 import "./FormGroupContainer.css";
 const FormGroupContainer = ({
   label,
@@ -67,7 +68,9 @@ const FormGroupContainer = ({
           />
           <p>{inputValue}</p>
         </div>
-      ) : (
+      ) : type === "Multiple Choice" ? (
+        <MultipleChoiceForUser options={[]} setOptions={() => {}}/>
+      )  :(
         false
       )}
     </div>

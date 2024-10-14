@@ -1,10 +1,8 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { FormContext } from "../../../providers/FormProvider";
 import { UserContext } from "../../../providers/UserContextProvider";
-import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import "./NoPromptsMessage.css";
-import { FormContext } from "../../../providers/FormProvider";
 
 export const NoPromptsMessage = ({
   isDraft,

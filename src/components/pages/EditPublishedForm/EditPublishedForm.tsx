@@ -43,20 +43,7 @@ export const EditPublishedForm = () => {
   const [reflectFormPrivacyOption, setReflectFormPrivacyOption] = useState(true);
 
   const [saved, setSaved] = useState(true);
-  // const [form, setForm] = useState<{
-  //   form: PublishedFormType | null;
-  //   inputs: InputType[];
-  // }>({
-  //   form: null,
-  //   inputs: [],
-  // });
-  // const [prevSavedForm, setPrevSavedForm] = useState<{
-  //   form: DraftFormType | null;
-  //   inputs: InputType[];
-  // }>({
-  //   form: null,
-  //   inputs: [],
-  // });
+
   const [form, setForm] = useState<PublishedFormType | null>(null);
   const [inputs, setInputs] = useState<InputType[]>([]);
   const [prevSavedForm, setPrevSavedForm] = useState<PublishedFormType | null>(null);
@@ -80,10 +67,6 @@ export const EditPublishedForm = () => {
       });
 
       setForm(data);
-      // setForm({
-      //   inputs: form?.inputs,
-      //   form: data,
-      // });
 
       setSaved(true);
     } catch (error) {
@@ -102,8 +85,6 @@ export const EditPublishedForm = () => {
       case "metadata-inputs": {
         return (
           <>
-            {/* <DraftPublishedTag draftOrPublished="published" /> */}
-            {/* <SavedStatus saved={saved} /> */}
             <MetadataInputs form={form} setForm={setForm} />
             <AddedInputsList inputs={inputs} setInputs={setInputs} isForDraft={false} />
             {selectedPrivacyOption ? (
@@ -182,7 +163,7 @@ export const EditPublishedForm = () => {
 
             <ActionButtonWithIcon
               label="Confirm & Continue"
-              color="none"
+              color="green-icon"
               icon={<ArrowRightIcon />}
               iconPlacement="before"
               handleClick={() => {

@@ -1,0 +1,43 @@
+.multiple-choice-for-user {
+  border: 1px solid var(--container-border-color);
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+}
+
+.multiple-choice-for-user > .no-options-message > p {
+}
+
+.multiple-choice-for-user > .options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.multiple-choice-for-user > .options > button {
+  width: 100%;
+  padding: 5px;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid var(--button-default-border-color);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.multiple-choice-for-user > .options > button:hover {
+  border: 1px solid var(--button-default-border-color);
+  background-color: var(--button-default-bg-color);
+}
+
+.multiple-choice-for-user > .options > button > svg {
+  fill: grey;
+  width: 13px;
+}
+
+.multiple-choice-for-user > .options > button.checked > svg {
+  fill: lightgreen;
+}

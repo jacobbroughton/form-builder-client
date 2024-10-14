@@ -5,16 +5,6 @@ div.input-type-selector {
   align-items: flex-start;
 }
 
-div.input-type-selector > .navigation-buttons > button.navigation-button {
-  background-color: var(--button-default-bg-color);
-  border: 1px solid var(--button-default-border-color);
-}
-
-div.input-type-selector > .navigation-buttons > button.navigation-button:hover {
-  background-color: var(--button-default-bg-color-hover);
-  border: 1px solid var(--button-default-border-color-hover);
-}
-
 div.input-type-selector > .input-types-selector {
   display: flex;
   flex-direction: column;

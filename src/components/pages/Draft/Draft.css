@@ -99,6 +99,10 @@ main.draft-form > .row > .container > .heading > p.description {
 }
 
 main.draft-form > .row > .container > .inputs {
+  border-radius: 3px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import { InputType, InputTypePropertyType } from "../lib/types";
+import { InputType, InputTypePropertyType, MultipleChoiceOptionType } from "../lib/types";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
@@ -18,8 +18,9 @@ export const useAddNewInputToDraftForm = () => {
       inputMetadataQuestion: string;
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
+      options: MultipleChoiceOptionType[];
       formId: string | undefined;
-      isRequired: boolean
+      isRequired: boolean;
     }): Promise<InputType> => {
       setLoading(true);
       setLocalError(null);
@@ -28,30 +29,25 @@ export const useAddNewInputToDraftForm = () => {
         if (!body.inputTypeId) throw new Error("Input type id not provided");
         if (!body.formId) throw new Error("Form ID for new input type was not provided");
 
-        console.log({
-          inputTypeId: body.inputTypeId,
-          inputMetadataQuestion: body.inputMetadataQuestion,
-          inputMetadataDescription: body.inputMetadataDescription,
-          formId: body.formId,
-          isRequired: body.isRequired,
-          properties: body.properties
-        })
-
-        const response = await fetch("http://localhost:3001/api/form/add-new-input-to-draft-form", {
-          method: "post",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({
-            inputTypeId: body.inputTypeId,
-            inputMetadataQuestion: body.inputMetadataQuestion,
-            inputMetadataDescription: body.inputMetadataDescription,
-            formId: body.formId,
-            isRequired: body.isRequired,
-            properties: body.properties
-          }),
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://localhost:3001/api/form/add-new-input-to-draft-form",
+          {
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              inputTypeId: body.inputTypeId,
+              inputMetadataQuestion: body.inputMetadataQuestion,
+              inputMetadataDescription: body.inputMetadataDescription,
+              formId: body.formId,
+              isRequired: body.isRequired,
+              properties: body.properties,
+              options: body.options
+            }),
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           if (response.status == 401) {

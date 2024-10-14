@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import { useAddNewInputToDraftForm } from "../../../hooks/useAddNewInputToDraftForm";
 import { useAddNewInputToPublishedForm } from "../../../hooks/useAddNewInputToPublishedForm";
 import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
-import { InputType, InputTypeType } from "../../../lib/types";
+import { InputType, InputTypeType, MultipleChoiceOptionType } from "../../../lib/types";
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
@@ -14,7 +14,8 @@ import InputTypeInfo from "../InputTypeInfo/InputTypeInfo";
 import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
 import "./StagedInputForm.css";
 import { LinearScaleForAdmin } from "../LinearScaleForAdmin/LinearScaleForAdmin";
-import { MultipleChoiceCreator } from "../MultipleChoiceCreator/MultipleChoiceCreator";
+import { MultipleChoiceForAdmin } from "../MultipleChoiceForAdmin/MultipleChoiceForAdmin";
+import ActionButtonWithIcon from "../ActionButtonWithIcon/ActionButtonWithIcon";
 
 export const StagedInputForm = ({
   formId,
@@ -43,6 +44,21 @@ export const StagedInputForm = ({
   const [isRequired, setIsRequired] = useState(false);
   const [descriptionToggled, setDescriptionToggled] = useState(false);
 
+  const [options, setOptions] = useState<MultipleChoiceOptionType[]>([
+    {
+      id: 1,
+      label: "",
+    },
+    {
+      id: 2,
+      label: "",
+    },
+    {
+      id: 3,
+      label: "",
+    },
+  ]);
+
   const handleAddNewInput = useCallback(async (): Promise<void> => {
     try {
       const properties = inputTypeProperties[stagedNewInputType!.id];
@@ -57,6 +73,7 @@ export const StagedInputForm = ({
           inputMetadataQuestion: stagedInputTitle,
           inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
+          options,
           formId: formId,
           isRequired,
         });
@@ -66,6 +83,7 @@ export const StagedInputForm = ({
           inputMetadataQuestion: stagedInputTitle,
           inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
           properties,
+          options,
           formId: formId,
           isRequired,
         });
@@ -86,6 +104,8 @@ export const StagedInputForm = ({
     stagedInputDescription,
     isRequired,
     descriptionToggled,
+    options,
+    isRequired
   ]);
 
   function handleInputReset(): void {
@@ -93,6 +113,8 @@ export const StagedInputForm = ({
     setStagedInputDescription("");
     setStagedNewInputType(null);
   }
+
+  const noMultipleChoiceOptionsEmpty = options.filter(option => option.label === '').length === 0
 
   if (!formId) return <p>Form id not provided</p>;
 
@@ -143,7 +165,9 @@ export const StagedInputForm = ({
 
             {stagedNewInputType.name === "Linear Scale" && <LinearScaleForAdmin />}
 
-            {stagedNewInputType.name === "Multiple Choice" && <MultipleChoiceCreator />}
+            {stagedNewInputType.name === "Multiple Choice" && (
+              <MultipleChoiceForAdmin options={options} setOptions={setOptions} />
+            )}
 
             {inputTypeProperties[stagedNewInputType.id] && (
               <InputPropertiesContainer
@@ -164,20 +188,25 @@ export const StagedInputForm = ({
           </form>
 
           <div className="navigation-buttons">
-            <button
-              className="navigation-button back"
-              type="button"
-              onClick={() => setCurrentView("input-types-selector")}
-            >
-              <ArrowLeftIcon /> Back
-            </button>
-            <button
-              className="navigation-button done"
-              type="button"
-              onClick={handleAddNewInput}
-            >
-              <CheckIcon /> Done, add to form
-            </button>
+       
+
+            <ActionButtonWithIcon
+              label="Back"
+              icon={<ArrowLeftIcon />}
+              iconPlacement="before"
+              handleClick={() => setCurrentView("input-types-selector")}
+              color="none"
+              disabled={false}
+            />
+
+            <ActionButtonWithIcon
+              label="Done, add to form"
+              disabled={!stagedInputTitle || (stagedNewInputType.name === "Multiple Choice" ?  !noMultipleChoiceOptionsEmpty: false)}
+              icon={<CheckIcon />}
+              iconPlacement="before"
+              color="green-icon"
+              handleClick={handleAddNewInput}
+            />
           </div>
         </div>
         <InputTypeInfo inputType={stagedNewInputType} />

@@ -213,7 +213,7 @@ export const EditDraftForm = () => {
                 false
               }
               icon={<ArrowRightIcon />}
-              iconPlacement="after"
+              iconPlacement="before"
               handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
                   return;
@@ -222,7 +222,7 @@ export const EditDraftForm = () => {
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-              color="none"
+              color='green-icon'
             />
           </>
         );

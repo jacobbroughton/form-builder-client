@@ -64,7 +64,7 @@ export interface InputType {
   created_by_id: string;
   modified_by_id: string;
   modified_at: string;
-  input_type_name: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time";
+  input_type_name: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time" | "Multiple Choice" | "Linear Scale";
   input_type_description: string;
   num_custom_properties: number;
   existing_answer: string;
@@ -156,4 +156,9 @@ export type PrevSubmissionType = {
   id: string;
   modified_at: string | null;
   modified_by_id: string | null;
+};
+
+export type MultipleChoiceOptionType = {
+  id: number;
+  label: string;
 };

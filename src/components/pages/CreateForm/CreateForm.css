@@ -32,18 +32,6 @@ main.create-form > .container > .input-types-selector > button:hover {
   background-color: #55555525;
 }
 
-main.create-form > .container > .navigation-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-main.create-form
-  > .container
-  > .navigation-buttons
-  > .navigation-button.done:not(:disabled)
-  svg {
-  fill: lightgreen;
-}
 
 main.create-form > .container > .form-buttons {
   display: flex;

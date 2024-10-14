@@ -88,6 +88,12 @@ const AddedInputsList = ({ inputs, setInputs, isForDraft }) => {
                     {input.num_custom_properties > 1 ? "ies" : "y"}
                   </p>
                 )}
+                {input.num_multiple_choice_options > 0 && (
+                  <p>
+                    {input.num_multiple_choice_options} option
+                    {input.num_multiple_choice_options > 1 ? "s" : ""}
+                  </p>
+                )}
                 {input.is_required && <p>Required</p>}
               </div>
               <button

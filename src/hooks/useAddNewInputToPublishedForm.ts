@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import { InputType, InputTypePropertyType } from "../lib/types";
+import { InputType, InputTypePropertyType, MultipleChoiceOptionType } from "../lib/types";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
@@ -18,6 +18,7 @@ export const useAddNewInputToPublishedForm = () => {
       inputMetadataQuestion: string;
       inputMetadataDescription: string;
       properties: InputTypePropertyType[];
+      options: MultipleChoiceOptionType[];
       formId: string | undefined;
       isRequired: boolean;
     }): Promise<InputType> => {

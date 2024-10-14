@@ -1,33 +1,21 @@
-import { useState } from "react";
-import "./MultipleChoiceCreator.css";
-import { XIcon } from "../icons/XIcon";
+import { MultipleChoiceOptionType } from "../../../lib/types";
 import { PlusIcon } from "../icons/PlusIcon";
+import { XIcon } from "../icons/XIcon";
+import "./MultipleChoiceForAdmin.css";
 
-type OptionType = {
-  id: number;
-  label: string;
-};
-
-export const MultipleChoiceCreator = () => {
-  const [options, setOptions] = useState<OptionType[]>([
-    {
-      id: 1,
-      label: "",
-    },
-    {
-      id: 2,
-      label: "",
-    },
-    {
-      id: 3,
-      label: "",
-    },
-  ]);
-
-  function handleOptionLabelChange(e: React.ChangeEvent, option: OptionType) {
+export const MultipleChoiceForAdmin = ({
+  options,
+  setOptions,
+}: {
+  options: MultipleChoiceOptionType[];
+  setOptions: React.Dispatch<React.SetStateAction<MultipleChoiceOptionType[]>>;
+}) => {
+  function handleOptionLabelChange(
+    e: React.ChangeEvent,
+    option: MultipleChoiceOptionType
+  ) {
     setOptions(
       options.map((innerOption) => {
-        console.log(innerOption, option);
         return {
           ...innerOption,
           ...(innerOption.id === option.id && {
@@ -44,13 +32,15 @@ export const MultipleChoiceCreator = () => {
     setOptions([...options, { id: lastChoiceId + 1, label: "" }]);
   }
 
-  function handleDeleteOption(option: OptionType) {
+  function handleDeleteOption(option: MultipleChoiceOptionType) {
     const newOptions = options.filter((innerOption) => innerOption.id !== option.id);
     setOptions(newOptions);
   }
 
+  const addOptionDisabled = options.length === 10;
+
   return (
-    <div className="multiple-choice-creator">
+    <div className="multiple-choice-for-admin">
       {options.length === 0 ? (
         <p>No option created yet</p>
       ) : (
@@ -60,17 +50,22 @@ export const MultipleChoiceCreator = () => {
               <input
                 onChange={(e) => handleOptionLabelChange(e, option)}
                 value={option.label}
-                placeholder={`Option ${i}`}
+                placeholder={`Option ${i + 1}`}
               />
               <button type="button" onClick={() => handleDeleteOption(option)}>
-                <XIcon/>
+                <XIcon />
               </button>
             </div>
           ))}
         </div>
       )}
-      <button type="button" onClick={handleAddOption} className="add-option">
-        <PlusIcon/> Add option
+      <button
+        type="button"
+        onClick={handleAddOption}
+        className="add-option"
+        disabled={addOptionDisabled}
+      >
+        <PlusIcon /> Add option
       </button>
     </div>
   );

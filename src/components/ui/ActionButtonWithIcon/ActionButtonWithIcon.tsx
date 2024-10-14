@@ -14,11 +14,11 @@ const ActionButtonWithIcon = ({
   iconPlacement: "before" | "after";
   handleClick: () => void;
   label: string;
-  color: "green" | "red" | "none";
+  color: "green" | "green-icon" | "red" | "none";
 }) => {
   return (
     <button
-      className={`action-button-with-icon ${color !== 'none' ? color : ''}`}
+      className={`action-button-with-icon ${color !== "none" ? color : ""}`}
       disabled={disabled}
       onClick={handleClick}
     >
