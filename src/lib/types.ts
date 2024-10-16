@@ -65,6 +65,7 @@ export interface InputType {
   modified_by_id: string;
   modified_at: string;
   input_type_name: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time" | "Multiple Choice" | "Linear Scale";
+  linearScale: {min: number; max: number;}
   input_type_description: string;
   num_custom_properties: number;
   num_multiple_choice_options: number;

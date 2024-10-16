@@ -39,6 +39,7 @@ export const Form = () => {
     formSubmitted,
     prevSubmissions,
     latestInputSubmissions,
+    latestMultipleChoiceSubmissions,
     handleSubmissionsOnSubmit,
   } = useContext(FormContext);
 
@@ -102,7 +103,13 @@ export const Form = () => {
     addFormView();
   }, []);
 
+  const linearScaleInputs = inputs.filter(
+    (input) => input.input_type_name === "Linear Scale"
+  );
+  const linearScaleInputIncluded = linearScaleInputs.length >= 1;
+
   const inputsUnchanged =
+    (linearScaleInputIncluded && !selectedLinearScaleNumber) ||
     inputs.filter(
       (input) => input.value === (latestInputSubmissions?.[input.id].value || "")
     ).length === inputs.length;
@@ -115,9 +122,8 @@ export const Form = () => {
 
   const requiredInputsAnswered = requiredInputsLength === requiredInputsWithAnswersLength;
 
-  const submitDisabled = inputsUnchanged || !requiredInputsAnswered;
-
-  console.log({ inputs, latestInputSubmissions });
+  // const submitDisabled = inputsUnchanged || !requiredInputsAnswered;
+  const submitDisabled = false; /** // TODO - Uncomment this */
 
   const isFormCreator = form?.created_by_id === user?.id;
 
@@ -158,11 +164,11 @@ export const Form = () => {
                           isRequired={input.is_required}
                           options={input.options}
                           handleOptionClick={(option) => {
-                            console.log(inputs);
                             setInputs(
                               inputs.map((input) => ({
                                 ...input,
                                 ...(option.input_id === input.id && {
+                                  value: option.label,
                                   options: input.options.map((innerOption) => ({
                                     ...innerOption,
                                     checked: innerOption.id === option.id,
@@ -171,6 +177,7 @@ export const Form = () => {
                               }))
                             );
                           }}
+                          disabled={formSubmitted}
                         />
                       ) : input.input_type_name === "Linear Scale" ? (
                         <LinearScaleForUser
@@ -179,8 +186,18 @@ export const Form = () => {
                           isRequired={input.is_required}
                           minLinearScale={input.linearScale?.min}
                           maxLinearScale={input.linearScale?.max}
-                          selectedLinearScaleNumber={selectedLinearScaleNumber}
-                          setSelectedLinearScaleNumber={setSelectedLinearScaleNumber}
+                          value={input.linearScale?.existingValue || input.value}
+                          onNumberSelect={(number) => {
+                            setInputs(
+                              inputs.map((innerInput) => ({
+                                ...innerInput,
+                                ...(innerInput.id === input.id && {
+                                  value: number,
+                                }),
+                              }))
+                            );
+                          }}
+                          disabled={formSubmitted}
                         />
                       ) : (
                         <FormGroupContainer

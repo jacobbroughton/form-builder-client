@@ -68,9 +68,7 @@ const FormGroupContainer = ({
           />
           <p>{inputValue}</p>
         </div>
-      ) : type === "Multiple Choice" ? (
-        <MultipleChoiceForUser options={[]} setOptions={() => {}}/>
-      )  :(
+      ) : (
         false
       )}
     </div>

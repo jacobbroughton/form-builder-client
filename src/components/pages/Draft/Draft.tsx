@@ -94,6 +94,7 @@ export const Draft = () => {
                             }))
                           );
                         }}
+                        disabled={false}
                       />
                     ) : input.input_type_name === "Linear Scale" ? (
                       <LinearScaleForUser

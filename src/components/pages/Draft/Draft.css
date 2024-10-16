@@ -72,32 +72,6 @@ main.draft-form
   fill: white;
 }
 
-main.draft-form > .row > .container > .heading {
-  /* padding: 10px; */
-  padding-left: 10px;
-  /* border-radius: 3px;  */
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  border: 1px solid var(--container-border-color);
-  padding: 10px;
-  border-radius: 4px;
-}
-
-main.draft-form > .row > .container > .heading.no-margin-bottom {
-  margin-bottom: 0;
-}
-
-main.draft-form > .row > .container > .heading > h1.title {
-  font-size: 1rem;
-}
-
-main.draft-form > .row > .container > .heading > p.description {
-  font-size: 0.875rem;
-}
-
 main.draft-form > .row > .container > .inputs {
   border-radius: 3px;
   position: relative;
@@ -105,4 +79,3 @@ main.draft-form > .row > .container > .inputs {
   flex-direction: column;
   gap: 20px;
 }
-

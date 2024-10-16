@@ -25,10 +25,14 @@
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
 }
 
-.multiple-choice-for-user > .options > button:hover {
+.multiple-choice-for-user > .options > button:not(:disabled) {
+  cursor: pointer;
+
+}
+
+.multiple-choice-for-user > .options > button:not(:disabled):hover {
   border: 1px solid var(--button-default-border-color);
   background-color: var(--button-default-bg-color);
 }

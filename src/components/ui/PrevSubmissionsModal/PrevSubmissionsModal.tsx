@@ -97,7 +97,7 @@ const PrevSubmissionsModal = ({
           </ul>
           <div className="form-mimic">
             <div className="heading">
-              <h3>{currForm.title}</h3>
+              <h1>{currForm.title}</h1>
               <p className="small-text">{currForm.description}</p>
             </div>
             <div className="prompts">

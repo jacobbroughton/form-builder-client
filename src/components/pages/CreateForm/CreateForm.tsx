@@ -103,16 +103,6 @@ export const CreateForm = () => {
         canResubmit,
       });
 
-      // setPrevSavedForm({
-      //   inputs: draft?.inputs,
-      //   form: data,
-      // });
-
-      // setDraft({
-      //   inputs: draft?.inputs,
-      //   form: data,
-      // });
-
       setPrevSavedForm(data);
       setPrevSavedInputs(inputs);
 
@@ -145,6 +135,8 @@ export const CreateForm = () => {
       const data = await publish({
         draftFormId: form.id,
       });
+
+      console.log('data from publish', data)
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
@@ -186,7 +178,8 @@ export const CreateForm = () => {
             <ActionButtonWithIcon
               label="Confirm & Continue"
               disabled={
-                stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "" || false
+                (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "") ||
+                false
               }
               handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
@@ -197,7 +190,7 @@ export const CreateForm = () => {
               }}
               iconPlacement="before"
               icon={<ArrowRightIcon />}
-              color='green-icon'
+              color="green-icon"
             />
           </>
         );

@@ -23,6 +23,7 @@ export const FormContext = createContext<{
   formSubmitted: boolean;
   prevSubmissions: PrevSubmissionType[];
   latestInputSubmissions: { [key: string]: PrevSubmissionType } | null;
+  latestMultipleChoiceSubmissions: { [key: string]: object } | null;
   handleSubmissionsOnSubmit: (newSubmission: PrevSubmissionType) => Promise<null>;
   responses: {
     shallowSubmissionsList: {
@@ -74,6 +75,7 @@ export const FormContext = createContext<{
   formSubmitted: false,
   prevSubmissions: [],
   latestInputSubmissions: null,
+  latestMultipleChoiceSubmissions: null,
   handleSubmissionsOnSubmit: async () => null,
   responses: {},
 });
@@ -96,17 +98,26 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
 
   const [prevSubmissions, setPrevSubmissions] = useState<PrevSubmissionType[]>([]);
   const [latestInputSubmissions, setLatestInputSubmissions] = useState(null);
+  const [latestMultipleChoiceSubmissions, setLatestMultipleChoiceSubmissions] =
+    useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   async function handleSubmissionsOnSubmit(
     newSubmission: PrevSubmissionType
   ): Promise<null> {
-    const inputSubmissions = await getInputSubmissions({
+    const data = await getInputSubmissions({
       submissionId: newSubmission.id,
     });
 
+    console.log("data", data);
+
+    const { inputSubmissions, multipleChoiceSubmissions } = data;
+
+    console.log(inputSubmissions);
+
     setPrevSubmissions([...prevSubmissions, newSubmission]);
     setLatestInputSubmissions(inputSubmissions);
+    setLatestMultipleChoiceSubmissions(multipleChoiceSubmissions);
     setFormSubmitted(true);
 
     return null;
@@ -120,9 +131,12 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
         const formSubmissions = await getPrevFormSubmissions({ formId: form.id });
 
         if (formSubmissions.length) {
-          const inputSubmissions = await getInputSubmissions({
-            submissionId: formSubmissions[0]?.id,
-          });
+          const { inputSubmissions, multipleChoiceSubmissions } =
+            await getInputSubmissions({
+              submissionId: formSubmissions[0]?.id,
+            });
+
+          setLatestMultipleChoiceSubmissions(multipleChoiceSubmissions);
           setLatestInputSubmissions(inputSubmissions);
         }
 
@@ -148,6 +162,7 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
         formSubmitted,
         prevSubmissions,
         latestInputSubmissions,
+        latestMultipleChoiceSubmissions,
         handleSubmissionsOnSubmit,
         responses,
       }}

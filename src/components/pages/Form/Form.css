@@ -74,26 +74,6 @@ main.published-form > .row > .container > .previous-submission-info > .content >
   text-align: start;
 }
 
-main.published-form > .row > .container > .heading {
-  padding-left: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  border-radius: 4px;
-}
-
-main.published-form > .row > .container > .heading.no-margin-bottom {
-  margin-bottom: 0;
-}
-
-main.published-form > .row > .container > .heading > h1.title {
-  font-size: 1rem;
-}
-
-main.published-form > .row > .container > .heading > p.description {
-  font-size: 0.875rem;
-}
-
 main.published-form > .row > .container > .inputs {
   border-radius: 3px;
   position: relative;

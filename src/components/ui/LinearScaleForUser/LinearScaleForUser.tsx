@@ -6,22 +6,27 @@ export const LinearScaleForUser = ({
   isRequired,
   minLinearScale,
   maxLinearScale,
-  selectedLinearScaleNumber,
-  setSelectedLinearScaleNumber,
+  value,
+  onNumberSelect,
+  disabled
 }: {
   question: string;
   description: string;
   isRequired: boolean;
   minLinearScale: number;
   maxLinearScale: number;
-  selectedLinearScaleNumber: number | null;
-  setSelectedLinearScaleNumber: React.Dispatch<React.SetStateAction<number | null>>;
+  value: string;
+  onNumberSelect: (number: string) => void;
+  disabled: boolean;
 }) => {
   const linearScaleOptions = [];
 
   for (let i = minLinearScale; i < maxLinearScale + 1; i++) {
-    linearScaleOptions.push(i);
+    linearScaleOptions.push(`${i}`);
   }
+
+  const minLinearScaleString = `${minLinearScale}`;
+  const maxLinearScaleString = `${maxLinearScale}`;
 
   return (
     <div className="linear-scale-settings">
@@ -41,13 +46,13 @@ export const LinearScaleForUser = ({
           {linearScaleOptions.map((num) => (
             <button
               type="button"
-              disabled={false}
-              className={`button ${num === minLinearScale ? `min ` : ""} ${
-                num === maxLinearScale ? `max ` : ""
-              } ${selectedLinearScaleNumber === num ? "selected" : ""}`}
+              disabled={disabled}
+              className={`button ${num == minLinearScaleString ? `min ` : ""} ${
+                num == maxLinearScaleString ? `max ` : ""
+              } ${value == num ? "selected" : ""}`}
               key={num}
               onClick={() => {
-                setSelectedLinearScaleNumber(num);
+                onNumberSelect(`${num}`);
               }}
             >
               {num}

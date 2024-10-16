@@ -9,13 +9,16 @@ export const MultipleChoiceForUser = ({
   isRequired,
   options,
   handleOptionClick,
+  disabled = false
 }: {
   question: string;
   description: string;
   isRequired: boolean;
   options: MultipleChoiceOptionType[];
-  handleOptionClick: () => voice;
+  handleOptionClick: () => void;
+  disabled: boolean;
 }) => {
+  console.log(options)
   return (
     <div className="multiple-choice-for-user">
       <p className="small-text bold">
@@ -39,6 +42,7 @@ export const MultipleChoiceForUser = ({
               key={option.id}
               type="button"
               onClick={() => handleOptionClick(option)}
+              disabled={disabled}
             >
               {option.checked ? <FilledCircleIcon /> : <CircleIcon />}
               {option.label}

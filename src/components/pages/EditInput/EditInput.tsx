@@ -62,7 +62,7 @@ const EditInput = () => {
         
         <div className="container">
           <div className="heading">
-            <h3>Edit Input</h3>
+            <h1>Edit Input</h1>
           </div>
 
           <form onSubmit={handleSubmit}>

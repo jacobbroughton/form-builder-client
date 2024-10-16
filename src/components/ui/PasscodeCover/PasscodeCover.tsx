@@ -77,7 +77,7 @@ const PasscodeCover = () => {
   return (
     <div className="passkey-cover">
       <div className="container">
-        <h3>This form requires a passkey</h3>
+        <h1>This form requires a passkey</h1>
         <p className="small-text">Please enter the passkey below</p>
         <form onSubmit={handleSubmit}>
           <input

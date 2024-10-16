@@ -56,6 +56,10 @@
   background-color: var(--button-default-bg-color-hover);
 }
 
+.linear-scale-settings > .picker-wrapper > .buttons > button:not(:disabled):not(.selected):active {
+  border-color: rgba(144, 238, 144, 0.469);
+}
+
 .linear-scale-settings > .picker-wrapper > .buttons > button.selected {
   border-color: lightgreen;
 }

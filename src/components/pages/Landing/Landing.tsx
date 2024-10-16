@@ -7,7 +7,7 @@ const Landing = () => {
       <div className="container">
         <div className="hero-banner">
           <h1>Form Builder</h1>
-          <h3>A worse alternative to Google Forms</h3>
+          <h1>A worse alternative to Google Forms</h1>
           <p>Created by Jacob Broughton</p>
           <div className="cta-links">
             <Link to={"/login"}>Login</Link>

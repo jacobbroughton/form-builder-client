@@ -24,6 +24,11 @@ header > .row > .text {
   width: 100%;
 }
 
+header > .row > .text > h1.title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 header > div.row > .buttons {
   display: flex;
   gap: 10px;

@@ -18,7 +18,7 @@ export const DraftFormHeader = ({
     <header>
       <div className="row">
         <div className="text">
-          <h3 className="title">{form?.title}</h3>
+          <h1 className="title">{form?.title}</h1>
           {form?.description && <p className="description">{form.description}</p>}
         </div>
         {Boolean(form) && (
