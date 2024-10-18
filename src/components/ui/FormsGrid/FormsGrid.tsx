@@ -11,10 +11,8 @@ import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 
 export function FormsGrid({
   forms,
-  setForms,
 }: {
   forms: AllFormsType[];
-  setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
 }) {
   const { deleteDraftForm } = useDeleteDraftForm();
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -88,7 +86,7 @@ export function FormsGrid({
                     await deletePublishedForm({ formId: form.id });
                   }
 
-                  setForms(forms.filter((f) => f.id !== form.id));
+                  // setForms(forms.filter((f) => f.id !== form.id));
                 }}
               />
             ) : (

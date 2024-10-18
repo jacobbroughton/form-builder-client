@@ -1,4 +1,5 @@
-div.forms-container {
+div.forms-container,
+div.forms-loading-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -6,6 +7,22 @@ div.forms-container {
   border: 1px solid var(--container-border-color);
   padding: 10px;
   border-radius: 5px;
+}
+
+div.forms-loading-container > .skeleton {
+  border: 1px solid var(--button-default-border-color);
+  transition: 0.1s ease border-color;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* gap: 10px; */
+  height: 33px;
+  white-space: nowrap;
+  position: relative;
+  background-color: var(--button-default-bg-color);
 }
 
 div.forms-container > section.header {

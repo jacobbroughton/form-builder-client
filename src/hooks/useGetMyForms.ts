@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AllFormsType } from "../lib/types";
 import { ErrorContext } from "../providers/ErrorContextProvider";
@@ -6,7 +6,13 @@ import { UserContext } from "../providers/UserContextProvider";
 import { handleCatchError } from "../utils/usefulFunctions";
 
 export const useGetMyForms = () => {
-  const [loading, setLoading] = useState(false);
+  const [forms, setForms] = useState<AllFormsType[]>([]);
+  const [selectedSort, setSelectedSort] = useState<SortOptionType>({
+    id: 3,
+    name: "Date: New-Old",
+    value: "date-new-old",
+  });
+  const [loading, setLoading] = useState<boolean>(true);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
@@ -37,7 +43,9 @@ export const useGetMyForms = () => {
           );
         }
 
-        return await response.json();
+        const data = await response.json();
+
+        setForms(data);
       } catch (error) {
         handleCatchError(error, setError, setLocalError);
         throw error;
@@ -48,5 +56,9 @@ export const useGetMyForms = () => {
     []
   );
 
-  return { getMyForms, loading, localError };
+  useEffect(() => {
+    getMyForms({sort: selectedSort.value});
+  }, [selectedSort.value]);
+
+  return { forms, setSelectedSort, loading, error: localError };
 };

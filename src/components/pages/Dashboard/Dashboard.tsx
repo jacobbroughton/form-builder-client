@@ -10,9 +10,21 @@ import { CircleIcon } from "../../ui/icons/CircleIcon";
 import { FilledCircleIcon } from "../../ui/icons/FilledCircleIcon";
 
 export function Dashboard() {
-  const { getMyForms } = useGetMyForms();
-  const { getPublicForms } = useGetPublicForms();
-  const { getAnsweredForms } = useGetAnsweredForms();
+  const {
+    forms: myForms,
+    setSelectedSort: setSelectedSortGetMyForms,
+    loading: myFormsLoading,
+  } = useGetMyForms();
+  const {
+    forms: publicForms,
+    setSelectedSort: setSelectedSortGetPublicForms,
+    loading: publicFormsLoading,
+  } = useGetPublicForms();
+  const {
+    forms: answeredForms,
+    setSelectedSort: setSelectedSortGetAnsweredForms,
+    loading: answeredFormsLoading,
+  } = useGetAnsweredForms();
   const { recentFormViews } = useRecentFormViews();
 
   const formTypes = [
@@ -66,12 +78,24 @@ export function Dashboard() {
           {selectedFormType.id === 1 ? (
             <FormsContainer
               label="Unanswered Public Forms"
-              getFormsFunc={getPublicForms}
+              forms={publicForms}
+              setSort={setSelectedSortGetPublicForms}
+              loading={publicFormsLoading}
             />
           ) : selectedFormType.id === 2 ? (
-            <FormsContainer label="My Forms" getFormsFunc={getMyForms} />
+            <FormsContainer
+              label="My Forms"
+              forms={myForms}
+              setSort={setSelectedSortGetMyForms}
+              loading={myFormsLoading}
+            />
           ) : selectedFormType.id === 3 ? (
-            <FormsContainer label="Answered Forms" getFormsFunc={getAnsweredForms} />
+            <FormsContainer
+              label="Answered Forms"
+              forms={answeredForms}
+              setSort={setSelectedSortGetAnsweredForms}
+              loading={answeredFormsLoading}
+            />
           ) : (
             false
           )}

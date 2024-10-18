@@ -1,23 +1,29 @@
 import { useContext, useEffect, useState } from "react";
-import { FormsGrid } from "../FormsGrid/FormsGrid";
-import { FormsList } from "../FormsList/FormsList";
-import { SortIcon } from "../icons/SortIcon";
-import { NoFormsMessage } from "../NoFormsMessage/NoFormsMessage";
 import { AllFormsType, SortOptionType } from "../../../lib/types";
-import "./FormsContainer.css";
-import { SortFormsMenu } from "../SortFormsMenu/SortFormsMenu";
-import { GridIcon } from "../icons/GridIcon";
-import { ListIcon } from "../icons/ListIcon";
-import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { UserContext } from "../../../providers/UserContextProvider";
+import { handleCatchError } from "../../../utils/usefulFunctions";
+import { FormsGrid } from "../FormsGrid/FormsGrid";
+import { FormsList } from "../FormsList/FormsList";
+import { GridIcon } from "../icons/GridIcon";
+import { ListIcon } from "../icons/ListIcon";
+import { SortIcon } from "../icons/SortIcon";
+import { NoFormsMessage } from "../NoFormsMessage/NoFormsMessage";
+import { SortFormsMenu } from "../SortFormsMenu/SortFormsMenu";
+import "./FormsContainer.css";
 
 export function FormsContainer({
   label,
-  getFormsFunc,
+  forms,
+  setSort,
+  loading
 }: {
   label: string;
-  getFormsFunc: ({ sort }: { sort: string }) => Promise<AllFormsType[]>;
+  forms: AllFormsType[];
+  setSort: React.Dispatch<
+    React.SetStateAction<SortOptionType>
+  >;
+  loading: boolean;
 }) {
   const [sortMenuToggled, setSortMenuToggled] = useState<boolean>(false);
   const [toggledView, setToggledView] = useState<string>(
@@ -29,39 +35,44 @@ export function FormsContainer({
     name: "Date: New-Old",
     value: "date-new-old",
   });
-  const [forms, setForms] = useState<AllFormsType[]>([]);
+  // const [forms, setForms] = useState<AllFormsType[]>([]);
 
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
-  const { setError } = useContext(ErrorContext);
-  const { user } = useContext(UserContext);
+  // const { setError } = useContext(ErrorContext);
+  // const { user } = useContext(UserContext);
 
-  async function getForms() {
-    try {
-      setLoading(true);
+  // async function getForms() {
+  //   try {
+  //     setLoading(true);
 
-      const fetchedForms = await getFormsFunc({
-        sort: selectedSort.value,
-      });
+  //     const fetchedForms = await getFormsFunc({
+  //       sort: selectedSort.value,
+  //     });
 
-      setForms(fetchedForms);
+  //     setForms(fetchedForms);
 
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
 
-      handleCatchError(error, setError, null);
-    }
-  }
+  //     handleCatchError(error, setError, null);
+  //   }
+  // }
 
-  useEffect(() => {
-    if (user) {
-      getForms();
-    }
-  }, [label, selectedSort, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     getForms();
+  //   }
+  // }, [label, selectedSort, user]);
 
   return loading ? (
-    <p>Loading...</p>
+    <div className="forms-loading-container">
+      <p className="small-text text-subtle">&nbsp;</p>
+      {[...new Array(3)].map((i) => (
+        <div className="skeleton">&nbsp;</div>
+      ))}
+    </div>
   ) : (
     <div>
       <div className="forms-container">
@@ -101,7 +112,7 @@ export function FormsContainer({
                 <SortFormsMenu
                   selectedSort={selectedSort}
                   setSortMenuToggled={setSortMenuToggled}
-                  setSelectedSort={setSelectedSort}
+                  setSelectedSort={setSort}
                 />
               )}
             </div>
@@ -109,9 +120,9 @@ export function FormsContainer({
         </section>
         {forms.length ? (
           toggledView === "grid" ? (
-            <FormsGrid setForms={setForms} forms={forms} />
+            <FormsGrid forms={forms} />
           ) : (
-            <FormsList setForms={setForms} forms={forms} />
+            <FormsList forms={forms} />
           )
         ) : (
           <NoFormsMessage labelForSwitch={label} />

@@ -1,12 +1,18 @@
-import { useCallback, useContext, useState } from "react";
-import { AllFormsType } from "../lib/types";
-import { handleCatchError } from "../utils/usefulFunctions";
-import { ErrorContext } from "../providers/ErrorContextProvider";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AllFormsType } from "../lib/types";
+import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
+import { handleCatchError } from "../utils/usefulFunctions";
 
 export const useGetAnsweredForms = () => {
-  const [loading, setLoading] = useState(false);
+  const [forms, setForms] = useState<AllFormsType[]>([]);
+  const [selectedSort, setSelectedSort] = useState<SortOptionType>({
+    id: 3,
+    name: "Date: New-Old",
+    value: "date-new-old",
+  });
+  const [loading, setLoading] = useState<boolean>(true);
   const [localError, setLocalError] = useState<string | null>(null);
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
@@ -33,11 +39,13 @@ export const useGetAnsweredForms = () => {
 
           const body = await response.json();
           throw new Error(
-            `Error: ${body.message || "There was a problem fetching answered forms"}`
+            `Error: ${body.message || "There was a problem fetching forms"}`
           );
         }
 
-        return await response.json();
+        const data = await response.json();
+
+        setForms(data);
       } catch (error) {
         handleCatchError(error, setError, setLocalError);
         throw error;
@@ -48,5 +56,9 @@ export const useGetAnsweredForms = () => {
     []
   );
 
-  return { getAnsweredForms, loading, localError };
+  useEffect(() => {
+    getAnsweredForms({sort: selectedSort.value});
+  }, [selectedSort.value]);
+
+  return { forms, setSelectedSort, loading, error: localError };
 };

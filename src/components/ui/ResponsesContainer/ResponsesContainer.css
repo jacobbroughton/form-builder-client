@@ -4,7 +4,7 @@
   gap: 15px;
 }
 
-.responses-container > .header  {
+.responses-container > .header {
   border: 1px solid var(--container-border-color);
   border-radius: 5px;
   padding: 10px;
@@ -26,22 +26,23 @@
   border: 1px solid var(--container-border-color);
   border-radius: 5px;
   height: fit-content;
+  width: 100%;
+  max-width: 165px;
 }
 
 .responses-container > div.row > .users-list-container > p {
   padding: 3px 5px;
 }
 
-.responses-container > div.row > .users-list-container >.users-list {
+.responses-container > div.row > .users-list-container > .users-list {
   display: flex;
   flex-direction: column;
   align-self: flex-start;
   overflow: hidden;
-  max-width: 150px;
   width: 100%;
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li > button {
+.responses-container > div.row > .users-list-container > .users-list > li > button {
   border: 0;
   background-color: var(--button-default-bg-color);
   width: 100%;
@@ -53,34 +54,56 @@
   gap: 10px;
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li:not(:last-child) > button {
+.responses-container
+  > div.row
+  > .users-list-container
+  > .users-list
+  > li:not(:last-child)
+  > button {
   border-bottom: 1px solid var(--button-default-border-color);
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li > button:hover {
+.responses-container > div.row > .users-list-container > .users-list > li > button:hover {
   background-color: var(--button-default-bg-color-hover);
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li.selected > button {
+.responses-container
+  > div.row
+  > .users-list-container
+  > .users-list
+  > li.selected
+  > button {
   background-color: var(--button-default-bg-color-hover);
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li > button > p {
+.responses-container > div.row > .users-list-container > .users-list > li > button > p {
   overflow: hidden;
   white-space: nowrap;
   /* text-overflow: ellipsis; */
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li > button > svg {
+.responses-container > div.row > .users-list-container > .users-list > li > button > svg {
   width: 13px;
   min-width: 13px;
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li.selected > button > svg {
+.responses-container
+  > div.row
+  > .users-list-container
+  > .users-list
+  > li.selected
+  > button
+  > svg {
   fill: lightgreen;
 }
 
-.responses-container > div.row > .users-list-container >.users-list > li:not(.selected) > button > svg {
+.responses-container
+  > div.row
+  > .users-list-container
+  > .users-list
+  > li:not(.selected)
+  > button
+  > svg {
   fill: grey;
 }
 
@@ -125,4 +148,15 @@
   > li.input-container
   > div.prompt-section
   > p {
+}
+
+@media screen and (max-width: 550px) {
+  .responses-container > div.row {
+    flex-direction: column;
+  }
+
+  .responses-container > div.row > .users-list-container {
+    width: 100%;
+    max-width: none;
+  }
 }
