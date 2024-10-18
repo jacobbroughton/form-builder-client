@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useGetAnsweredForms } from "../../../hooks/useGetAnsweredForms";
-import { useGetMyForms } from "../../../hooks/useGetMyForms";
-import { useGetPublicForms } from "../../../hooks/useGetPublicForms";
+import { useGetAnsweredForms } from "../../../hooks/useAnsweredForms";
+import { useGetMyForms } from "../../../hooks/useMyForms";
+import { useGetPublicForms } from "../../../hooks/usePublicforms";
 import { useRecentFormViews } from "../../../hooks/useRecentFormViews";
 import { FormsContainer } from "../../ui/FormsContainer/FormsContainer";
 import { RecentFormsContainer } from "../../ui/RecentFormsContainer/RecentFormsContainer";

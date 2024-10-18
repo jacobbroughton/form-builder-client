@@ -30,12 +30,14 @@ import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButto
 import { SingleSelectToggle } from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
+import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 
 export function CreateForm() {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
   const { publish } = usePublish();
   const { updateDraftForm } = useUpdateDraftForm();
+  const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
   const { newDraft, loading: initiallyLoading } = useNewDraft();
   const {
     getPrivacyOptions,
@@ -257,7 +259,13 @@ export function CreateForm() {
         );
       }
       case "input-types-selector": {
-        return <InputTypeSelector setStagedNewInputType={setStagedNewInputType} />;
+        return (
+          <InputTypeSelector
+            inputTypes={inputTypes}
+            setStagedNewInputType={setStagedNewInputType}
+            loading={inputTypesLoading}
+          />
+        );
       }
       case "staged-input-form": {
         return (

@@ -22,10 +22,12 @@ import { PrivacyOptions } from "../../ui/PrivacyOptions/PrivacyOptions";
 import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
+import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 
 export function EditPublishedForm() {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
+  const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
   const { deletePublishedForm } = useDeletePublishedForm();
   const { form: initialPublishedForm, inputs: initialPublishedInputs } =
     usePublishedForm();
@@ -180,7 +182,13 @@ export function EditPublishedForm() {
         );
       }
       case "input-types-selector": {
-        return <InputTypeSelector setStagedNewInputType={setStagedNewInputType} />;
+        return (
+          <InputTypeSelector
+            inputTypes={inputTypes}
+            setStagedNewInputType={setStagedNewInputType}
+            loading={inputTypesLoading}
+          />
+        );
       }
       case "staged-input-form": {
         return (

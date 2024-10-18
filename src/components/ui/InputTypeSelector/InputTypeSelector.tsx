@@ -8,11 +8,14 @@ import { FilledCircleIcon } from "../icons/FilledCircleIcon";
 import { ActionButtonWithIcon } from "../ActionButtonWithIcon/ActionButtonWithIcon";
 
 export function InputTypeSelector({
+  inputTypes,
   setStagedNewInputType,
+  loading,
 }: {
+  inputTypes: InputTypeType[];
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
+  loading: boolean;
 }) {
-  const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
   const { setCurrentView } = useContext(CurrentViewContext);
 
   function renderIcon(inputTypeName: string) {
@@ -23,31 +26,6 @@ export function InputTypeSelector({
       case "Paragraph": {
         return <p className="small-text">abc</p>;
       }
-      // case "Number": {
-      //   return <NumberIcon />;
-      // }
-      // case "Email": {
-      //   return (
-      //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      //       <path d="M256 64C150 64 64 150 64 256s86 192 192 192c17.7 0 32 14.3 32 32s-14.3 32-32 32C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256l0 32c0 53-43 96-96 96c-29.3 0-55.6-13.2-73.2-33.9C320 371.1 289.5 384 256 384c-70.7 0-128-57.3-128-128s57.3-128 128-128c27.9 0 53.7 8.9 74.7 24.1c5.7-5 13.1-8.1 21.3-8.1c17.7 0 32 14.3 32 32l0 80 0 32c0 17.7 14.3 32 32 32s32-14.3 32-32l0-32c0-106-86-192-192-192zm64 192a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z" />
-      //     </svg>
-      //   );
-      // }
-      // case "URL": {
-      //   return (
-      //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-      //       {/* <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--> */}
-      //       <path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z" />
-      //     </svg>
-      //   );
-      // }
-      // case "Telephone": {
-      //   return (
-      //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      //       <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-      //     </svg>
-      //   );
-      // }
       case "Date": {
         return (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -93,7 +71,7 @@ export function InputTypeSelector({
         disabled={false}
       />
       <div className="input-types-selector">
-        {inputTypesLoading ? (
+        {loading ? (
           [...new Array(5)].map((arrItem) => (
             <div className="skeleton input-type-placeholder" key={arrItem}>
               &nbsp;

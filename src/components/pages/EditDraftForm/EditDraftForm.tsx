@@ -31,10 +31,12 @@ import { SavedStatus } from "../../ui/SavedStatus/SavedStatus";
 import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditDraftForm.css";
+import { useGetInputTypes } from "../../../hooks/useGetInputTypes";
 
 export function EditDraftForm() {
   const navigate = useNavigate();
   const { formId } = useParams();
+  const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
   const { setError } = useContext(ErrorContext);
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
@@ -230,7 +232,13 @@ export function EditDraftForm() {
         );
       }
       case "input-types-selector": {
-        return <InputTypeSelector setStagedNewInputType={setStagedNewInputType} />;
+        return (
+          <InputTypeSelector
+            inputTypes={inputTypes}
+            setStagedNewInputType={setStagedNewInputType}
+            loading={inputTypesLoading}
+          />
+        );
       }
       case "staged-input-form": {
         return (
