@@ -10,10 +10,19 @@ header {
 header > .row {
   width: 100%;
   display: flex;
+  gap: 10px;
 }
 
 header > .row > .text {
   width: 100%;
+}
+
+header > .row:last-child {
+  align-items: flex-start;
+}
+
+header > .row > button.action-button-with-icon.green {
+  margin-left: auto;
 }
 
 header > div.row > .buttons {

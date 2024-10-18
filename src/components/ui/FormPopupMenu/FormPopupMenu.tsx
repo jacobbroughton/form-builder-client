@@ -10,7 +10,7 @@ import { copyUrlToClipboard, handleCatchError } from "../../../utils/usefulFunct
 import { usePublish } from "../../../hooks/usePublish";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 
-export const FormPopupMenu = ({
+export function FormPopupMenu ({
   form,
   isDraft,
   setFormPopupToggled,
@@ -20,7 +20,7 @@ export const FormPopupMenu = ({
   isDraft: boolean;
   setFormPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
   handleDeleteClick: () => void;
-}): JSX.Element => {
+}): JSX.Element  {
   const ref = useRef<HTMLDivElement>(null);
   const { publish } = usePublish();
   const { user } = useContext(UserContext);
@@ -41,8 +41,6 @@ export const FormPopupMenu = ({
   async function handlePublishForm() {
     try {
       if (!form) throw new Error("No draft form found when trying to delete");
-
-      console.log(form);
 
       if (!form.id) throw new Error("No form id provided");
 

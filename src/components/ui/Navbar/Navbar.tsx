@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import HomeIcon from "../icons/HomeIcon";
-import UserIcon from "../icons/UserIcon";
+import { HomeIcon } from "../icons/HomeIcon";
+import { UserIcon } from "../icons/UserIcon";
 import "./Navbar.css";
 import { useContext, useState } from "react";
-import UserMenu from "../UserMenu/UserMenu";
+import { UserMenu } from "../UserMenu/UserMenu";
 import { UserContext } from "../../../providers/UserContextProvider";
 
-export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
+export function Navbar({ authenticated }: { authenticated: boolean }) {
   const [userMenuToggled, setUserMenuToggled] = useState<boolean>(false);
   const { user } = useContext(UserContext);
 
@@ -80,4 +80,4 @@ export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
       </ul>
     </nav>
   );
-};
+}

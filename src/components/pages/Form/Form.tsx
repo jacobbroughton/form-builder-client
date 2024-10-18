@@ -8,22 +8,22 @@ import { FormContext } from "../../../providers/FormProvider.tsx";
 import { UserContext } from "../../../providers/UserContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal.tsx";
-import FormCreator from "../../ui/FormCreator/FormCreator.tsx";
-import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer.tsx";
-import FormHeader from "../../ui/FormHeader/FormHeader.tsx";
+import { FormCreator } from "../../ui/FormCreator/FormCreator.tsx";
+import { FormGroupContainer } from "../../ui/FormGroupContainer/FormGroupContainer.tsx";
+import { FormHeader } from "../../ui/FormHeader/FormHeader.tsx";
+import { LinearScaleForUser } from "../../ui/LinearScaleForUser/LinearScaleForUser.tsx";
+import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser.tsx";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
-import NoUserMessage from "../../ui/NoUserMessage/NoUserMessage";
-import PasscodeCover from "../../ui/PasscodeCover/PasscodeCover.tsx";
-import PrevSubmissionsModal from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
-import PreviousSubmissionsButton from "../../ui/PreviousSubmissionsButton/PreviousSubmissionsButton.tsx";
-import ResponsesContainer from "../../ui/ResponsesContainer/ResponsesContainer.tsx";
-import SubmitMessage from "../../ui/SubmitMessage/SubmitMessage.tsx";
+import { NoUserMessage } from "../../ui/NoUserMessage/NoUserMessage";
+import { PasscodeCover } from "../../ui/PasscodeCover/PasscodeCover.tsx";
+import { PrevSubmissionsModal } from "../../ui/PrevSubmissionsModal/PrevSubmissionsModal.tsx";
+import { PreviousSubmissionsButton } from "../../ui/PreviousSubmissionsButton/PreviousSubmissionsButton.tsx";
+import { ResponsesContainer } from "../../ui/ResponsesContainer/ResponsesContainer.tsx";
+import { SubmitMessage } from "../../ui/SubmitMessage/SubmitMessage.tsx";
 import { CheckIcon } from "../../ui/icons/CheckIcon";
 import "./Form.css";
-import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser.tsx";
-import { LinearScaleForUser } from "../../ui/LinearScaleForUser/LinearScaleForUser.tsx";
 
-export const Form = () => {
+export function Form() {
   const { deletePublishedForm } = useDeletePublishedForm();
   const { addFormView } = useAddFormView();
   const { submitForm } = useSubmitForm();
@@ -49,9 +49,6 @@ export const Form = () => {
   const [submitCooldownToggled, setSubmitCooldownToggled] = useState<boolean>(false);
   const [submitCooldownCountdown, setSubmitCooldownCountdown] = useState<number>(5);
   const [view, setView] = useState<string>(queryParams.get("view") || "form");
-  const [selectedLinearScaleNumber, setSelectedLinearScaleNumber] = useState<
-    number | null
-  >(null);
 
   const { setError } = useContext(ErrorContext);
   const navigate = useNavigate();
@@ -103,31 +100,36 @@ export const Form = () => {
     addFormView();
   }, []);
 
-  const linearScaleInputs = inputs.filter(
+  const LINEAR_SCALE_INPUTS = inputs.filter(
     (input) => input.input_type_name === "Linear Scale"
   );
-  const linearScaleInputIncluded = linearScaleInputs.length >= 1;
 
-  const inputsUnchanged =
-    (linearScaleInputIncluded && !selectedLinearScaleNumber) ||
+  const LINEAR_SCALE_INPUT_INCLUDED = LINEAR_SCALE_INPUTS.length >= 1;
+
+  const ALL_REQUIRED_LINEAR_SCALE_INPUTS_ANSWERED =
+    LINEAR_SCALE_INPUTS.filter((input) => input.value === "").length === 0;
+
+  const INPUTS_NOT_CHANGED =
     inputs.filter(
-      (input) => input.value === (latestInputSubmissions?.[input.id].value || "")
+      (input) => input.value === (latestInputSubmissions?.[input.id]?.value || "")
     ).length === inputs.length;
 
-  const requiredInputsLength = inputs.filter((input) => input.is_required).length;
-
-  const requiredInputsWithAnswersLength = inputs.filter(
+  const NUM_REQUIRED_INPUTS = inputs.filter((input) => input.is_required).length;
+  const NUM_REQUIRED_INPUTS_W_ANSWERS = inputs.filter(
     (input) => input.is_required && input.value !== ""
   ).length;
 
-  const requiredInputsAnswered = requiredInputsLength === requiredInputsWithAnswersLength;
+  const ALL_REQUIRED_INPUTS_ANSWERED =
+    NUM_REQUIRED_INPUTS === NUM_REQUIRED_INPUTS_W_ANSWERS;
 
-  // const submitDisabled = inputsUnchanged || !requiredInputsAnswered;
-  const submitDisabled = false; /** // TODO - Uncomment this */
+  const SUBMIT_DISABLED =
+    (LINEAR_SCALE_INPUT_INCLUDED && !ALL_REQUIRED_LINEAR_SCALE_INPUTS_ANSWERED) ||
+    INPUTS_NOT_CHANGED ||
+    !ALL_REQUIRED_INPUTS_ANSWERED;
 
-  const isFormCreator = form?.created_by_id === user?.id;
+  const IS_FORM_CREATOR = form?.created_by_id === user?.id;
 
-  if (!isFormCreator && needsPasskeyValidation) return <PasscodeCover />;
+  if (!IS_FORM_CREATOR && needsPasskeyValidation) return <PasscodeCover />;
 
   return (
     <main className="published-form">
@@ -162,7 +164,7 @@ export const Form = () => {
                           question={input.metadata_question}
                           description={input.metadata_description}
                           isRequired={input.is_required}
-                          options={input.options}
+                          options={input.options || []}
                           handleOptionClick={(option) => {
                             setInputs(
                               inputs.map((input) => ({
@@ -186,7 +188,7 @@ export const Form = () => {
                           isRequired={input.is_required}
                           minLinearScale={input.linearScale?.min}
                           maxLinearScale={input.linearScale?.max}
-                          value={input.linearScale?.existingValue || input.value}
+                          value={input.value || input.linearScale?.existingValue}
                           onNumberSelect={(number) => {
                             setInputs(
                               inputs.map((innerInput) => ({
@@ -234,9 +236,9 @@ export const Form = () => {
                         <button
                           className="submit-button"
                           type="button"
-                          disabled={submitDisabled}
+                          disabled={SUBMIT_DISABLED}
                           onClick={(e) => {
-                            if (submitDisabled) return;
+                            if (SUBMIT_DISABLED) return;
                             handleFormSubmit(e);
                           }}
                         >
@@ -252,7 +254,7 @@ export const Form = () => {
                       )
                     ) : (
                       <button
-                        disabled={submitDisabled}
+                        disabled={SUBMIT_DISABLED}
                         className="submit-button"
                         type="button"
                         onClick={(e) => handleFormSubmit(e)}
@@ -307,4 +309,4 @@ export const Form = () => {
       </div>
     </main>
   );
-};
+}

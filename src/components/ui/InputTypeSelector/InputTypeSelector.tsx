@@ -4,14 +4,14 @@ import { InputTypeType } from "../../../lib/types";
 import { XIcon } from "../icons/XIcon";
 import "./InputTypeSelector.css";
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
-import FilledCircleIcon from "../icons/FilledCircleIcon";
-import ActionButtonWithIcon from "../ActionButtonWithIcon/ActionButtonWithIcon";
+import { FilledCircleIcon } from "../icons/FilledCircleIcon";
+import { ActionButtonWithIcon } from "../ActionButtonWithIcon/ActionButtonWithIcon";
 
-export const InputTypeSelector = ({
+export function InputTypeSelector({
   setStagedNewInputType,
 }: {
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
-}) => {
+}) {
   const { inputTypes, loading: inputTypesLoading } = useGetInputTypes();
   const { setCurrentView } = useContext(CurrentViewContext);
 
@@ -126,4 +126,4 @@ export const InputTypeSelector = ({
       </div>
     </div>
   );
-};
+}

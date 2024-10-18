@@ -1,4 +1,4 @@
-button.action-button-with-icon {
+a.action-link-with-icon {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -13,46 +13,46 @@ button.action-button-with-icon {
   background-color: var(--button-default-bg-color);
 }
 
-button.action-button-with-icon:disabled {
+a.action-link-with-icon:disabled {
   color: rgba(255, 255, 255, 0.35);
   cursor: not-allowed;
 }
 
-button.action-button-with-icon:not(:disabled):not(.green):hover {
+a.action-link-with-icon:not(:disabled):not(.green):hover {
   background-color: var(--button-default-bg-color-hover);
   border-color: var(--button-default-border-color-hover);
 }
 
-button.action-button-with-icon.green {
+a.action-link-with-icon.green {
   font-weight: 600;
   background-color: var(--button-green-bg-color);
   color: whitesmoke;
 }
 
-button.action-button-with-icon.green:not(:disabled):hover {
+a.action-link-with-icon.green:not(:disabled):hover {
   background-color: var(--button-green-bg-color-hover);
 }
 
-button.action-button-with-icon > svg {
+a.action-link-with-icon > svg {
   width: 13px;
   fill: whitesmoke;
 }
 
-button.action-button-with-icon.red > svg {
+a.action-link-with-icon.red > svg {
   width: 13px;
   fill: rgb(218, 86, 112);
 }
 
-button.action-button-with-icon.green-icon > svg {
+a.action-link-with-icon.green-icon > svg {
   width: 13px;
   fill: lightgreen;
 }
 
-button.action-button-with-icon.green > svg {
+a.action-link-with-icon.green > svg {
   width: 13px;
   fill: whitesmoke;
 }
 
-button.action-button-with-icon:disabled > svg {
+a.action-link-with-icon:disabled > svg {
   fill: grey;
 }

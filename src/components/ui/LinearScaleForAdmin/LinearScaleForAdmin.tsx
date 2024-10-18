@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LinearScaleForAdmin.css";
 
-export const LinearScaleForAdmin = ({
+export function LinearScaleForAdmin ({
   minLinearScale,
   setMinLinearScale,
   maxLinearScale,
@@ -11,7 +11,7 @@ export const LinearScaleForAdmin = ({
   setMinLinearScale: React.Dispatch<React.SetStateAction<number>>;
   maxLinearScale: number;
   setMaxLinearScale: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+}) {
   const [scaleToMove, setScaleToMove] = useState<"min" | "max" | null>(null);
 
   const initialLinearScaleOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

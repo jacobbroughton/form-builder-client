@@ -4,7 +4,7 @@ import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
 import { handleCatchError } from "../utils/usefulFunctions";
 
-export const useResponses = () => {
+export function useResponses () {
   const { formId } = useParams();
   const [loading, setLoading] = useState(true);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -15,6 +15,7 @@ export const useResponses = () => {
 
   async function getResponses() {
     try {
+      setLoading(true)
       const response = await fetch(
         `http://localhost:3001/api/form/get-responses/${formId}`,
         { credentials: "include" }
@@ -36,11 +37,9 @@ export const useResponses = () => {
 
       const data = await response.json();
 
-      console.log(data);
-
       setResponses({
-        shallowSubmissionsList: data.shallowSubmissionsList,
-        submissionsWithInfo: data.submissionsWithInfo,
+        submissionsList: data.submissionsList,
+        inputsBySubID: data.inputsBySubID,
       });
     } catch (error) {
       handleCatchError(error, setError, setLocalError);

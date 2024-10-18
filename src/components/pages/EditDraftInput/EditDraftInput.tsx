@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useInputForEdit } from "../../../hooks/useInputForEdit";
+import { useDraftInputForEdit } from "../../../hooks/useDraftInputForEdit";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { FormGroupContainer } from "../../ui/FormGroupContainer/FormGroupContainer";
@@ -10,17 +10,16 @@ import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { ActionLinkWithIcon } from "../../ui/ActionLinkWithIcon/ActionLinkWithIcon";
-import "./EditInput.css";
+import "./EditDraftInput.css";
 
-export function EditInput() {
+export function EditDraftInput() {
   const {
     inputType,
     initialInput,
     updatedInput,
-    setInitialInput,
     setUpdatedInput,
     loading: inputLoading,
-  } = useInputForEdit();
+  } = useDraftInputForEdit();
   const { setError } = useContext(ErrorContext);
   const [isRequired, setIsRequired] = useState(initialInput?.is_required || false);
 
@@ -30,18 +29,15 @@ export function EditInput() {
 
   if (!initialInput || !updatedInput) return <p>No input found</p>;
 
-  console.log({ initialInput, updatedInput });
-
-  const saveDisabled =
+  const prevSavedDraft =
     initialInput.info.metadata_question === updatedInput.info.metadata_question &&
-    initialInput.info.metadata_description === updatedInput.info.metadata_description &&
-    initialInput.info.is_required === updatedInput.info.is_required;
+    initialInput.info.metadata_description === updatedInput.info.metadata_description;
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3001/api/form/edit-input`, {
+      const response = await fetch(`http://localhost:3001/api/form/edit-draft-input`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -55,8 +51,6 @@ export function EditInput() {
       }
 
       const data = await response.json();
-
-      setInitialInput(updatedInput);
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -72,9 +66,8 @@ export function EditInput() {
           <ActionLinkWithIcon
             icon={<ArrowLeftIcon />}
             iconPlacement="before"
-            // label="Back"
-            label={updatedInput.info.form_id}
-            url={`/edit-published-form/${updatedInput.info.form_id}`}
+            label="Back"
+            url={`/edit-draft-form/${updatedInput.info.draft_form_id}`}
             color="none"
           />
           <form onSubmit={handleSubmit}>
@@ -150,7 +143,7 @@ export function EditInput() {
             />
             <button
               className="action-button-with-icon"
-              disabled={saveDisabled}
+              disabled={prevSavedDraft}
               type="submit"
             >
               <SaveIcon />
@@ -163,4 +156,3 @@ export function EditInput() {
     </main>
   );
 }
-;

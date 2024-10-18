@@ -1,24 +1,24 @@
 import { useContext, useEffect, useState } from "react";
-import FormsGrid from "../FormsGrid/FormsGrid";
-import FormsList from "../FormsList/FormsList";
-import SortIcon from "../icons/SortIcon";
-import NoFormsMessage from "../NoFormsMessage/NoFormsMessage";
+import { FormsGrid } from "../FormsGrid/FormsGrid";
+import { FormsList } from "../FormsList/FormsList";
+import { SortIcon } from "../icons/SortIcon";
+import { NoFormsMessage } from "../NoFormsMessage/NoFormsMessage";
 import { AllFormsType, SortOptionType } from "../../../lib/types";
 import "./FormsContainer.css";
-import SortFormsMenu from "../SortFormsMenu/SortFormsMenu";
-import GridIcon from "../icons/GridIcon";
-import ListIcon from "../icons/ListIcon";
+import { SortFormsMenu } from "../SortFormsMenu/SortFormsMenu";
+import { GridIcon } from "../icons/GridIcon";
+import { ListIcon } from "../icons/ListIcon";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { UserContext } from "../../../providers/UserContextProvider";
 
-const FormsContainer = ({
+export function FormsContainer({
   label,
   getFormsFunc,
 }: {
   label: string;
   getFormsFunc: ({ sort }: { sort: string }) => Promise<AllFormsType[]>;
-}) => {
+}) {
   const [sortMenuToggled, setSortMenuToggled] = useState<boolean>(false);
   const [toggledView, setToggledView] = useState<string>(
     localStorage.getItem("formBuilderToggledView") || "grid"
@@ -119,5 +119,4 @@ const FormsContainer = ({
       </div>
     </div>
   );
-};
-export default FormsContainer;
+}

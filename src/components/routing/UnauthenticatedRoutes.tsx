@@ -4,15 +4,13 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../ui/Navbar/Navbar";
 import { ErrorContext } from "../../providers/ErrorContextProvider";
 import { ErrorBanner } from "../pages/ErrorBanner/ErrorBanner";
-import InitialLoadingSkeleton from "../ui/InitialLoadingSkeleton/InitialLoadingSkeleton";
+import {InitialLoadingSkeleton} from "../ui/InitialLoadingSkeleton/InitialLoadingSkeleton";
 
-export const UnauthenticatedRoutes = () => {
+export function UnauthenticatedRoutes () {
   const { user, loading: userLoading } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
 
   const location = useLocation();
-
-  console.log(location.state?.from?.pathname);
 
   if (userLoading) return <InitialLoadingSkeleton />;
 

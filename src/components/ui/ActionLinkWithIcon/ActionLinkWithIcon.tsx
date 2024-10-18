@@ -1,28 +1,23 @@
 import { ReactElement } from "react";
-import "./ActionButtonWithIcon.css";
+import "./ActionLinkWithIcon.css";
+import { Link } from "react-router-dom";
 
-export function ActionButtonWithIcon({
-  disabled,
+export function ActionLinkWithIcon({
   icon,
   iconPlacement,
-  handleClick,
+  url,
   label,
   color = "none",
 }: {
-  disabled: boolean;
   icon: ReactElement;
   iconPlacement: "before" | "after";
-  handleClick: () => void;
+  url: string;
   label: string;
   color: "green" | "green-icon" | "red" | "none";
 }) {
   return (
-    <button
-      className={`action-button-with-icon ${color !== "none" ? color : ""}`}
-      disabled={disabled}
-      onClick={handleClick}
-    >
+    <Link className={`action-link-with-icon ${color !== "none" ? color : ""}`} to={url}>
       {iconPlacement === "before" && icon} {label} {iconPlacement === "after" && icon}
-    </button>
+    </Link>
   );
 }

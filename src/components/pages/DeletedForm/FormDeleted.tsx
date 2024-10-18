@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import "./FormDeleted.css";
-import  { ArrowRightIcon }from "../../ui/icons/ArrowRightIcon";
+import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 
-const FormDeleted = () => {
+export function FormDeleted() {
   return (
     <main className="form-deleted">
       <div className="container">
@@ -21,5 +21,4 @@ const FormDeleted = () => {
       </div>
     </main>
   );
-};
-export default FormDeleted;
+}

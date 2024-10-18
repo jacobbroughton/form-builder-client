@@ -1,27 +1,27 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import CreateAccount from "./components/pages/CreateAccount/CreateAccount.tsx";
+import { CreateAccount } from "./components/pages/CreateAccount/CreateAccount.tsx";
 import { CreateForm } from "./components/pages/CreateForm/CreateForm.tsx";
 import { Dashboard } from "./components/pages/Dashboard/Dashboard.tsx";
-import FormDeleted from "./components/pages/DeletedForm/FormDeleted.tsx";
+import { FormDeleted } from "./components/pages/DeletedForm/FormDeleted.tsx";
 import { Draft } from "./components/pages/Draft/Draft.tsx";
 import { EditDraftForm } from "./components/pages/EditDraftForm/EditDraftForm.tsx";
-import EditInput from "./components/pages/EditInput/EditInput.tsx";
+import { EditDraftInput } from "./components/pages/EditDraftInput/EditDraftInput.tsx";
+import { EditInput } from "./components/pages/EditInput/EditInput.tsx";
 import { EditPublishedForm } from "./components/pages/EditPublishedForm/EditPublishedForm.tsx";
 import { ErrorPage } from "./components/pages/Error/ErrorPage.tsx";
 import { Form } from "./components/pages/Form/Form.tsx";
-import GoogleOAuthError from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
-import Landing from "./components/pages/Landing/Landing.tsx";
-import Login from "./components/pages/Login/Login.tsx";
+import { GoogleOAuthError } from "./components/pages/GoogleOAuthError/GoogleOAuthError.tsx";
+import { Landing } from "./components/pages/Landing/Landing.tsx";
+import { Login } from "./components/pages/Login/Login.tsx";
 import { AuthenticatedRoutes } from "./components/routing/AuthenticatedRoutes";
 import { EitherAuthRoutes } from "./components/routing/EitherAuthRoutes.tsx";
 import { UnauthenticatedRoutes } from "./components/routing/UnauthenticatedRoutes.tsx";
-import "./index.css";
-import ErrorContextProvider from "./providers/ErrorContextProvider.tsx";
+import { CurrentViewContextProvider } from "./providers/CurrentViewProvider.tsx";
+import { ErrorContextProvider } from "./providers/ErrorContextProvider.tsx";
 import { FormContextProvider } from "./providers/FormProvider.tsx";
-import UserContextProvider from "./providers/UserContextProvider.tsx";
-import CurrentViewContextProvider from "./providers/CurrentViewProvider.tsx";
+import { UserContextProvider } from "./providers/UserContextProvider.tsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-input/:inputId",
         element: <EditInput />,
+      },
+      {
+        path: "/edit-draft-input/:inputId",
+        element: <EditDraftInput />,
       },
     ],
   },

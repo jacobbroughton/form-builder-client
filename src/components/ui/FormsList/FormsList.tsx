@@ -11,13 +11,13 @@ import { PlanetIcon } from "../icons/PlanetIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormsList.css";
 
-const FormsList = ({
+export function FormsList({
   forms,
   setForms,
 }: {
   forms: AllFormsType[];
   setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
-}) => {
+}) {
   const { deleteDraftForm } = useDeleteDraftForm();
   const { deletePublishedForm } = useDeletePublishedForm();
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
@@ -118,5 +118,4 @@ const FormsList = ({
       )}
     </>
   );
-};
-export default FormsList;
+}

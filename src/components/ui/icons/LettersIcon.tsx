@@ -1,4 +1,4 @@
-const LettersIcon = () => {
+const LettersIcon () {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +17,4 @@ const LettersIcon = () => {
     </svg>
   );
 };
-export default LettersIcon;
+;

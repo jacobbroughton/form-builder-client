@@ -1,10 +1,10 @@
 import { useGetPrivacyOptions } from "../../../hooks/useGetPrivacyOptions";
-import CircleIcon from "../icons/CircleIcon";
-import FilledCircleIcon from "../icons/FilledCircleIcon";
+import { CircleIcon } from "../icons/CircleIcon";
+import { FilledCircleIcon } from "../icons/FilledCircleIcon";
 import { PrivacyOptionType } from "../../../lib/types";
 import "./PrivacyOptions.css";
 
-const PrivacyOptions = ({
+export function PrivacyOptions({
   privacyOptions,
   setPrivacyOptions,
   error,
@@ -18,7 +18,7 @@ const PrivacyOptions = ({
   loading: boolean;
   privacyPasskey: string;
   setPrivacyPasskey: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+}) {
   function handlePrivacyOptionClick(clickedPrivacyOption: PrivacyOptionType) {
     if (!clickedPrivacyOption.needs_passkey && privacyPasskey !== "")
       setPrivacyPasskey("");
@@ -81,5 +81,4 @@ const PrivacyOptions = ({
       )}
     </>
   );
-};
-export default PrivacyOptions;
+}

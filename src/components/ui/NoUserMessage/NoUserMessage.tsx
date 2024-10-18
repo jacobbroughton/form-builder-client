@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import NoUserIcon from "../icons/NoUserIcon";
-import "./NoUserMessage.css"
+import { NoUserIcon } from "../icons/NoUserIcon";
+import "./NoUserMessage.css";
 
-const NoUserMessage = ({ message }: { message: string }) => {
+export function NoUserMessage({ message }: { message: string }) {
   return (
     <div className="no-user-message">
       <NoUserIcon />
@@ -12,5 +12,4 @@ const NoUserMessage = ({ message }: { message: string }) => {
       </p>
     </div>
   );
-};
-export default NoUserMessage;
+}

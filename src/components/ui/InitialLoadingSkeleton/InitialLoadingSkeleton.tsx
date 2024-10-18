@@ -1,7 +1,7 @@
-import HomeIcon from "../icons/HomeIcon";
+import { HomeIcon } from "../icons/HomeIcon";
 import "./InitialLoadingSkeleton.css";
 
-const InitialLoadingSkeleton = () => {
+export function InitialLoadingSkeleton() {
   return (
     <div className="initial-loading-skeleton">
       <nav>
@@ -15,5 +15,4 @@ const InitialLoadingSkeleton = () => {
       <div className="container"></div>
     </div>
   );
-};
-export default InitialLoadingSkeleton;
+}

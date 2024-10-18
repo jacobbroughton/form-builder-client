@@ -14,9 +14,9 @@ import {
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
-import AddedInputsList from "../../ui/AddedInputsList/AddedInputsList";
-import CatchView from "../../ui/CatchView/CatchView";
+import { ActionButtonWithIcon } from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
+import { AddedInputsList } from "../../ui/AddedInputsList/AddedInputsList";
+import { CatchView } from "../../ui/CatchView/CatchView";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { DraftPublishedTag } from "../../ui/DraftPublishedTag/DraftPublishedTag";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
@@ -26,13 +26,13 @@ import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import SavedStatus from "../../ui/SavedStatus/SavedStatus";
-import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
+import { PrivacyOptions } from "../../ui/PrivacyOptions/PrivacyOptions";
+import { SavedStatus } from "../../ui/SavedStatus/SavedStatus";
+import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditDraftForm.css";
 
-export const EditDraftForm = () => {
+export function EditDraftForm() {
   const navigate = useNavigate();
   const { formId } = useParams();
   const { setError } = useContext(ErrorContext);
@@ -93,9 +93,12 @@ export const EditDraftForm = () => {
 
   async function handlePublishForm() {
     try {
+      console.log(form);
       const data = await publish({
         draftFormId: form!.id,
       });
+
+      if (!data[0]) throw new Error("No form was found after publishing");
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
@@ -217,12 +220,11 @@ export const EditDraftForm = () => {
               handleClick={() => {
                 if (stagedSelectedPrivacyOption?.needs_passkey && privacyPasskey === "")
                   return;
-                console.log({ stagedPrivacyOptions });
                 setPrivacyOptions(stagedPrivacyOptions);
                 setReflectFormPrivacyOption(false);
                 setCurrentView("metadata-inputs");
               }}
-              color='green-icon'
+              color="green-icon"
             />
           </>
         );
@@ -315,4 +317,4 @@ export const EditDraftForm = () => {
       </div>
     </main>
   );
-};
+}

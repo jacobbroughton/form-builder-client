@@ -1,9 +1,14 @@
-import ClockRotateLeft from "../icons/ClockRotateLeft";
+import { ClockRotateLeft } from "../icons/ClockRotateLeft";
+import { PrevSubmissionType } from ".././../../lib/types";
+import React from "react";
 
-const PreviousSubmissionsButton = ({
+export function PreviousSubmissionsButton({
   prevSubmissions,
   setPrevSubmissionsModalShowing,
-}) => {
+}: {
+  prevSubmissions: PrevSubmissionType[];
+  setPrevSubmissionsModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
     <button
       className="previous-submission-info"
@@ -32,5 +37,4 @@ const PreviousSubmissionsButton = ({
       </div>
     </button>
   );
-};
-export default PreviousSubmissionsButton;
+}

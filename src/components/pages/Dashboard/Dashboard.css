@@ -33,7 +33,6 @@ div.forms > main > .container {
   width: 100%;
   gap: 20px;
   background-color: var(--nav-bg-color);
-  overflow-y: auto;
   height: 100%;
 }
 
@@ -103,18 +102,17 @@ div.forms > main > .container > .forms-selector > button.selected > svg {
     border: 1px solid var(--container-border-color);
     padding: 10px;
     border-radius: 5px;
-    order: 3
+    order: 3;
   }
 }
 
 @media screen and (max-width: 500px) {
   div.forms > main > .container > .forms-selector {
     flex-direction: column;
-
   }
 
   div.forms > main > .container > .forms-selector > button {
-    justify-content:  flex-start;
+    justify-content: flex-start;
     padding: 5px 10px;
     border-right: 0;
   }

@@ -1,7 +1,14 @@
 import { EditIcon } from "../icons/EditIcon";
+import { PrivacyOptionType } from "../../../lib/types";
 import "./SelectedPrivacyOptionButton.css";
 
-const SelectedPrivacyOptionButton = ({ handleClick, selectedPrivacyOption }) => {
+export function SelectedPrivacyOptionButton({
+  handleClick,
+  selectedPrivacyOption,
+}: {
+  handleClick: () => void;
+  selectedPrivacyOption: PrivacyOptionType;
+}) {
   return (
     <button className="selected-privacy-option-button" onClick={handleClick}>
       <div className="content">
@@ -15,5 +22,4 @@ const SelectedPrivacyOptionButton = ({ handleClick, selectedPrivacyOption }) => 
       </div>
     </button>
   );
-};
-export default SelectedPrivacyOptionButton;
+}

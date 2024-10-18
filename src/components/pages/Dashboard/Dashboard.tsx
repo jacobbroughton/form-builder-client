@@ -3,13 +3,13 @@ import { useGetAnsweredForms } from "../../../hooks/useGetAnsweredForms";
 import { useGetMyForms } from "../../../hooks/useGetMyForms";
 import { useGetPublicForms } from "../../../hooks/useGetPublicForms";
 import { useRecentFormViews } from "../../../hooks/useRecentFormViews";
-import FormsContainer from "../../ui/FormsContainer/FormsContainer";
-import RecentFormsContainer from "../../ui/RecentFormsContainer/RecentFormsContainer";
+import { FormsContainer } from "../../ui/FormsContainer/FormsContainer";
+import { RecentFormsContainer } from "../../ui/RecentFormsContainer/RecentFormsContainer";
 import "./Dashboard.css";
-import CircleIcon from "../../ui/icons/CircleIcon";
-import FilledCircleIcon from "../../ui/icons/FilledCircleIcon";
+import { CircleIcon } from "../../ui/icons/CircleIcon";
+import { FilledCircleIcon } from "../../ui/icons/FilledCircleIcon";
 
-export const Dashboard = () => {
+export function Dashboard() {
   const { getMyForms } = useGetMyForms();
   const { getPublicForms } = useGetPublicForms();
   const { getAnsweredForms } = useGetAnsweredForms();
@@ -42,9 +42,11 @@ export const Dashboard = () => {
       </aside>
       <main>
         <div className="container">
-          {recentFormViews.length >= 1 && <div className="mobile-recents-list-container">
-            <RecentFormsContainer recentFormViews={recentFormViews} />
-          </div>}
+          {recentFormViews.length >= 1 && (
+            <div className="mobile-recents-list-container">
+              <RecentFormsContainer recentFormViews={recentFormViews} />
+            </div>
+          )}
           <div className="forms-selector">
             {formTypes.map((formType) => (
               <button
@@ -77,4 +79,4 @@ export const Dashboard = () => {
       </main>
     </div>
   );
-};
+}

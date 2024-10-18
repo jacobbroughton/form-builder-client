@@ -10,7 +10,7 @@ export const CurrentViewContext = createContext<CurrentViewContext>(
   {} as CurrentViewContext
 );
 
-const CurrentViewContextProvider = ({ children }: { children: ReactElement }) => {
+export function CurrentViewContextProvider({ children }: { children: ReactElement }) {
   const { initialView } = useParams();
 
   const [currentView, setCurrentView] = useState<string>(
@@ -22,6 +22,4 @@ const CurrentViewContextProvider = ({ children }: { children: ReactElement }) =>
       {children}
     </CurrentViewContext.Provider>
   );
-};
-
-export default CurrentViewContextProvider;
+}

@@ -8,9 +8,8 @@ import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { ThreeDotsIcon } from "../icons/ThreeDotsIcon";
 import "./FormHeader.css";
-import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
 
-const FormHeader = ({
+export function FormHeader({
   setDeleteModalShowing,
   view,
   setView,
@@ -18,7 +17,7 @@ const FormHeader = ({
   setDeleteModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [formPopupMenuToggled, setFormPopupMenuToggled] = useState(false);
   const { user } = useContext(UserContext);
@@ -31,7 +30,7 @@ const FormHeader = ({
       <div className="row">
         <div className="text">
           <h1 className="title">{form?.title}</h1>
-          {form?.description && <p className="description">{form.description}</p>}
+          {form?.description && <p className="small-text description">{form.description}</p>}
         </div>
 
         {Boolean(form) && (
@@ -98,5 +97,4 @@ const FormHeader = ({
       )}
     </header>
   );
-};
-export default FormHeader;
+}

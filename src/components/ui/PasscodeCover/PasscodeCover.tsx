@@ -5,7 +5,7 @@ import { UserContext } from "../../../providers/UserContextProvider";
 import { getErrorMessage } from "../../../utils/usefulFunctions";
 import "./PasscodeCover.css";
 
-const PasscodeCover = () => {
+export function PasscodeCover() {
   const [passkey, setPasskey] = useState<string>("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -99,5 +99,4 @@ const PasscodeCover = () => {
       </div>
     </div>
   );
-};
-export default PasscodeCover;
+}

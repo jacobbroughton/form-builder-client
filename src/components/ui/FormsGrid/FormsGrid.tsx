@@ -9,13 +9,13 @@ import { AllFormsType } from "../../../lib/types";
 import { useDeleteDraftForm } from "../../../hooks/useDeleteDraftForm";
 import { useDeletePublishedForm } from "../../../hooks/useDeletePublishedForm";
 
-const FormsGrid = ({
+export function FormsGrid({
   forms,
   setForms,
 }: {
   forms: AllFormsType[];
   setForms: React.Dispatch<React.SetStateAction<AllFormsType[]>>;
-}) => {
+}) {
   const { deleteDraftForm } = useDeleteDraftForm();
   const { deletePublishedForm } = useDeletePublishedForm();
   const [popupMenuToggled, setPopupMenuToggled] = useState<boolean>(false);
@@ -99,5 +99,4 @@ const FormsGrid = ({
       ))}
     </section>
   );
-};
-export default FormsGrid;
+}

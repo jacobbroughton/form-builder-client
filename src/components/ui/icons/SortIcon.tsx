@@ -1,4 +1,4 @@
-const SortIcon = () => {
+export function SortIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,5 +15,4 @@ const SortIcon = () => {
       <path d="M21 15l-4 4l-4 -4m4 4v-14" />
     </svg>
   );
-};
-export default SortIcon;
+}

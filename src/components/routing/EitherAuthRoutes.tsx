@@ -1,12 +1,12 @@
 import { Outlet, useLocation } from "react-router-dom";
-import FloatingCreateButton from "../../components/ui/FloatingCreateButton/FloatingCreateButton";
+import { FloatingCreateButton } from "../../components/ui/FloatingCreateButton/FloatingCreateButton";
 import { Navbar } from "../../components/ui/Navbar/Navbar";
 import { useContext } from "react";
 import { UserContext } from "../../providers/UserContextProvider";
 import { ErrorBanner } from "../../components/pages/ErrorBanner/ErrorBanner";
 import { ErrorContext } from "../../providers/ErrorContextProvider";
 
-export const EitherAuthRoutes = () => {
+export function EitherAuthRoutes() {
   const location = useLocation();
   const { user } = useContext(UserContext);
   const { error, setError } = useContext(ErrorContext);
@@ -21,4 +21,4 @@ export const EitherAuthRoutes = () => {
       {location.pathname !== "/create-form" && user && <FloatingCreateButton />}
     </>
   );
-};
+}

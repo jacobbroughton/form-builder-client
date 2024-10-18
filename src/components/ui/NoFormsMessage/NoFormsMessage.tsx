@@ -1,4 +1,4 @@
-const NoFormsMessage = ({ labelForSwitch }: { labelForSwitch: string }) => {
+export function NoFormsMessage({ labelForSwitch }: { labelForSwitch: string }) {
   let message = "";
 
   switch (labelForSwitch) {
@@ -21,5 +21,4 @@ const NoFormsMessage = ({ labelForSwitch }: { labelForSwitch: string }) => {
   }
 
   return <p className="small-text">{message}</p>;
-};
-export default NoFormsMessage;
+}

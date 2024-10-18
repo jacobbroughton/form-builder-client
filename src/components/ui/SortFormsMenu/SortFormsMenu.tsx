@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { SortOptionType } from "../../../lib/types";
 import "./SortFormsMenu.css";
 
-const SortFormsMenu = ({
+export function SortFormsMenu({
   setSortMenuToggled,
   setSelectedSort,
   selectedSort,
@@ -14,7 +14,7 @@ const SortFormsMenu = ({
     name: string;
     value: string;
   };
-}): JSX.Element => {
+}): JSX.Element {
   const ref = useRef<HTMLUListElement>(null);
 
   const sortOptions = [
@@ -69,5 +69,4 @@ const SortFormsMenu = ({
       ))}
     </ul>
   );
-};
-export default SortFormsMenu;
+}

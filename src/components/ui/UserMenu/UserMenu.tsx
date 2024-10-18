@@ -1,15 +1,15 @@
 import { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../providers/UserContextProvider";
-import LogoutIcon from "../icons/LogoutIcon";
+import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import "./UserMenu.css";
 
-const UserMenu = ({
+export function UserMenu({
   setUserMenuToggled,
 }: {
   setUserMenuToggled: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+}) {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { user, setUser } = useContext(UserContext);
 
@@ -69,5 +69,4 @@ const UserMenu = ({
       </ul>
     </div>
   );
-};
-export default UserMenu;
+}

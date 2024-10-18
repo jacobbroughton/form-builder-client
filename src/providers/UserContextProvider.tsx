@@ -17,7 +17,7 @@ interface UserContext {
 
 export const UserContext = createContext<UserContext>({} as UserContext);
 
-const UserContextProvider = ({ children }: { children: ReactElement }) => {
+export function UserContextProvider({ children }: { children: ReactElement }) {
   const [user, setUser] = useState<UserType>(null);
   const [loading, setLoading] = useState(true);
   const { setError } = useContext(ErrorContext);
@@ -52,5 +52,4 @@ const UserContextProvider = ({ children }: { children: ReactElement }) => {
       {children}
     </UserContext.Provider>
   );
-};
-export default UserContextProvider;
+}

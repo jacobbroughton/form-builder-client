@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import GoogleIcon from "../../ui/icons/GoogleIcon";
+import { GoogleIcon } from "../../ui/icons/GoogleIcon";
 import "./CreateAccount.css";
 import { getGoogleOAuthUrl } from "../../../utils/getGoogleOAuthUrl";
 
-const CreateAccount = () => {
+export function CreateAccount() {
   return (
     <main className="create-account">
       <div className="container">
@@ -13,11 +13,10 @@ const CreateAccount = () => {
             <GoogleIcon /> Continue with Google
           </Link>
         </div>
-        <p className='account-prompt small-text'>
+        <p className="account-prompt small-text">
           Already have an account? <Link to={"/login"}>Login</Link>
         </p>
       </div>
     </main>
   );
-};
-export default CreateAccount;
+}

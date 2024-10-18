@@ -1,12 +1,12 @@
 import "./SavedStatus.css";
 
-const SavedStatus = ({
+export function SavedStatus({
   saved,
   autoSaveCountdown,
 }: {
   saved: boolean;
   autoSaveCountdown?: number;
-}) => {
+}) {
   return (
     <p className="saved-status">
       <span className={`${saved ? "saved" : ""}`}></span>
@@ -16,5 +16,4 @@ const SavedStatus = ({
         `(Autosaving in ${autoSaveCountdown}s)`}
     </p>
   );
-};
-export default SavedStatus;
+}

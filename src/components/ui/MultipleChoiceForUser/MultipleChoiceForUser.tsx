@@ -1,15 +1,15 @@
 import { MultipleChoiceOptionType } from "../../../lib/types";
-import CircleIcon from "../icons/CircleIcon";
-import FilledCircleIcon from "../icons/FilledCircleIcon";
+import { CircleIcon } from "../icons/CircleIcon";
+import { FilledCircleIcon } from "../icons/FilledCircleIcon";
 import "./MultipleChoiceForUser.css";
 
-export const MultipleChoiceForUser = ({
+export function MultipleChoiceForUser({
   question,
   description,
   isRequired,
   options,
   handleOptionClick,
-  disabled = false
+  disabled = false,
 }: {
   question: string;
   description: string;
@@ -17,8 +17,7 @@ export const MultipleChoiceForUser = ({
   options: MultipleChoiceOptionType[];
   handleOptionClick: () => void;
   disabled: boolean;
-}) => {
-  console.log(options)
+}) {
   return (
     <div className="multiple-choice-for-user">
       <p className="small-text bold">
@@ -52,4 +51,4 @@ export const MultipleChoiceForUser = ({
       )}
     </div>
   );
-};
+}

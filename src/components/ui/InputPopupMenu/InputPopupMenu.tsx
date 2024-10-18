@@ -1,25 +1,24 @@
 import { useEffect, useRef } from "react";
 import { InputType } from "../../../lib/types";
 import { Link } from "react-router-dom";
-import { EditIcon } from "../icons/EditIcon";
-import EyeIcon from "../icons/EyeIcon";
-import EyeSlashIcon from "../icons/EyeSlashIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import "./InputPopupMenu.css";
 
-export const InputPopupMenu = ({
+export function InputPopupMenu({
   input,
   setIdForInputPopup,
   setInputPopupToggled,
   handleChangeDraftInputEnabledStatus,
   handleDeleteClick,
+  isForDraft,
 }: {
   input: InputType;
   setIdForInputPopup: React.Dispatch<React.SetStateAction<string | null>>;
   setInputPopupToggled: React.Dispatch<React.SetStateAction<boolean>>;
   handleChangeDraftInputEnabledStatus: () => Promise<void>;
   handleDeleteClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}): JSX.Element => {
+  isForDraft: boolean;
+}): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export const InputPopupMenu = ({
 
   return (
     <div ref={ref} className="input-popup-menu">
-      <Link to={`/edit-input/${input.id}`}>
+      <Link to={`/${isForDraft ? "edit-draft-input" : "edit-input"}/${input.id}`}>
         <EditIcon /> Edit
       </Link>
       {input.is_active ? (
@@ -75,4 +74,4 @@ export const InputPopupMenu = ({
       </button>
     </div>
   );
-};
+}

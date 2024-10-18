@@ -14,24 +14,24 @@ import {
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
-import AddedInputsList from "../../ui/AddedInputsList/AddedInputsList";
-import CatchView from "../../ui/CatchView/CatchView";
-import FormHeader from "../../ui/FormHeader/FormHeader";
+import { ActionButtonWithIcon } from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
+import { AddedInputsList } from "../../ui/AddedInputsList/AddedInputsList";
+import { CatchView } from "../../ui/CatchView/CatchView";
+import { FormHeader } from "../../ui/FormHeader/FormHeader";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
 import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { ShareIcon } from "../../ui/icons/ShareIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import SavedStatus from "../../ui/SavedStatus/SavedStatus";
-import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
-import SingleSelectToggle from "../../ui/SingleSelectToggle/SingleSelectToggle";
+import { PrivacyOptions } from "../../ui/PrivacyOptions/PrivacyOptions";
+import { SavedStatus } from "../../ui/SavedStatus/SavedStatus";
+import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
+import { SingleSelectToggle } from "../../ui/SingleSelectToggle/SingleSelectToggle";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./CreateForm.css";
 
-export const CreateForm = () => {
+export function CreateForm() {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
   const { publish } = usePublish();
@@ -136,7 +136,9 @@ export const CreateForm = () => {
         draftFormId: form.id,
       });
 
-      console.log('data from publish', data)
+      if (!data[0]) throw new Error("No form was found after publishing");
+
+      console.log("data from publish", data);
 
       navigate(`/form/${data[0].id}`);
     } catch (error) {
@@ -360,4 +362,4 @@ export const CreateForm = () => {
       </div>
     </main>
   );
-};
+}

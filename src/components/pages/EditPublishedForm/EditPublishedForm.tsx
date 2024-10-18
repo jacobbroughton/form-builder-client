@@ -8,9 +8,9 @@ import { InputType, InputTypeType, PublishedFormType } from "../../../lib/types"
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import ActionButtonWithIcon from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
-import AddedInputsList from "../../ui/AddedInputsList/AddedInputsList";
-import CatchView from "../../ui/CatchView/CatchView";
+import { ActionButtonWithIcon } from "../../ui/ActionButtonWithIcon/ActionButtonWithIcon";
+import { AddedInputsList } from "../../ui/AddedInputsList/AddedInputsList";
+import { CatchView } from "../../ui/CatchView/CatchView";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../ui/icons/ArrowRightIcon";
@@ -18,12 +18,12 @@ import { SaveIcon } from "../../ui/icons/SaveIcon";
 import { TrashIcon } from "../../ui/icons/TrashIcon";
 import { InputTypeSelector } from "../../ui/InputTypeSelector/InputTypeSelector";
 import { MetadataInputs } from "../../ui/MetadataInputs/MetadataInputs";
-import PrivacyOptions from "../../ui/PrivacyOptions/PrivacyOptions";
-import SelectedPrivacyOptionButton from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
+import { PrivacyOptions } from "../../ui/PrivacyOptions/PrivacyOptions";
+import { SelectedPrivacyOptionButton } from "../../ui/SelectedPrivacyOptionButton/SelectedPrivacyOptionButton";
 import { StagedInputForm } from "../../ui/StagedInputForm/StagedInputForm";
 import "./EditPublishedForm.css";
 
-export const EditPublishedForm = () => {
+export function EditPublishedForm() {
   const navigate = useNavigate();
   const { setError } = useContext(ErrorContext);
   const { deletePublishedForm } = useDeletePublishedForm();
@@ -252,7 +252,6 @@ export const EditPublishedForm = () => {
 
   useEffect(() => {
     if (reflectFormPrivacyOption) {
-      console.log(form);
       setPrivacyOptions(
         privacyOptions.map((privacyOption) => ({
           ...privacyOption,
@@ -278,4 +277,4 @@ export const EditPublishedForm = () => {
       </div>
     </main>
   );
-};
+}

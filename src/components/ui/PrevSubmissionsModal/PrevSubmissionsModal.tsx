@@ -4,7 +4,7 @@ import "./PrevSubmissionsModal.css";
 import { useGetInputSubmissions } from "../../../hooks/useGetInputSubmissions";
 import { InputType, PrevSubmissionType, PublishedFormType } from "../../../lib/types";
 
-const PrevSubmissionsModal = ({
+export function PrevSubmissionsModal({
   form,
   inputs = [],
   setPrevSubmissionsModalShowing,
@@ -14,7 +14,7 @@ const PrevSubmissionsModal = ({
   inputs: InputType[];
   setPrevSubmissionsModalShowing: React.Dispatch<React.SetStateAction<boolean>>;
   prevSubmissions: PrevSubmissionType[];
-}) => {
+}) {
   const { getInputSubmissions } = useGetInputSubmissions();
   const modalRef = useRef<HTMLDivElement>(null);
   const [currForm] = useState(form);
@@ -41,7 +41,6 @@ const PrevSubmissionsModal = ({
         const inputs = await getInputSubmissions({
           submissionId: selectedSubmission.id,
         });
-        console.log(inputs);
         setInputSubmissions(inputs);
       } catch (error) {
         console.error(error);
@@ -130,5 +129,4 @@ const PrevSubmissionsModal = ({
       <div className="prev-submissions-modal-overlay"></div>
     </>
   );
-};
-export default PrevSubmissionsModal;
+}

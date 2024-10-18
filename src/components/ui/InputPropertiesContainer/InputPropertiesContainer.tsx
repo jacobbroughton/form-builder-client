@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useInputTypePropertyOptions } from "../../../hooks/useInputTypePropertyOptions";
 import { InputTypePropertyOptionType, InputTypePropertyType } from "../../../lib/types";
-import CaretIcon from "../icons/CaretIcon";
-import PropertiesIcon from "../icons/PropertiesIcon";
+import { CaretIcon } from "../icons/CaretIcon";
+import { PropertiesIcon } from "../icons/PropertiesIcon";
 import "./InputPropertiesContainer.css";
 
-const InputPropertiesContainer = ({
+export function InputPropertiesContainer({
   inputTypeId,
   inputTypeProperties,
   setInputTypeProperties,
@@ -15,12 +15,10 @@ const InputPropertiesContainer = ({
   setInputTypeProperties: React.Dispatch<
     React.SetStateAction<{ [key: string]: InputTypePropertyType[] }>
   >;
-}) => {
+}) {
   const { inputTypePropertyOptions, setInputTypePropertyOptions } =
     useInputTypePropertyOptions();
   const [propertiesToggled, setPropertiesToggled] = useState(false);
-
-  console.log(inputTypeProperties);
 
   function handleOptionClick(
     property: InputTypePropertyType,
@@ -126,5 +124,4 @@ const InputPropertiesContainer = ({
       )}
     </div>
   );
-};
-export default InputPropertiesContainer;
+}

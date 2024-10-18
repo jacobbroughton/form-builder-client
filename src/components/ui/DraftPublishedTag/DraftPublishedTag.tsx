@@ -2,7 +2,7 @@ import { DraftIcon } from "../icons/DraftIcon";
 import { PlanetIcon } from "../icons/PlanetIcon";
 import "./DraftPublishedTag.css";
 
-export const DraftPublishedTag = ({ draftOrPublished }: { draftOrPublished: string }) => {
+export function DraftPublishedTag({ draftOrPublished }: { draftOrPublished: string }) {
   return (
     <div
       className={`published-status ${draftOrPublished}`}
@@ -27,4 +27,4 @@ export const DraftPublishedTag = ({ draftOrPublished }: { draftOrPublished: stri
       )}
     </div>
   );
-};
+}

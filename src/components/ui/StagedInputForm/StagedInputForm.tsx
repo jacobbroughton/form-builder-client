@@ -6,18 +6,18 @@ import { InputType, InputTypeType, MultipleChoiceOptionType } from "../../../lib
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
-import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
+import { FormGroupContainer } from "../FormGroupContainer/FormGroupContainer";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { CheckIcon } from "../icons/CheckIcon";
-import InputPropertiesContainer from "../InputPropertiesContainer/InputPropertiesContainer";
-import InputTypeInfo from "../InputTypeInfo/InputTypeInfo";
-import SingleSelectToggle from "../SingleSelectToggle/SingleSelectToggle";
+import { InputPropertiesContainer } from "../InputPropertiesContainer/InputPropertiesContainer";
+import { InputTypeInfo } from "../InputTypeInfo/InputTypeInfo";
+import { SingleSelectToggle } from "../SingleSelectToggle/SingleSelectToggle";
 import "./StagedInputForm.css";
 import { LinearScaleForAdmin } from "../LinearScaleForAdmin/LinearScaleForAdmin";
 import { MultipleChoiceForAdmin } from "../MultipleChoiceForAdmin/MultipleChoiceForAdmin";
-import ActionButtonWithIcon from "../ActionButtonWithIcon/ActionButtonWithIcon";
+import { ActionButtonWithIcon } from "../ActionButtonWithIcon/ActionButtonWithIcon";
 
-export const StagedInputForm = ({
+export function StagedInputForm({
   formId,
   inputs,
   setInputs,
@@ -31,7 +31,7 @@ export const StagedInputForm = ({
   stagedNewInputType: InputTypeType | null;
   setStagedNewInputType: React.Dispatch<React.SetStateAction<InputTypeType | null>>;
   isForDraft: boolean;
-}) => {
+}) {
   const { addNewInputToDraftForm } = useAddNewInputToDraftForm();
   const { addNewInputToPublishedForm } = useAddNewInputToPublishedForm();
   const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
@@ -214,7 +214,7 @@ export const StagedInputForm = ({
               disabled={
                 !stagedInputTitle ||
                 (stagedNewInputType.name === "Multiple Choice"
-                  ? !noMultipleChoiceOptionsEmpty
+                  ? options.length <= 1 || !noMultipleChoiceOptionsEmpty
                   : false)
               }
               icon={<CheckIcon />}
@@ -228,4 +228,4 @@ export const StagedInputForm = ({
       </div>
     </div>
   );
-};
+}

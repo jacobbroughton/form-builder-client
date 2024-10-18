@@ -26,7 +26,7 @@ export const FormContext = createContext<{
   latestMultipleChoiceSubmissions: { [key: string]: object } | null;
   handleSubmissionsOnSubmit: (newSubmission: PrevSubmissionType) => Promise<null>;
   responses: {
-    shallowSubmissionsList: {
+    submissionsList: {
       created_at: string;
       created_by_id: string;
       email: string;
@@ -36,35 +36,24 @@ export const FormContext = createContext<{
       modified_by_id: string | null;
       username: string | null;
     }[];
-    submissionsWithInfo: {
+    inputsBySubID: {
       [key: string]: {
-        info: {
-          created_at: string;
-          created_by_id: string;
-          email: string;
-          form_id: string;
-          id: string;
-          modified_at: string | null;
-          modified_by_id: string | null;
-          username: string | null;
-        };
-        inputs: {
-          created_at: string;
-          created_by_id: string;
-          created_input_id: string;
-          form_id: string;
-          id: string;
-          metadata_description: string;
-          metadata_question: string;
-          modified_at: string | null;
-          modified_by_id: string | null;
-          submission_id: string;
-          value: string;
-          input_type_name: string;
-        }[];
-      };
+        created_at: string;
+        created_by_id: string;
+        created_input_id: string;
+        form_id: string;
+        id: string;
+        metadata_description: string;
+        metadata_question: string;
+        modified_at: string | null;
+        modified_by_id: string | null;
+        submission_id: string;
+        value: string;
+        input_type_name: string;
+      }[];
     };
   };
+  responsesLoading: boolean;
 }>({
   form: null,
   needsPasskeyValidation: false,
@@ -78,9 +67,10 @@ export const FormContext = createContext<{
   latestMultipleChoiceSubmissions: null,
   handleSubmissionsOnSubmit: async () => null,
   responses: {},
+  responsesLoading: true,
 });
 
-export const FormContextProvider = ({ children }: { children: ReactElement }) => {
+export function FormContextProvider({ children }: { children: ReactElement }) {
   const {
     form,
     needsPasskeyValidation,
@@ -94,7 +84,7 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
   const { user } = useContext(UserContext);
   const { setError } = useContext(ErrorContext);
 
-  const { responses } = useResponses();
+  const { responses, loading: responsesLoading } = useResponses();
 
   const [prevSubmissions, setPrevSubmissions] = useState<PrevSubmissionType[]>([]);
   const [latestInputSubmissions, setLatestInputSubmissions] = useState(null);
@@ -109,11 +99,7 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
       submissionId: newSubmission.id,
     });
 
-    console.log("data", data);
-
     const { inputSubmissions, multipleChoiceSubmissions } = data;
-
-    console.log(inputSubmissions);
 
     setPrevSubmissions([...prevSubmissions, newSubmission]);
     setLatestInputSubmissions(inputSubmissions);
@@ -165,9 +151,10 @@ export const FormContextProvider = ({ children }: { children: ReactElement }) =>
         latestMultipleChoiceSubmissions,
         handleSubmissionsOnSubmit,
         responses,
+        responsesLoading,
       }}
     >
       {children}
     </FormContext.Provider>
   );
-};
+}

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Landing.css";
 
-const Landing = () => {
+export function Landing() {
   return (
     <main className="landing">
       <div className="container">
@@ -17,5 +17,4 @@ const Landing = () => {
       </div>
     </main>
   );
-};
-export default Landing;
+}

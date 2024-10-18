@@ -7,14 +7,14 @@ import { ErrorContext } from "../../../providers/ErrorContextProvider";
 import { handleCatchError } from "../../../utils/usefulFunctions";
 import { DeleteModal } from "../../ui/DeleteModal/DeleteModal";
 import { DraftFormHeader } from "../../ui/DraftFormHeader/DraftFormHeader";
-import FormCreator from "../../ui/FormCreator/FormCreator";
-import FormGroupContainer from "../../ui/FormGroupContainer/FormGroupContainer";
+import { FormCreator } from "../../ui/FormCreator/FormCreator";
+import { FormGroupContainer } from "../../ui/FormGroupContainer/FormGroupContainer";
 import { MultipleChoiceForUser } from "../../ui/MultipleChoiceForUser/MultipleChoiceForUser";
 import { NoPromptsMessage } from "../../ui/NoPromptsMessage/NoPromptsMessage";
 import "./Draft.css";
 import { LinearScaleForUser } from "../../ui/LinearScaleForUser/LinearScaleForUser";
 
-export const Draft = () => {
+export function Draft() {
   const navigate = useNavigate();
   const { deleteDraftForm } = useDeleteDraftForm();
   const { getDraftForm } = useGetDraftForm();
@@ -81,7 +81,6 @@ export const Draft = () => {
                         isRequired={input.is_required}
                         options={input.options}
                         handleOptionClick={(option) => {
-                          console.log(inputs);
                           setInputs(
                             inputs.map((input) => ({
                               ...input,
@@ -103,8 +102,17 @@ export const Draft = () => {
                         isRequired={input.is_required}
                         minLinearScale={input.linearScale?.min}
                         maxLinearScale={input.linearScale?.max}
-                        selectedLinearScaleNumber={selectedLinearScaleNumber}
-                        setSelectedLinearScaleNumber={setSelectedLinearScaleNumber}
+                        value={input.value || input.linearScale?.existingValue}
+                        onNumberSelect={(number) => {
+                          setInputs(
+                            inputs.map((innerInput) => ({
+                              ...innerInput,
+                              ...(innerInput.id === input.id && {
+                                value: number,
+                              }),
+                            }))
+                          );
+                        }}
                       />
                     ) : (
                       <FormGroupContainer
@@ -114,7 +122,13 @@ export const Draft = () => {
                         placeholder={input.properties?.[`placeholder`]?.value || "..."}
                         disabled={false}
                         type={input.input_type_name}
-                        inputValue={input.value}
+                        inputValue={
+                          input.input_type_name === "Color"
+                            ? input.value === ""
+                              ? "#000000"
+                              : input.value
+                            : input.value
+                        }
                         handleChange={(e) => {
                           setInputs(
                             inputs.map((localInput) => ({
@@ -159,4 +173,4 @@ export const Draft = () => {
       </div>
     </main>
   );
-};
+}

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./GoogleOAuthError.css";
 
-const GoogleOAuthError = () => {
+export function GoogleOAuthError() {
   return (
     <main className="google-oauth-error">
       <div className="container">
@@ -14,5 +14,4 @@ const GoogleOAuthError = () => {
       </div>
     </main>
   );
-};
-export default GoogleOAuthError;
+}

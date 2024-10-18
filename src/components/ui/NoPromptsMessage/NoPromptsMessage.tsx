@@ -4,13 +4,13 @@ import { UserContext } from "../../../providers/UserContextProvider";
 import { PlusIcon } from "../icons/PlusIcon";
 import "./NoPromptsMessage.css";
 
-export const NoPromptsMessage = ({
+export function NoPromptsMessage ({
   isDraft,
   handleClick,
 }: {
   isDraft: boolean;
   handleClick: () => void;
-}) => {
+}) {
   const { user } = useContext(UserContext);
   const { form } = useContext(FormContext);
 

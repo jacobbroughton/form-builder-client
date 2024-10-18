@@ -1,8 +1,8 @@
-import CircleIcon from "../icons/CircleIcon";
-import FilledCircleIcon from "../icons/FilledCircleIcon";
+import { CircleIcon } from "../icons/CircleIcon";
+import { FilledCircleIcon } from "../icons/FilledCircleIcon";
 import "./SingleSelectToggle.css";
 
-const SingleSelectToggle = ({
+export function SingleSelectToggle({
   label = "",
   options,
   onChange,
@@ -10,7 +10,7 @@ const SingleSelectToggle = ({
   label: string;
   options: { label: string; value: unknown; checkedCondition: boolean }[];
   onChange: (value: unknown) => void;
-}) => {
+}) {
   return (
     <div className="single-select-toggle">
       <p className="small-text bold">{label}</p>
@@ -28,5 +28,4 @@ const SingleSelectToggle = ({
       </div>
     </div>
   );
-};
-export default SingleSelectToggle;
+}

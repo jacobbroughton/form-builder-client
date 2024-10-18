@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import "./CatchView.css";
 import { PlusIcon } from "../icons/PlusIcon";
-import HomeIcon from "../icons/HomeIcon";
+import { HomeIcon } from "../icons/HomeIcon";
 
-const CatchView = () => {
+export function CatchView() {
   return (
     <div className="catch-view">
       <div className="heading">
@@ -25,5 +25,4 @@ const CatchView = () => {
       </div>
     </div>
   );
-};
-export default CatchView;
+}

@@ -64,8 +64,15 @@ export interface InputType {
   created_by_id: string;
   modified_by_id: string;
   modified_at: string;
-  input_type_name: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time" | "Multiple Choice" | "Linear Scale";
-  linearScale: {min: number; max: number;}
+  input_type_name:
+    | "Short Answer"
+    | "Paragraph"
+    | "Color"
+    | "Date"
+    | "Time"
+    | "Multiple Choice"
+    | "Linear Scale";
+  linearScale: { min: number; max: number };
   input_type_description: string;
   num_custom_properties: number;
   num_multiple_choice_options: number;
@@ -109,6 +116,15 @@ export type PublishedFormType = {
   privacy_id: number;
   created_by_profile_picture: string;
   created_by_username: string;
+};
+
+export type MultipleChoiceOptionTypes = {
+  id: string;
+  input_id: string;
+  label: string;
+  is_deleted: boolean;
+  created_at: string;
+  created_by_id: string;
 };
 
 export type SortOptionType = {
@@ -158,9 +174,4 @@ export type PrevSubmissionType = {
   id: string;
   modified_at: string | null;
   modified_by_id: string | null;
-};
-
-export type MultipleChoiceOptionType = {
-  id: number;
-  label: string;
 };

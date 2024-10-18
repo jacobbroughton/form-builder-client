@@ -9,11 +9,11 @@ type RecentFormViewType = {
   title: string;
 };
 
-const RecentFormsContainer = ({
+export function RecentFormsContainer({
   recentFormViews,
 }: {
   recentFormViews: RecentFormViewType[];
-}) => {
+}) {
   return (
     <div className="recents-container">
       <p className="small-text bold text-subtle">Recents</p>
@@ -38,5 +38,4 @@ const RecentFormsContainer = ({
       )}
     </div>
   );
-};
-export default RecentFormsContainer;
+}

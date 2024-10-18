@@ -54,9 +54,5 @@ export const useInputTypeProperties = () => {
     getInputTypeProperties();
   }, []);
 
-  useEffect(() => {
-    console.log(inputTypeProperties);
-  }, [inputTypeProperties]);
-
   return { inputTypeProperties, setInputTypeProperties, loading, localError };
 };

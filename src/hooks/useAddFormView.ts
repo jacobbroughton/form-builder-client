@@ -41,8 +41,6 @@ export function useAddFormView() {
       }
 
       const data = await response.json();
-
-      console.log("added view", data);
     } catch (error) {
       handleCatchError(error, setError, setLocalError);
     } finally {

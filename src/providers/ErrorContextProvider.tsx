@@ -7,12 +7,10 @@ interface ErrorContext {
 
 export const ErrorContext = createContext<ErrorContext>({} as ErrorContext);
 
-const ErrorContextProvider = ({ children }: { children: ReactElement }) => {
+export function ErrorContextProvider({ children }: { children: ReactElement }) {
   const [error, setError] = useState<string | null>(null);
 
   return (
     <ErrorContext.Provider value={{ error, setError }}>{children}</ErrorContext.Provider>
   );
-};
-
-export default ErrorContextProvider;
+}

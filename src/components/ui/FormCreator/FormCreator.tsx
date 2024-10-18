@@ -1,7 +1,7 @@
 import "./FormCreator.css";
 import { elapseTime } from "../../../utils/usefulFunctions";
 
-const FormCreator = ({
+export function FormCreator({
   creatorInfo,
 }: {
   creatorInfo: {
@@ -9,7 +9,7 @@ const FormCreator = ({
     username: string;
     created_at: string;
   };
-}) => {
+}) {
   return (
     <div className="form-creator-container">
       <div className="profile-picture-container">
@@ -22,5 +22,4 @@ const FormCreator = ({
       </p>
     </div>
   );
-};
-export default FormCreator;
+}

@@ -1,6 +1,6 @@
 import "./LinearScaleForUser.css";
 
-export const LinearScaleForUser = ({
+export function LinearScaleForUser ({
   question,
   description,
   isRequired,
@@ -18,7 +18,7 @@ export const LinearScaleForUser = ({
   value: string;
   onNumberSelect: (number: string) => void;
   disabled: boolean;
-}) => {
+}) {
   const linearScaleOptions = [];
 
   for (let i = minLinearScale; i < maxLinearScale + 1; i++) {

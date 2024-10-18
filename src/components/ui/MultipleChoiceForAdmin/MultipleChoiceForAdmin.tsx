@@ -3,13 +3,13 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { XIcon } from "../icons/XIcon";
 import "./MultipleChoiceForAdmin.css";
 
-export const MultipleChoiceForAdmin = ({
+export function MultipleChoiceForAdmin ({
   options,
   setOptions,
 }: {
   options: MultipleChoiceOptionType[];
   setOptions: React.Dispatch<React.SetStateAction<MultipleChoiceOptionType[]>>;
-}) => {
+}) {
   function handleOptionLabelChange(
     e: React.ChangeEvent,
     option: MultipleChoiceOptionType
@@ -27,7 +27,7 @@ export const MultipleChoiceForAdmin = ({
   }
 
   function handleAddOption() {
-    const lastChoiceId = options[options.length - 1].id || 0;
+    const lastChoiceId = options[options.length - 1]?.id || 0;
 
     setOptions([...options, { id: lastChoiceId + 1, label: "" }]);
   }
@@ -41,9 +41,9 @@ export const MultipleChoiceForAdmin = ({
 
   return (
     <div className="multiple-choice-for-admin">
-      {options.length === 0 ? (
+      {/* {options.length === 0 ? (
         <p>No option created yet</p>
-      ) : (
+      ) : ( */}
         <div className="options">
           {options.map((option, i) => (
             <div key={option.id} className="option">
@@ -57,8 +57,9 @@ export const MultipleChoiceForAdmin = ({
               </button>
             </div>
           ))}
+          {options.length <= 1 && <p className='small-text red italic'><i>Must have at least <strong>2</strong> options</i></p>}
         </div>
-      )}
+      {/* )} */}
       <button
         type="button"
         onClick={handleAddOption}

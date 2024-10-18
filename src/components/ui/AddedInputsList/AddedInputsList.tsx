@@ -12,7 +12,7 @@ import { DeleteModal } from "../DeleteModal/DeleteModal";
 import { CurrentViewContext } from "../../../providers/CurrentViewProvider";
 import "./AddedInputsList.css";
 
-const AddedInputsList = ({
+export function AddedInputsList({
   inputs,
   setInputs,
   isForDraft,
@@ -20,7 +20,7 @@ const AddedInputsList = ({
   inputs: InputType[];
   setInputs: React.Dispatch<React.SetStateAction<InputType[]>>;
   isForDraft: boolean;
-}) => {
+}) {
   const { changeInputEnabledStatus } = useChangeInputEnabledStatus();
   const { deleteInput } = useDeleteInput();
   const { setError } = useContext(ErrorContext);
@@ -128,6 +128,7 @@ const AddedInputsList = ({
                     setInputStagedForDelete(input);
                     setDeleteModalToggled(true);
                   }}
+                  isForDraft={isForDraft}
                 />
               ) : (
                 false
@@ -155,5 +156,4 @@ const AddedInputsList = ({
       )}
     </>
   );
-};
-export default AddedInputsList;
+}

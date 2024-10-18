@@ -1,6 +1,6 @@
-import { MultipleChoiceForUser } from "../MultipleChoiceForUser/MultipleChoiceForUser";
 import "./FormGroupContainer.css";
-const FormGroupContainer = ({
+
+export function FormGroupContainer({
   label,
   description,
   inputValue,
@@ -18,7 +18,7 @@ const FormGroupContainer = ({
   placeholder: string;
   type: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time";
   handleChange: (e: any) => void;
-}) => {
+}) {
   return (
     <div className={`form-group-container disabled`}>
       <p className="small-text bold">
@@ -73,5 +73,4 @@ const FormGroupContainer = ({
       )}
     </div>
   );
-};
-export default FormGroupContainer;
+}

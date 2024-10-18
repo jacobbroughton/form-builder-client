@@ -1,14 +1,14 @@
 import { AllFormsType } from "../../../lib/types";
-import FormGroupContainer from "../FormGroupContainer/FormGroupContainer";
+import { FormGroupContainer } from "../FormGroupContainer/FormGroupContainer";
 import "./MetadataInputs.css";
 
-export const MetadataInputs = ({
+export function MetadataInputs({
   form,
   setForm,
 }: {
   form: AllFormsType | null;
   setForm: React.Dispatch<React.SetStateAction<AllFormsType | null>>;
-}) => {
+}) {
   if (!form) return <p>No form found</p>;
 
   return (
@@ -50,4 +50,4 @@ export const MetadataInputs = ({
       </form>
     </div>
   );
-};
+}

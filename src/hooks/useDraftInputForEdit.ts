@@ -5,12 +5,12 @@ import { UserContext } from "../providers/UserContextProvider";
 import { handleCatchError } from "../utils/usefulFunctions";
 import { InputTypeType, InputTypeWithProperties } from "../lib/types";
 
-export const useInputForEdit = () => {
+export const useDraftInputForEdit = () => {
   const [loading, setLoading] = useState(false);
   const [initialInput, setInitialInput] = useState<InputTypeWithProperties | null>(null);
   const [updatedInput, setUpdatedInput] = useState<InputTypeWithProperties | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [inputType, setInputType] = useState<InputTypeType>(null);
+  const [inputType, setInputType] = useState<InputTypeType | null>(null);
 
   const { setError } = useContext(ErrorContext);
   const { setUser } = useContext(UserContext);
@@ -25,7 +25,7 @@ export const useInputForEdit = () => {
       setLoading(true);
 
       const response = await fetch(
-        `http://localhost:3001/api/form/get-input/${inputId}`,
+        `http://localhost:3001/api/form/get-draft-input/${inputId}`,
         {
           credentials: "include",
         }
@@ -45,9 +45,9 @@ export const useInputForEdit = () => {
 
       const data = await response.json();
 
-      getInputType({ inputTypeId: data.info.input_type_id });
+      console.log("data", data)
 
-      console.log("get-input", data)
+      getInputType({ inputTypeId: data.info.input_type_id });
 
       setInitialInput(data);
       setUpdatedInput(data);
@@ -85,7 +85,6 @@ export const useInputForEdit = () => {
 
       const data = await response.json();
 
-      
       setInputType(data);
     } catch (error) {
       handleCatchError(error, setError, setLocalError);
@@ -102,7 +101,6 @@ export const useInputForEdit = () => {
     inputType,
     initialInput,
     updatedInput,
-    setInitialInput,
     setUpdatedInput,
     loading,
     error: localError,
