@@ -97,6 +97,7 @@ export function ResponsesContainer() {
                       isRequired={inputInfo.is_required}
                       type={inputInfo.input_type_name}
                       inputValue={inputInfo.value}
+                      canHide={false}
                     />
                   )}
                 </li>

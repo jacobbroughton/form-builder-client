@@ -7,7 +7,7 @@ export function Landing() {
       <div className="container">
         <div className="hero-banner">
           <h1>Form Builder</h1>
-          <h1>A worse alternative to Google Forms</h1>
+          <h2>A worse alternative to Google Forms</h2>
           <p>Created by Jacob Broughton</p>
           <div className="cta-links">
             <Link to={"/login"}>Login</Link>

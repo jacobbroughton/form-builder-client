@@ -2,7 +2,10 @@ import { useEffect, useRef } from "react";
 import { InputType } from "../../../lib/types";
 import { Link } from "react-router-dom";
 import { TrashIcon } from "../icons/TrashIcon";
+import { EyeSlashIcon } from "../icons/EyeSlashIcon";
+import { EyeIcon } from "../icons/EyeIcon";
 import "./InputPopupMenu.css";
+import { EditIcon } from "../icons/EditIcon";
 
 export function InputPopupMenu({
   input,

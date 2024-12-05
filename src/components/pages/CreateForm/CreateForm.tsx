@@ -84,23 +84,26 @@ export function CreateForm() {
   const [canResubmit, setCanResubmit] = useState(false);
 
   useEffect(() => {
-    if (reflectFormPrivacyOption)
+    if (reflectFormPrivacyOption && !form) console.warn("no form here");
+    if (reflectFormPrivacyOption && form)
       setStagedPrivacyOptions(
         privacyOptions.map((privacyOption) => ({
           ...privacyOption,
-          checked: privacyOption.id === form?.privacy_id,
+          checked: privacyOption.id === form.privacy_id,
         }))
       );
   }, [privacyOptions, form, reflectFormPrivacyOption]);
 
   async function saveDraft() {
     try {
+      console.log("saving draft");
+      return;
       const data = await updateDraftForm({
         formId: form!.id,
         title: form!.title,
         description: form!.description,
-        privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)!
-          .id,
+        privacyId: stagedPrivacyOptions.find((privacyOption) => privacyOption.checked)
+          ?.id,
         privacyPasskey,
         canResubmit,
       });
@@ -138,11 +141,11 @@ export function CreateForm() {
         draftFormId: form.id,
       });
 
-      if (!data[0]) throw new Error("No form was found after publishing");
+      if (!data) throw new Error("No form was found after publishing");
 
       console.log("data from publish", data);
 
-      navigate(`/form/${data[0].id}`);
+      navigate(`/form/${data.id}`);
     } catch (error) {
       handleCatchError(error, setError, null);
     }
@@ -170,6 +173,7 @@ export function CreateForm() {
               icon={<ArrowLeftIcon />}
               color="none"
             />
+            
             <PrivacyOptions
               privacyOptions={stagedPrivacyOptions}
               setPrivacyOptions={setStagedPrivacyOptions}
@@ -205,6 +209,7 @@ export function CreateForm() {
             <SavedStatus saved={saved} autoSaveCountdown={autoSaveCountdown} />
 
             <MetadataInputs form={form} setForm={setForm} />
+            <p className='small-text'>Image input here?</p>
             <AddedInputsList inputs={inputs} setInputs={inputs} isForDraft={true} />
             {selectedPrivacyOption ? (
               <SelectedPrivacyOptionButton
@@ -349,6 +354,17 @@ export function CreateForm() {
         form.description !== prevSavedForm.description ||
         selectedPrivacyOption?.id !== form.privacy_id ||
         privacyPasskey !== form.passkey;
+      console.log("new cond.", {
+        raw: {
+          1: [form.title, prevSavedForm.title],
+          2: [form.description, prevSavedForm.description],
+          3: [selectedPrivacyOption?.id, form.privacy_id],
+          4: [privacyPasskey, form.passkey],
+        },
+        saved: !condition,
+        needsAutoSave: condition,
+        actual: condition,
+      });
       setSaved(!condition);
       setNeedsAutoSave(condition);
     }

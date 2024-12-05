@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ErrorContext } from "../providers/ErrorContextProvider";
 import { UserContext } from "../providers/UserContextProvider";
@@ -94,6 +94,31 @@ export const useInputForEdit = () => {
     }
   }
 
+  async function editInput(e: FormEvent) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`http://localhost:3001/api/form/edit-input`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatedInput),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("There was an error updating this input");
+      }
+
+      await response.json();
+
+      setInitialInput(updatedInput);
+    } catch (error) {
+      handleCatchError(error, setError, null);
+    }
+  }
+
   useEffect(() => {
     if (inputId) getInput({ inputId });
   }, [inputId]);
@@ -106,5 +131,6 @@ export const useInputForEdit = () => {
     setUpdatedInput,
     loading,
     error: localError,
+    editInput
   };
 };

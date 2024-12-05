@@ -1,4 +1,4 @@
-header {
+header.draft-form-header {
   padding: 10px 30px;
   background-color: var(--nav-bg-color);
   border-bottom: 1px solid #3d444d;
@@ -7,32 +7,39 @@ header {
   gap: 10px;
 }
 
-header > .row {
+header.draft-form-header > .row {
   width: 100%;
   display: flex;
   gap: 10px;
 }
 
-header > .row > .text {
-  width: 100%;
-}
-
-header > .row:last-child {
+header.draft-form-header > .row:last-child {
   align-items: flex-start;
 }
 
-header > .row > button.action-button-with-icon.green {
-  margin-left: auto;
+header.draft-form-header > .row > .text {
+  width: 100%;
 }
 
-header > div.row > .buttons {
+header.draft-form-header > .row > .text > h1.title {
+font-size: 1rem;
+font-weight: 600;
+}
+
+
+header.draft-form-header > .row > button.action-button-with-icon.green {
+  margin-left: auto;
+
+}
+
+header.draft-form-header > div.row > .buttons {
   display: flex;
   gap: 10px;
   justify-content: space-between;
   width: 100%;
 }
 
-header > div.row > .buttons > .view-responses-link {
+header.draft-form-header > div.row > .buttons > .view-responses-link {
   border-radius: 3px;
   font-size: 0.875rem;
   background-color: var(--button-default-bg-color);
@@ -45,24 +52,24 @@ header > div.row > .buttons > .view-responses-link {
   white-space: nowrap;
 }
 
-header > div.row > .buttons > .view-responses-link:hover {
+header.draft-form-header > div.row > .buttons > .view-responses-link:hover {
   background-color: var(--button-default-bg-color-hover);
   border: 1px solid var(--button-default-border-color-hover);
 }
 
-header > div.row > .buttons > .view-responses-link > svg {
+header.draft-form-header > div.row > .buttons > .view-responses-link > svg {
   width: 13px;
   fill: whitesmoke;
 }
 
-header > .row > .form-controls {
+header.draft-form-header > .row > .form-controls {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
 }
 
-header > .row > .form-controls > .menu-toggle-button-container {
+header.draft-form-header > .row > .form-controls > .menu-toggle-button-container {
   position: relative;
   margin-left: auto;
   margin-right: 5px;
@@ -107,7 +114,7 @@ header
 }
 
 @media screen and (max-width: 800px) {
-  header {
+  header.draft-form-header {
     padding: 10px;
   }
 }

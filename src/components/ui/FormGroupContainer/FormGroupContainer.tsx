@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./FormGroupContainer.css";
 
 export function FormGroupContainer({
@@ -9,6 +10,7 @@ export function FormGroupContainer({
   placeholder,
   type,
   handleChange,
+  canHide = false,
 }: {
   label: string;
   description: string;
@@ -18,19 +20,35 @@ export function FormGroupContainer({
   placeholder: string;
   type: "Short Answer" | "Paragraph" | "Color" | "Date" | "Time";
   handleChange: (e: any) => void;
+  canHide: boolean;
 }) {
+  const [inputVisible, setInputVisible] = useState(true);
   return (
     <div className={`form-group-container disabled`}>
-      <p className="small-text bold">
-        {label}{" "}
-        {isRequired ? (
-          <span className="required">*</span>
-        ) : (
-          <span className="optional">(optional)</span>
+      <header>
+        <p className="small-text bold">
+          {label}{" "}
+          {isRequired ? (
+            <span className="required">*</span>
+          ) : (
+            <span className="optional">(optional)</span>
+          )}
+        </p>
+        {canHide && (
+          <button
+            className="hide-input-button"
+            type="button"
+            onClick={() => setInputVisible(!inputVisible)}
+          >
+            {inputVisible ? "Hide" : "Show"}
+          </button>
         )}
-      </p>
+      </header>
+
       {description && <p className="tiny-text">{description}</p>}
-      {type === "Short Answer" ? (
+      {!inputVisible ? (
+        false
+      ) : type === "Short Answer" ? (
         <input
           disabled={disabled}
           value={inputValue}

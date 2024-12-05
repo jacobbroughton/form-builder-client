@@ -11,18 +11,21 @@ import { useInputTypeProperties } from "../../../hooks/useInputTypeProperties";
 import { ArrowLeftIcon } from "../../ui/icons/ArrowLeftIcon";
 import { ActionLinkWithIcon } from "../../ui/ActionLinkWithIcon/ActionLinkWithIcon";
 import "./EditInput.css";
+import { LinearScaleForAdmin } from "../../ui/LinearScaleForAdmin/LinearScaleForAdmin";
+import { MultipleChoiceForAdmin } from "../../ui/MultipleChoiceForAdmin/MultipleChoiceForAdmin";
 
 export function EditInput() {
   const {
     inputType,
     initialInput,
     updatedInput,
-    setInitialInput,
     setUpdatedInput,
     loading: inputLoading,
+    editInput,
   } = useInputForEdit();
   const { setError } = useContext(ErrorContext);
-  const [isRequired, setIsRequired] = useState(initialInput?.is_required || false);
+
+  console.log({ initialInput, updatedInput });
 
   const { inputTypeProperties, setInputTypeProperties } = useInputTypeProperties();
 
@@ -30,54 +33,23 @@ export function EditInput() {
 
   if (!initialInput || !updatedInput) return <p>No input found</p>;
 
-  console.log({ initialInput, updatedInput });
-
   const saveDisabled =
     initialInput.info.metadata_question === updatedInput.info.metadata_question &&
     initialInput.info.metadata_description === updatedInput.info.metadata_description &&
     initialInput.info.is_required === updatedInput.info.is_required;
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/form/edit-input`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(updatedInput),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error("There was an error updating this input");
-      }
-
-      const data = await response.json();
-
-      setInitialInput(updatedInput);
-    } catch (error) {
-      handleCatchError(error, setError, null);
-    }
-  }
-
   return (
     <main className="edit-input">
       <div className="row">
         <div className="container">
-          {/* <div className="heading">
-            <h1>Edit Input</h1>
-          </div> */}
           <ActionLinkWithIcon
             icon={<ArrowLeftIcon />}
             iconPlacement="before"
-            // label="Back"
-            label={updatedInput.info.form_id}
+            label="Back"
             url={`/edit-published-form/${updatedInput.info.form_id}`}
             color="none"
           />
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={editInput}>
             <FormGroupContainer
               label="Prompt / Question"
               description=""
@@ -95,6 +67,7 @@ export function EditInput() {
               isRequired={true}
               disabled={false}
               type="Short Answer"
+              canHide={false}
             />
 
             <FormGroupContainer
@@ -114,15 +87,32 @@ export function EditInput() {
               isRequired={true}
               disabled={false}
               type="Paragraph"
+              canHide={false}
             />
-
-            {inputType && (
-              <InputPropertiesContainer
-                inputTypeId={inputType.id}
-                inputTypeProperties={inputTypeProperties}
-                setInputTypeProperties={setInputTypeProperties}
+            {initialInput.info.input_type_name === "Linear Scale" ? (
+              <LinearScaleForAdmin
+                minLinearScale={updatedInput.linearScale.min}
+                setMinLinearScale={setMinLinearScale}
+                maxLinearScale={updatedInput.linearScale.max}
+                setMaxLinearScale={setMaxLinearScale}
               />
+            ) : initialInput.info.input_type_name === "Multiple Choice" ? (
+              <MultipleChoiceForAdmin
+                options={updatedInput.options}
+                setOptions={(option) => null}
+              />
+            ) : (
+              false
             )}
+
+            {inputType &&
+              !["Linear Scale", "Multiple Choice"].includes(inputType.name) && (
+                <InputPropertiesContainer
+                  inputTypeId={inputType.id}
+                  inputTypeProperties={inputTypeProperties}
+                  setInputTypeProperties={setInputTypeProperties}
+                />
+              )}
 
             <SingleSelectToggle
               label="Required?"
@@ -163,4 +153,3 @@ export function EditInput() {
     </main>
   );
 }
-;

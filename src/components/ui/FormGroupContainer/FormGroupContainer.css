@@ -5,6 +5,24 @@
   gap: 3px;
 }
 
+.form-group-container > header {
+  display: flex;
+  gap: 10px;
+}
+
+.form-group-container > header > button.hide-input-button {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-left: auto;
+}
+
+.form-group-container > header > button.hide-input-button:hover {
+  font-style: italic;
+}
+
 .form-group-container > input,
 .form-group-container > textarea {
   width: 100%;

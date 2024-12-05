@@ -3,7 +3,7 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { XIcon } from "../icons/XIcon";
 import "./MultipleChoiceForAdmin.css";
 
-export function MultipleChoiceForAdmin ({
+export function MultipleChoiceForAdmin({
   options,
   setOptions,
 }: {
@@ -44,21 +44,27 @@ export function MultipleChoiceForAdmin ({
       {/* {options.length === 0 ? (
         <p>No option created yet</p>
       ) : ( */}
-        <div className="options">
-          {options.map((option, i) => (
-            <div key={option.id} className="option">
-              <input
-                onChange={(e) => handleOptionLabelChange(e, option)}
-                value={option.label}
-                placeholder={`Option ${i + 1}`}
-              />
-              <button type="button" onClick={() => handleDeleteOption(option)}>
-                <XIcon />
-              </button>
-            </div>
-          ))}
-          {options.length <= 1 && <p className='small-text red italic'><i>Must have at least <strong>2</strong> options</i></p>}
-        </div>
+      <div className="options">
+        {options.map((option, i) => (
+          <div key={option.id} className="option">
+            <input
+              onChange={(e) => handleOptionLabelChange(e, option)}
+              value={option.label}
+              placeholder={`Option ${i + 1}`}
+            />
+            <button type="button" onClick={() => handleDeleteOption(option)}>
+              <XIcon />
+            </button>
+          </div>
+        ))}
+        {options.length <= 1 && (
+          <p className="small-text red italic">
+            <i>
+              Must have at least <strong>2</strong> options
+            </i>
+          </p>
+        )}
+      </div>
       {/* )} */}
       <button
         type="button"
@@ -70,4 +76,4 @@ export function MultipleChoiceForAdmin ({
       </button>
     </div>
   );
-};
+}

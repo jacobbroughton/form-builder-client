@@ -139,6 +139,7 @@ export function Draft() {
                             }))
                           );
                         }}
+                        canHide={false}
                       />
                     )
                   )}

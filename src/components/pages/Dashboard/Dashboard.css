@@ -84,7 +84,7 @@ div.forms > main > .container > .forms-selector > button.selected > svg {
   fill: lightgreen;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
   div.forms > aside {
     display: none;
   }

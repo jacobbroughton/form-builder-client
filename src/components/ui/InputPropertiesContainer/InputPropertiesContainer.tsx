@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInputTypePropertyOptions } from "../../../hooks/useInputTypePropertyOptions";
 import { InputTypePropertyOptionType, InputTypePropertyType } from "../../../lib/types";
 import { CaretIcon } from "../icons/CaretIcon";
@@ -60,6 +60,10 @@ export function InputPropertiesContainer({
       ),
     });
   }
+
+  // useEffect(() => {
+  //   console.log(inputTypeId, inputTypeProperties, inputTypeProperties[inputTypeId]);
+  // }, []);
 
   return (
     <div className={`properties-container ${propertiesToggled ? "toggled" : ""}`}>

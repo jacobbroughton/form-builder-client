@@ -220,6 +220,7 @@ export function Form() {
                               }))
                             );
                           }}
+                          canHide={false}
                         />
                       )
                     )}

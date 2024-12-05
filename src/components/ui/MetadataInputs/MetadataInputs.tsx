@@ -29,6 +29,7 @@ export function MetadataInputs({
               title: e.target.value,
             });
           }}
+          canHide={false}
         />
 
         <FormGroupContainer
@@ -46,6 +47,7 @@ export function MetadataInputs({
               description: e.target.value,
             });
           }}
+          canHide={true}
         />
       </form>
     </div>

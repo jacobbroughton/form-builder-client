@@ -30,7 +30,7 @@ export function LinearScaleForAdmin ({
       {!scaleToMove && (
         <p className="small-text">
           <i>
-            Select the current '<strong>min</strong>' or '<strong>max</strong>'
+            To adjust, select the current '<strong>min</strong>' or '<strong>max</strong>'
           </i>
         </p>
       )}
@@ -71,6 +71,7 @@ export function LinearScaleForAdmin ({
               }`}
               key={num}
               onClick={() => {
+                console.log({num, minLinearScale, maxLinearScale})
                 if (num === minLinearScale) {
                   if (scaleToMove === "min") {
                     setScaleToMove(null);

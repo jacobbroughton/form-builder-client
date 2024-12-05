@@ -88,6 +88,7 @@ export function EditDraftInput() {
               isRequired={true}
               disabled={false}
               type="Short Answer"
+              canHide={false}
             />
 
             <FormGroupContainer
@@ -107,6 +108,7 @@ export function EditDraftInput() {
               isRequired={true}
               disabled={false}
               type="Paragraph"
+              canHide={false}
             />
 
             {inputType && (

@@ -14,6 +14,7 @@ export const useAddNewInputToPublishedForm = () => {
 
   const addNewInputToPublishedForm = useCallback(
     async (body: {
+      draftInputId: string | null;
       inputTypeId: number | undefined;
       inputMetadataQuestion: string;
       inputMetadataDescription: string;
@@ -38,6 +39,7 @@ export const useAddNewInputToPublishedForm = () => {
               "content-type": "application/json",
             },
             body: JSON.stringify({
+              draftInputId: body.draftInputId,
               inputTypeId: body.inputTypeId,
               inputMetadataQuestion: body.inputMetadataQuestion,
               inputMetadataDescription: body.inputMetadataDescription,

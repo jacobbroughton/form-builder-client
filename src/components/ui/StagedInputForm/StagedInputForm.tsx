@@ -42,7 +42,7 @@ export function StagedInputForm({
   const [stagedInputTitle, setStagedInputTitle] = useState<string>("Untitled Question");
   const [stagedInputDescription, setStagedInputDescription] = useState<string>("");
   const [isRequired, setIsRequired] = useState(false);
-  const [descriptionToggled, setDescriptionToggled] = useState(false);
+  // const [descriptionToggled, setDescriptionToggled] = useState(false);
 
   const [options, setOptions] = useState<MultipleChoiceOptionType[]>([
     {
@@ -72,7 +72,7 @@ export function StagedInputForm({
         data = await addNewInputToDraftForm({
           inputTypeId: stagedNewInputType?.id,
           inputMetadataQuestion: stagedInputTitle,
-          inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
+          inputMetadataDescription: stagedInputDescription,
           properties,
           options,
           linearScale: { min: minLinearScale, max: maxLinearScale },
@@ -81,9 +81,10 @@ export function StagedInputForm({
         });
       } else {
         data = await addNewInputToPublishedForm({
+          draftInputId: null,
           inputTypeId: stagedNewInputType?.id,
           inputMetadataQuestion: stagedInputTitle,
-          inputMetadataDescription: descriptionToggled ? stagedInputDescription : "",
+          inputMetadataDescription: stagedInputDescription,
           properties,
           options,
           linearScale: { min: minLinearScale, max: maxLinearScale },
@@ -106,7 +107,7 @@ export function StagedInputForm({
     stagedInputTitle,
     stagedInputDescription,
     isRequired,
-    descriptionToggled,
+    // descriptionToggled,
     options,
     isRequired,
     minLinearScale,
@@ -129,6 +130,8 @@ export function StagedInputForm({
   return (
     <div className="staged-input-form">
       <div className="row">
+        <InputTypeInfo inputType={stagedNewInputType} />
+
         <div className="staged-input-form-container">
           <form className="staged-input-form">
             <FormGroupContainer
@@ -143,30 +146,32 @@ export function StagedInputForm({
                 e.preventDefault();
                 setStagedInputTitle(e.target.value);
               }}
+              canHide={false}
             />
-            {descriptionToggled && (
-              <FormGroupContainer
-                label="Description"
-                description=""
-                disabled={false}
-                type="Paragraph"
-                placeholder="Description"
-                inputValue={stagedInputDescription}
-                isRequired={false}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  setStagedInputDescription(e.target.value);
-                }}
-              />
-            )}
-            <button
+            {/* {descriptionToggled && ( */}
+            <FormGroupContainer
+              label="Description"
+              description=""
+              disabled={false}
+              type="Paragraph"
+              placeholder="Description"
+              inputValue={stagedInputDescription}
+              isRequired={false}
+              handleChange={(e) => {
+                e.preventDefault();
+                setStagedInputDescription(e.target.value);
+              }}
+              canHide={true}
+            />
+            {/* )} */}
+            {/* <button
               className="description-toggle"
               type="button"
               onClick={() => setDescriptionToggled(!descriptionToggled)}
             >
               {descriptionToggled ? "Remove" : "Add"} Description{" "}
               {descriptionToggled ? "-" : "+"}
-            </button>
+            </button> */}
 
             {stagedNewInputType.name === "Linear Scale" && (
               <LinearScaleForAdmin
@@ -224,7 +229,6 @@ export function StagedInputForm({
             />
           </div>
         </div>
-        <InputTypeInfo inputType={stagedNewInputType} />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export function FormHeader({
   const isFormCreator = form?.created_by_id === user?.id;
 
   return (
-    <header>
+    <header className='form-header'> 
       <div className="row">
         <div className="text">
           <h1 className="title">{form?.title}</h1>
